@@ -4,6 +4,7 @@ import PreparationPathSection from "@/components/PreparationPathSection";
 import TrustStrip from "@/components/TrustStrip";
 import ResultsSection from "@/components/ResultsSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
+import ReadinessQuiz from "@/components/ReadinessQuiz";
 import WebinarSection from "@/components/WebinarSection";
 import CoursesSection from "@/components/CoursesSection";
 import FreeToolsSection from "@/components/FreeToolsSection";
@@ -23,6 +24,7 @@ const Index = () => (
       <TrustStrip />
       <ResultsSection />
       <TestimonialsSection />
+      <ReadinessQuiz />
       <WebinarSection />
       <CoursesSection />
       <FreeToolsSection />
