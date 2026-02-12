@@ -13,6 +13,7 @@ import FounderSection from "@/components/FounderSection";
 import FAQSection from "@/components/FAQSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import ScrollCTAPanel from "@/components/ScrollCTAPanel";
 import Footer from "@/components/Footer";
 
 const Index = () => (
@@ -35,6 +36,7 @@ const Index = () => (
     </main>
     <Footer />
     <WhatsAppButton />
+    <ScrollCTAPanel />
   </>
 );
 
