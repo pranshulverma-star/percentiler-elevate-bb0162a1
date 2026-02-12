@@ -12,7 +12,7 @@ const FinalCTASection = () => (
       </p>
       <div className="flex flex-wrap justify-center gap-4">
         <Button size="lg" asChild>
-          <a href="#masterclass">
+          <a href="/masterclass">
             Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
           </a>
         </Button>

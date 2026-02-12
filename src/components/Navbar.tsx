@@ -32,7 +32,7 @@ const Navbar = () => {
             </a>
           ))}
           <Button asChild>
-            <a href="#masterclass">Watch Free Masterclass</a>
+            <a href="/masterclass">Watch Free Masterclass</a>
           </Button>
         </nav>
 
@@ -56,7 +56,7 @@ const Navbar = () => {
             </a>
           ))}
           <Button className="w-full" asChild>
-            <a href="#masterclass" onClick={() => setOpen(false)}>Watch Free Masterclass</a>
+            <a href="/masterclass" onClick={() => setOpen(false)}>Watch Free Masterclass</a>
           </Button>
         </nav>
       )}

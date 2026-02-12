@@ -24,7 +24,7 @@ const WebinarSection = () => (
       </ul>
       <div>
         <Button size="lg" asChild>
-          <a href="#">
+          <a href="/masterclass">
             Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
           </a>
         </Button>
