@@ -90,7 +90,7 @@ const PreparationPathSection = () => {
               Based on your selection, we recommend watching the Free Masterclass.
             </p>
             <Button size="sm" asChild className="shrink-0">
-              <a href="#masterclass">
+              <a href="/masterclass">
                 Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
               </a>
             </Button>

@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import FeaturedStrip from "@/components/FeaturedStrip";
 import PreparationPathSection from "@/components/PreparationPathSection";
 import TrustStrip from "@/components/TrustStrip";
 import ResultsSection from "@/components/ResultsSection";
@@ -21,6 +22,7 @@ const Index = () => (
     <Navbar />
     <main>
       <HeroSection />
+      <FeaturedStrip />
       <PreparationPathSection />
       <TrustStrip />
       <ResultsSection />

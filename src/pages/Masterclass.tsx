@@ -14,6 +14,14 @@ const bullets = [
   "How to choose the right CAT coaching",
 ];
 
+const featuredLogos = [
+  { name: "Deccan Herald", initials: "DH" },
+  { name: "Hindustan Times", initials: "HT" },
+  { name: "Dailyhunt", initials: "DH" },
+  { name: "Zee News", initials: "ZN" },
+  { name: "Impact Startup", initials: "IS" },
+];
+
 const Masterclass = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
@@ -36,7 +44,6 @@ const Masterclass = () => {
     setError("");
 
     try {
-      // Check if phone exists
       const { data: existing } = await supabase
         .from("leads")
         .select("phone_number")
@@ -71,55 +78,100 @@ const Masterclass = () => {
         </div>
       </header>
 
-      <main className="py-16 md:py-24">
-        <div className="container mx-auto px-4 md:px-6 max-w-3xl">
-          <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-foreground mb-6">
-              Most CAT Aspirants Don't Fail Because They're Weak.{" "}
-              <span className="text-primary">They Fail Because They Start Wrong.</span>
-            </h1>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              In this free Masterclass, discover the structured roadmap that has helped students cross 95+ percentile.
-            </p>
-          </div>
+      {/* Authority Strip */}
+      <div className="border-b border-border py-3">
+        <p className="text-center text-xs md:text-sm text-muted-foreground tracking-wide">
+          7x 100%iler Mentor &nbsp;·&nbsp; 10,000+ Students Guided &nbsp;·&nbsp; 95%ile Guarantee Batch
+        </p>
+      </div>
 
-          <ul className="space-y-4 mb-12 max-w-xl mx-auto">
-            {bullets.map((b) => (
-              <li key={b} className="flex items-start gap-3">
-                <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                <span className="text-foreground">{b}</span>
-              </li>
-            ))}
-          </ul>
+      {/* As Featured In */}
+      <div className="py-8 md:py-10 border-b border-border">
+        <p className="text-center text-[11px] font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-6">
+          As Featured In
+        </p>
+        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 px-4">
+          {featuredLogos.map((logo) => (
+            <div
+              key={logo.name}
+              className="h-8 flex items-center opacity-60 grayscale"
+            >
+              <span className="text-sm font-semibold tracking-wide text-muted-foreground select-none">
+                {logo.name}
+              </span>
+            </div>
+          ))}
+        </div>
+        <p className="text-center text-xs text-muted-foreground mt-5 opacity-70">
+          Recognized by leading national publications.
+        </p>
+      </div>
 
-          <div className="max-w-md mx-auto">
-            <div className="rounded-2xl border border-border bg-card p-8 shadow-sm">
-              <h2 className="text-xl font-bold text-foreground mb-6 text-center">
-                Register for Free Masterclass
-              </h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <Input
-                    placeholder="Your Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <Input
-                    placeholder="Phone Number (10 digits)"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                    type="tel"
-                  />
-                </div>
-                {error && <p className="text-sm text-destructive">{error}</p>}
-                <Button type="submit" size="lg" className="w-full" disabled={loading}>
-                  {loading ? "Registering..." : (
-                    <>Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" /></>
-                  )}
-                </Button>
-              </form>
+      <main className="py-12 md:py-20">
+        <div className="container mx-auto px-4 md:px-6 max-w-5xl">
+          {/* Split-screen layout */}
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+            {/* Left — Content */}
+            <div className="space-y-8">
+              <div className="space-y-5">
+                <h1 className="text-3xl md:text-4xl lg:text-[2.65rem] font-bold leading-tight tracking-tight text-foreground">
+                  Most CAT Aspirants Don't Fail Because They're Weak.{" "}
+                  <span className="text-primary">They Fail Because They Start Wrong.</span>
+                </h1>
+                <p className="text-base md:text-lg text-muted-foreground">
+                  In this free Masterclass, discover the structured roadmap that has helped students cross 95+ percentile.
+                </p>
+              </div>
+
+              <ul className="space-y-4">
+                {bullets.map((b) => (
+                  <li key={b} className="flex items-start gap-3">
+                    <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+                    <span className="text-foreground text-sm md:text-base">{b}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Right — Registration Card */}
+            <div className="md:sticky md:top-24">
+              <div className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-sm">
+                <h2 className="text-xl font-bold text-foreground mb-1 text-center">
+                  Reserve Your Seat
+                </h2>
+                <p className="text-sm text-muted-foreground text-center mb-6">
+                  Limited structured mentoring batch
+                </p>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <Input
+                      placeholder="Your Name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      placeholder="Phone Number (10 digits)"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                      type="tel"
+                    />
+                  </div>
+                  {error && <p className="text-sm text-destructive">{error}</p>}
+                  <Button type="submit" size="lg" className="w-full" disabled={loading}>
+                    {loading ? "Registering..." : (
+                      <>Register for Free Masterclass <ArrowRight className="ml-1 h-4 w-4" /></>
+                    )}
+                  </Button>
+                </form>
+                <p className="text-xs text-muted-foreground text-center mt-4">
+                  Next structured batch closes soon.
+                </p>
+                <p className="text-xs text-muted-foreground text-center mt-2 opacity-70">
+                  2,000+ CAT aspirants registered in last cycle
+                </p>
+              </div>
             </div>
           </div>
         </div>
