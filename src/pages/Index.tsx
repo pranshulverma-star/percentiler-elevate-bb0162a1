@@ -1,14 +1,37 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navbar from "@/components/Navbar";
+import HeroSection from "@/components/HeroSection";
+import TrustStrip from "@/components/TrustStrip";
+import ResultsSection from "@/components/ResultsSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import WebinarSection from "@/components/WebinarSection";
+import CoursesSection from "@/components/CoursesSection";
+import FreeToolsSection from "@/components/FreeToolsSection";
+import FacultySection from "@/components/FacultySection";
+import FounderSection from "@/components/FounderSection";
+import FAQSection from "@/components/FAQSection";
+import FinalCTASection from "@/components/FinalCTASection";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import Footer from "@/components/Footer";
 
-const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
-};
+const Index = () => (
+  <>
+    <Navbar />
+    <main>
+      <HeroSection />
+      <TrustStrip />
+      <ResultsSection />
+      <TestimonialsSection />
+      <WebinarSection />
+      <CoursesSection />
+      <FreeToolsSection />
+      <FacultySection />
+      <FounderSection />
+      <FAQSection />
+      <FinalCTASection />
+    </main>
+    <Footer />
+    <WhatsAppButton />
+  </>
+);
 
 export default Index;
