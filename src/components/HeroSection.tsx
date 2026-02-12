@@ -22,7 +22,7 @@ const HeroSection = () => (
         </p>
         <div className="flex flex-wrap gap-4 pt-2">
           <Button size="lg" asChild>
-            <a href="#masterclass">
+            <a href="/masterclass">
               Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
             </a>
           </Button>

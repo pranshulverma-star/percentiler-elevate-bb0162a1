@@ -18,18 +18,21 @@ export type Database = {
         Row: {
           created_at: string
           id: string
+          name: string | null
           phone_number: string
           source: string | null
         }
         Insert: {
           created_at?: string
           id?: string
+          name?: string | null
           phone_number: string
           source?: string | null
         }
         Update: {
           created_at?: string
           id?: string
+          name?: string | null
           phone_number?: string
           source?: string | null
         }
@@ -122,6 +125,30 @@ export type Database = {
           phone?: string
           recommendation?: string | null
           target_percentile?: string
+        }
+        Relationships: []
+      }
+      webinar_engagement: {
+        Row: {
+          completed: boolean | null
+          id: string
+          phone_number: string
+          updated_at: string | null
+          watch_percentage: number | null
+        }
+        Insert: {
+          completed?: boolean | null
+          id?: string
+          phone_number: string
+          updated_at?: string | null
+          watch_percentage?: number | null
+        }
+        Update: {
+          completed?: boolean | null
+          id?: string
+          phone_number?: string
+          updated_at?: string | null
+          watch_percentage?: number | null
         }
         Relationships: []
       }

@@ -11,7 +11,7 @@ const ScrollCTAPanel = () => {
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      const anchor = target.closest("a[href='#masterclass'], a[href='#tools']");
+      const anchor = target.closest("a[href='/masterclass'], a[href='#tools']");
       if (anchor) setHasClickedCTA(true);
     };
     document.addEventListener("click", handler, true);
@@ -51,7 +51,7 @@ const ScrollCTAPanel = () => {
           <a href="#tools">Generate Free Study Plan</a>
         </Button>
         <Button size="sm" variant="outline" asChild onClick={dismiss}>
-          <a href="#masterclass">
+          <a href="/masterclass">
             Watch Free Masterclass <ArrowRight className="ml-1 h-3.5 w-3.5" />
           </a>
         </Button>
