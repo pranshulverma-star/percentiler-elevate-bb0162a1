@@ -14,39 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      readiness_quiz: {
-        Row: {
-          attempted_before: string
-          created_at: string
-          hours_per_day: string
-          id: string
-          mock_percentile: string
-          phone: string
-          recommendation: string | null
-          target_percentile: string
-        }
-        Insert: {
-          attempted_before: string
-          created_at?: string
-          hours_per_day: string
-          id?: string
-          mock_percentile: string
-          phone: string
-          recommendation?: string | null
-          target_percentile: string
-        }
-        Update: {
-          attempted_before?: string
-          created_at?: string
-          hours_per_day?: string
-          id?: string
-          mock_percentile?: string
-          phone?: string
-          recommendation?: string | null
-          target_percentile?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
