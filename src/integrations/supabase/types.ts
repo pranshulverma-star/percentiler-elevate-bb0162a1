@@ -14,6 +14,84 @@ export type Database = {
   }
   public: {
     Tables: {
+      leads: {
+        Row: {
+          created_at: string
+          id: string
+          phone_number: string
+          source: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          phone_number: string
+          source?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          phone_number?: string
+          source?: string | null
+        }
+        Relationships: []
+      }
+      profile_percentile_planner: {
+        Row: {
+          certifications: number | null
+          competition_level: string | null
+          created_at: string
+          gap_years: number | null
+          grad_score: number | null
+          grad_stream: string | null
+          id: string
+          internships: number | null
+          phone_number: string
+          profile_score: number | null
+          target_top10: number | null
+          target_top20: number | null
+          target_top30: number | null
+          tenth_score: number | null
+          twelfth_score: number | null
+          workex_months: number | null
+        }
+        Insert: {
+          certifications?: number | null
+          competition_level?: string | null
+          created_at?: string
+          gap_years?: number | null
+          grad_score?: number | null
+          grad_stream?: string | null
+          id?: string
+          internships?: number | null
+          phone_number: string
+          profile_score?: number | null
+          target_top10?: number | null
+          target_top20?: number | null
+          target_top30?: number | null
+          tenth_score?: number | null
+          twelfth_score?: number | null
+          workex_months?: number | null
+        }
+        Update: {
+          certifications?: number | null
+          competition_level?: string | null
+          created_at?: string
+          gap_years?: number | null
+          grad_score?: number | null
+          grad_stream?: string | null
+          id?: string
+          internships?: number | null
+          phone_number?: string
+          profile_score?: number | null
+          target_top10?: number | null
+          target_top20?: number | null
+          target_top30?: number | null
+          tenth_score?: number | null
+          twelfth_score?: number | null
+          workex_months?: number | null
+        }
+        Relationships: []
+      }
       readiness_quiz: {
         Row: {
           attempted_before: string
