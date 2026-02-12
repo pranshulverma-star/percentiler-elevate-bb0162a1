@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, CheckCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import mentorPhoto from "@/assets/mentor-pranshul.jpg";
 
 const bullets = [
   "When to start CAT prep for maximum advantage",
@@ -107,22 +108,59 @@ const Masterclass = () => {
         </p>
       </div>
 
+      {/* Hero — Mentor-led */}
       <main className="py-12 md:py-20">
         <div className="container mx-auto px-4 md:px-6 max-w-5xl">
-          {/* Split-screen layout */}
-          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
-            {/* Left — Content */}
-            <div className="space-y-8">
-              <div className="space-y-5">
-                <h1 className="text-3xl md:text-4xl lg:text-[2.65rem] font-bold leading-tight tracking-tight text-foreground">
-                  Most CAT Aspirants Don't Fail Because They're Weak.{" "}
-                  <span className="text-primary">They Fail Because They Start Wrong.</span>
-                </h1>
-                <p className="text-base md:text-lg text-muted-foreground">
-                  In this free Masterclass, discover the structured roadmap that has helped students cross 95+ percentile.
+
+          {/* Mentor Hero Block */}
+          <div className="grid md:grid-cols-[1fr_auto] gap-10 md:gap-14 items-center mb-16 md:mb-20">
+            {/* Mobile: photo first */}
+            <div className="md:hidden flex justify-center">
+              <div className="relative">
+                <img
+                  src={mentorPhoto}
+                  alt="Pranshul Verma — 7x CAT 100%iler"
+                  className="w-56 h-auto rounded-2xl shadow-[0_8px_30px_-8px_rgba(0,0,0,0.25)]"
+                />
+              </div>
+            </div>
+
+            {/* Left — Headline + personal intro */}
+            <div className="space-y-6">
+              <h1 className="text-3xl md:text-4xl lg:text-[2.65rem] font-bold leading-tight tracking-tight text-foreground">
+                Most CAT Aspirants Don't Fail Because They're Weak.{" "}
+                <span className="text-primary">They Fail Because They Start Wrong.</span>
+              </h1>
+
+              <div className="border-l-2 border-primary pl-5 space-y-3">
+                <p className="text-base md:text-lg text-foreground leading-relaxed">
+                  Hi, I'm <strong>Pranshul Verma</strong> — 7x 100%iler in CAT and mentor to 10,000+ aspirants.
+                </p>
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                  In this masterclass, I'll show you the structured roadmap that separates serious aspirants from average ones.
                 </p>
               </div>
+            </div>
 
+            {/* Right — Photo (desktop) */}
+            <div className="hidden md:block">
+              <div className="relative">
+                <img
+                  src={mentorPhoto}
+                  alt="Pranshul Verma — 7x CAT 100%iler"
+                  className="w-64 lg:w-72 h-auto rounded-2xl shadow-[0_8px_30px_-8px_rgba(0,0,0,0.25)]"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* What You'll Learn + Registration */}
+          <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+            {/* Left — Bullets */}
+            <div className="space-y-6">
+              <h2 className="text-lg font-bold text-foreground tracking-tight">
+                What You'll Learn
+              </h2>
               <ul className="space-y-4">
                 {bullets.map((b) => (
                   <li key={b} className="flex items-start gap-3">
