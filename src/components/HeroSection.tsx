@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, TrendingUp } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, TrendingUp, GraduationCap } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const scorecards = [
-  { name: "Ananya S.", percentile: "99.4", college: "IIM Ahmedabad" },
-  { name: "Rohan M.", percentile: "98.7", college: "IIM Bangalore" },
-  { name: "Priya K.", percentile: "97.9", college: "IIM Calcutta" },
-  { name: "Vikram D.", percentile: "96.5", college: "FMS Delhi" },
+  { name: "Ananya S.", percentile: "99.4", college: "IIM Ahmedabad", initials: "AS", photo: "https://i.pravatar.cc/150?img=47" },
+  { name: "Rohan M.", percentile: "98.7", college: "IIM Bangalore", initials: "RM", photo: "https://i.pravatar.cc/150?img=68" },
+  { name: "Priya K.", percentile: "97.9", college: "IIM Calcutta", initials: "PK", photo: "https://i.pravatar.cc/150?img=45" },
+  { name: "Vikram D.", percentile: "96.5", college: "FMS Delhi", initials: "VD", photo: "https://i.pravatar.cc/150?img=60" },
 ];
 
 const AnimatedNumber = ({ target }: { target: string }) => {
@@ -92,15 +93,43 @@ const HeroSection = () => (
         initial="hidden"
         animate="show"
       >
-        {scorecards.map((s) => (
-          <motion.div key={s.name} variants={item}>
-            <Card className="p-5 space-y-1 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 cursor-default group">
-              <p className="text-3xl font-bold text-primary group-hover:scale-105 transition-transform origin-left">
-                <AnimatedNumber target={s.percentile} />
-              </p>
-              <p className="text-xs text-muted-foreground">Percentile</p>
-              <p className="font-semibold text-sm text-foreground pt-2">{s.name}</p>
-              <p className="text-xs text-muted-foreground">{s.college}</p>
+        {scorecards.map((s, i) => (
+          <motion.div
+            key={s.name}
+            variants={item}
+            whileHover={{ y: -6, scale: 1.03 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+          >
+            <Card className="p-5 space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-default group relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full" />
+              <div className="flex items-center gap-3">
+                <Avatar className="h-11 w-11 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all">
+                  <AvatarImage src={s.photo} alt={s.name} />
+                  <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{s.initials}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-semibold text-sm text-foreground">{s.name}</p>
+                  <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <GraduationCap className="h-3 w-3" />
+                    {s.college}
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-baseline gap-1.5">
+                <p className="text-3xl font-bold text-primary group-hover:scale-105 transition-transform origin-left">
+                  <AnimatedNumber target={s.percentile} />
+                </p>
+                <span className="text-xs font-medium text-muted-foreground">%ile</span>
+              </div>
+              <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
+                <motion.div
+                  className="h-full bg-primary rounded-full"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: `${parseFloat(s.percentile)}%` }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1.2, delay: i * 0.15, ease: "easeOut" }}
+                />
+              </div>
             </Card>
           </motion.div>
         ))}
