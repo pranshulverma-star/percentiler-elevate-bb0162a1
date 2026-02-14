@@ -24,11 +24,11 @@ const socialProofStats = [
 ];
 
 const featuredLogos = [
-  "Deccan Herald",
-  "Hindustan Times",
-  "Dailyhunt",
-  "Zee News",
-  "Impact Startup",
+  { name: "Hindustan Times", style: "font-serif font-bold tracking-tight" },
+  { name: "Zee News", style: "font-sans font-black uppercase tracking-widest" },
+  { name: "Deccan Herald", style: "font-serif font-semibold italic tracking-wide" },
+  { name: "Dailyhunt", style: "font-sans font-extrabold tracking-tight" },
+  { name: "Times of India", style: "font-serif font-bold tracking-normal" },
 ];
 
 const testimonialSnippets = [
@@ -163,12 +163,12 @@ const Masterclass = () => {
           As Featured In
         </p>
         <div className="flex flex-wrap justify-center items-center gap-6 md:gap-10 px-4">
-          {featuredLogos.map((name) => (
+          {featuredLogos.map((logo) => (
             <span
-              key={name}
-              className="text-xs font-semibold tracking-wide text-muted-foreground opacity-50 select-none"
+              key={logo.name}
+              className={`text-xs text-muted-foreground opacity-50 select-none ${logo.style}`}
             >
-              {name}
+              {logo.name}
             </span>
           ))}
         </div>
