@@ -1,4 +1,5 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { motion } from "framer-motion";
 
 const faqs = [
   { q: "Who is this coaching best suited for?", a: "Our programs are designed for serious CAT aspirants — whether you're a first-time taker or a re-taker looking for a structured, result-oriented approach." },
@@ -10,17 +11,38 @@ const faqs = [
 ];
 
 const FAQSection = () => (
-  <section className="py-20 bg-background">
-    <div className="container mx-auto px-4 md:px-6 max-w-3xl">
-      <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-12">
-        Frequently Asked Questions
-      </h2>
+  <section className="py-20 md:py-28 bg-background relative overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute bottom-0 left-1/4 w-[500px] h-[300px] rounded-full bg-primary/[0.02] blur-3xl" />
+    </div>
+
+    <div className="container mx-auto px-4 md:px-6 max-w-3xl relative z-10">
+      <motion.div
+        className="text-center mb-14 space-y-3"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">FAQ</span>
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+          Frequently Asked <span className="text-primary">Questions</span>
+        </h2>
+      </motion.div>
+
       <Accordion type="single" collapsible className="w-full">
         {faqs.map((f, i) => (
-          <AccordionItem key={i} value={`faq-${i}`}>
-            <AccordionTrigger className="text-left text-foreground">{f.q}</AccordionTrigger>
-            <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
-          </AccordionItem>
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.05 }}
+          >
+            <AccordionItem value={`faq-${i}`} className="border-b border-border/50">
+              <AccordionTrigger className="text-left text-foreground hover:text-primary transition-colors py-5">{f.q}</AccordionTrigger>
+              <AccordionContent className="text-muted-foreground leading-relaxed pb-5">{f.a}</AccordionContent>
+            </AccordionItem>
+          </motion.div>
         ))}
       </Accordion>
     </div>
