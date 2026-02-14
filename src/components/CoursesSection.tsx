@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { Zap, BarChart3, Users, ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const courses = [
   {
@@ -76,9 +77,9 @@ const CoursesSection = () => (
                   </ul>
                 </div>
                 <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
-                  <a href="#">
+                  <Link to={i === 0 ? "/courses/cat-omet" : "#"}>
                     Explore Program <ArrowRight className="ml-1 h-3.5 w-3.5" />
-                  </a>
+                  </Link>
                 </Button>
               </Card>
             </motion.div>
