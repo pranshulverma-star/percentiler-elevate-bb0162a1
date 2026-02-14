@@ -40,13 +40,13 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const { toast } = useToast();
 
   const openModal = (src: string, onSuccess?: () => void) => {
-    const storedPhone = localStorage.getItem("percentilers_phone");
-    if (storedPhone) {
-      onSuccess?.();
-      return;
-    }
     setSource(src);
     setOnSuccessCb(() => onSuccess || null);
+    // Pre-fill with stored values if available
+    const storedPhone = localStorage.getItem("percentilers_phone") || "";
+    const storedName = localStorage.getItem("percentilers_name") || "";
+    setPhone(storedPhone);
+    setName(storedName);
     setOpen(true);
   };
 
