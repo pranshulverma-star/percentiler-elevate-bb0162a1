@@ -1,38 +1,49 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Zap, Clock, BarChart3 } from "lucide-react";
+import { Zap, BarChart3, Users, ArrowRight } from "lucide-react";
 
 const courses = [
   {
     name: "CAT + OMET Complete Course",
     icon: Zap,
+    tag: "Most Popular",
     highlights: ["Full syllabus coverage for CAT, XAT, SNAP & more", "200+ hours of structured video lessons", "Weekly mock tests with detailed analysis"],
   },
   {
     name: "Test Series",
     icon: BarChart3,
+    tag: "Best for Practice",
     highlights: ["30 full-length mocks (latest pattern)", "Sectional tests for targeted practice", "Percentile predictor + analytics dashboard"],
   },
   {
     name: "Mentorship Program",
-    icon: Clock,
+    icon: Users,
+    tag: "1-on-1",
     highlights: ["1-on-1 mentor sessions with 99%ilers", "Personalized study plan & strategy", "Weekly progress reviews & accountability"],
   },
 ];
 
 const CoursesSection = () => (
-  <section id="courses" className="py-20 bg-background">
-    <div className="container mx-auto px-4 md:px-6">
-      <motion.h2
-        className="text-3xl md:text-4xl font-bold text-center text-foreground mb-12"
+  <section id="courses" className="py-20 md:py-28 bg-background relative overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-primary/[0.02] blur-3xl" />
+    </div>
+
+    <div className="container mx-auto px-4 md:px-6 relative z-10">
+      <motion.div
+        className="text-center mb-14 space-y-3"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
       >
-        Our Programs
-      </motion.h2>
-      <div className="grid md:grid-cols-3 gap-6">
+        <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Programs</span>
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+          Our <span className="text-primary">Programs</span>
+        </h2>
+      </motion.div>
+
+      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
         {courses.map((c, i) => {
           const Icon = c.icon;
           return (
@@ -42,23 +53,32 @@ const CoursesSection = () => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: i * 0.15 }}
+              whileHover={{ y: -8 }}
             >
-              <Card className="p-6 flex flex-col justify-between h-full hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+              <Card className="p-6 flex flex-col justify-between h-full hover:shadow-xl transition-all duration-300 group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div>
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                    <Icon className="h-6 w-6" />
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                      <Icon className="h-6 w-6" />
+                    </div>
+                    <span className="text-[10px] font-bold tracking-wider uppercase bg-primary/10 text-primary px-3 py-1 rounded-full">
+                      {c.tag}
+                    </span>
                   </div>
                   <h3 className="text-xl font-bold text-foreground mb-4">{c.name}</h3>
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-2.5 mb-6">
                     {c.highlights.map((h) => (
                       <li key={h} className="text-sm text-muted-foreground flex items-start gap-2">
-                        <span className="text-primary font-bold">•</span> {h}
+                        <span className="text-primary font-bold mt-0.5">•</span> {h}
                       </li>
                     ))}
                   </ul>
                 </div>
                 <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
-                  <a href="#">Explore Program</a>
+                  <a href="#">
+                    Explore Program <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                  </a>
                 </Button>
               </Card>
             </motion.div>

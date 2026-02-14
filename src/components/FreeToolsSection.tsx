@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, GraduationCap, ClipboardCheck } from "lucide-react";
+import { CalendarDays, GraduationCap, ClipboardCheck, ArrowRight } from "lucide-react";
+import { motion } from "framer-motion";
 import { useLeadModal } from "@/components/LeadModalProvider";
 
 const tools = [
@@ -13,27 +14,52 @@ const FreeToolsSection = () => {
   const { openModal } = useLeadModal();
 
   return (
-    <section id="tools" className="py-20 bg-secondary">
+    <section id="tools" className="py-20 md:py-24 bg-secondary/50">
       <div className="container mx-auto px-4 md:px-6">
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-foreground mb-12">
-          Extra Support for Serious Aspirants
-        </h2>
-        <div className="grid md:grid-cols-3 gap-6">
-          {tools.map((t) => (
-            <Card key={t.name} className="p-6 text-center">
-              <t.icon className="h-8 w-8 mx-auto text-primary mb-4" />
-              <h3 className="font-bold text-foreground mb-2">{t.name}</h3>
-              <p className="text-sm text-muted-foreground mb-4">{t.benefit}</p>
-              {t.isLink ? (
-                <Button variant="outline" size="sm" asChild>
-                  <a href={t.href}>Use Free Tool</a>
-                </Button>
-              ) : (
-                <Button variant="default" size="sm" onClick={() => openModal("foundation_course_enroll")}>
-                  Enroll Free
-                </Button>
-              )}
-            </Card>
+        <motion.div
+          className="text-center mb-14 space-y-3"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Free Resources</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+            Extra Support for <span className="text-primary">Serious Aspirants</span>
+          </h2>
+        </motion.div>
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {tools.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: i * 0.12 }}
+              whileHover={{ y: -6 }}
+            >
+              <Card className="p-6 text-center h-full flex flex-col justify-between hover:shadow-lg transition-all duration-300 group relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div>
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                    <t.icon className="h-6 w-6" />
+                  </div>
+                  <h3 className="font-bold text-foreground mb-2">{t.name}</h3>
+                  <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{t.benefit}</p>
+                </div>
+                {t.isLink ? (
+                  <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
+                    <a href={t.href}>
+                      Use Free Tool <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                    </a>
+                  </Button>
+                ) : (
+                  <Button variant="default" size="sm" onClick={() => openModal("foundation_course_enroll")}>
+                    Enroll Free
+                  </Button>
+                )}
+              </Card>
+            </motion.div>
           ))}
         </div>
       </div>
