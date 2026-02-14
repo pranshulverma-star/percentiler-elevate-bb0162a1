@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LeadModalProvider } from "@/components/LeadModalProvider";
 import Index from "./pages/Index";
 import Masterclass from "./pages/Masterclass";
+import MentorshipPage from "./pages/Mentorship";
 import MasterclassWatch from "./pages/MasterclassWatch";
 import CATReadinessAssessment from "./pages/CATReadinessAssessment";
 import CATDailyStudyPlanner from "./pages/CATDailyStudyPlanner";
@@ -25,6 +26,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/masterclass" element={<Masterclass />} />
+            <Route path="/mentorship" element={<MentorshipPage />} />
             <Route path="/masterclass/watch" element={<MasterclassWatch />} />
             <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
             <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />

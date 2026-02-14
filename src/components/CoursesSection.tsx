@@ -77,7 +77,7 @@ const CoursesSection = () => (
                   </ul>
                 </div>
                 <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
-                  <Link to={i === 0 ? "/courses/cat-omet" : i === 1 ? "/test-series" : "#"}>
+                  <Link to={i === 0 ? "/courses/cat-omet" : i === 1 ? "/test-series" : "/mentorship"}>
                     Explore Program <ArrowRight className="ml-1 h-3.5 w-3.5" />
                   </Link>
                 </Button>
