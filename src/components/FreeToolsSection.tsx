@@ -1,17 +1,7 @@
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { CalendarDays, GraduationCap, ClipboardCheck } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useLeadModal } from "@/components/LeadModalProvider";
 
 const tools = [
   { icon: CalendarDays, name: "Daily Study Planner", benefit: "Get a day-wise structured preparation roadmap tailored to your target CAT year.", href: "/cat-daily-study-planner", isLink: true },
@@ -20,35 +10,7 @@ const tools = [
 ];
 
 const FreeToolsSection = () => {
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const { toast } = useToast();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!/^\d{10}$/.test(phone)) {
-      toast({ title: "Invalid phone number", description: "Please enter a valid 10-digit phone number.", variant: "destructive" });
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const { error } = await supabase.from("leads").upsert(
-        { phone_number: phone, name, source: "strategy_call" },
-        { onConflict: "phone_number" }
-      );
-      if (error) throw error;
-      toast({ title: "Request received!", description: "Our team will reach out to you shortly." });
-      setOpen(false);
-      setName("");
-      setPhone("");
-    } catch {
-      toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  const { openModal } = useLeadModal();
 
   return (
     <section id="tools" className="py-20 bg-secondary">
@@ -67,7 +29,7 @@ const FreeToolsSection = () => {
                   <a href={t.href}>Use Free Tool</a>
                 </Button>
               ) : (
-                <Button variant="default" size="sm" onClick={() => setOpen(true)}>
+                <Button variant="default" size="sm" onClick={() => openModal("foundation_course_enroll")}>
                   Enroll Free
                 </Button>
               )}
@@ -75,22 +37,6 @@ const FreeToolsSection = () => {
           ))}
         </div>
       </div>
-
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Book Free Strategy Call</DialogTitle>
-            <DialogDescription>Our mentor will call you to discuss your personalized CAT preparation plan.</DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4 mt-2">
-            <Input placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required />
-            <Input placeholder="Phone Number (10 digits)" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} required />
-            <Button type="submit" className="w-full" disabled={submitting}>
-              {submitting ? "Submitting…" : "Request Callback"}
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { useLeadModal } from "@/components/LeadModalProvider";
 
 const navLinks = [
   { label: "Home", href: "#" },
@@ -12,6 +13,11 @@ const navLinks = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const { openModal } = useLeadModal();
+
+  const handleStrategyCall = () => {
+    openModal("navbar_strategy_call");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b border-border">
@@ -19,45 +25,26 @@ const Navbar = () => {
         <a href="#" className="text-xl font-bold tracking-tight text-foreground">
           Percentilers
         </a>
-
-        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
           {navLinks.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
+            <a key={l.label} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
               {l.label}
             </a>
           ))}
-          <Button asChild>
-            <a href="#tools" onClick={() => { const el = document.getElementById('tools'); el?.scrollIntoView({ behavior: 'smooth' }); }}>Book Free Strategy Call</a>
-          </Button>
+          <Button onClick={handleStrategyCall}>Book Free Strategy Call</Button>
         </nav>
-
-        {/* Mobile toggle */}
         <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
-
-      {/* Mobile menu */}
       {open && (
         <nav className="md:hidden border-t border-border bg-background px-4 pb-4 space-y-3">
           {navLinks.map((l) => (
-            <a
-              key={l.label}
-              href={l.href}
-              className="block text-sm font-medium text-muted-foreground py-2"
-              onClick={() => setOpen(false)}
-            >
+            <a key={l.label} href={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
               {l.label}
             </a>
           ))}
-          <Button className="w-full" asChild>
-            <a href="#tools" onClick={() => { setOpen(false); setTimeout(() => document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' }), 100); }}>Book Free Strategy Call</a>
-          </Button>
+          <Button className="w-full" onClick={() => { setOpen(false); handleStrategyCall(); }}>Book Free Strategy Call</Button>
         </nav>
       )}
     </header>
