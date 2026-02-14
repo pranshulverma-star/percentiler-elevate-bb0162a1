@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const navLinks = [
   { label: "Home", href: "#" },
@@ -32,6 +33,7 @@ const Navbar = () => {
             </a>
           ))}
           <Button onClick={handleStrategyCall}>Book Free Strategy Call</Button>
+          <ThemeToggle />
         </nav>
         <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
@@ -45,6 +47,7 @@ const Navbar = () => {
             </a>
           ))}
           <Button className="w-full" onClick={() => { setOpen(false); handleStrategyCall(); }}>Book Free Strategy Call</Button>
+          <div className="flex justify-center pt-1"><ThemeToggle /></div>
         </nav>
       )}
     </header>
