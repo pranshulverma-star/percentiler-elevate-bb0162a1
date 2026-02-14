@@ -15,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const tools = [
   { icon: CalendarDays, name: "Daily Study Planner", benefit: "Get a day-wise structured preparation roadmap tailored to your target CAT year.", href: "/cat-daily-study-planner", isLink: true },
-  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Start building your foundation — a free foundation course for CAT preparation.", href: "#", isLink: false },
+  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Enroll for free in our foundation course and start your CAT preparation journey.", href: "#", isLink: false },
   { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Get a structured performance report in 15 minutes — completely free.", href: "/free-cat-readiness-assessment", isLink: true },
 ];
 
@@ -68,7 +68,7 @@ const FreeToolsSection = () => {
                 </Button>
               ) : (
                 <Button variant="default" size="sm" onClick={() => setOpen(true)}>
-                  Book Now
+                  Enroll Free
                 </Button>
               )}
             </Card>
