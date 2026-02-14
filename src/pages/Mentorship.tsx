@@ -1,0 +1,517 @@
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import mentorImg from "@/assets/mentor-pranshul.jpg";
+import testimonials1 from "@/assets/mentorship-testimonials-1.jpeg";
+import testimonials2 from "@/assets/mentorship-testimonials-2.jpeg";
+import {
+  Phone, Video, FileText, Repeat, Calendar,
+  ArrowRight, Sparkles, Star, CheckCircle2,
+  Users, Trophy, Zap, MessageCircle,
+  ChevronDown, ChevronUp, Target, Brain, Flame,
+} from "lucide-react";
+
+const PAYMENT_URL = "https://rzp.io/rzp/LtnGmikQ";
+
+const mentorshipTiers = [
+  {
+    id: "nudge",
+    name: "Nudge",
+    duration: "15-min Call",
+    price: 99,
+    icon: Phone,
+    gradient: "from-green-500/15 to-green-500/5",
+    borderColor: "border-green-200 hover:border-green-400",
+    iconColor: "text-green-600",
+    iconBg: "bg-green-100",
+    tag: "Quick Fix",
+    tagColor: "bg-green-500 text-primary-foreground",
+    oneLiner: "Stuck? Get your next 7 days fixed—now.",
+    bestFor: "Pre/post-mock jitters, quick decision, time-crunched.",
+    features: [
+      "Targeted action plan for next 7 days",
+      "One key bottleneck identified & solved",
+      "WhatsApp summary after call",
+    ],
+    xp: 100,
+    badge: "First Step",
+  },
+  {
+    id: "clarity",
+    name: "Clarity",
+    duration: "30-min GMeet",
+    price: 399,
+    icon: Video,
+    gradient: "from-sky-500/15 to-sky-500/5",
+    borderColor: "border-sky-200 hover:border-sky-400",
+    iconColor: "text-sky-600",
+    iconBg: "bg-sky-100",
+    tag: "Popular",
+    tagColor: "bg-primary text-primary-foreground",
+    oneLiner: "Get a complete strategy reset for your weakest area.",
+    bestFor: "Mid-prep confusion, section-specific struggles.",
+    features: [
+      "Deep-dive into one weak section",
+      "Customized 2-week action plan",
+      "Resource recommendations",
+      "WhatsApp follow-up for 3 days",
+    ],
+    xp: 250,
+    badge: "Clear Mind",
+  },
+  {
+    id: "deep-dive",
+    name: "Deep Dive",
+    duration: "60-min GMeet",
+    price: 799,
+    icon: Brain,
+    gradient: "from-violet-500/15 to-violet-500/5",
+    borderColor: "border-violet-200 hover:border-violet-400",
+    iconColor: "text-violet-600",
+    iconBg: "bg-violet-100",
+    tag: "Best Value",
+    tagColor: "bg-violet-500 text-primary-foreground",
+    oneLiner: "Full-spectrum strategy session covering all 3 sections.",
+    bestFor: "Complete strategy overhaul, plateaued scores.",
+    features: [
+      "All 3 sections analyzed in depth",
+      "Mock analysis & score breakdown",
+      "4-week detailed study plan",
+      "Time management strategy",
+      "WhatsApp follow-up for 7 days",
+    ],
+    xp: 500,
+    badge: "Strategist",
+    featured: true,
+  },
+  {
+    id: "deep-dive-docs",
+    name: "Deep Dive + Docs",
+    duration: "60-min GMeet + Templates",
+    price: 1299,
+    icon: FileText,
+    gradient: "from-amber-500/15 to-amber-500/5",
+    borderColor: "border-amber-200 hover:border-amber-400",
+    iconColor: "text-amber-600",
+    iconBg: "bg-amber-100",
+    tag: "Premium",
+    tagColor: "bg-amber-500 text-primary-foreground",
+    oneLiner: "Everything in Deep Dive + written roadmap & templates.",
+    bestFor: "Structured learners who want a documented plan.",
+    features: [
+      "Everything in Deep Dive",
+      "Written 4-week roadmap document",
+      "Mock review template",
+      "Daily tracker spreadsheet",
+      "Resource links & reading lists",
+      "WhatsApp follow-up for 7 days",
+    ],
+    xp: 750,
+    badge: "Planner Pro",
+  },
+  {
+    id: "deep-dive-followup",
+    name: "Deep Dive + 3 Followups",
+    duration: "60-min + 3×15-min Nudges",
+    price: 1499,
+    icon: Repeat,
+    gradient: "from-rose-500/15 to-rose-500/5",
+    borderColor: "border-rose-200 hover:border-rose-400",
+    iconColor: "text-rose-600",
+    iconBg: "bg-rose-100",
+    tag: "High Impact",
+    tagColor: "bg-rose-500 text-primary-foreground",
+    oneLiner: "Deep Dive + accountability with 3 follow-up nudges.",
+    bestFor: "Need ongoing accountability and course correction.",
+    features: [
+      "Everything in Deep Dive",
+      "3 follow-up Nudge calls (15 min each)",
+      "Spaced over 3 weeks for accountability",
+      "Progress tracking & adjustments",
+      "Priority WhatsApp support",
+    ],
+    xp: 1000,
+    badge: "Committed",
+  },
+  {
+    id: "cat-buddy",
+    name: "CAT Buddy",
+    duration: "Monthly Subscription",
+    price: 2999,
+    perMonth: true,
+    icon: Calendar,
+    gradient: "from-primary/15 to-primary/5",
+    borderColor: "border-primary/20 hover:border-primary/50",
+    iconColor: "text-primary",
+    iconBg: "bg-primary/10",
+    tag: "Ultimate",
+    tagColor: "bg-primary text-primary-foreground",
+    oneLiner: "Your personal CAT mentor on speed dial—all month.",
+    bestFor: "Serious aspirants wanting continuous 1-on-1 guidance.",
+    features: [
+      "2 Deep Dive sessions per month",
+      "4 Nudge calls per month",
+      "Unlimited WhatsApp support",
+      "Weekly progress reviews",
+      "Mock analysis after every test",
+      "Profile building guidance",
+      "Priority scheduling",
+    ],
+    xp: 2000,
+    badge: "CAT Warrior",
+    featured: true,
+  },
+];
+
+const stats = [
+  { icon: Users, value: "500+", label: "Sessions Done" },
+  { icon: Trophy, value: "92%", label: "Score Improved" },
+  { icon: Star, value: "4.9", label: "Avg. Rating" },
+  { icon: Target, value: "50+", label: "IIM Converts" },
+];
+
+const Mentorship = () => {
+  const [expandedTier, setExpandedTier] = useState<string | null>("deep-dive");
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+  return (
+    <>
+      <Navbar />
+      <main className="pt-20">
+        {/* Hero */}
+        <section className="relative py-12 md:py-16 overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 left-1/3 w-[500px] h-[500px] rounded-full bg-primary/[0.04] blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-violet-500/[0.03] blur-3xl" />
+          </div>
+
+          <div className="container mx-auto px-4 md:px-6 relative z-10">
+            <motion.div
+              className="text-center max-w-3xl mx-auto space-y-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full">
+                <Sparkles className="h-3.5 w-3.5" />
+                1-on-1 Mentorship
+              </div>
+              <h1 className="text-3xl md:text-5xl font-bold text-foreground leading-tight">
+                Your CAT Success Story{" "}
+                <span className="text-primary relative">
+                  Starts Here
+                  <Sparkles className="absolute -top-4 -right-6 h-5 w-5 text-primary animate-pulse" />
+                </span>
+              </h1>
+              <p className="text-base text-muted-foreground max-w-xl mx-auto">
+                Coach-agnostic. Action-first. Limited seats each week. 
+                Get personalized strategy from 7x CAT 100%ilers.
+              </p>
+            </motion.div>
+
+            {/* Stats */}
+            <motion.div
+              className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              {stats.map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <div key={i} className="flex items-center gap-3 bg-card border border-border rounded-xl p-3 shadow-sm">
+                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                      <Icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-lg font-bold text-foreground leading-none">{s.value}</p>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</p>
+                    </div>
+                  </div>
+                );
+              })}
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Founder Strip */}
+        <section className="py-8 bg-secondary/40 border-y border-border">
+          <div className="container mx-auto px-4 md:px-6">
+            <motion.div
+              className="flex flex-col md:flex-row items-center gap-6 max-w-3xl mx-auto text-center md:text-left"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              <img
+                src={mentorImg}
+                alt="Pranshul Agrawal"
+                className="w-20 h-20 rounded-full object-cover border-4 border-primary/20 shadow-lg shrink-0"
+              />
+              <div className="space-y-1">
+                <div className="flex items-center gap-2 justify-center md:justify-start flex-wrap">
+                  <h3 className="text-lg font-bold text-foreground">Pranshul Agrawal</h3>
+                  <Badge className="bg-primary text-primary-foreground text-[10px]">7x CAT 100%iler</Badge>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  IIM Ahmedabad alumnus · 10,000+ students mentored · Featured in Times of India, Hindustan Times
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Mentorship Tiers */}
+        <section className="py-14 md:py-20 bg-background">
+          <div className="container mx-auto px-4 md:px-6">
+            <motion.div
+              className="text-center mb-12 space-y-3"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Choose Your Level</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                Pick the Mentorship That <span className="text-primary">Fits You</span>
+              </h2>
+              <p className="text-sm text-muted-foreground max-w-lg mx-auto">
+                From a quick 15-min nudge to a full monthly subscription — every tier is designed for results.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {mentorshipTiers.map((tier, i) => {
+                const Icon = tier.icon;
+                const isExpanded = expandedTier === tier.id;
+                const _isHovered = hoveredCard === tier.id;
+
+                return (
+                  <motion.div
+                    key={tier.id}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: i * 0.08 }}
+                    onMouseEnter={() => setHoveredCard(tier.id)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                  >
+                    <Card className={`relative overflow-hidden border-2 ${tier.borderColor} transition-all duration-300 group h-full flex flex-col ${tier.featured ? "ring-2 ring-primary/20" : ""}`}>
+                      {/* Gradient header */}
+                      <div className={`bg-gradient-to-br ${tier.gradient} p-5 pb-10 relative`}>
+                        {tier.featured && (
+                          <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[9px] font-bold px-3 py-1 rounded-bl-lg tracking-wider uppercase">
+                            ⭐ Recommended
+                          </div>
+                        )}
+                        <div className="flex items-start justify-between">
+                          <div className={`w-14 h-14 rounded-2xl ${tier.iconBg} flex items-center justify-center`}>
+                            <Icon className={`h-7 w-7 ${tier.iconColor}`} />
+                          </div>
+                          <Badge className={`${tier.tagColor} text-[10px]`}>{tier.tag}</Badge>
+                        </div>
+                        <h3 className="text-lg font-bold text-foreground mt-3">{tier.name}</h3>
+                        <p className="text-xs text-muted-foreground">{tier.duration}</p>
+                      </div>
+
+                      {/* XP reward bar */}
+                      <div className="relative -mt-5 mx-4">
+                        <div className="bg-card border border-border rounded-xl p-3 shadow-sm flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                              <Zap className="h-4 w-4 text-amber-600" />
+                            </div>
+                            <div>
+                              <p className="text-xs font-bold text-foreground">{tier.xp} XP</p>
+                              <p className="text-[9px] text-muted-foreground">Reward</p>
+                            </div>
+                          </div>
+                          <Badge variant="outline" className="text-[9px] gap-1">
+                            <Trophy className="h-2.5 w-2.5" /> {tier.badge}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      {/* Content */}
+                      <div className="p-5 pt-4 flex-1 flex flex-col">
+                        <p className="text-sm font-medium text-foreground mb-2">"{tier.oneLiner}"</p>
+                        <p className="text-xs text-muted-foreground mb-4">
+                          <span className="font-semibold text-foreground">Best for:</span> {tier.bestFor}
+                        </p>
+
+                        {/* Expandable features */}
+                        <button
+                          onClick={() => setExpandedTier(isExpanded ? null : tier.id)}
+                          className="flex items-center gap-1 text-xs font-semibold text-primary mb-2 hover:underline"
+                        >
+                          What you get {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                        </button>
+
+                        <AnimatePresence>
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <div className="space-y-1.5 mb-4">
+                                {tier.features.map((f, idx) => (
+                                  <motion.div
+                                    key={idx}
+                                    className="flex items-center gap-2 text-xs text-foreground"
+                                    initial={{ x: -5, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    transition={{ delay: idx * 0.04 }}
+                                  >
+                                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                                    {f}
+                                  </motion.div>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+
+                        {/* Price + CTA */}
+                        <div className="flex items-end justify-between mt-auto pt-3 border-t border-border">
+                          <div>
+                            <span className="text-xl font-bold text-foreground">₹{tier.price.toLocaleString()}</span>
+                            {tier.perMonth && <span className="text-xs text-muted-foreground">/month</span>}
+                          </div>
+                          <Button size="sm" className="group/btn" asChild>
+                            <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer">
+                              Book Now
+                              <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-1" />
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="py-14 md:py-20 bg-secondary/30">
+          <div className="container mx-auto px-4 md:px-6">
+            <motion.div
+              className="text-center mb-12 space-y-3"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Success Stories</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                What Students Who Trusted Us <span className="text-primary">Have to Say</span>
+              </h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              {[testimonials1, testimonials2].map((img, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.15 }}
+                  className="rounded-2xl overflow-hidden shadow-lg border border-border"
+                >
+                  <img src={img} alt={`Student testimonials ${i + 1}`} className="w-full h-auto" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* How it works */}
+        <section className="py-14 md:py-20 bg-background">
+          <div className="container mx-auto px-4 md:px-6">
+            <motion.div
+              className="text-center mb-12 space-y-3"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Process</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                How It <span className="text-primary">Works</span>
+              </h2>
+            </motion.div>
+
+            <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+              {[
+                { step: "01", title: "Choose Your Tier", desc: "Pick the mentorship level that fits your needs.", icon: Target },
+                { step: "02", title: "Book & Pay", desc: "Secure your slot — limited seats each week.", icon: Calendar },
+                { step: "03", title: "Get Mentored", desc: "Personalized 1-on-1 session with expert mentor.", icon: MessageCircle },
+                { step: "04", title: "Execute & Win", desc: "Follow the plan, track progress, crack CAT.", icon: Flame },
+              ].map((s, i) => {
+                const Icon = s.icon;
+                return (
+                  <motion.div
+                    key={i}
+                    className="text-center space-y-3"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <div className="w-14 h-14 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center">
+                      <Icon className="h-7 w-7 text-primary" />
+                    </div>
+                    <p className="text-xs font-bold text-primary tracking-wider">{s.step}</p>
+                    <h3 className="text-sm font-bold text-foreground">{s.title}</h3>
+                    <p className="text-xs text-muted-foreground">{s.desc}</p>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Final CTA */}
+        <section className="py-14 md:py-20 bg-primary/5">
+          <div className="container mx-auto px-4 md:px-6 text-center">
+            <motion.div
+              className="max-w-2xl mx-auto space-y-5"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+                Ready to <span className="text-primary">Level Up?</span>
+              </h2>
+              <p className="text-sm text-muted-foreground">
+                Limited slots available each week. Don't wait — your CAT journey deserves expert guidance.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button size="lg" asChild>
+                  <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer">
+                    Book Your Session <ArrowRight className="ml-2 h-4 w-4" />
+                  </a>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <a href="https://wa.me/919911928071?text=Hi%2C%20I%27m%20interested%20in%20mentorship" target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className="mr-2 h-4 w-4" /> Chat on WhatsApp
+                  </a>
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+      <WhatsAppButton />
+    </>
+  );
+};
+
+export default Mentorship;
