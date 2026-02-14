@@ -20,7 +20,7 @@ const courses = [
     id: "guarantee",
     name: "95%ile Guarantee Course",
     tagline: "95 Percentile or Your Money Back!",
-    price: 34999,
+    price: 27999,
     originalPrice: 40000,
     badge: "Most Popular",
     badgeColor: "bg-primary text-primary-foreground",
@@ -304,7 +304,7 @@ const CATOMETCourses = () => {
                       {/* Price row */}
                       <TableRow className="bg-primary/5 font-bold">
                         <TableCell className="font-bold text-foreground">Price</TableCell>
-                        <TableCell className="text-center text-lg font-bold text-primary">₹34,999</TableCell>
+                        <TableCell className="text-center text-lg font-bold text-primary">₹27,999</TableCell>
                         <TableCell className="text-center text-lg font-bold text-foreground">₹24,999</TableCell>
                         <TableCell className="text-center text-lg font-bold text-foreground">₹10,000</TableCell>
                       </TableRow>
