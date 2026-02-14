@@ -281,7 +281,7 @@ const bandColors: Record<string, string> = {
   Advanced: "text-green-600",
 };
 
-const ResultsSection = ({ result }: { result: AssessmentResult }) => {
+const ResultsSection = ({ result, onRetake }: { result: AssessmentResult; onRetake: () => void }) => {
   const navigate = useNavigate();
   const insight = generateInsight(result);
   const stored = getStored();
@@ -395,6 +395,13 @@ const ResultsSection = ({ result }: { result: AssessmentResult }) => {
             </Button>
           </CardContent>
         </Card>
+
+        {/* Retake */}
+        <div className="text-center pt-2">
+          <Button variant="outline" className="rounded-xl" onClick={onRetake}>
+            Retake Assessment
+          </Button>
+        </div>
       </motion.div>
     </section>
   );
@@ -436,7 +443,7 @@ const CATReadinessAssessment = () => {
       {phase === "hero" && <HeroSection onStart={() => setPhase("lead")} />}
       {phase === "lead" && <LeadCapture onSubmit={() => setPhase("test")} />}
       {phase === "test" && <TestInterface onComplete={handleTestComplete} />}
-      {phase === "results" && result && <ResultsSection result={result} />}
+      {phase === "results" && result && <ResultsSection result={result} onRetake={() => { localStorage.removeItem(STORAGE_KEY); setResult(null); setPhase("hero"); }} />}
     </main>
   );
 };
