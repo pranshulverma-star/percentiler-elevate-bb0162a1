@@ -7,8 +7,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import mentorImg from "@/assets/mentor-pranshul.jpg";
-import testimonials1 from "@/assets/mentorship-testimonials-1.jpeg";
-import testimonials2 from "@/assets/mentorship-testimonials-2.jpeg";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Phone, Video, FileText, Repeat, Calendar,
   ArrowRight, Sparkles, Star, CheckCircle2,
@@ -415,17 +414,72 @@ const Mentorship = () => {
               </h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-              {[testimonials1, testimonials2].map((img, i) => (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {[
+                {
+                  name: "Naira Khurana",
+                  college: "IIM C",
+                  initials: "NK",
+                  text: "In the first call, we cut the clutter and fixed a 7-day plan. Two follow-ups later, my accuracy climbed 63%→82% and I averaged 94 %ile across the last 4 mocks. Best part? I finally knew exactly what to do each week.",
+                },
+                {
+                  name: "Aayushi Rana",
+                  college: "XLRI",
+                  initials: "AR",
+                  text: "Pranshul's 60-min Deep Dive + Docs gave me a 4-week roadmap and a mock-review template. The weekly 10-min check-ins kept me honest.",
+                },
+                {
+                  name: "Hardik Patel",
+                  college: "SPJIMS",
+                  initials: "HP",
+                  text: "The 30-min Clarity session was all I needed. I got a simple plan, error-log sheet, and a 'how to review mocks' rubric. Went from 0 to 2 mocks/week, QA rose 42→63 marks in a month, and LRDI stopped feeling like roulette. Zero fluff—just direction.",
+                },
+                {
+                  name: "Ankur Yadav",
+                  college: "IIM B",
+                  initials: "AY",
+                  text: "Buddy plan kept me accountable. Small weekly wins resulted in big confidence. QA rose from 36 to 58 marks in a month with weekly error-log audits.",
+                },
+                {
+                  name: "Vishvajeet",
+                  college: "XLRI",
+                  initials: "VS",
+                  text: "One 30-min call cut my study clutter. I finally knew what to do this week and did it. Booked 2 mocks/week; VARC accuracy jumped 62% → 80% in 14 days.",
+                },
+                {
+                  name: "Shivam",
+                  college: "FMS",
+                  initials: "SH",
+                  text: "Deep Dive + Docs = instant clarity. My mock review went from random to routine. Averaged 93%ile across the last 3 mocks (up from ~82).",
+                },
+              ].map((t, i) => (
                 <motion.div
-                  key={i}
+                  key={t.name}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.15 }}
-                  className="rounded-2xl overflow-hidden shadow-lg border border-border"
+                  transition={{ delay: i * 0.1 }}
+                  whileHover={{ y: -4 }}
                 >
-                  <img src={img} alt={`Student testimonials ${i + 1}`} className="w-full h-auto" />
+                  <Card className="p-5 h-full flex flex-col hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
+                    <div className="flex items-center gap-3 mb-3">
+                      <Avatar className="h-10 w-10 ring-2 ring-primary/20">
+                        <AvatarFallback className="text-xs font-bold bg-primary/10 text-primary">
+                          {t.initials}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="text-sm font-bold text-foreground">{t.name}</p>
+                        <Badge variant="outline" className="text-[9px] px-1.5 py-0">{t.college}</Badge>
+                      </div>
+                    </div>
+                    <div className="flex gap-0.5 mb-2">
+                      {Array.from({ length: 5 }).map((_, j) => (
+                        <Star key={j} className="h-3.5 w-3.5 fill-primary text-primary" />
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground leading-relaxed flex-1">"{t.text}"</p>
+                  </Card>
                 </motion.div>
               ))}
             </div>
