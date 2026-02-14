@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { CalendarDays, PhoneCall, ClipboardCheck } from "lucide-react";
+import { CalendarDays, GraduationCap, ClipboardCheck } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,7 +15,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const tools = [
   { icon: CalendarDays, name: "Daily Study Planner", benefit: "Get a day-wise structured preparation roadmap tailored to your target CAT year.", href: "/cat-daily-study-planner", isLink: true },
-  { icon: PhoneCall, name: "Book Free Strategy Call", benefit: "Talk to our mentors and get a personalized CAT preparation strategy.", href: "#", isLink: false },
+  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Start building your foundation — a free foundation course for CAT preparation.", href: "#", isLink: false },
   { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Get a structured performance report in 15 minutes — completely free.", href: "/free-cat-readiness-assessment", isLink: true },
 ];
 
