@@ -1,31 +1,15 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { ArrowRight, Phone, Rocket, RefreshCw, Target, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "@/hooks/use-toast";
+import { useLeadModal } from "@/components/LeadModalProvider";
 
 type Level = "beginner" | "repeater" | "advanced";
 
-const pills: { id: Level; label: string; icon: typeof Rocket; emoji: string }[] = [
-  { id: "beginner", label: "Starting from scratch", icon: Rocket, emoji: "🌱" },
-  { id: "repeater", label: "Attempted before", icon: RefreshCw, emoji: "🔄" },
-  { id: "advanced", label: "Targeting 95+", icon: Target, emoji: "🎯" },
+const pills: { id: Level; label: string; icon: typeof Rocket }[] = [
+  { id: "beginner", label: "Starting from scratch", icon: Rocket },
+  { id: "repeater", label: "Attempted before", icon: RefreshCw },
+  { id: "advanced", label: "Targeting 95+", icon: Target },
 ];
 
 const recommendations: Record<Level, { headline: string; text: string; tag: string }> = {
@@ -46,86 +30,30 @@ const recommendations: Record<Level, { headline: string; text: string; tag: stri
   },
 };
 
-const currentYear = new Date().getFullYear();
-const targetYears = [currentYear, currentYear + 1, currentYear + 2].map(String);
-
 const PreparationPathSection = () => {
   const [selected, setSelected] = useState<Level | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [ctaSource, setCtaSource] = useState<"masterclass" | "call">("masterclass");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [targetYear, setTargetYear] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const { toast } = useToast();
+  const { openModal } = useLeadModal();
 
   const handleCTA = (source: "masterclass" | "call") => {
-    const storedPhone = localStorage.getItem("percentilers_phone");
-    if (storedPhone) {
-      redirect(source);
-    } else {
-      setCtaSource(source);
-      setModalOpen(true);
-    }
+    const src = source === "masterclass" ? "homepage_selector_masterclass" : "homepage_selector_call";
+    openModal(src, () => {
+      if (source === "masterclass") {
+        window.location.href = "/masterclass";
+      } else {
+        const el = document.getElementById("tools");
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      }
+    });
   };
-
-  const redirect = (source: "masterclass" | "call") => {
-    if (source === "masterclass") {
-      window.location.href = "/masterclass";
-    } else {
-      const el = document.getElementById("tools");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!/^\d{10}$/.test(phone)) {
-      toast({ title: "Invalid phone number", description: "Please enter a valid 10-digit phone number.", variant: "destructive" });
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const source = ctaSource === "masterclass"
-        ? "homepage_selector_masterclass"
-        : "homepage_selector_call";
-      const { error } = await supabase.from("leads").upsert(
-        { phone_number: phone, name, target_year: targetYear || null, prep_level: selected || null, source },
-        { onConflict: "phone_number" }
-      );
-      if (error) throw error;
-      localStorage.setItem("percentilers_phone", phone);
-      localStorage.setItem("percentilers_name", name);
-      setModalOpen(false);
-      setName("");
-      setPhone("");
-      setTargetYear("");
-      redirect(ctaSource);
-    } catch {
-      toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const stepNumber = selected ? pills.findIndex((p) => p.id === selected) + 1 : 0;
 
   return (
     <section className="py-20 bg-background relative overflow-hidden">
-      {/* Subtle decorative background */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/[0.03] blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 max-w-3xl relative z-10">
-        {/* Title with step indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="text-center mb-12"
-        >
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="text-center mb-12">
           <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
@@ -133,42 +61,28 @@ const PreparationPathSection = () => {
             </span>
             Interactive Guide
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-            Where Are You in Your CAT Journey?
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Different starting points need different strategies. Tell us where you are — we'll guide you correctly.
-          </p>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Where Are You in Your CAT Journey?</h2>
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto">Different starting points need different strategies. Tell us where you are — we'll guide you correctly.</p>
         </motion.div>
 
-        {/* Progress bar */}
         <div className="flex items-center justify-center gap-2 mb-8">
           {pills.map((pill, i) => (
             <div key={pill.id} className="flex items-center gap-2">
               <motion.div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-colors duration-300 ${
-                  selected === pill.id
-                    ? "bg-primary text-primary-foreground"
-                    : stepNumber > i + 1 || (selected && pills.findIndex(p => p.id === selected) > i)
-                    ? "bg-primary/20 text-primary"
-                    : "bg-muted text-muted-foreground"
+                  selected === pill.id ? "bg-primary text-primary-foreground" : selected && pills.findIndex(p => p.id === selected) > i ? "bg-primary/20 text-primary" : "bg-muted text-muted-foreground"
                 }`}
                 whileTap={{ scale: 0.95 }}
               >
                 {i + 1}
               </motion.div>
               {i < pills.length - 1 && (
-                <div className={`w-8 md:w-16 h-0.5 rounded transition-colors duration-300 ${
-                  selected && pills.findIndex(p => p.id === selected) > i
-                    ? "bg-primary/30"
-                    : "bg-muted"
-                }`} />
+                <div className={`w-8 md:w-16 h-0.5 rounded transition-colors duration-300 ${selected && pills.findIndex(p => p.id === selected) > i ? "bg-primary/30" : "bg-muted"}`} />
               )}
             </div>
           ))}
         </div>
 
-        {/* Interactive Selector - gamified pills */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
           {pills.map((pill, i) => {
             const Icon = pill.icon;
@@ -183,26 +97,19 @@ const PreparationPathSection = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1, duration: 0.3 }}
                 className={`group relative flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium border-2 transition-all duration-300 cursor-pointer text-left ${
-                  isSelected
-                    ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20"
-                    : "bg-background text-foreground border-border hover:border-primary/40 hover:shadow-md"
+                  isSelected ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20" : "bg-background text-foreground border-border hover:border-primary/40 hover:shadow-md"
                 }`}
               >
-                <span className={`flex items-center justify-center w-10 h-10 rounded-xl transition-colors duration-300 shrink-0 ${
-                  isSelected ? "bg-primary-foreground/20" : "bg-muted group-hover:bg-primary/10"
-                }`}>
+                <span className={`flex items-center justify-center w-10 h-10 rounded-xl transition-colors duration-300 shrink-0 ${isSelected ? "bg-primary-foreground/20" : "bg-muted group-hover:bg-primary/10"}`}>
                   <Icon className="h-5 w-5" />
                 </span>
                 <span className="flex-1">{pill.label}</span>
-                <ChevronRight className={`h-4 w-4 transition-transform duration-300 shrink-0 ${
-                  isSelected ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-50"
-                }`} />
+                <ChevronRight className={`h-4 w-4 transition-transform duration-300 shrink-0 ${isSelected ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-50"}`} />
               </motion.button>
             );
           })}
         </div>
 
-        {/* Dynamic Recommendation Panel */}
         <AnimatePresence mode="wait">
           {selected && (
             <motion.div
@@ -213,39 +120,17 @@ const PreparationPathSection = () => {
               transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
               className="rounded-2xl border border-border bg-secondary/60 backdrop-blur-sm p-8 md:p-10 text-center relative overflow-hidden"
             >
-              {/* Decorative corner accent */}
               <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-[3rem]" />
-
-              <motion.span
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.15 }}
-                className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4"
-              >
+              <motion.span initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4">
                 {recommendations[selected].tag}
               </motion.span>
-
-              <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-                {recommendations[selected].headline}
-              </h3>
-              <p className="text-muted-foreground mb-8 max-w-lg mx-auto leading-relaxed">
-                {recommendations[selected].text}
-              </p>
-
+              <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">{recommendations[selected].headline}</h3>
+              <p className="text-muted-foreground mb-8 max-w-lg mx-auto leading-relaxed">{recommendations[selected].text}</p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button
-                  size="lg"
-                  onClick={() => handleCTA("masterclass")}
-                  className="shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-shadow"
-                >
+                <Button size="lg" onClick={() => handleCTA("masterclass")} className="shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-shadow">
                   Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
                 </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
-                  onClick={() => handleCTA("call")}
-                >
+                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" onClick={() => handleCTA("call")}>
                   <Phone className="mr-1.5 h-4 w-4" /> Book Free Counseling Call
                 </Button>
               </div>
@@ -253,33 +138,6 @@ const PreparationPathSection = () => {
           )}
         </AnimatePresence>
       </div>
-
-      {/* Lead Capture Modal */}
-      <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Quick Details</DialogTitle>
-            <DialogDescription>
-              Share your details so we can personalize your experience.
-            </DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handleSubmit} className="space-y-4 mt-2">
-            <Input placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required />
-            <Input placeholder="Phone Number (10 digits)" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} required />
-            <Select value={targetYear} onValueChange={setTargetYear}>
-              <SelectTrigger><SelectValue placeholder="Target CAT Year" /></SelectTrigger>
-              <SelectContent>
-                {targetYears.map((y) => (
-                  <SelectItem key={y} value={y}>CAT {y}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <Button type="submit" className="w-full" disabled={submitting}>
-              {submitting ? "Submitting…" : "Continue"}
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };
