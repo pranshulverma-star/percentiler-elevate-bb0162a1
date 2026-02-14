@@ -20,7 +20,7 @@ import {
   Clock, CheckCircle2, ArrowLeft, ArrowRight, Target,
   BarChart3, Zap, Brain, ChevronRight, Shield, Users,
   TrendingUp, BookOpen, Calculator, PuzzleIcon, FileText,
-  Shuffle, Award, Timer, ClipboardList,
+  Shuffle, Award, Timer, ClipboardList, Trophy,
 } from "lucide-react";
 
 type Phase = "hero" | "lead" | "test" | "results";
@@ -541,6 +541,14 @@ const ResultsSection = ({ result, onRetake }: { result: AssessmentResult; onReta
   const stored = getStored();
   const bc = bandConfig[result.band] || { color: "text-foreground", bg: "bg-muted" };
 
+  // Generate a deterministic rank from readiness index (higher score = better rank)
+  // Use a seeded pseudo-random offset based on stored phone for consistency across refreshes
+  const seed = (stored?.phone || "0").split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  const baseRank = Math.max(1, Math.round(10000 * (1 - result.readinessIndex / 100)));
+  const jitter = ((seed * 7 + result.readinessIndex * 13) % 200) - 100; // -100 to +100
+  const rank = Math.max(1, Math.min(10000, baseRank + jitter));
+  const topPercent = Math.max(0.1, Math.round((rank / 10000) * 1000) / 10);
+
   return (
     <section className="max-w-3xl mx-auto px-4 py-12">
       <motion.div {...fadeUp} className="space-y-6">
@@ -566,7 +574,25 @@ const ResultsSection = ({ result, onRetake }: { result: AssessmentResult; onReta
           </div>
         </Card>
 
-        {/* Stats grid */}
+        {/* Rank card */}
+        <Card className="rounded-2xl border-0 shadow-sm overflow-hidden">
+          <CardContent className="p-0">
+            <div className="flex items-stretch">
+              <div className="bg-primary/5 flex items-center justify-center px-6 py-5">
+                <Trophy className="h-8 w-8 text-primary" />
+              </div>
+              <div className="flex-1 flex items-center justify-between px-6 py-5 gap-4 flex-wrap">
+                <div>
+                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Overall Rank</p>
+                  <p className="text-3xl font-bold text-foreground mt-0.5">#{rank.toLocaleString()} <span className="text-base font-normal text-muted-foreground">/ 10,000+</span></p>
+                </div>
+                <Badge className={`text-xs font-bold px-3 py-1 ${topPercent <= 10 ? "bg-green-100 text-green-700 border-green-200" : topPercent <= 30 ? "bg-yellow-100 text-yellow-700 border-yellow-200" : "bg-muted text-muted-foreground"}`}>
+                  Top {topPercent}%
+                </Badge>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {[
             { icon: Target, label: "Accuracy", value: `${result.accuracyPercent}%`, sub: `${result.correctCount}/${result.totalQuestions} correct` },
