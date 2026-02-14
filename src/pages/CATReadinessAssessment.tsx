@@ -55,7 +55,18 @@ function setStored(data: Partial<StoredData>) {
 }
 
 function getFilteredQuestions(filter: SectionFilter) {
-  if (filter === "mix") return questions;
+  if (filter === "mix") {
+    // Pick ~3-4 from each section for a balanced 10-question mix
+    const sections: Section[] = ["quant", "lrdi", "varc"];
+    const picked: typeof questions = [];
+    for (const sec of sections) {
+      const pool = questions.filter((q) => q.section === sec);
+      // Shuffle and take 3 (or 4 for first section to reach 10)
+      const shuffled = [...pool].sort(() => Math.random() - 0.5);
+      picked.push(...shuffled.slice(0, picked.length === 0 ? 4 : 3));
+    }
+    return picked;
+  }
   return questions.filter((q) => q.section === filter);
 }
 
