@@ -5,19 +5,19 @@ import { Zap, Clock, BarChart3 } from "lucide-react";
 
 const courses = [
   {
-    name: "CAT Complete Program",
+    name: "CAT + OMET Complete Course",
     icon: Zap,
-    highlights: ["Full syllabus coverage with 200+ hours", "Weekly mock tests with detailed analysis", "1-on-1 mentor sessions"],
+    highlights: ["Full syllabus coverage for CAT, XAT, SNAP & more", "200+ hours of structured video lessons", "Weekly mock tests with detailed analysis"],
   },
   {
-    name: "CAT Crash Course",
-    icon: Clock,
-    highlights: ["Intensive 90-day structured program", "Focus on high-weightage topics", "Daily practice sets + strategy calls"],
-  },
-  {
-    name: "CAT Test Series",
+    name: "Test Series",
     icon: BarChart3,
     highlights: ["30 full-length mocks (latest pattern)", "Sectional tests for targeted practice", "Percentile predictor + analytics dashboard"],
+  },
+  {
+    name: "Mentorship Program",
+    icon: Clock,
+    highlights: ["1-on-1 mentor sessions with 99%ilers", "Personalized study plan & strategy", "Weekly progress reviews & accountability"],
   },
 ];
 
