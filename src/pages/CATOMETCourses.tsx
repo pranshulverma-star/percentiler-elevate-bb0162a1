@@ -9,6 +9,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import mentorImg from "@/assets/mentor-pranshul.jpg";
 import {
   Shield, Video, BookOpen, Users, Clock, Target,
   CheckCircle2, XCircle, Star, ArrowRight, Sparkles,
@@ -127,33 +128,95 @@ const CATOMETCourses = () => {
     <>
       <Navbar />
       <main className="pt-20">
-        {/* Hero */}
-        <section className="relative py-16 md:py-24 overflow-hidden">
+        {/* Hero – compact */}
+        <section className="relative py-10 md:py-14 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-primary/[0.04] blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-primary/[0.03] blur-3xl" />
           </div>
           <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="space-y-4 max-w-3xl mx-auto"
+              className="space-y-3 max-w-3xl mx-auto"
             >
               <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/70">
                 CAT + OMET Programs
               </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
                 Choose Your Path to{" "}
                 <span className="text-primary relative">
                   IIM
                   <Sparkles className="absolute -top-3 -right-6 h-5 w-5 text-primary animate-pulse" />
                 </span>
               </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Three programs tailored to your schedule, budget, and ambition. All designed by 7x CAT 100%iler faculty.
+              <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+                Three programs tailored to your schedule, budget, and ambition.
               </p>
             </motion.div>
+          </div>
+        </section>
+
+        {/* Founder trust strip */}
+        <section className="py-6 bg-secondary/40 border-y border-border">
+          <div className="container mx-auto px-4 md:px-6">
+            <motion.div
+              className="flex flex-col sm:flex-row items-center gap-4 max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              <div className="relative shrink-0">
+                <div className="absolute -inset-1 rounded-full bg-primary/20 blur-sm" />
+                <img
+                  src={mentorImg}
+                  alt="Pranshul Agrawal – 7x CAT 100%iler"
+                  className="relative w-16 h-16 rounded-full object-cover ring-2 ring-primary/30"
+                />
+              </div>
+              <div className="text-center sm:text-left">
+                <p className="text-sm font-bold text-foreground">
+                  Designed by Pranshul Agrawal{" "}
+                  <Badge className="bg-primary/10 text-primary text-[9px] ml-1 align-middle">7x CAT 100%iler</Badge>
+                </p>
+                <p className="text-xs text-muted-foreground mt-0.5">IIM-A Alumni · 10,000+ students mentored · Featured in Times of India</p>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
+        {/* Mini testimonials strip */}
+        <section className="py-8 bg-background">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+              {[
+                { name: "Aarav S.", percentile: "99.2%ile", college: "IIM Ahmedabad", quote: "The guarantee course changed my life." },
+                { name: "Priya M.", percentile: "98.5%ile", college: "IIM Bangalore", quote: "Live classes kept me accountable every day." },
+                { name: "Rohan K.", percentile: "96.1%ile", college: "IIM Lucknow", quote: "Recorded course fit perfectly around my job." },
+              ].map((t, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Card className="p-4 h-full border border-border">
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                        {t.name[0]}
+                      </div>
+                      <div>
+                        <p className="text-xs font-semibold text-foreground">{t.name}</p>
+                        <p className="text-[10px] text-muted-foreground">{t.college}</p>
+                      </div>
+                      <Badge variant="secondary" className="ml-auto text-[10px] font-bold">{t.percentile}</Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground italic">"{t.quote}"</p>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
