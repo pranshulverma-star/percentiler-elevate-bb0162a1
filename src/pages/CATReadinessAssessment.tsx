@@ -20,7 +20,7 @@ import {
   Clock, CheckCircle2, ArrowLeft, ArrowRight, Target,
   BarChart3, Zap, Brain, ChevronRight, Shield, Users,
   TrendingUp, BookOpen, Calculator, PuzzleIcon, FileText,
-  Shuffle, Award, Timer, ClipboardList, ChevronDown,
+  Shuffle, Award, Timer, ClipboardList,
 } from "lucide-react";
 
 type Phase = "hero" | "lead" | "test" | "results";
@@ -160,45 +160,72 @@ const sectionOptions: { key: SectionFilter; label: string; icon: typeof Calculat
 const SectionSelector = ({
   selected,
   onSelect,
+  onStartAssessment,
 }: {
   selected: SectionFilter;
   onSelect: (s: SectionFilter) => void;
+  onStartAssessment: () => void;
 }) => (
-  <section className="py-16 bg-secondary/30" id="start-assessment">
+  <section className="py-20" id="start-assessment">
     <div className="max-w-4xl mx-auto px-4">
-      <motion.div {...fadeUp} className="text-center mb-10">
+      <motion.div {...fadeUp} className="text-center mb-12">
+        <Badge variant="secondary" className="mb-4 text-xs font-medium uppercase tracking-wider px-4 py-1.5">
+          Choose Your Focus
+        </Badge>
         <h2 className="text-2xl md:text-3xl font-bold text-foreground">
           What would you like to test yourself on?
         </h2>
-        <p className="text-muted-foreground mt-3">
-          Choose a specific section to focus on, or take a mixed assessment across all areas.
+        <p className="text-muted-foreground mt-3 max-w-lg mx-auto">
+          Pick a section to deep-dive or go mixed for a full diagnostic.
         </p>
       </motion.div>
 
       <motion.div variants={stagger} initial="initial" whileInView="animate" viewport={{ once: true }} className="grid sm:grid-cols-2 gap-4">
-        {sectionOptions.map((opt) => (
-          <motion.div key={opt.key} variants={fadeUp}>
-            <button
-              onClick={() => onSelect(opt.key)}
-              className={`w-full text-left p-5 rounded-2xl border-2 transition-all duration-200 ${
-                selected === opt.key
-                  ? "border-primary bg-primary/5 shadow-md"
-                  : "border-border bg-background hover:border-primary/30 hover:shadow-sm"
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                <div className={`p-2.5 rounded-xl ${selected === opt.key ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}>
-                  <opt.icon className="h-5 w-5" />
+        {sectionOptions.map((opt) => {
+          const isActive = selected === opt.key;
+          return (
+            <motion.div key={opt.key} variants={fadeUp}>
+              <button
+                onClick={() => onSelect(opt.key)}
+                className={`w-full text-left p-6 rounded-2xl border-2 transition-all duration-200 group ${
+                  isActive
+                    ? "border-primary bg-primary/[0.03] shadow-md shadow-primary/5"
+                    : "border-border bg-background hover:border-primary/20 hover:shadow-sm"
+                }`}
+              >
+                <div className="flex items-start gap-4">
+                  <div className={`p-3 rounded-2xl transition-colors ${isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                    <opt.icon className="h-5 w-5" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-foreground text-base">{opt.label}</p>
+                    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{opt.desc}</p>
+                    <p className="text-xs text-muted-foreground mt-2">10 Questions · 15 min</p>
+                  </div>
+                  <div className={`shrink-0 mt-1 h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all ${
+                    isActive ? "border-primary bg-primary" : "border-muted-foreground/30"
+                  }`}>
+                    {isActive && <CheckCircle2 className="h-4 w-4 text-primary-foreground" />}
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-foreground">{opt.label}</p>
-                  <p className="text-sm text-muted-foreground mt-0.5">{opt.desc}</p>
-                </div>
-                {selected === opt.key && <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-1" />}
-              </div>
-            </button>
-          </motion.div>
-        ))}
+              </button>
+            </motion.div>
+          );
+        })}
+      </motion.div>
+
+      {/* Take Assessment CTA */}
+      <motion.div {...fadeUp} className="text-center mt-10">
+        <Button
+          size="lg"
+          className="rounded-2xl px-12 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+          onClick={onStartAssessment}
+        >
+          Take Assessment <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
+        <p className="text-xs text-muted-foreground mt-3">
+          {sectionOptions.find((o) => o.key === selected)?.label} · 10 Questions · Completely Free
+        </p>
       </motion.div>
     </div>
   </section>
@@ -706,7 +733,7 @@ const CATReadinessAssessment = () => {
           <HeroSection onStart={() => {
             document.getElementById("start-assessment")?.scrollIntoView({ behavior: "smooth" });
           }} />
-          <SectionSelector selected={sectionFilter} onSelect={setSectionFilter} />
+          <SectionSelector selected={sectionFilter} onSelect={setSectionFilter} onStartAssessment={() => setPhase("lead")} />
           <HowItWorks />
           <TrustSection />
 
