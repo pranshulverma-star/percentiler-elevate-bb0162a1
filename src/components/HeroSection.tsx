@@ -77,13 +77,13 @@ const HeroSection = () => {
           <p className="text-lg text-muted-foreground max-w-lg">
             Proven CAT coaching + strategic planning tools to maximize your score.
           </p>
-          <div className="flex flex-wrap gap-4 pt-2">
-            <Button size="lg" className="animate-pulse-glow" asChild>
+          <div className="flex flex-wrap gap-4 pt-4">
+            <Button size="lg" className="animate-pulse-glow text-base font-bold px-8 py-6 rounded-xl shadow-lg" asChild>
               <a href="/masterclass">
-                Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
+                Watch Free Masterclass <ArrowRight className="ml-1 h-5 w-5" />
               </a>
             </Button>
-            <Button size="lg" variant="outline" onClick={() => openModal("hero_strategy_call")}>
+            <Button size="lg" variant="outline" className="text-base font-bold px-8 py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" onClick={() => openModal("hero_strategy_call")}>
               Book Free Strategy Call
             </Button>
           </div>
