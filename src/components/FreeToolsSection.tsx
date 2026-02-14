@@ -1,11 +1,11 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, BarChart3, FileText } from "lucide-react";
+import { CalendarDays, BarChart3, ClipboardCheck } from "lucide-react";
 
 const tools = [
-  { icon: CalendarDays, name: "Daily Study Planner", benefit: "Organize your prep day-by-day with smart scheduling." },
-  { icon: BarChart3, name: "Performance Tracker", benefit: "Track your mock scores and identify improvement areas." },
-  { icon: FileText, name: "Free Mock Tests", benefit: "Practice with CAT-pattern mocks — completely free." },
+  { icon: CalendarDays, name: "Daily Study Planner", benefit: "Organize your prep day-by-day with smart scheduling.", href: "#" },
+  { icon: BarChart3, name: "Performance Tracker", benefit: "Track your mock scores and identify improvement areas.", href: "#" },
+  { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Get a structured performance report in 15 minutes — completely free.", href: "/free-cat-readiness-assessment" },
 ];
 
 const FreeToolsSection = () => (
@@ -21,7 +21,7 @@ const FreeToolsSection = () => (
             <h3 className="font-bold text-foreground mb-2">{t.name}</h3>
             <p className="text-sm text-muted-foreground mb-4">{t.benefit}</p>
             <Button variant="outline" size="sm" asChild>
-              <a href="#">Use Free Tool</a>
+              <a href={t.href}>Use Free Tool</a>
             </Button>
           </Card>
         ))}
