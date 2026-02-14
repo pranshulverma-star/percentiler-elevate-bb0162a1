@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -416,7 +416,7 @@ const TestInterface = ({
 
 
 }: {sectionFilter: SectionFilter;onComplete: (answers: Record<number, number>, timeTaken: number) => void;}) => {
-  const filtered = getFilteredQuestions(sectionFilter);
+  const filtered = useMemo(() => getFilteredQuestions(sectionFilter), [sectionFilter]);
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [timeLeft, setTimeLeft] = useState(TOTAL_TIME);
