@@ -27,7 +27,7 @@ const FinalCTASection = () => (
               Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
             </a>
           </Button>
-          <Button size="lg" variant="outline" className="border-background text-background hover:bg-background hover:text-foreground" asChild>
+          <Button size="lg" variant="outline" className="border-background text-background bg-background/10 hover:bg-background hover:text-foreground" asChild>
             <a href="#">Book Free Strategy Call</a>
           </Button>
         </div>
