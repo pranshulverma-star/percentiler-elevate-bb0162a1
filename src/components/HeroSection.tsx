@@ -80,8 +80,8 @@ const HeroSection = () => (
               Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
             </a>
           </Button>
-          <Button size="lg" variant="outline" asChild>
-            <a href="#tools">Try Free Study Planner</a>
+          <Button size="lg" variant="outline" onClick={() => document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' })}>
+            Book Free Strategy Call
           </Button>
         </div>
       </motion.div>
