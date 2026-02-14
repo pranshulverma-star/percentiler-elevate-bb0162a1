@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { CalendarDays, BarChart3, ClipboardCheck } from "lucide-react";
 
 const tools = [
-  { icon: CalendarDays, name: "Daily Study Planner", benefit: "Organize your prep day-by-day with smart scheduling.", href: "#" },
+  { icon: CalendarDays, name: "Daily Study Planner", benefit: "Get a day-wise structured preparation roadmap tailored to your target CAT year.", href: "/cat-daily-study-planner" },
   { icon: BarChart3, name: "Performance Tracker", benefit: "Track your mock scores and identify improvement areas.", href: "#" },
   { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Get a structured performance report in 15 minutes — completely free.", href: "/free-cat-readiness-assessment" },
 ];

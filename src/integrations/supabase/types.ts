@@ -20,21 +20,27 @@ export type Database = {
           id: string
           name: string | null
           phone_number: string
+          prep_level: string | null
           source: string | null
+          target_year: string | null
         }
         Insert: {
           created_at?: string
           id?: string
           name?: string | null
           phone_number: string
+          prep_level?: string | null
           source?: string | null
+          target_year?: string | null
         }
         Update: {
           created_at?: string
           id?: string
           name?: string | null
           phone_number?: string
+          prep_level?: string | null
           source?: string | null
+          target_year?: string | null
         }
         Relationships: []
       }
@@ -125,6 +131,42 @@ export type Database = {
           phone?: string
           recommendation?: string | null
           target_percentile?: string
+        }
+        Relationships: []
+      }
+      study_plan_days: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          day_number: number
+          id: string
+          is_completed: boolean | null
+          lrdi_tasks_json: Json | null
+          phone_number: string
+          qa_tasks_json: Json | null
+          varc_tasks_json: Json | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          day_number: number
+          id?: string
+          is_completed?: boolean | null
+          lrdi_tasks_json?: Json | null
+          phone_number: string
+          qa_tasks_json?: Json | null
+          varc_tasks_json?: Json | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          day_number?: number
+          id?: string
+          is_completed?: boolean | null
+          lrdi_tasks_json?: Json | null
+          phone_number?: string
+          qa_tasks_json?: Json | null
+          varc_tasks_json?: Json | null
         }
         Relationships: []
       }

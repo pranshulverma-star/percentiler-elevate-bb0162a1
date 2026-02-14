@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Masterclass from "./pages/Masterclass";
 import MasterclassWatch from "./pages/MasterclassWatch";
 import CATReadinessAssessment from "./pages/CATReadinessAssessment";
+import CATDailyStudyPlanner from "./pages/CATDailyStudyPlanner";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/masterclass" element={<Masterclass />} />
           <Route path="/masterclass/watch" element={<MasterclassWatch />} />
           <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
+          <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
