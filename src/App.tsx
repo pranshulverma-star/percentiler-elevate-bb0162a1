@@ -9,6 +9,7 @@ import Masterclass from "./pages/Masterclass";
 import MasterclassWatch from "./pages/MasterclassWatch";
 import CATReadinessAssessment from "./pages/CATReadinessAssessment";
 import CATDailyStudyPlanner from "./pages/CATDailyStudyPlanner";
+import CATOMETCourses from "./pages/CATOMETCourses";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/masterclass/watch" element={<MasterclassWatch />} />
             <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
             <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
+            <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
