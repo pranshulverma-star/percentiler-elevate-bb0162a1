@@ -85,9 +85,9 @@ const TestimonialsSection = () => (
         <Carousel opts={{ align: "start", loop: true }}>
           <CarouselContent>
             {whatsappScreenshots.map((src, i) => (
-              <CarouselItem key={i} className="basis-1/2 md:basis-1/3">
-                <div className="rounded-xl overflow-hidden hover:shadow-md transition-shadow h-80 md:h-96">
-                  <img src={src} alt={`Student testimonial ${i + 1}`} className="w-full h-full object-cover object-top rounded-xl" />
+              <CarouselItem key={i} className="basis-1/2 md:basis-1/3 pl-4">
+                <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-lg transition-all duration-300 bg-card p-2">
+                  <img src={src} alt={`Student testimonial ${i + 1}`} className="w-full h-auto object-contain rounded-xl" />
                 </div>
               </CarouselItem>
             ))}
