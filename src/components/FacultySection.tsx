@@ -5,25 +5,25 @@ const faculty = [
   {
     name: "Mayank Raj Singh Sir",
     role: "Academic Head",
-    description: "CAT veteran since 2006, 7x 100%iler. Nearly two decades of exam insight, strategy depth, and mentoring expertise.",
+    description: "7x CAT 100%iler since 2006. Two decades of strategy and mentoring expertise.",
     initials: "MR",
   },
   {
     name: "Mahajan Sir",
     role: "VARC Faculty",
-    description: "SRCC & IIM Calcutta alumnus. 4x 100%ile in VARC with 6+ years of CAT mentoring experience.",
+    description: "SRCC & IIM Calcutta alumnus. 4x 100%ile in VARC.",
     initials: "MS",
   },
   {
     name: "Gaurav Sharma Sir",
     role: "QA & LRDI Faculty",
-    description: "18 years of teaching experience. Consistent 99+%ile scorer and founder of Genius Tutorials on YouTube.",
+    description: "18 years of teaching. Consistent 99+%ile scorer in CAT.",
     initials: "GS",
   },
   {
     name: "Puru Jain Sir",
     role: "QA & LRDI Faculty",
-    description: "99.5+%ile in CAT QA & LRDI. Currently at IIT, leads foundation batches and GDPI prep at Percentilers.",
+    description: "99.5+%ile in CAT QA & LRDI. Currently at IIT.",
     initials: "PJ",
   },
 ];
