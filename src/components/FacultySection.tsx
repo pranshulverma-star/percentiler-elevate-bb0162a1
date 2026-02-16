@@ -3,24 +3,27 @@ import { motion } from "framer-motion";
 
 const faculty = [
   {
+    name: "Pranshul Verma Sir",
+    role: "Founder & Mentor",
+    description: "7x CAT 100%iler. Built Percentilers to give every serious aspirant a structured path to 95+ percentile.",
+    initials: "PV",
+  },
+  {
     name: "Mahajan Sir",
-    role: "Verbal Ability (VARC) Faculty",
-    credential: "SRCC & IIM Calcutta Alumnus\n6+ Years of CAT Mentoring Experience",
-    description: "A regular CAT taker with an exceptional track record — 100%ile in VARC 4 times. Specialises in building reading depth, accuracy, and exam temperament for high percentile outcomes.",
+    role: "VARC Faculty",
+    description: "SRCC & IIM Calcutta alumnus. 4x 100%ile in VARC with 6+ years of CAT mentoring experience.",
     initials: "MS",
   },
   {
     name: "Gaurav Sharma Sir",
     role: "QA & LRDI Faculty",
-    credential: "18 Years of Teaching Experience\nConsistent 99+%ile Scorer in CAT (Every Year)",
-    description: "A seasoned Quant & LRDI mentor with unmatched exam consistency. Also runs the popular YouTube channel Genius Tutorials, simplifying complex concepts for thousands of aspirants.",
+    description: "18 years of teaching experience. Consistent 99+%ile scorer and founder of Genius Tutorials on YouTube.",
     initials: "GS",
   },
   {
     name: "Puru Jain Sir",
     role: "QA & LRDI Faculty",
-    credential: "99.5+%ile Scorer in CAT (QA & LRDI)\nCurrently at IIT",
-    description: "Focuses on strong conceptual foundations, advanced problem solving, and structured preparation. Leads foundation batches, doubt sessions, and GDPI preparation at Percentilers.",
+    description: "99.5+%ile in CAT QA & LRDI. Currently at IIT, leads foundation batches and GDPI prep at Percentilers.",
     initials: "PJ",
   },
 ];
@@ -44,11 +47,11 @@ const FacultySection = () => (
         </h2>
       </motion.div>
 
-      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
         {faculty.map((f, i) => (
           <motion.div
             key={f.name}
-            className="text-center space-y-4 group bg-card rounded-2xl p-6 border border-border/50 shadow-sm hover:shadow-lg transition-all duration-300"
+            className="text-center space-y-3 group bg-card rounded-2xl p-5 border border-border/50 shadow-sm hover:shadow-lg transition-all duration-300"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -56,17 +59,16 @@ const FacultySection = () => (
             whileHover={{ y: -4 }}
           >
             <div className="relative mx-auto w-fit">
-              <Avatar className="h-24 w-24 ring-4 ring-transparent group-hover:ring-primary/20 transition-all duration-300">
-                <AvatarFallback className="text-xl font-bold bg-secondary text-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
+              <Avatar className="h-20 w-20 ring-4 ring-transparent group-hover:ring-primary/20 transition-all duration-300">
+                <AvatarFallback className="text-lg font-bold bg-secondary text-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
                   {f.initials}
                 </AvatarFallback>
               </Avatar>
             </div>
-            <div className="space-y-2">
-              <h3 className="font-bold text-foreground text-lg">{f.name}</h3>
-              <span className="inline-block text-xs font-semibold tracking-wide uppercase text-primary bg-primary/10 px-3 py-1 rounded-full">{f.role}</span>
-              <p className="text-xs text-muted-foreground whitespace-pre-line leading-relaxed font-medium">{f.credential}</p>
-              <p className="text-sm text-muted-foreground leading-relaxed pt-1">{f.description}</p>
+            <div className="space-y-1.5">
+              <h3 className="font-bold text-foreground text-sm">{f.name}</h3>
+              <span className="inline-block text-[10px] font-semibold tracking-wide uppercase text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">{f.role}</span>
+              <p className="text-xs text-muted-foreground leading-relaxed">{f.description}</p>
             </div>
           </motion.div>
         ))}
