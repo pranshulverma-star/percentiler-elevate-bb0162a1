@@ -31,7 +31,7 @@ const FounderSection = () => (
             <img
               src={mentorImg}
               alt="Pranshul Verma - 7x CAT 100%iler"
-              className="relative w-56 h-56 md:w-64 md:h-64 object-cover rounded-2xl shadow-xl grayscale hover:grayscale-0 transition-all duration-700 ring-4 ring-background"
+              className="relative w-56 h-56 md:w-64 md:h-64 object-cover object-top rounded-2xl shadow-xl grayscale hover:grayscale-0 transition-all duration-700 ring-4 ring-background"
             />
             <motion.div
               className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-bold shadow-lg"
