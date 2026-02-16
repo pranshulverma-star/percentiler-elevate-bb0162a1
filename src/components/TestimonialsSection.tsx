@@ -4,11 +4,9 @@ import { motion } from "framer-motion";
 import { Quote, Star } from "lucide-react";
 
 import whatsapp1 from "@/assets/whatsapp-1.jpg";
-import whatsapp2 from "@/assets/whatsapp-2.jpg";
 import whatsapp3 from "@/assets/whatsapp-3.jpg";
 import whatsapp4 from "@/assets/whatsapp-4.jpg";
 import whatsapp5 from "@/assets/whatsapp-5.jpg";
-import whatsapp6 from "@/assets/whatsapp-6.jpg";
 
 const testimonials = [
   {
@@ -31,7 +29,7 @@ const testimonials = [
   },
 ];
 
-const whatsappScreenshots = [whatsapp1, whatsapp2, whatsapp3, whatsapp4, whatsapp5, whatsapp6];
+const whatsappScreenshots = [whatsapp1, whatsapp3, whatsapp4, whatsapp5];
 
 const TestimonialsSection = () => (
   <section className="py-20 md:py-28 bg-background relative overflow-hidden">
