@@ -99,7 +99,7 @@ const HeroSection = () => {
               <Card className="p-5 space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-default group relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full" />
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-11 w-11 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
+                  <Avatar className="h-14 w-14 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
                     <AvatarImage src={s.photo} alt={s.name} className="object-cover object-top scale-[1.6] translate-y-[10%]" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{s.initials}</AvatarFallback>
                   </Avatar>
