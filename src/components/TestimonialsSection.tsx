@@ -3,6 +3,13 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import { motion } from "framer-motion";
 import { Quote, Star } from "lucide-react";
 
+import whatsapp1 from "@/assets/whatsapp-1.jpg";
+import whatsapp2 from "@/assets/whatsapp-2.jpg";
+import whatsapp3 from "@/assets/whatsapp-3.jpg";
+import whatsapp4 from "@/assets/whatsapp-4.jpg";
+import whatsapp5 from "@/assets/whatsapp-5.jpg";
+import whatsapp6 from "@/assets/whatsapp-6.jpg";
+
 const testimonials = [
   {
     name: "Meera T.",
@@ -24,7 +31,7 @@ const testimonials = [
   },
 ];
 
-const whatsappScreenshots = Array.from({ length: 6 }, (_, i) => i + 1);
+const whatsappScreenshots = [whatsapp1, whatsapp2, whatsapp3, whatsapp4, whatsapp5, whatsapp6];
 
 const TestimonialsSection = () => (
   <section className="py-20 md:py-28 bg-background relative overflow-hidden">
@@ -77,10 +84,10 @@ const TestimonialsSection = () => (
       <div className="max-w-4xl mx-auto px-10">
         <Carousel opts={{ align: "start", loop: true }}>
           <CarouselContent>
-            {whatsappScreenshots.map((i) => (
+            {whatsappScreenshots.map((src, i) => (
               <CarouselItem key={i} className="basis-1/2 md:basis-1/3">
-                <div className="bg-muted rounded-xl aspect-[3/4] flex items-center justify-center hover:shadow-md transition-shadow">
-                  <span className="text-muted-foreground text-sm">Screenshot {i}</span>
+                <div className="rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+                  <img src={src} alt={`Student testimonial ${i + 1}`} className="w-full h-auto object-contain rounded-xl" />
                 </div>
               </CarouselItem>
             ))}
