@@ -8,13 +8,13 @@ import { useLeadModal } from "@/components/LeadModalProvider";
 import studentAayushiJha from "@/assets/student-aayushi-jha.jpeg";
 import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
 import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
-import studentBhagyashree from "@/assets/student-bhagyashree.jpeg";
+import studentSaloni from "@/assets/student-saloni.jpeg";
 
 const scorecards = [
   { name: "Aayushi Jha", percentile: "99.7", college: "FMS Delhi", initials: "AJ", photo: studentAayushiJha },
   { name: "Vishwajeet", percentile: "99.89", college: "XLRI Jamshedpur", initials: "VJ", photo: studentVishwajeet },
   { name: "Aayushi Rana", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AR", photo: studentAayushiRana },
-  { name: "Bhagyashree Pathak", percentile: "98.2", college: "IIM Vizag", initials: "BP", photo: studentBhagyashree },
+  { name: "Saloni Hindocha", percentile: "98.3", college: "IIT Bombay", initials: "SH", photo: studentSaloni },
 ];
 
 const AnimatedNumber = ({ target }: { target: string }) => {
@@ -99,8 +99,8 @@ const HeroSection = () => {
               <Card className="p-5 space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-default group relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full" />
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-11 w-11 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all">
-                    <AvatarImage src={s.photo} alt={s.name} />
+                  <Avatar className="h-11 w-11 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
+                    <AvatarImage src={s.photo} alt={s.name} className="object-cover object-top scale-[1.6] translate-y-[10%]" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{s.initials}</AvatarFallback>
                   </Avatar>
                   <div>
