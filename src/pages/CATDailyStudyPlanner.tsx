@@ -453,7 +453,11 @@ export default function CATDailyStudyPlanner() {
   });
   const [targetYear, setTargetYear] = useState<number>(() => {
     const stored = localStorage.getItem("planner_year");
-    return stored ? parseInt(stored) : new Date().getFullYear() + 1;
+    if (stored) {
+      const parsed = parseInt(stored.replace(/\D/g, ""));
+      return parsed && parsed >= 2025 && parsed <= 2030 ? parsed : new Date().getFullYear() + 1;
+    }
+    return new Date().getFullYear() + 1;
   });
 
   const handleLeadComplete = (phone: string, year: number) => {
