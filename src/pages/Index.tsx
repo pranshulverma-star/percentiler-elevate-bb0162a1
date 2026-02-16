@@ -15,13 +15,13 @@ import FAQSection from "@/components/FAQSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollCTAPanel from "@/components/ScrollCTAPanel";
-import ScrollProgressBar from "@/components/ScrollProgressBar";
+
 import Footer from "@/components/Footer";
 
 const Index = () => (
   <>
     <Navbar />
-    <ScrollProgressBar />
+    
     <main>
       {/* Act 1: Hook & Trust */}
       <HeroSection />
