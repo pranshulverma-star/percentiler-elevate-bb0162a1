@@ -3,13 +3,22 @@ import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { GraduationCap, Quote } from "lucide-react";
 
+import studentBhavy from "@/assets/student-bhavy.png";
+import studentAditya from "@/assets/student-aditya.png";
+import studentRahul from "@/assets/student-rahul.jpeg";
+import studentRounak from "@/assets/student-rounak.png";
+import studentShruti from "@/assets/student-shruti.jpeg";
+import studentRitik from "@/assets/student-ritik.jpeg";
+import studentAdit from "@/assets/student-adit.jpeg";
+import studentBhagyashree from "@/assets/student-bhagyashree-2.jpeg";
+
 const results = [
-  { name: "Ananya S.", percentile: "99.4", college: "IIM Ahmedabad", initials: "AS", photo: "https://i.pravatar.cc/150?img=47", quote: "The structured approach changed everything for me." },
-  { name: "Rohan M.", percentile: "98.7", college: "IIM Bangalore", initials: "RM", photo: "https://i.pravatar.cc/150?img=68", quote: "Mock analysis sessions were a game-changer." },
-  { name: "Priya K.", percentile: "97.9", college: "IIM Calcutta", initials: "PK", photo: "https://i.pravatar.cc/150?img=45", quote: "I went from 85 to 97+ percentile in 4 months." },
-  { name: "Vikram D.", percentile: "96.5", college: "FMS Delhi", initials: "VD", photo: "https://i.pravatar.cc/150?img=60", quote: "Best mentorship I could have asked for." },
-  { name: "Sneha R.", percentile: "95.8", college: "IIM Lucknow", initials: "SR", photo: "https://i.pravatar.cc/150?img=44", quote: "The daily planner kept me accountable every single day." },
-  { name: "Arjun P.", percentile: "95.2", college: "XLRI Jamshedpur", initials: "AP", photo: "https://i.pravatar.cc/150?img=53", quote: "Strategy over hours — that's what I learned here." },
+  { name: "Bhavy Jain", percentile: "99.5", college: "FMS Delhi", initials: "BJ", photo: studentBhavy, quote: "The structured strategy made all the difference in my preparation." },
+  { name: "Rounak", percentile: "99.2", college: "IIM Bangalore", initials: "RK", photo: studentRounak, quote: "Mock analysis sessions helped me identify and fix weak areas fast." },
+  { name: "Golla Rahul", percentile: "98.9", college: "IIT Bombay", initials: "GR", photo: studentRahul, quote: "Went from 90 to 98+ percentile in just 3 months of focused prep." },
+  { name: "Aditya Kumar", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AK", photo: studentAditya, quote: "The daily planner kept me disciplined throughout my journey." },
+  { name: "Shruti Manghani", percentile: "98.3", college: "SP Jain", initials: "SM", photo: studentShruti, quote: "Personalized mentorship gave me clarity when I needed it most." },
+  { name: "Ritik Kumar", percentile: "98.1", college: "IIM Udaipur", initials: "RK", photo: studentRitik, quote: "Strategy over hours — that mindset shift changed everything for me." },
 ];
 
 const ResultsSection = () => (
@@ -47,8 +56,8 @@ const ResultsSection = () => (
               <div className="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-bl-full" />
 
               <div className="flex items-center gap-3 mb-4">
-                <Avatar className="h-12 w-12 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all">
-                  <AvatarImage src={r.photo} alt={r.name} />
+                <Avatar className="h-12 w-12 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
+                  <AvatarImage src={r.photo} alt={r.name} className="object-cover object-top scale-[1.6] translate-y-[10%]" />
                   <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{r.initials}</AvatarFallback>
                 </Avatar>
                 <div>
