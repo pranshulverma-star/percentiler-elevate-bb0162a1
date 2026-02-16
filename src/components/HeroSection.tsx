@@ -11,10 +11,10 @@ import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
 import studentSaloni from "@/assets/student-saloni.jpeg";
 
 const scorecards = [
-  { name: "Aayushi Jha", percentile: "99.7", college: "FMS Delhi", initials: "AJ", photo: studentAayushiJha },
-  { name: "Vishwajeet", percentile: "99.89", college: "XLRI Jamshedpur", initials: "VJ", photo: studentVishwajeet },
-  { name: "Aayushi Rana", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AR", photo: studentAayushiRana },
-  { name: "Saloni Hindocha", percentile: "98.3", college: "IIT Bombay", initials: "SH", photo: studentSaloni },
+  { name: "Aayushi Jha", percentile: "99.7", college: "FMS Delhi", initials: "AJ", photo: studentAayushiJha, linkedin: "https://www.linkedin.com/in/ayushi-jha-fms/" },
+  { name: "Vishwajeet", percentile: "99.89", college: "XLRI Jamshedpur", initials: "VJ", photo: studentVishwajeet, linkedin: "https://www.linkedin.com/in/vishwajeet-saharan-22120553/" },
+  { name: "Aayushi Rana", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AR", photo: studentAayushiRana, linkedin: "https://www.linkedin.com/in/aayushi-rana-9a44a5352/" },
+  { name: "Saloni Hindocha", percentile: "98.3", college: "IIT Bombay", initials: "SH", photo: studentSaloni, linkedin: "https://www.linkedin.com/in/saloni-hindocha/" },
 ];
 
 const AnimatedNumber = ({ target }: { target: string }) => {
@@ -95,8 +95,8 @@ const HeroSection = () => {
 
         <motion.div className="grid grid-cols-2 gap-4" variants={container} initial="hidden" animate="show">
           {scorecards.map((s, i) => (
-            <motion.div key={s.name} variants={item} whileHover={{ y: -6, scale: 1.03 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-              <Card className="p-5 space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-default group relative overflow-hidden">
+            <motion.a href={s.linkedin} target="_blank" rel="noopener noreferrer" key={s.name} variants={item} whileHover={{ y: -6, scale: 1.03 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
+              <Card className="p-5 space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-pointer group relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full" />
                 <div className="flex items-center gap-3">
                   <Avatar className="h-14 w-14 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
@@ -121,7 +121,7 @@ const HeroSection = () => {
                   <motion.div className="h-full bg-primary rounded-full" initial={{ width: 0 }} whileInView={{ width: `${parseFloat(s.percentile)}%` }} viewport={{ once: true }} transition={{ duration: 1.2, delay: i * 0.15, ease: "easeOut" }} />
                 </div>
               </Card>
-            </motion.div>
+            </motion.a>
           ))}
         </motion.div>
       </div>
