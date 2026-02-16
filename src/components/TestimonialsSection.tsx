@@ -1,7 +1,6 @@
 import { Card } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
 import { motion } from "framer-motion";
-import { Quote, Star } from "lucide-react";
+import { Quote, Star, MessageCircle } from "lucide-react";
 
 import whatsapp1 from "@/assets/whatsapp-1.jpg";
 import whatsapp2 from "@/assets/whatsapp-2.jpg";
@@ -80,21 +79,39 @@ const TestimonialsSection = () => (
         ))}
       </div>
 
-      {/* WhatsApp screenshot carousel */}
-      <div className="max-w-4xl mx-auto px-10">
-        <Carousel opts={{ align: "start", loop: true }}>
-          <CarouselContent>
-            {whatsappScreenshots.map((src, i) => (
-              <CarouselItem key={i} className="basis-1/2 md:basis-1/3 pl-4">
-                <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-lg transition-all duration-300 bg-card p-2 h-72 md:h-80">
-                  <img src={src} alt={`Student testimonial ${i + 1}`} className="w-full h-full object-cover object-top rounded-xl" />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
+      {/* WhatsApp screenshots - Masonry grid */}
+      <motion.div
+        className="text-center mb-8 space-y-2"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+      >
+        <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 dark:text-green-400 px-4 py-1.5 rounded-full text-sm font-semibold">
+          <MessageCircle className="h-4 w-4" />
+          Real Student Messages
+        </div>
+      </motion.div>
+
+      <div className="columns-2 md:columns-3 gap-4 max-w-5xl mx-auto">
+        {whatsappScreenshots.map((src, i) => (
+          <motion.div
+            key={i}
+            className="break-inside-avoid mb-4"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.4, delay: i * 0.08 }}
+          >
+            <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card">
+              <img
+                src={src}
+                alt={`Student testimonial ${i + 1}`}
+                className="w-full h-auto object-contain"
+                loading="lazy"
+              />
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   </section>
