@@ -8,7 +8,7 @@ export default function PercentilePlannerSection() {
   const [open, setOpen] = useState(false);
 
   return (
-    <section className="w-full bg-background py-20 md:py-24 relative overflow-hidden">
+    <section id="profile-evaluator" className="w-full bg-background py-20 md:py-24 relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/2 right-0 w-96 h-96 -translate-y-1/2 rounded-full bg-primary/[0.03] blur-3xl" />
       </div>
