@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import mentorImg from "@/assets/mentor-pranshul.jpg";
+import mentorImg from "@/assets/founder-pranshul.webp";
 
 const FounderSection = () => (
   <section className="py-20 md:py-28 bg-secondary/50 relative overflow-hidden">
