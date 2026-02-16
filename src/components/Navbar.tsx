@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import ThemeToggle from "@/components/ThemeToggle";
+import { motion, useSpring } from "framer-motion";
 
 const navLinks = [
   { label: "Home", href: "#" },
@@ -15,6 +16,16 @@ const navLinks = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { openModal } = useLeadModal();
+  const scaleX = useSpring(0, { stiffness: 100, damping: 30 });
+
+  useEffect(() => {
+    const onScroll = () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      scaleX.set(docHeight > 0 ? window.scrollY / docHeight : 0);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [scaleX]);
 
   const handleStrategyCall = () => {
     openModal("navbar_strategy_call");
@@ -39,6 +50,11 @@ const Navbar = () => {
           {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
+      {/* Progress bar attached to bottom of header */}
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary origin-left"
+        style={{ scaleX }}
+      />
       {open && (
         <nav className="md:hidden border-t border-border bg-background px-4 pb-4 space-y-3">
           {navLinks.map((l) => (
