@@ -5,12 +5,16 @@ import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLeadModal } from "@/components/LeadModalProvider";
+import studentAayushiJha from "@/assets/student-aayushi-jha.jpeg";
+import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
+import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
+import studentBhagyashree from "@/assets/student-bhagyashree.jpeg";
 
 const scorecards = [
-  { name: "Ananya S.", percentile: "99.4", college: "IIM Ahmedabad", initials: "AS", photo: "https://i.pravatar.cc/150?img=47" },
-  { name: "Rohan M.", percentile: "98.7", college: "IIM Bangalore", initials: "RM", photo: "https://i.pravatar.cc/150?img=68" },
-  { name: "Priya K.", percentile: "97.9", college: "IIM Calcutta", initials: "PK", photo: "https://i.pravatar.cc/150?img=45" },
-  { name: "Vikram D.", percentile: "96.5", college: "FMS Delhi", initials: "VD", photo: "https://i.pravatar.cc/150?img=60" },
+  { name: "Aayushi Jha", percentile: "99.7", college: "FMS Delhi", initials: "AJ", photo: studentAayushiJha },
+  { name: "Vishwajeet", percentile: "99.89", college: "XLRI Jamshedpur", initials: "VJ", photo: studentVishwajeet },
+  { name: "Aayushi Rana", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AR", photo: studentAayushiRana },
+  { name: "Bhagyashree Pathak", percentile: "98.2", college: "IIM Vizag", initials: "BP", photo: studentBhagyashree },
 ];
 
 const AnimatedNumber = ({ target }: { target: string }) => {
