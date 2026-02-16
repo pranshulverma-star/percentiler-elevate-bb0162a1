@@ -17,29 +17,35 @@ export type Database = {
       leads: {
         Row: {
           created_at: string
+          current_status: string | null
           id: string
           name: string | null
           phone_number: string
           prep_level: string | null
           source: string | null
+          target_percentile: number | null
           target_year: string | null
         }
         Insert: {
           created_at?: string
+          current_status?: string | null
           id?: string
           name?: string | null
           phone_number: string
           prep_level?: string | null
           source?: string | null
+          target_percentile?: number | null
           target_year?: string | null
         }
         Update: {
           created_at?: string
+          current_status?: string | null
           id?: string
           name?: string | null
           phone_number?: string
           prep_level?: string | null
           source?: string | null
+          target_percentile?: number | null
           target_year?: string | null
         }
         Relationships: []
