@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 
 const faculty = [
   {
-    name: "Pranshul Verma Sir",
-    role: "Founder & Mentor",
-    description: "7x CAT 100%iler. Built Percentilers to give every serious aspirant a structured path to 95+ percentile.",
-    initials: "PV",
+    name: "Mayank Raj Singh Sir",
+    role: "Academic Head",
+    description: "CAT veteran since 2006, 7x 100%iler. Nearly two decades of exam insight, strategy depth, and mentoring expertise.",
+    initials: "MR",
   },
   {
     name: "Mahajan Sir",
