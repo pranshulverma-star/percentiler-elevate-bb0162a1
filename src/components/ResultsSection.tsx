@@ -19,6 +19,8 @@ const results = [
   { name: "Aditya Kumar", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AK", photo: studentAditya, quote: "The daily planner kept me disciplined throughout my journey." },
   { name: "Shruti Manghani", percentile: "98.3", college: "SP Jain", initials: "SM", photo: studentShruti, quote: "Personalized mentorship gave me clarity when I needed it most." },
   { name: "Ritik Kumar", percentile: "98.1", college: "IIM Udaipur", initials: "RK", photo: studentRitik, quote: "Strategy over hours — that mindset shift changed everything for me." },
+  { name: "Adit Koul", percentile: "98.0", college: "SP Jain", initials: "AK", photo: studentAdit, quote: "The right guidance at the right time made my CAT journey smooth." },
+  { name: "Bhagyashree Pathak", percentile: "98.2", college: "IIM Vizag", initials: "BP", photo: studentBhagyashree, quote: "Consistent practice with expert feedback was the key to my success." },
 ];
 
 const ResultsSection = () => (
