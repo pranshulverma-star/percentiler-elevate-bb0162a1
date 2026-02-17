@@ -34,16 +34,25 @@ const PreparationPathSection = () => {
   const [selected, setSelected] = useState<Level | null>(null);
   const { openModal } = useLeadModal();
 
-  const handleCTA = (source: "masterclass" | "call") => {
-    const src = source === "masterclass" ? "homepage_selector_masterclass" : "homepage_selector_call";
-    openModal(src, () => {
-      if (source === "masterclass") {
+  const handlePrimaryCTA = (level: Level) => {
+    if (level === "beginner") {
+      openModal("homepage_selector_masterclass", () => {
         window.location.href = "/masterclass";
-      } else {
-        const el = document.getElementById("tools");
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }
-    });
+      });
+    } else if (level === "repeater") {
+      openModal("homepage_selector_readiness", () => {
+        window.location.href = "/free-cat-readiness-assessment";
+      });
+    } else {
+      openModal("homepage_selector_evaluate", () => {
+        const section = document.getElementById("profile-evaluator");
+        if (section) section.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+  };
+
+  const handleSecondaryCTA = () => {
+    openModal("homepage_selector_call");
   };
 
   return (
@@ -125,10 +134,10 @@ const PreparationPathSection = () => {
                         <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">{recommendations[pill.id].headline}</h3>
                         <p className="text-muted-foreground mb-6 max-w-lg mx-auto leading-relaxed text-sm">{recommendations[pill.id].text}</p>
                         <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                          <Button size="lg" onClick={() => handleCTA("masterclass")} className="shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-shadow">
-                            Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
+                          <Button size="lg" onClick={() => handlePrimaryCTA(pill.id)} className="shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-shadow">
+                            {pill.id === "repeater" ? "Take CAT Readiness Test" : pill.id === "advanced" ? "Evaluate My Profile" : "Watch Free Masterclass"} <ArrowRight className="ml-1 h-4 w-4" />
                           </Button>
-                          <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" onClick={() => handleCTA("call")}>
+                          <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" onClick={handleSecondaryCTA}>
                             <Phone className="mr-1.5 h-4 w-4" /> Book Free Counseling Call
                           </Button>
                         </div>
