@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import mentorImg from "@/assets/founder-pranshul.webp";
 
 const FounderSection = () => (
-  <section className="py-20 md:py-28 bg-secondary/50 relative overflow-hidden">
+  <section className="py-14 md:py-28 bg-secondary/50 relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-primary/[0.03] blur-3xl" />
     </div>
@@ -17,7 +17,7 @@ const FounderSection = () => (
         <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60 mb-2">Meet Your Mentor</span>
       </motion.div>
 
-      <div className="grid md:grid-cols-5 gap-10 md:gap-16 items-center max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-8 md:gap-16 items-center max-w-5xl mx-auto">
         {/* Image */}
         <motion.div
           className="md:col-span-2 flex justify-center"
@@ -62,7 +62,7 @@ const FounderSection = () => (
           <p className="text-muted-foreground leading-relaxed">
             After coaching 5,000+ students over 8 years, Pranshul saw that most students didn't lack talent — they lacked direction. That's why we built a system combining expert mentorship, data-driven mock analysis, and disciplined study planning.
           </p>
-          <div className="flex gap-8 pt-2">
+          <div className="flex gap-6 md:gap-8 pt-2 flex-wrap">
             {[
               { num: "5000+", label: "Students Mentored" },
               { num: "200+", label: "95+ Percentilers" },

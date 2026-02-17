@@ -35,7 +35,7 @@ const Navbar = () => {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-b border-border">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
-          <a href="#" className="text-xl font-bold tracking-tight text-foreground">
+          <a href="#" className="text-lg md:text-xl font-bold tracking-tight text-foreground">
             Percentilers
           </a>
           <nav className="hidden md:flex items-center gap-8">

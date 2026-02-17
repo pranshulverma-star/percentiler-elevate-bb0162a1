@@ -33,7 +33,7 @@ const testimonials = [
 const whatsappScreenshots = [whatsapp1, whatsapp2, whatsapp3, whatsapp4, whatsapp5, whatsapp6];
 
 const TestimonialsSection = () => (
-  <section className="py-20 md:py-28 bg-background relative overflow-hidden">
+  <section className="py-14 md:py-28 bg-background relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-primary/[0.02] blur-3xl" />
     </div>
@@ -52,7 +52,7 @@ const TestimonialsSection = () => (
       </motion.div>
 
       {/* Text testimonials */}
-      <div className="grid md:grid-cols-3 gap-6 mb-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16">
         {testimonials.map((t, i) => (
           <motion.div
             key={t.name}
