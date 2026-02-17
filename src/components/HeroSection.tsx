@@ -83,13 +83,19 @@ const HeroSection = () => {
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <Button size="lg" className="animate-pulse-glow text-base font-bold px-8 py-6 rounded-xl shadow-lg" onClick={() => {
-              const section = document.getElementById("profile-evaluator");
-              if (section) section.scrollIntoView({ behavior: "smooth" });
+              openModal("hero_evaluate_profile", () => {
+                const section = document.getElementById("profile-evaluator");
+                if (section) section.scrollIntoView({ behavior: "smooth" });
+              });
             }}>
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base font-bold px-8 py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" asChild>
-              <a href="/masterclass">Watch Free Masterclass</a>
+            <Button size="lg" variant="outline" className="text-base font-bold px-8 py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" onClick={() => {
+              openModal("hero_masterclass", () => {
+                window.location.href = "/masterclass";
+              });
+            }}>
+              Watch Free Masterclass
             </Button>
           </div>
         </motion.div>
