@@ -41,10 +41,12 @@ const FinalCTASection = () => {
           </p>
 
           <div className="flex flex-wrap justify-center gap-4 pt-4">
-            <Button size="lg" className="text-base px-8 py-6 rounded-xl animate-pulse-glow" asChild>
-              <a href="/masterclass">
-                Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
-              </a>
+            <Button size="lg" className="text-base px-8 py-6 rounded-xl animate-pulse-glow" onClick={() => {
+              openModal("final_cta_masterclass", () => {
+                window.location.href = "/masterclass";
+              });
+            }}>
+              Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
             <Button
               size="lg"

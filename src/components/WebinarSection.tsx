@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLeadModal } from "@/components/LeadModalProvider";
 
 const bullets = [
   "Study structure framework used by 99%ilers",
@@ -9,7 +10,10 @@ const bullets = [
   "Common mistakes that cost 10+ marks",
 ];
 
-const WebinarSection = () => (
+const WebinarSection = () => {
+  const { openModal } = useLeadModal();
+
+  return (
   <section id="masterclass" className="py-20 md:py-28 bg-secondary relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-1/2 left-0 w-96 h-96 -translate-y-1/2 rounded-full bg-primary/[0.04] blur-3xl" />
@@ -54,14 +58,17 @@ const WebinarSection = () => (
         viewport={{ once: true }}
         transition={{ delay: 0.3 }}
       >
-        <Button size="lg" className="animate-pulse-glow text-base px-8 py-6 rounded-xl" asChild>
-          <a href="/masterclass">
-            Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
-          </a>
+        <Button size="lg" className="animate-pulse-glow text-base px-8 py-6 rounded-xl" onClick={() => {
+          openModal("webinar_section_masterclass", () => {
+            window.location.href = "/masterclass";
+          });
+        }}>
+          Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
       </motion.div>
     </div>
   </section>
-);
+  );
+};
 
 export default WebinarSection;

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useLeadModal } from "@/components/LeadModalProvider";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -122,6 +123,7 @@ const renderCell = (val: boolean | string) => {
 };
 
 const CATOMETCourses = () => {
+  const { openModal } = useLeadModal();
   const [expandedCourse, setExpandedCourse] = useState<string | null>("guarantee");
 
   return (
@@ -409,14 +411,8 @@ const CATOMETCourses = () => {
               <p className="text-muted-foreground">
                 Our academic counselors can help you pick the perfect program based on your goals, schedule, and budget.
               </p>
-              <Button size="lg" asChild>
-                <a
-                  href="https://api.whatsapp.com/send?phone=%2B919310729425&text=Hi%2C%20I%20need%20help%20choosing%20a%20course"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Talk to a Counselor
-                </a>
+              <Button size="lg" onClick={() => openModal("courses_talk_to_counselor")}>
+                Book Free Counseling Call
               </Button>
             </motion.div>
           </div>

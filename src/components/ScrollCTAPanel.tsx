@@ -1,9 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { X, ArrowRight, Sparkles } from "lucide-react";
+import { useLeadModal } from "@/components/LeadModalProvider";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ScrollCTAPanel = () => {
+  const { openModal } = useLeadModal();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [hasClickedCTA, setHasClickedCTA] = useState(false);
@@ -56,13 +58,22 @@ const ScrollCTAPanel = () => {
             <p className="font-semibold text-foreground pr-4">Need a structured CAT plan?</p>
           </div>
           <div className="flex flex-col gap-2">
-            <Button size="sm" asChild onClick={dismiss}>
-              <a href="#tools">Generate Free Study Plan</a>
+            <Button size="sm" onClick={() => {
+              openModal("scroll_cta_study_plan", () => {
+                dismiss();
+                const el = document.getElementById("tools");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              });
+            }}>
+              Generate Free Study Plan
             </Button>
-            <Button size="sm" variant="outline" asChild onClick={dismiss}>
-              <a href="/masterclass">
-                Watch Free Masterclass <ArrowRight className="ml-1 h-3.5 w-3.5" />
-              </a>
+            <Button size="sm" variant="outline" onClick={() => {
+              openModal("scroll_cta_masterclass", () => {
+                dismiss();
+                window.location.href = "/masterclass";
+              });
+            }}>
+              Watch Free Masterclass <ArrowRight className="ml-1 h-3.5 w-3.5" />
             </Button>
           </div>
         </motion.div>
