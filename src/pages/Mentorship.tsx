@@ -181,33 +181,33 @@ const Mentorship = () => {
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main className="pt-16 md:pt-20">
         {/* Hero */}
-        <section className="relative py-12 md:py-16 overflow-hidden">
+        <section className="relative py-8 md:py-16 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-0 left-1/3 w-[500px] h-[500px] rounded-full bg-primary/[0.04] blur-3xl" />
-            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-violet-500/[0.03] blur-3xl" />
+            <div className="absolute top-0 left-1/3 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-primary/[0.04] blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[250px] md:w-[400px] h-[250px] md:h-[400px] rounded-full bg-violet-500/[0.03] blur-3xl" />
           </div>
 
-          <div className="container mx-auto px-4 md:px-6 relative z-10">
+          <div className="container mx-auto px-4 relative z-10">
             <motion.div
-              className="text-center max-w-3xl mx-auto space-y-4"
+              className="text-center max-w-3xl mx-auto space-y-2.5 md:space-y-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold tracking-wider uppercase px-4 py-1.5 rounded-full">
-                <Sparkles className="h-3.5 w-3.5" />
+              <div className="inline-flex items-center gap-1.5 md:gap-2 bg-primary/10 text-primary text-[10px] md:text-xs font-bold tracking-wider uppercase px-3 md:px-4 py-1 md:py-1.5 rounded-full">
+                <Sparkles className="h-3 w-3 md:h-3.5 md:w-3.5" />
                 1-on-1 Mentorship
               </div>
-              <h1 className="text-3xl md:text-5xl font-bold text-foreground leading-tight">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
                 Your CAT Success Story{" "}
                 <span className="text-primary relative">
                   Starts Here
-                  <Sparkles className="absolute -top-4 -right-6 h-5 w-5 text-primary animate-pulse" />
+                  <Sparkles className="absolute -top-2 -right-4 md:-top-4 md:-right-6 h-4 w-4 md:h-5 md:w-5 text-primary animate-pulse" />
                 </span>
               </h1>
-              <p className="text-base text-muted-foreground max-w-xl mx-auto">
+              <p className="text-xs md:text-base text-muted-foreground max-w-xl mx-auto">
                 Coach-agnostic. Action-first. Limited seats each week. 
                 Get personalized strategy from 7x CAT 100%ilers.
               </p>
@@ -215,7 +215,7 @@ const Mentorship = () => {
 
             {/* Stats */}
             <motion.div
-              className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl mx-auto"
+              className="mt-6 md:mt-10 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -223,13 +223,13 @@ const Mentorship = () => {
               {stats.map((s, i) => {
                 const Icon = s.icon;
                 return (
-                  <div key={i} className="flex items-center gap-3 bg-card border border-border rounded-xl p-3 shadow-sm">
-                    <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <Icon className="h-5 w-5 text-primary" />
+                  <div key={i} className="flex items-center gap-2 md:gap-3 bg-card border border-border rounded-xl p-2.5 md:p-3 shadow-sm">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                      <Icon className="h-4 w-4 md:h-5 md:w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="text-lg font-bold text-foreground leading-none">{s.value}</p>
-                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</p>
+                      <p className="text-sm md:text-lg font-bold text-foreground leading-none">{s.value}</p>
+                      <p className="text-[8px] md:text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</p>
                     </div>
                   </div>
                 );
@@ -239,10 +239,10 @@ const Mentorship = () => {
         </section>
 
         {/* Founder Strip */}
-        <section className="py-8 bg-secondary/40 border-y border-border">
-          <div className="container mx-auto px-4 md:px-6">
+        <section className="py-4 md:py-8 bg-secondary/40 border-y border-border">
+          <div className="container mx-auto px-4">
             <motion.div
-              className="flex flex-col md:flex-row items-center gap-6 max-w-3xl mx-auto text-center md:text-left"
+              className="flex items-center gap-3 md:gap-6 max-w-3xl mx-auto"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -250,15 +250,15 @@ const Mentorship = () => {
               <img
                 src={mentorImg}
                 alt="Pranshul Agrawal"
-                className="w-20 h-20 rounded-full object-cover border-4 border-primary/20 shadow-lg shrink-0"
+                className="w-12 h-12 md:w-20 md:h-20 rounded-full object-cover border-2 md:border-4 border-primary/20 shadow-lg shrink-0"
               />
-              <div className="space-y-1">
-                <div className="flex items-center gap-2 justify-center md:justify-start flex-wrap">
-                  <h3 className="text-lg font-bold text-foreground">Pranshul Agrawal</h3>
-                  <Badge className="bg-primary text-primary-foreground text-[10px]">7x CAT 100%iler</Badge>
+              <div className="space-y-0.5 md:space-y-1">
+                <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
+                  <h3 className="text-sm md:text-lg font-bold text-foreground">Pranshul Agrawal</h3>
+                  <Badge className="bg-primary text-primary-foreground text-[8px] md:text-[10px]">7x CAT 100%iler</Badge>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  IIM Ahmedabad alumnus · 10,000+ students mentored · Featured in Times of India, Hindustan Times
+                <p className="text-[10px] md:text-sm text-muted-foreground">
+                  IIM Ahmedabad alumnus · 10,000+ students mentored
                 </p>
               </div>
             </motion.div>
@@ -266,86 +266,85 @@ const Mentorship = () => {
         </section>
 
         {/* Mentorship Tiers */}
-        <section className="py-14 md:py-20 bg-background">
-          <div className="container mx-auto px-4 md:px-6">
+        <section className="py-8 md:py-20 bg-background">
+          <div className="container mx-auto px-4">
             <motion.div
-              className="text-center mb-12 space-y-3"
+              className="text-center mb-6 md:mb-12 space-y-2 md:space-y-3"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Choose Your Level</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.25em] md:tracking-[0.3em] uppercase text-primary/60">Choose Your Level</span>
+              <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-foreground">
                 Pick the Mentorship That <span className="text-primary">Fits You</span>
               </h2>
-              <p className="text-sm text-muted-foreground max-w-lg mx-auto">
+              <p className="text-xs md:text-sm text-muted-foreground max-w-lg mx-auto">
                 From a quick 15-min nudge to a full monthly subscription — every tier is designed for results.
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 max-w-6xl mx-auto">
               {mentorshipTiers.map((tier, i) => {
                 const Icon = tier.icon;
                 const isExpanded = expandedTier === tier.id;
-                const _isHovered = hoveredCard === tier.id;
 
                 return (
                   <motion.div
                     key={tier.id}
-                    initial={{ opacity: 0, scale: 0.9 }}
+                    initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.3, delay: i * 0.08 }}
+                    transition={{ duration: 0.3, delay: i * 0.05 }}
                     onMouseEnter={() => setHoveredCard(tier.id)}
                     onMouseLeave={() => setHoveredCard(null)}
                   >
                     <Card className={`relative overflow-hidden border-2 ${tier.borderColor} transition-all duration-300 group h-full flex flex-col ${tier.featured ? "ring-2 ring-primary/20" : ""}`}>
                       {/* Gradient header */}
-                      <div className={`bg-gradient-to-br ${tier.gradient} p-5 pb-10 relative`}>
+                      <div className={`bg-gradient-to-br ${tier.gradient} p-3 md:p-5 pb-8 md:pb-10 relative`}>
                         {tier.featured && (
-                          <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[9px] font-bold px-3 py-1 rounded-bl-lg tracking-wider uppercase">
+                          <div className="absolute top-0 right-0 bg-primary text-primary-foreground text-[8px] md:text-[9px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg tracking-wider uppercase">
                             ⭐ Recommended
                           </div>
                         )}
                         <div className="flex items-start justify-between">
-                          <div className={`w-14 h-14 rounded-2xl ${tier.iconBg} flex items-center justify-center`}>
-                            <Icon className={`h-7 w-7 ${tier.iconColor}`} />
+                          <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl ${tier.iconBg} flex items-center justify-center`}>
+                            <Icon className={`h-5 w-5 md:h-7 md:w-7 ${tier.iconColor}`} />
                           </div>
-                          <Badge className={`${tier.tagColor} text-[10px]`}>{tier.tag}</Badge>
+                          <Badge className={`${tier.tagColor} text-[8px] md:text-[10px]`}>{tier.tag}</Badge>
                         </div>
-                        <h3 className="text-lg font-bold text-foreground mt-3">{tier.name}</h3>
-                        <p className="text-xs text-muted-foreground">{tier.duration}</p>
+                        <h3 className="text-sm md:text-lg font-bold text-foreground mt-2 md:mt-3">{tier.name}</h3>
+                        <p className="text-[10px] md:text-xs text-muted-foreground">{tier.duration}</p>
                       </div>
 
                       {/* XP reward bar */}
-                      <div className="relative -mt-5 mx-4">
-                        <div className="bg-card border border-border rounded-xl p-3 shadow-sm flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
-                              <Zap className="h-4 w-4 text-amber-600" />
+                      <div className="relative -mt-4 md:-mt-5 mx-3 md:mx-4">
+                        <div className="bg-card border border-border rounded-xl p-2 md:p-3 shadow-sm flex items-center justify-between">
+                          <div className="flex items-center gap-1.5 md:gap-2">
+                            <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                              <Zap className="h-3 w-3 md:h-4 md:w-4 text-amber-600" />
                             </div>
                             <div>
-                              <p className="text-xs font-bold text-foreground">{tier.xp} XP</p>
-                              <p className="text-[9px] text-muted-foreground">Reward</p>
+                              <p className="text-[10px] md:text-xs font-bold text-foreground">{tier.xp} XP</p>
+                              <p className="text-[8px] md:text-[9px] text-muted-foreground">Reward</p>
                             </div>
                           </div>
-                          <Badge variant="outline" className="text-[9px] gap-1">
-                            <Trophy className="h-2.5 w-2.5" /> {tier.badge}
+                          <Badge variant="outline" className="text-[8px] md:text-[9px] gap-0.5 md:gap-1">
+                            <Trophy className="h-2 w-2 md:h-2.5 md:w-2.5" /> {tier.badge}
                           </Badge>
                         </div>
                       </div>
 
                       {/* Content */}
-                      <div className="p-5 pt-4 flex-1 flex flex-col">
-                        <p className="text-sm font-medium text-foreground mb-2">"{tier.oneLiner}"</p>
-                        <p className="text-xs text-muted-foreground mb-4">
+                      <div className="p-3 md:p-5 pt-2.5 md:pt-4 flex-1 flex flex-col">
+                        <p className="text-xs md:text-sm font-medium text-foreground mb-1.5 md:mb-2">"{tier.oneLiner}"</p>
+                        <p className="text-[10px] md:text-xs text-muted-foreground mb-3 md:mb-4">
                           <span className="font-semibold text-foreground">Best for:</span> {tier.bestFor}
                         </p>
 
                         {/* Expandable features */}
                         <button
                           onClick={() => setExpandedTier(isExpanded ? null : tier.id)}
-                          className="flex items-center gap-1 text-xs font-semibold text-primary mb-2 hover:underline"
+                          className="flex items-center gap-1 text-[10px] md:text-xs font-semibold text-primary mb-1.5 md:mb-2 hover:underline"
                         >
                           What you get {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                         </button>
@@ -359,16 +358,16 @@ const Mentorship = () => {
                               transition={{ duration: 0.2 }}
                               className="overflow-hidden"
                             >
-                              <div className="space-y-1.5 mb-4">
+                              <div className="space-y-1 md:space-y-1.5 mb-3 md:mb-4">
                                 {tier.features.map((f, idx) => (
                                   <motion.div
                                     key={idx}
-                                    className="flex items-center gap-2 text-xs text-foreground"
+                                    className="flex items-center gap-1.5 md:gap-2 text-[10px] md:text-xs text-foreground"
                                     initial={{ x: -5, opacity: 0 }}
                                     animate={{ x: 0, opacity: 1 }}
                                     transition={{ delay: idx * 0.04 }}
                                   >
-                                    <CheckCircle2 className="h-3.5 w-3.5 text-green-500 shrink-0" />
+                                    <CheckCircle2 className="h-3 w-3 md:h-3.5 md:w-3.5 text-green-500 shrink-0" />
                                     {f}
                                   </motion.div>
                                 ))}
@@ -378,15 +377,15 @@ const Mentorship = () => {
                         </AnimatePresence>
 
                         {/* Price + CTA */}
-                        <div className="flex items-end justify-between mt-auto pt-3 border-t border-border">
+                        <div className="flex items-end justify-between mt-auto pt-2.5 md:pt-3 border-t border-border">
                           <div>
-                            <span className="text-xl font-bold text-foreground">₹{tier.price.toLocaleString()}</span>
-                            {tier.perMonth && <span className="text-xs text-muted-foreground">/month</span>}
+                            <span className="text-lg md:text-xl font-bold text-foreground">₹{tier.price.toLocaleString()}</span>
+                            {tier.perMonth && <span className="text-[10px] md:text-xs text-muted-foreground">/month</span>}
                           </div>
-                          <Button size="sm" className="group/btn" asChild>
+                          <Button size="sm" className="group/btn text-xs md:text-sm h-8 md:h-9 px-3 md:px-4" asChild>
                             <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer">
                               Book Now
-                              <ArrowRight className="ml-1 h-3.5 w-3.5 transition-transform group-hover/btn:translate-x-1" />
+                              <ArrowRight className="ml-1 h-3 w-3 md:h-3.5 md:w-3.5 transition-transform group-hover/btn:translate-x-1" />
                             </a>
                           </Button>
                         </div>
@@ -400,21 +399,21 @@ const Mentorship = () => {
         </section>
 
         {/* Testimonials */}
-        <section className="py-14 md:py-20 bg-secondary/30">
-          <div className="container mx-auto px-4 md:px-6">
+        <section className="py-8 md:py-20 bg-secondary/30">
+          <div className="container mx-auto px-4">
             <motion.div
-              className="text-center mb-12 space-y-3"
+              className="text-center mb-6 md:mb-12 space-y-2 md:space-y-3"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Success Stories</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.25em] md:tracking-[0.3em] uppercase text-primary/60">Success Stories</span>
+              <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-foreground">
                 What Students Who Trusted Us <span className="text-primary">Have to Say</span>
               </h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 max-w-5xl mx-auto">
               {[
                 {
                   name: "Naira Khurana",
@@ -455,30 +454,29 @@ const Mentorship = () => {
               ].map((t, i) => (
                 <motion.div
                   key={t.name}
-                  initial={{ opacity: 0, y: 20 }}
+                  initial={{ opacity: 0, y: 15 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  whileHover={{ y: -4 }}
+                  transition={{ delay: i * 0.08 }}
                 >
-                  <Card className="p-5 h-full flex flex-col hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
-                    <div className="flex items-center gap-3 mb-3">
-                      <Avatar className="h-10 w-10 ring-2 ring-primary/20">
-                        <AvatarFallback className="text-xs font-bold bg-primary/10 text-primary">
+                  <Card className="p-3 md:p-5 h-full flex flex-col border border-border">
+                    <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
+                      <Avatar className="h-8 w-8 md:h-10 md:w-10 ring-2 ring-primary/20">
+                        <AvatarFallback className="text-[10px] md:text-xs font-bold bg-primary/10 text-primary">
                           {t.initials}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="text-sm font-bold text-foreground">{t.name}</p>
-                        <Badge variant="outline" className="text-[9px] px-1.5 py-0">{t.college}</Badge>
+                        <p className="text-xs md:text-sm font-bold text-foreground">{t.name}</p>
+                        <Badge variant="outline" className="text-[8px] md:text-[9px] px-1.5 py-0">{t.college}</Badge>
                       </div>
                     </div>
-                    <div className="flex gap-0.5 mb-2">
+                    <div className="flex gap-0.5 mb-1.5 md:mb-2">
                       {Array.from({ length: 5 }).map((_, j) => (
-                        <Star key={j} className="h-3.5 w-3.5 fill-primary text-primary" />
+                        <Star key={j} className="h-3 w-3 md:h-3.5 md:w-3.5 fill-primary text-primary" />
                       ))}
                     </div>
-                    <p className="text-xs text-muted-foreground leading-relaxed flex-1">"{t.text}"</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground leading-relaxed flex-1">"{t.text}"</p>
                   </Card>
                 </motion.div>
               ))}
@@ -487,43 +485,43 @@ const Mentorship = () => {
         </section>
 
         {/* How it works */}
-        <section className="py-14 md:py-20 bg-background">
-          <div className="container mx-auto px-4 md:px-6">
+        <section className="py-8 md:py-20 bg-background">
+          <div className="container mx-auto px-4">
             <motion.div
-              className="text-center mb-12 space-y-3"
+              className="text-center mb-6 md:mb-12 space-y-2 md:space-y-3"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Process</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.25em] md:tracking-[0.3em] uppercase text-primary/60">Process</span>
+              <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-foreground">
                 How It <span className="text-primary">Works</span>
               </h2>
             </motion.div>
 
-            <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 max-w-4xl mx-auto">
               {[
                 { step: "01", title: "Choose Your Tier", desc: "Pick the mentorship level that fits your needs.", icon: Target },
                 { step: "02", title: "Book & Pay", desc: "Secure your slot — limited seats each week.", icon: Calendar },
                 { step: "03", title: "Get Mentored", desc: "Personalized 1-on-1 session with expert mentor.", icon: MessageCircle },
                 { step: "04", title: "Execute & Win", desc: "Follow the plan, track progress, crack CAT.", icon: Flame },
               ].map((s, i) => {
-                const Icon = s.icon;
+                const StepIcon = s.icon;
                 return (
                   <motion.div
                     key={i}
-                    className="text-center space-y-3"
+                    className="text-center space-y-1.5 md:space-y-3"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: i * 0.1 }}
                   >
-                    <div className="w-14 h-14 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center">
-                      <Icon className="h-7 w-7 text-primary" />
+                    <div className="w-10 h-10 md:w-14 md:h-14 mx-auto rounded-xl md:rounded-2xl bg-primary/10 flex items-center justify-center">
+                      <StepIcon className="h-5 w-5 md:h-7 md:w-7 text-primary" />
                     </div>
-                    <p className="text-xs font-bold text-primary tracking-wider">{s.step}</p>
-                    <h3 className="text-sm font-bold text-foreground">{s.title}</h3>
-                    <p className="text-xs text-muted-foreground">{s.desc}</p>
+                    <p className="text-[9px] md:text-xs font-bold text-primary tracking-wider">{s.step}</p>
+                    <h3 className="text-xs md:text-sm font-bold text-foreground">{s.title}</h3>
+                    <p className="text-[10px] md:text-xs text-muted-foreground">{s.desc}</p>
                   </motion.div>
                 );
               })}
@@ -532,27 +530,27 @@ const Mentorship = () => {
         </section>
 
         {/* Final CTA */}
-        <section className="py-14 md:py-20 bg-primary/5">
-          <div className="container mx-auto px-4 md:px-6 text-center">
+        <section className="py-8 md:py-20 bg-primary/5">
+          <div className="container mx-auto px-4 text-center">
             <motion.div
-              className="max-w-2xl mx-auto space-y-5"
+              className="max-w-2xl mx-auto space-y-3 md:space-y-5"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-xl md:text-3xl lg:text-4xl font-bold text-foreground">
                 Ready to <span className="text-primary">Level Up?</span>
               </h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs md:text-sm text-muted-foreground">
                 Limited slots available each week. Don't wait — your CAT journey deserves expert guidance.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button size="lg" asChild>
+              <div className="flex flex-col sm:flex-row gap-2 md:gap-3 justify-center">
+                <Button size="lg" className="w-full sm:w-auto" asChild>
                   <a href={PAYMENT_URL} target="_blank" rel="noopener noreferrer">
                     Book Your Session <ArrowRight className="ml-2 h-4 w-4" />
                   </a>
                 </Button>
-                <Button size="lg" variant="outline" asChild>
+                <Button size="lg" variant="outline" className="w-full sm:w-auto" asChild>
                   <a href="https://wa.me/919911928071?text=Hi%2C%20I%27m%20interested%20in%20mentorship" target="_blank" rel="noopener noreferrer">
                     <MessageCircle className="mr-2 h-4 w-4" /> Chat on WhatsApp
                   </a>
