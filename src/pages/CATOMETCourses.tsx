@@ -129,30 +129,30 @@ const CATOMETCourses = () => {
   return (
     <>
       <Navbar />
-      <main className="pt-20">
+      <main className="pt-16 md:pt-20">
         {/* Hero – compact */}
-        <section className="relative py-10 md:py-14 overflow-hidden">
+        <section className="relative py-8 md:py-14 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full bg-primary/[0.04] blur-3xl" />
+            <div className="absolute top-1/4 left-1/4 w-[400px] md:w-[600px] h-[400px] md:h-[600px] rounded-full bg-primary/[0.04] blur-3xl" />
           </div>
-          <div className="container mx-auto px-4 md:px-6 relative z-10 text-center">
+          <div className="container mx-auto px-4 relative z-10 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="space-y-3 max-w-3xl mx-auto"
+              className="space-y-2.5 md:space-y-3 max-w-3xl mx-auto"
             >
-              <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/70">
+              <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.25em] md:tracking-[0.3em] uppercase text-primary/70">
                 CAT + OMET Programs
               </span>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
+              <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold text-foreground leading-tight">
                 Choose Your Path to{" "}
                 <span className="text-primary relative">
                   IIM
-                  <Sparkles className="absolute -top-3 -right-6 h-5 w-5 text-primary animate-pulse" />
+                  <Sparkles className="absolute -top-2 -right-5 md:-top-3 md:-right-6 h-4 w-4 md:h-5 md:w-5 text-primary animate-pulse" />
                 </span>
               </h1>
-              <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto">
                 Three programs tailored to your schedule, budget, and ambition.
               </p>
             </motion.div>
@@ -160,10 +160,10 @@ const CATOMETCourses = () => {
         </section>
 
         {/* Founder trust strip */}
-        <section className="py-6 bg-secondary/40 border-y border-border">
-          <div className="container mx-auto px-4 md:px-6">
+        <section className="py-4 md:py-6 bg-secondary/40 border-y border-border">
+          <div className="container mx-auto px-4">
             <motion.div
-              className="flex flex-col sm:flex-row items-center gap-4 max-w-3xl mx-auto"
+              className="flex items-center gap-3 md:gap-4 max-w-3xl mx-auto"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -173,24 +173,24 @@ const CATOMETCourses = () => {
                 <img
                   src={mentorImg}
                   alt="Pranshul Agrawal – 7x CAT 100%iler"
-                  className="relative w-16 h-16 rounded-full object-cover ring-2 ring-primary/30"
+                  className="relative w-12 h-12 md:w-16 md:h-16 rounded-full object-cover ring-2 ring-primary/30"
                 />
               </div>
-              <div className="text-center sm:text-left">
-                <p className="text-sm font-bold text-foreground">
+              <div>
+                <p className="text-xs md:text-sm font-bold text-foreground">
                   Designed by Pranshul Agrawal{" "}
-                  <Badge className="bg-primary/10 text-primary text-[9px] ml-1 align-middle">7x CAT 100%iler</Badge>
+                  <Badge className="bg-primary/10 text-primary text-[8px] md:text-[9px] ml-1 align-middle">7x CAT 100%iler</Badge>
                 </p>
-                <p className="text-xs text-muted-foreground mt-0.5">IIM-A Alumni · 10,000+ students mentored · Featured in Times of India</p>
+                <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5">IIM-A Alumni · 10,000+ students mentored</p>
               </div>
             </motion.div>
           </div>
         </section>
 
         {/* Mini testimonials strip */}
-        <section className="py-8 bg-background">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <section className="py-6 md:py-8 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
               {[
                 { name: "Aarav S.", percentile: "99.2%ile", college: "IIM Ahmedabad", quote: "The guarantee course changed my life." },
                 { name: "Priya M.", percentile: "98.5%ile", college: "IIM Bangalore", quote: "Live classes kept me accountable every day." },
@@ -203,18 +203,18 @@ const CATOMETCourses = () => {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  <Card className="p-4 h-full border border-border">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
+                  <Card className="p-3 md:p-4 h-full border border-border">
+                    <div className="flex items-center gap-2 mb-1.5 md:mb-2">
+                      <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary/10 flex items-center justify-center text-[10px] md:text-xs font-bold text-primary">
                         {t.name[0]}
                       </div>
                       <div>
-                        <p className="text-xs font-semibold text-foreground">{t.name}</p>
-                        <p className="text-[10px] text-muted-foreground">{t.college}</p>
+                        <p className="text-[10px] md:text-xs font-semibold text-foreground">{t.name}</p>
+                        <p className="text-[9px] md:text-[10px] text-muted-foreground">{t.college}</p>
                       </div>
-                      <Badge variant="secondary" className="ml-auto text-[10px] font-bold">{t.percentile}</Badge>
+                      <Badge variant="secondary" className="ml-auto text-[9px] md:text-[10px] font-bold">{t.percentile}</Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground italic">"{t.quote}"</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground italic">"{t.quote}"</p>
                   </Card>
                 </motion.div>
               ))}
@@ -223,58 +223,54 @@ const CATOMETCourses = () => {
         </section>
 
         {/* Course Cards */}
-        <section className="py-12 md:py-20 bg-secondary/30">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-col gap-6 max-w-6xl mx-auto">
+        <section className="py-8 md:py-20 bg-secondary/30">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col gap-4 md:gap-6 max-w-6xl mx-auto">
               {courses.map((course, i) => {
                 const isExpanded = expandedCourse === course.id;
-                const displayedHighlights = isExpanded ? course.highlights : course.highlights.slice(0, 5);
+                const displayedHighlights = isExpanded ? course.highlights : course.highlights.slice(0, 4);
                 const CourseIcon = course.icon;
 
                 return (
                   <motion.div
                     key={course.id}
-                    initial={{ opacity: 0, y: 40 }}
+                    initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: i * 0.12 }}
+                    transition={{ duration: 0.5, delay: i * 0.1 }}
                   >
                     <Card className={`relative border-2 border-border ${course.borderAccent} transition-all duration-300 overflow-hidden group`}>
-                      <div className={`h-1.5 w-full bg-gradient-to-r ${course.accent}`} />
+                      <div className={`h-1 md:h-1.5 w-full bg-gradient-to-r ${course.accent}`} />
 
                       <div className="flex flex-col md:flex-row">
                         {/* Left: Icon + Price panel */}
-                        <div className={`flex flex-col items-center justify-center gap-4 p-8 md:w-[260px] shrink-0 bg-gradient-to-br ${course.accent} border-b md:border-b-0 md:border-r border-border`}>
-                          <div className={`w-20 h-20 rounded-2xl ${course.iconBg} flex items-center justify-center`}>
-                            <CourseIcon className="h-10 w-10 text-primary" />
+                        <div className={`flex flex-row md:flex-col items-center justify-between md:justify-center gap-3 md:gap-4 p-4 md:p-8 md:w-[260px] shrink-0 bg-gradient-to-br ${course.accent} border-b md:border-b-0 md:border-r border-border`}>
+                          <div className="flex items-center gap-3 md:flex-col md:text-center">
+                            <div className={`w-12 h-12 md:w-20 md:h-20 rounded-xl md:rounded-2xl ${course.iconBg} flex items-center justify-center shrink-0`}>
+                              <CourseIcon className="h-6 w-6 md:h-10 md:w-10 text-primary" />
+                            </div>
+                            <div>
+                              <Badge className={`${course.badgeColor} text-[8px] md:text-[10px] tracking-wider uppercase mb-1 md:mb-2`}>
+                                {course.badge}
+                              </Badge>
+                              <h3 className="text-sm md:text-lg font-bold text-foreground">{course.name}</h3>
+                              <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5 md:mt-1">{course.tagline}</p>
+                            </div>
                           </div>
-                          <div className="text-center">
-                            <Badge className={`${course.badgeColor} text-[10px] tracking-wider uppercase mb-2`}>
-                              {course.badge}
-                            </Badge>
-                            <h3 className="text-lg font-bold text-foreground">{course.name}</h3>
-                            <p className="text-xs text-muted-foreground mt-1">{course.tagline}</p>
-                          </div>
-                          <div className="text-center">
-                            <span className="text-3xl font-bold text-foreground">₹{course.price.toLocaleString("en-IN")}</span>
-                            <div className="flex items-center gap-2 justify-center mt-1">
-                              <span className="text-xs text-muted-foreground line-through">₹{course.originalPrice.toLocaleString("en-IN")}</span>
-                              <Badge variant="secondary" className="text-[10px]">
+                          <div className="text-right md:text-center shrink-0">
+                            <span className="text-xl md:text-3xl font-bold text-foreground">₹{course.price.toLocaleString("en-IN")}</span>
+                            <div className="flex items-center gap-1.5 md:gap-2 justify-end md:justify-center mt-0.5 md:mt-1">
+                              <span className="text-[10px] md:text-xs text-muted-foreground line-through">₹{course.originalPrice.toLocaleString("en-IN")}</span>
+                              <Badge variant="secondary" className="text-[8px] md:text-[10px]">
                                 {Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100)}% OFF
                               </Badge>
                             </div>
                           </div>
-                          <span className="text-[10px] text-muted-foreground tracking-wide uppercase">{course.language}</span>
-                          <Button className="w-full mt-2 group/btn" asChild>
-                            <a href={course.url} target="_blank" rel="noopener noreferrer">
-                              Enroll Now <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-                            </a>
-                          </Button>
                         </div>
 
                         {/* Right: Features */}
-                        <div className="p-6 flex-1 flex flex-col">
-                          <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5 mb-4 flex-1">
+                        <div className="p-4 md:p-6 flex-1 flex flex-col">
+                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 md:gap-x-6 gap-y-2 md:gap-y-2.5 mb-3 md:mb-4 flex-1">
                             {displayedHighlights.map((h, idx) => {
                               const Icon = h.icon;
                               return (
@@ -284,31 +280,47 @@ const CATOMETCourses = () => {
                                   whileInView={{ opacity: 1, x: 0 }}
                                   viewport={{ once: true }}
                                   transition={{ delay: idx * 0.04 }}
-                                  className="flex items-start gap-2.5 text-sm text-foreground"
+                                  className="flex items-start gap-2 text-xs md:text-sm text-foreground"
                                 >
-                                  <Icon className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                                  <Icon className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary mt-0.5 shrink-0" />
                                   <span>{h.text}</span>
                                 </motion.li>
                               );
                             })}
                           </ul>
 
-                          {course.highlights.length > 5 && (
+                          {course.highlights.length > 4 && (
                             <button
                               onClick={() => setExpandedCourse(isExpanded ? null : course.id)}
-                              className="flex items-center gap-1 text-xs text-primary font-medium mb-4 hover:underline"
+                              className="flex items-center gap-1 text-[10px] md:text-xs text-primary font-medium mb-3 md:mb-4 hover:underline"
                             >
-                              {isExpanded ? "Show less" : `+${course.highlights.length - 5} more features`}
+                              {isExpanded ? "Show less" : `+${course.highlights.length - 4} more features`}
                               {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
                             </button>
                           )}
 
-                          <div className="bg-secondary/60 rounded-lg p-3">
-                            <p className="text-xs text-muted-foreground">
+                          <div className="bg-secondary/60 rounded-lg p-2.5 md:p-3 mb-3 md:mb-0">
+                            <p className="text-[10px] md:text-xs text-muted-foreground">
                               <span className="font-semibold text-foreground">Best for:</span> {course.bestFor}
                             </p>
                           </div>
+
+                          <Button className="w-full mt-3 md:hidden group/btn" asChild>
+                            <a href={course.url} target="_blank" rel="noopener noreferrer">
+                              Enroll Now <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                            </a>
+                          </Button>
                         </div>
+                      </div>
+
+                      {/* Desktop enroll button in left panel */}
+                      <div className="hidden md:block absolute bottom-6 left-0 w-[260px] px-8">
+                        <Button className="w-full group/btn" asChild>
+                          <a href={course.url} target="_blank" rel="noopener noreferrer">
+                            Enroll Now <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                          </a>
+                        </Button>
+                        <p className="text-[10px] text-muted-foreground tracking-wide uppercase text-center mt-2">{course.language}</p>
                       </div>
                     </Card>
                   </motion.div>
@@ -319,18 +331,18 @@ const CATOMETCourses = () => {
         </section>
 
         {/* Comparison Table */}
-        <section className="py-16 md:py-24 bg-background">
-          <div className="container mx-auto px-4 md:px-6">
+        <section className="py-10 md:py-24 bg-background">
+          <div className="container mx-auto px-4">
             <motion.div
-              className="text-center mb-12 space-y-3"
+              className="text-center mb-8 md:mb-12 space-y-2 md:space-y-3"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">
+              <span className="inline-block text-[10px] md:text-xs font-bold tracking-[0.25em] md:tracking-[0.3em] uppercase text-primary/60">
                 Side-by-Side
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+              <h2 className="text-2xl md:text-4xl font-bold text-foreground">
                 Compare <span className="text-primary">All Programs</span>
               </h2>
             </motion.div>
@@ -341,7 +353,49 @@ const CATOMETCourses = () => {
               viewport={{ once: true }}
               className="max-w-5xl mx-auto"
             >
-              <Card className="overflow-hidden border">
+              {/* Mobile: stacked comparison cards */}
+              <div className="block md:hidden space-y-3">
+                {comparisonFeatures.map((row, i) => (
+                  <div key={i} className="bg-card rounded-xl border border-border p-3">
+                    <p className="text-xs font-semibold text-foreground mb-2">{row.feature}</p>
+                    <div className="grid grid-cols-3 gap-2 text-center">
+                      <div>
+                        <p className="text-[9px] text-muted-foreground mb-1">Guarantee</p>
+                        <div className="text-xs font-medium">{renderCell(row.guarantee)}</div>
+                      </div>
+                      <div>
+                        <p className="text-[9px] text-muted-foreground mb-1">Live</p>
+                        <div className="text-xs font-medium">{renderCell(row.live)}</div>
+                      </div>
+                      <div>
+                        <p className="text-[9px] text-muted-foreground mb-1">Recorded</p>
+                        <div className="text-xs font-medium">{renderCell(row.recorded)}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                {/* Price row mobile */}
+                <div className="bg-primary/5 rounded-xl border border-primary/20 p-3">
+                  <p className="text-xs font-bold text-foreground mb-2">Price</p>
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div>
+                      <p className="text-[9px] text-muted-foreground mb-1">Guarantee</p>
+                      <p className="text-sm font-bold text-primary">₹27,999</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-muted-foreground mb-1">Live</p>
+                      <p className="text-sm font-bold text-foreground">₹24,999</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] text-muted-foreground mb-1">Recorded</p>
+                      <p className="text-sm font-bold text-foreground">₹10,000</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop: table */}
+              <Card className="overflow-hidden border hidden md:block">
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
@@ -366,7 +420,6 @@ const CATOMETCourses = () => {
                           <TableCell className="text-center">{renderCell(row.recorded)}</TableCell>
                         </TableRow>
                       ))}
-                      {/* Price row */}
                       <TableRow className="bg-primary/5 font-bold">
                         <TableCell className="font-bold text-foreground">Price</TableCell>
                         <TableCell className="text-center text-lg font-bold text-primary">₹27,999</TableCell>
@@ -380,12 +433,12 @@ const CATOMETCourses = () => {
             </motion.div>
 
             {/* CTA Row */}
-            <div className="flex flex-col sm:flex-row justify-center gap-4 mt-10 max-w-3xl mx-auto">
+            <div className="flex flex-col sm:flex-row justify-center gap-3 md:gap-4 mt-8 md:mt-10 max-w-3xl mx-auto">
               {courses.map((c) => (
                 <Button
                   key={c.id}
                   variant={c.id === "guarantee" ? "default" : "outline"}
-                  className="flex-1"
+                  className="flex-1 text-sm"
                   asChild
                 >
                   <a href={c.url} target="_blank" rel="noopener noreferrer">
@@ -399,19 +452,19 @@ const CATOMETCourses = () => {
         </section>
 
         {/* Need Help */}
-        <section className="py-16 bg-secondary/30">
-          <div className="container mx-auto px-4 md:px-6 text-center max-w-2xl">
+        <section className="py-10 md:py-16 bg-secondary/30">
+          <div className="container mx-auto px-4 text-center max-w-2xl">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="space-y-4"
+              className="space-y-3 md:space-y-4"
             >
-              <h3 className="text-2xl font-bold text-foreground">Not sure which course is right for you?</h3>
-              <p className="text-muted-foreground">
+              <h3 className="text-xl md:text-2xl font-bold text-foreground">Not sure which course is right for you?</h3>
+              <p className="text-sm md:text-base text-muted-foreground">
                 Our academic counselors can help you pick the perfect program based on your goals, schedule, and budget.
               </p>
-              <Button size="lg" onClick={() => openModal("courses_talk_to_counselor")}>
+              <Button size="lg" className="w-full sm:w-auto" onClick={() => openModal("courses_talk_to_counselor")}>
                 Book Free Counseling Call
               </Button>
             </motion.div>
