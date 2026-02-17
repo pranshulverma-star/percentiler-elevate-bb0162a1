@@ -124,7 +124,7 @@ const renderCell = (val: boolean | string) => {
 
 const CATOMETCourses = () => {
   const { openModal } = useLeadModal();
-  const [expandedCourse, setExpandedCourse] = useState<string | null>("guarantee");
+  const [expandedCourse, setExpandedCourse] = useState<string | null>(null);
 
   return (
     <>
@@ -228,7 +228,6 @@ const CATOMETCourses = () => {
             <div className="flex flex-col gap-4 md:gap-6 max-w-6xl mx-auto">
               {courses.map((course, i) => {
                 const isExpanded = expandedCourse === course.id;
-                const displayedHighlights = isExpanded ? course.highlights : course.highlights.slice(0, 4);
                 const CourseIcon = course.icon;
 
                 return (
@@ -239,89 +238,88 @@ const CATOMETCourses = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: i * 0.1 }}
                   >
-                    <Card className={`relative border-2 border-border ${course.borderAccent} transition-all duration-300 overflow-hidden group`}>
+                    <Card
+                      className={`relative border-2 border-border ${course.borderAccent} transition-all duration-300 overflow-hidden group cursor-pointer`}
+                      onClick={() => setExpandedCourse(isExpanded ? null : course.id)}
+                    >
                       <div className={`h-1 md:h-1.5 w-full bg-gradient-to-r ${course.accent}`} />
 
-                      <div className="flex flex-col md:flex-row">
-                        {/* Left: Icon + Price panel */}
-                        <div className={`flex flex-row md:flex-col items-center justify-between md:justify-center gap-3 md:gap-4 p-4 md:p-8 md:w-[260px] shrink-0 bg-gradient-to-br ${course.accent} border-b md:border-b-0 md:border-r border-border`}>
-                          <div className="flex items-center gap-3 md:flex-col md:text-center">
-                            <div className={`w-12 h-12 md:w-20 md:h-20 rounded-xl md:rounded-2xl ${course.iconBg} flex items-center justify-center shrink-0`}>
-                              <CourseIcon className="h-6 w-6 md:h-10 md:w-10 text-primary" />
-                            </div>
-                            <div>
-                              <Badge className={`${course.badgeColor} text-[8px] md:text-[10px] tracking-wider uppercase mb-1 md:mb-2`}>
+                      {/* Header: always visible */}
+                      <div className={`flex flex-row items-center justify-between gap-3 p-4 md:p-6 bg-gradient-to-br ${course.accent}`}>
+                        <div className="flex items-center gap-3">
+                          <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl ${course.iconBg} flex items-center justify-center shrink-0`}>
+                            <CourseIcon className="h-5 w-5 md:h-7 md:w-7 text-primary" />
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <h3 className="text-sm md:text-lg font-bold text-foreground">{course.name}</h3>
+                              <Badge className={`${course.badgeColor} text-[8px] md:text-[10px] tracking-wider uppercase`}>
                                 {course.badge}
                               </Badge>
-                              <h3 className="text-sm md:text-lg font-bold text-foreground">{course.name}</h3>
-                              <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5 md:mt-1">{course.tagline}</p>
                             </div>
+                            <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5">{course.tagline}</p>
                           </div>
-                          <div className="text-right md:text-center shrink-0">
-                            <span className="text-xl md:text-3xl font-bold text-foreground">₹{course.price.toLocaleString("en-IN")}</span>
-                            <div className="flex items-center gap-1.5 md:gap-2 justify-end md:justify-center mt-0.5 md:mt-1">
-                              <span className="text-[10px] md:text-xs text-muted-foreground line-through">₹{course.originalPrice.toLocaleString("en-IN")}</span>
-                              <Badge variant="secondary" className="text-[8px] md:text-[10px]">
+                        </div>
+                        <div className="flex items-center gap-3 shrink-0">
+                          <div className="text-right">
+                            <span className="text-lg md:text-2xl font-bold text-foreground">₹{course.price.toLocaleString("en-IN")}</span>
+                            <div className="flex items-center gap-1 justify-end">
+                              <span className="text-[9px] md:text-xs text-muted-foreground line-through">₹{course.originalPrice.toLocaleString("en-IN")}</span>
+                              <Badge variant="secondary" className="text-[7px] md:text-[10px]">
                                 {Math.round(((course.originalPrice - course.price) / course.originalPrice) * 100)}% OFF
                               </Badge>
                             </div>
                           </div>
+                          {isExpanded ? <ChevronUp className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />}
                         </div>
+                      </div>
 
-                        {/* Right: Features */}
-                        <div className="p-4 md:p-6 flex-1 flex flex-col">
-                          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 md:gap-x-6 gap-y-2 md:gap-y-2.5 mb-3 md:mb-4 flex-1">
-                            {displayedHighlights.map((h, idx) => {
-                              const Icon = h.icon;
-                              return (
-                                <motion.li
-                                  key={idx}
-                                  initial={{ opacity: 0, x: -10 }}
-                                  whileInView={{ opacity: 1, x: 0 }}
-                                  viewport={{ once: true }}
-                                  transition={{ delay: idx * 0.04 }}
-                                  className="flex items-start gap-2 text-xs md:text-sm text-foreground"
-                                >
-                                  <Icon className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary mt-0.5 shrink-0" />
-                                  <span>{h.text}</span>
-                                </motion.li>
-                              );
-                            })}
-                          </ul>
+                      {/* Expandable features */}
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          transition={{ duration: 0.3 }}
+                          className="border-t border-border"
+                        >
+                          <div className="p-4 md:p-6 flex flex-col">
+                            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 md:gap-x-6 gap-y-2 md:gap-y-2.5 mb-3 md:mb-4">
+                              {course.highlights.map((h, idx) => {
+                                const Icon = h.icon;
+                                return (
+                                  <motion.li
+                                    key={idx}
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: idx * 0.04 }}
+                                    className="flex items-start gap-2 text-xs md:text-sm text-foreground"
+                                  >
+                                    <Icon className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary mt-0.5 shrink-0" />
+                                    <span>{h.text}</span>
+                                  </motion.li>
+                                );
+                              })}
+                            </ul>
 
-                          {course.highlights.length > 4 && (
-                            <button
-                              onClick={() => setExpandedCourse(isExpanded ? null : course.id)}
-                              className="flex items-center gap-1 text-[10px] md:text-xs text-primary font-medium mb-3 md:mb-4 hover:underline"
+                            <div className="bg-secondary/60 rounded-lg p-2.5 md:p-3 mb-3">
+                              <p className="text-[10px] md:text-xs text-muted-foreground">
+                                <span className="font-semibold text-foreground">Best for:</span> {course.bestFor}
+                              </p>
+                            </div>
+
+                            <Button
+                              className="w-full group/btn"
+                              asChild
+                              onClick={(e: React.MouseEvent) => e.stopPropagation()}
                             >
-                              {isExpanded ? "Show less" : `+${course.highlights.length - 4} more features`}
-                              {isExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
-                            </button>
-                          )}
-
-                          <div className="bg-secondary/60 rounded-lg p-2.5 md:p-3 mb-3 md:mb-0">
-                            <p className="text-[10px] md:text-xs text-muted-foreground">
-                              <span className="font-semibold text-foreground">Best for:</span> {course.bestFor}
-                            </p>
+                              <a href={course.url} target="_blank" rel="noopener noreferrer">
+                                Enroll Now <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
+                              </a>
+                            </Button>
+                            <p className="text-[10px] text-muted-foreground tracking-wide uppercase text-center mt-2">{course.language}</p>
                           </div>
-
-                          <Button className="w-full mt-3 md:hidden group/btn" asChild>
-                            <a href={course.url} target="_blank" rel="noopener noreferrer">
-                              Enroll Now <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-                            </a>
-                          </Button>
-                        </div>
-                      </div>
-
-                      {/* Desktop enroll button in left panel */}
-                      <div className="hidden md:block absolute bottom-6 left-0 w-[260px] px-8">
-                        <Button className="w-full group/btn" asChild>
-                          <a href={course.url} target="_blank" rel="noopener noreferrer">
-                            Enroll Now <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover/btn:translate-x-1" />
-                          </a>
-                        </Button>
-                        <p className="text-[10px] text-muted-foreground tracking-wide uppercase text-center mt-2">{course.language}</p>
-                      </div>
+                        </motion.div>
+                      )}
                     </Card>
                   </motion.div>
                 );
