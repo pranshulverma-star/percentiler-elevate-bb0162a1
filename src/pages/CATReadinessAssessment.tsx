@@ -297,8 +297,8 @@ const LeadCapture = ({
 
 
 }: {sectionFilter: SectionFilter;onSubmit: () => void;}) => {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || localStorage.getItem("planner_name") || "");
+  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "");
   const [target, setTarget] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -324,6 +324,9 @@ const LeadCapture = ({
       answers: {},
       completed: false
     });
+    // Save to shared localStorage for cross-tool prefill
+    localStorage.setItem("percentilers_phone", phone);
+    localStorage.setItem("percentilers_name", name.trim());
     onSubmit();
   };
 

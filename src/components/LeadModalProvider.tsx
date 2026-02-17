@@ -40,8 +40,8 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const { toast } = useToast();
 
   const openModal = (src: string, onSuccess?: () => void) => {
-    const storedPhone = localStorage.getItem("percentilers_phone") || "";
-    const storedName = localStorage.getItem("percentilers_name") || "";
+    const storedPhone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    const storedName = localStorage.getItem("percentilers_name") || localStorage.getItem("planner_name") || "";
 
     // If user already registered, skip the modal and proceed directly
     if (/^\d{10}$/.test(storedPhone) && storedName) {
