@@ -12,6 +12,9 @@ import CATReadinessAssessment from "./pages/CATReadinessAssessment";
 import CATDailyStudyPlanner from "./pages/CATDailyStudyPlanner";
 import CATOMETCourses from "./pages/CATOMETCourses";
 import TestSeries from "./pages/TestSeries";
+import Terms from "./pages/Terms";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +35,9 @@ const App = () => (
             <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
             <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
             <Route path="/test-series" element={<TestSeries />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
