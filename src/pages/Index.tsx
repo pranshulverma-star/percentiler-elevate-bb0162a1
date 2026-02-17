@@ -28,7 +28,7 @@ const Index = () => (
       <FeaturedStrip />
 
       {/* Act 2: Primary CTA */}
-      <WebinarSection />
+      <PreparationPathSection />
 
       {/* Act 3: Trust */}
       <TrustStrip />
@@ -42,7 +42,7 @@ const Index = () => (
       <TestimonialsSection />
 
       {/* Act 6: Your Path */}
-      <PreparationPathSection />
+      <WebinarSection />
       <CoursesSection />
       <FacultySection />
 
