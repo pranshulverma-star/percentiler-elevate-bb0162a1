@@ -113,8 +113,8 @@ interface LeadData {
 }
 
 function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
+  const [name, setName] = useState(() => localStorage.getItem("planner_name") || localStorage.getItem("percentilers_name") || "");
+  const [phone, setPhone] = useState(() => localStorage.getItem("planner_phone") || localStorage.getItem("percentilers_phone") || "");
   const [targetYear, setTargetYear] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
   const [prepLevel, setPrepLevel] = useState("");
@@ -817,14 +817,40 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
           </div>
 
           {/* Current Day Task Card */}
-          {currentTask && (
-            <TaskCard
-              task={currentTask}
-              completed={isCurrentDayCompleted}
-              loading={completionLoading}
-              onComplete={handleComplete}
-            />
-          )}
+          {currentTask && (() => {
+            const isLocked = viewingDay > currentDayIndex + 6;
+            if (isLocked) {
+              return (
+                <div className="relative">
+                  <div className="blur-sm pointer-events-none select-none">
+                    <TaskCard
+                      task={currentTask}
+                      completed={false}
+                      loading={false}
+                      onComplete={() => {}}
+                    />
+                  </div>
+                  <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/60 rounded-2xl backdrop-blur-[2px]">
+                    <div className="text-center space-y-2">
+                      <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center mx-auto">
+                        <AlertTriangle className="h-5 w-5 text-primary" />
+                      </div>
+                      <p className="text-sm font-semibold text-foreground">Locked</p>
+                      <p className="text-xs text-muted-foreground max-w-[200px]">Complete the current week's tasks to unlock the next week.</p>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+            return (
+              <TaskCard
+                task={currentTask}
+                completed={isCurrentDayCompleted}
+                loading={completionLoading}
+                onComplete={handleComplete}
+              />
+            );
+          })()}
         </motion.div>
       </section>
 
