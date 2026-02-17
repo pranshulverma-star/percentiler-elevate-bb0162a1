@@ -50,6 +50,36 @@ export type Database = {
         }
         Relationships: []
       }
+      planner_activity: {
+        Row: {
+          completed: boolean
+          created_at: string
+          date: string
+          id: string
+          phone_number: string
+          subject: string
+          time_spent_minutes: number | null
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          date: string
+          id?: string
+          phone_number: string
+          subject: string
+          time_spent_minutes?: number | null
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          date?: string
+          id?: string
+          phone_number?: string
+          subject?: string
+          time_spent_minutes?: number | null
+        }
+        Relationships: []
+      }
       planner_entries: {
         Row: {
           completion_status: Json | null
@@ -95,6 +125,42 @@ export type Database = {
           varc_questions?: number | null
           varc_topic?: string | null
           weekly_test?: boolean | null
+        }
+        Relationships: []
+      }
+      planner_heat_score: {
+        Row: {
+          consistency_score: number
+          crash_mode: boolean
+          days_since_join: number
+          heat_score: number
+          lead_category: string
+          mock_attempts: number
+          phone_number: string
+          total_active_days: number
+          updated_at: string
+        }
+        Insert: {
+          consistency_score?: number
+          crash_mode?: boolean
+          days_since_join?: number
+          heat_score?: number
+          lead_category?: string
+          mock_attempts?: number
+          phone_number: string
+          total_active_days?: number
+          updated_at?: string
+        }
+        Update: {
+          consistency_score?: number
+          crash_mode?: boolean
+          days_since_join?: number
+          heat_score?: number
+          lead_category?: string
+          mock_attempts?: number
+          phone_number?: string
+          total_active_days?: number
+          updated_at?: string
         }
         Relationships: []
       }

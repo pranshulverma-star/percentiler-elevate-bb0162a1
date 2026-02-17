@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,7 +12,8 @@ import {
 import {
   ArrowRight, Calculator, PuzzleIcon, FileText, RefreshCw,
   Target, CalendarDays, BookOpen, ChevronLeft, ChevronRight,
-  AlertTriangle, Zap, MonitorPlay,
+  AlertTriangle, Zap, MonitorPlay, CheckCircle2, Phone, Play,
+  Flame, TrendingUp,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -22,6 +23,13 @@ import {
   type DailyTask,
   type PlanConfig,
 } from "@/lib/masterCurriculum";
+import {
+  logActivity,
+  recalculateHeatScore,
+  fetchHeatScore,
+  getInactiveDays,
+  type HeatScoreData,
+} from "@/lib/heatScoring";
 
 const fadeUp = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } };
 
@@ -38,7 +46,7 @@ interface LeadData {
   name: string;
   targetYear: number;
   prepLevel: string;
-  startDate: string; // ISO date
+  startDate: string;
 }
 
 function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
@@ -60,7 +68,6 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
     setSubmitting(true);
 
     try {
-      // Upsert lead
       const { data: existing } = await supabase
         .from("leads")
         .select("phone_number")
@@ -81,7 +88,6 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
 
       const today = new Date().toISOString().split("T")[0];
 
-      // Upsert planner_stats
       const { data: existingStats } = await supabase
         .from("planner_stats")
         .select("phone_number, start_date")
@@ -110,13 +116,7 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
       localStorage.setItem("planner_prep_level", prepLevel);
       localStorage.setItem("planner_start_date", startDate);
 
-      onComplete({
-        phone,
-        name,
-        targetYear: parseInt(targetYear),
-        prepLevel,
-        startDate,
-      });
+      onComplete({ phone, name, targetYear: parseInt(targetYear), prepLevel, startDate });
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -127,7 +127,6 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
   return (
     <section className="min-h-[85vh] flex items-center justify-center py-16 relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.04),transparent_50%),radial-gradient(circle_at_70%_80%,hsl(var(--primary)/0.03),transparent_50%)]" />
-
       <motion.div {...fadeUp} className="w-full max-w-xl mx-auto px-4 relative z-10">
         <div className="text-center mb-10">
           <Badge className="mb-5 bg-primary/10 text-primary border-primary/20 font-semibold text-xs tracking-wider uppercase px-4 py-1.5">
@@ -140,19 +139,16 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
             Get a structured daily preparation roadmap based on the Percentilers master curriculum.
           </p>
         </div>
-
         <Card className="rounded-2xl shadow-xl border-0 bg-card/80 backdrop-blur-sm">
           <CardContent className="p-6 md:p-8 space-y-5">
             <div className="space-y-1.5">
               <Label htmlFor="name" className="text-sm font-semibold text-foreground">Full Name</Label>
               <Input id="name" placeholder="Enter your full name" value={name} onChange={(e) => setName(e.target.value)} className="rounded-xl h-12 bg-secondary/50 border-border/60 focus:bg-background transition-colors" />
             </div>
-
             <div className="space-y-1.5">
               <Label htmlFor="phone" className="text-sm font-semibold text-foreground">Phone Number</Label>
               <Input id="phone" placeholder="10-digit phone number" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} className="rounded-xl h-12 bg-secondary/50 border-border/60 focus:bg-background transition-colors" />
             </div>
-
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div className="space-y-1.5">
                 <Label className="text-sm font-semibold text-foreground">Target Year</Label>
@@ -165,7 +161,6 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="space-y-1.5">
                 <Label className="text-sm font-semibold text-foreground">Status</Label>
                 <Select value={currentStatus} onValueChange={setCurrentStatus}>
@@ -177,7 +172,6 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
                   </SelectContent>
                 </Select>
               </div>
-
               <div className="space-y-1.5">
                 <Label className="text-sm font-semibold text-foreground">Prep Level</Label>
                 <Select value={prepLevel} onValueChange={setPrepLevel}>
@@ -191,7 +185,6 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
                 </Select>
               </div>
             </div>
-
             <AnimatePresence>
               {error && (
                 <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="text-sm text-destructive font-medium">
@@ -199,22 +192,10 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
                 </motion.p>
               )}
             </AnimatePresence>
-
-            <Button
-              className="w-full h-13 rounded-xl text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
-              onClick={handleSubmit}
-              disabled={submitting}
-            >
-              {submitting ? (
-                <><RefreshCw className="mr-2 h-5 w-5 animate-spin" /> Generating...</>
-              ) : (
-                <>Generate My Daily Plan <ArrowRight className="ml-2 h-5 w-5" /></>
-              )}
+            <Button className="w-full h-13 rounded-xl text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all" onClick={handleSubmit} disabled={submitting}>
+              {submitting ? <><RefreshCw className="mr-2 h-5 w-5 animate-spin" /> Generating...</> : <>Generate My Daily Plan <ArrowRight className="ml-2 h-5 w-5" /></>}
             </Button>
-
-            <p className="text-[11px] text-muted-foreground text-center">
-              No login required · Your plan is saved automatically
-            </p>
+            <p className="text-[11px] text-muted-foreground text-center">No login required · Your plan is saved automatically</p>
           </CardContent>
         </Card>
       </motion.div>
@@ -238,9 +219,45 @@ const SUBJECT_EMOJI: Record<string, string> = {
   LRDI: "🧠",
 };
 
+// ─── Completion Button ───
+
+function CompletionButton({
+  completed,
+  loading,
+  onComplete,
+}: {
+  completed: boolean;
+  loading: boolean;
+  onComplete: () => void;
+}) {
+  if (completed) {
+    return (
+      <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600">
+        <CheckCircle2 className="h-4 w-4" />
+        <span className="text-sm font-semibold">Completed ✓</span>
+      </div>
+    );
+  }
+
+  return (
+    <Button
+      onClick={onComplete}
+      disabled={loading}
+      className="w-full rounded-xl h-11 font-semibold gap-2"
+      variant="outline"
+    >
+      {loading ? (
+        <><RefreshCw className="h-4 w-4 animate-spin" /> Saving...</>
+      ) : (
+        <><CheckCircle2 className="h-4 w-4" /> Mark as Completed</>
+      )}
+    </Button>
+  );
+}
+
 // ─── Mock Day Card ───
 
-function MockDayCard({ task }: { task: DailyTask }) {
+function MockDayCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
   return (
     <Card className="rounded-2xl border-2 border-emerald-500/30 shadow-md bg-emerald-500/5">
       <CardContent className="p-5 md:p-6 space-y-4">
@@ -259,6 +276,7 @@ function MockDayCard({ task }: { task: DailyTask }) {
           <p className="text-sm text-muted-foreground mt-1">Complete mock test + detailed analysis</p>
           <p className="text-xs text-muted-foreground mt-2">Nothing else scheduled today — focus entirely on the mock.</p>
         </div>
+        <CompletionButton completed={completed} loading={loading} onComplete={onComplete} />
       </CardContent>
     </Card>
   );
@@ -266,7 +284,7 @@ function MockDayCard({ task }: { task: DailyTask }) {
 
 // ─── Sunday Card ───
 
-function SundayCard({ task }: { task: DailyTask }) {
+function SundayCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
   return (
     <Card className="rounded-2xl border border-border shadow-md">
       <CardContent className="p-5 md:p-6 space-y-5">
@@ -279,7 +297,6 @@ function SundayCard({ task }: { task: DailyTask }) {
             <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
           </div>
         </div>
-
         {task.weekly_test && (
           <div className="bg-amber-500/5 rounded-xl p-4 border border-amber-500/20 text-center">
             <Target className="h-6 w-6 text-amber-600 mx-auto mb-2" />
@@ -287,7 +304,6 @@ function SundayCard({ task }: { task: DailyTask }) {
             <p className="text-xs text-muted-foreground mt-1">Covers this week's topics across QA, LRDI & VARC</p>
           </div>
         )}
-
         {task.revision && (
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -299,12 +315,12 @@ function SundayCard({ task }: { task: DailyTask }) {
             </div>
           </div>
         )}
-
         {!task.weekly_test && !task.revision && (
           <div className="text-center py-4">
             <p className="text-sm text-muted-foreground">Rest day — light revision only</p>
           </div>
         )}
+        <CompletionButton completed={completed} loading={loading} onComplete={onComplete} />
       </CardContent>
     </Card>
   );
@@ -312,9 +328,9 @@ function SundayCard({ task }: { task: DailyTask }) {
 
 // ─── Subject Day Card ───
 
-function TaskCard({ task }: { task: DailyTask }) {
-  if (task.is_mock_day) return <MockDayCard task={task} />;
-  if (task.subjectFocus === "WEEKLY_TEST") return <SundayCard task={task} />;
+function TaskCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
+  if (task.is_mock_day) return <MockDayCard task={task} completed={completed} loading={loading} onComplete={onComplete} />;
+  if (task.subjectFocus === "WEEKLY_TEST") return <SundayCard task={task} completed={completed} loading={loading} onComplete={onComplete} />;
 
   const subject = task.subjectFocus;
   const icon = SUBJECT_ICON[subject];
@@ -323,23 +339,16 @@ function TaskCard({ task }: { task: DailyTask }) {
   return (
     <Card className="rounded-2xl border border-border shadow-md">
       <CardContent className="p-5 md:p-6 space-y-5">
-        {/* Day header */}
         <div className="flex items-center gap-3 mb-1">
           <div className="h-11 w-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
             {task.dayIndex + 1}
           </div>
           <div>
-            <p className="text-sm font-bold text-foreground">
-              Day {task.dayIndex + 1} — {DAY_NAMES[task.dayOfWeek]}
-            </p>
+            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — {DAY_NAMES[task.dayOfWeek]}</p>
             <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
           </div>
-          <Badge className="ml-auto bg-primary/10 text-primary border-primary/20 text-xs font-semibold">
-            {subject} Day
-          </Badge>
+          <Badge className="ml-auto bg-primary/10 text-primary border-primary/20 text-xs font-semibold">{subject} Day</Badge>
         </div>
-
-        {/* Video instruction */}
         {task.showVideo && task.videoHours > 0 && (
           <div className={`rounded-xl p-4 border ${task.videoOptional ? "bg-secondary/40 border-border/60" : "bg-primary/5 border-primary/20"}`}>
             <div className="flex items-center gap-2 mb-1">
@@ -348,29 +357,80 @@ function TaskCard({ task }: { task: DailyTask }) {
                 📺 Concept Video {task.videoOptional && <span className="text-muted-foreground font-normal">(Optional)</span>}
               </span>
             </div>
-            <p className="text-sm text-foreground pl-6">
-              Watch concept video (~{task.videoHours} hrs) before practice
-            </p>
+            <p className="text-sm text-foreground pl-6">Watch concept video (~{task.videoHours} hrs) before practice</p>
           </div>
         )}
-
-        {/* Subject practice */}
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             {icon}
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-              {emoji} {subject}
-            </span>
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{emoji} {subject}</span>
           </div>
           <div className="pl-6 text-sm text-foreground space-y-1">
             <p className="font-medium">{task.topic}</p>
-            {task.questionCount > 0 && (
-              <p className="text-muted-foreground">{task.questionCount} {task.questionLabel}</p>
-            )}
+            {task.questionCount > 0 && <p className="text-muted-foreground">{task.questionCount} {task.questionLabel}</p>}
           </div>
         </div>
+        <CompletionButton completed={completed} loading={loading} onComplete={onComplete} />
       </CardContent>
     </Card>
+  );
+}
+
+// ─── Sales Signal Banners ───
+
+function SalesSignalBanner({ heatData }: { heatData: HeatScoreData | null }) {
+  if (!heatData) return null;
+
+  if (heatData.lead_category === "Very Hot") {
+    return (
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-r from-amber-500/10 to-primary/10 border border-amber-500/30 rounded-xl p-4">
+        <div className="flex items-center gap-2 mb-2">
+          <Flame className="h-5 w-5 text-amber-500" />
+          <p className="font-bold text-foreground text-sm">Based on your consistency, you just unlocked a Special Discount on our Courses</p>
+        </div>
+        <Button size="sm" className="rounded-xl gap-2 font-semibold" asChild>
+          <a href="/mentorship">
+            <Play className="h-3.5 w-3.5" /> Book Free Counseling Call
+          </a>
+        </Button>
+      </motion.div>
+    );
+  }
+
+  if (heatData.lead_category === "Hot") {
+    return (
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-primary/5 border border-primary/20 rounded-xl p-4">
+        <div className="flex items-center gap-2 mb-2">
+          <TrendingUp className="h-5 w-5 text-primary" />
+          <p className="font-bold text-foreground text-sm">You're preparing seriously. Want structured mentorship?</p>
+        </div>
+        <Button size="sm" variant="outline" className="rounded-xl gap-2 font-semibold" asChild>
+          <a href="/mentorship">
+            <Phone className="h-3.5 w-3.5" /> Book Your 1st Nudge Call for Free
+          </a>
+        </Button>
+      </motion.div>
+    );
+  }
+
+  return null;
+}
+
+function InactivityBanner({ inactiveDays }: { inactiveDays: number }) {
+  if (inactiveDays < 3) return null;
+
+  return (
+    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-destructive/5 border border-destructive/20 rounded-xl p-4">
+      <div className="flex items-center gap-2 mb-2">
+        <AlertTriangle className="h-5 w-5 text-destructive" />
+        <p className="font-bold text-foreground text-sm">Consistency broken. Want help getting back on track?</p>
+      </div>
+      <Button size="sm" variant="outline" className="rounded-xl gap-2 font-semibold" asChild>
+        <a href="/masterclass">
+          <Play className="h-3.5 w-3.5" /> Watch Masterclass
+        </a>
+      </Button>
+    </motion.div>
   );
 }
 
@@ -388,7 +448,6 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
 
   const fullPlan = useMemo(() => generateFullPlan(planConfig), [planConfig]);
 
-  // Current day index = days since start
   const currentDayIndex = useMemo(() => {
     const start = new Date(leadData.startDate);
     start.setHours(0, 0, 0, 0);
@@ -398,13 +457,88 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   }, [leadData.startDate]);
 
   const [viewingDay, setViewingDay] = useState(Math.min(currentDayIndex, fullPlan.length - 1));
+  const [completedDays, setCompletedDays] = useState<Set<string>>(new Set());
+  const [completionLoading, setCompletionLoading] = useState(false);
+  const [heatData, setHeatData] = useState<HeatScoreData | null>(null);
+  const [inactiveDays, setInactiveDays] = useState(0);
 
   useEffect(() => {
     setViewingDay(Math.min(currentDayIndex, fullPlan.length - 1));
   }, [currentDayIndex, fullPlan.length]);
 
+  // Load existing completion data + heat score on mount
+  useEffect(() => {
+    const loadData = async () => {
+      const phone = leadData.phone;
+
+      // Fetch all completed activities
+      const { data: activities } = await supabase
+        .from("planner_activity")
+        .select("date, subject")
+        .eq("phone_number", phone);
+
+      if (activities) {
+        const keys = new Set(activities.map((a) => `${a.date}|${a.subject}`));
+        setCompletedDays(keys);
+      }
+
+      // Fetch heat score
+      const heat = await fetchHeatScore(phone);
+      setHeatData(heat);
+
+      // Check inactivity
+      const inactive = await getInactiveDays(phone);
+      setInactiveDays(inactive);
+    };
+    loadData();
+  }, [leadData.phone]);
+
   const currentTask = fullPlan[viewingDay] ?? null;
   const currentPhase = currentTask?.phase || "Foundation Phase";
+
+  // Get the date for a given day index
+  const getDateForDay = useCallback((dayIndex: number): string => {
+    const start = new Date(leadData.startDate);
+    start.setHours(0, 0, 0, 0);
+    const date = new Date(start);
+    date.setDate(date.getDate() + dayIndex);
+    return date.toISOString().split("T")[0];
+  }, [leadData.startDate]);
+
+  // Get subject key for completion tracking
+  const getSubjectKey = (task: DailyTask): string => {
+    if (task.is_mock_day) return "MOCK";
+    if (task.subjectFocus === "WEEKLY_TEST") return "TEST";
+    return task.subjectFocus;
+  };
+
+  const isCurrentDayCompleted = currentTask
+    ? completedDays.has(`${getDateForDay(currentTask.dayIndex)}|${getSubjectKey(currentTask)}`)
+    : false;
+
+  const handleComplete = async () => {
+    if (!currentTask) return;
+    setCompletionLoading(true);
+
+    const date = getDateForDay(currentTask.dayIndex);
+    const subject = getSubjectKey(currentTask);
+
+    try {
+      await logActivity(leadData.phone, date, subject);
+
+      // Update local state
+      setCompletedDays(prev => new Set(prev).add(`${date}|${subject}`));
+
+      // Recalculate heat score
+      const newHeat = await recalculateHeatScore(leadData.phone, isCrashMode, daysLeft);
+      setHeatData(newHeat);
+      setInactiveDays(0);
+    } catch (err) {
+      console.error("Failed to log activity:", err);
+    } finally {
+      setCompletionLoading(false);
+    }
+  };
 
   // Mini day navigator
   const navDays = useMemo(() => {
@@ -444,6 +578,12 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
               <p className="text-xs font-semibold text-destructive">CRASH MODE — Only Tier 1 topics. Direct mock preparation.</p>
             </div>
           )}
+
+          {/* Inactivity banner */}
+          <InactivityBanner inactiveDays={inactiveDays} />
+
+          {/* Sales signal banner */}
+          <SalesSignalBanner heatData={heatData} />
 
           {/* Countdown + Phase */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -497,26 +637,41 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
 
         {/* Mini day selector */}
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {navDays.map((d) => (
-            <button
-              key={d.dayIndex}
-              onClick={() => setViewingDay(d.dayIndex)}
-              className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                d.dayIndex === viewingDay
-                  ? "bg-primary text-primary-foreground shadow-md"
-                  : d.dayIndex === currentDayIndex
-                  ? "bg-primary/20 text-primary border border-primary/30"
-                  : "bg-secondary text-foreground hover:bg-secondary/80"
-              }`}
-            >
-              {d.dayIndex + 1}
-              {d.is_mock_day && " 🎯"}
-            </button>
-          ))}
+          {navDays.map((d) => {
+            const dayDate = getDateForDay(d.dayIndex);
+            const subjectKey = getSubjectKey(d);
+            const isDone = completedDays.has(`${dayDate}|${subjectKey}`);
+            return (
+              <button
+                key={d.dayIndex}
+                onClick={() => setViewingDay(d.dayIndex)}
+                className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                  d.dayIndex === viewingDay
+                    ? "bg-primary text-primary-foreground shadow-md"
+                    : d.dayIndex === currentDayIndex
+                    ? "bg-primary/20 text-primary border border-primary/30"
+                    : isDone
+                    ? "bg-emerald-500/15 text-emerald-600 border border-emerald-500/30"
+                    : "bg-secondary text-foreground hover:bg-secondary/80"
+                }`}
+              >
+                {d.dayIndex + 1}
+                {d.is_mock_day && " 🎯"}
+                {isDone && " ✓"}
+              </button>
+            );
+          })}
         </div>
 
         {/* Current Day Task Card */}
-        {currentTask && <TaskCard task={currentTask} />}
+        {currentTask && (
+          <TaskCard
+            task={currentTask}
+            completed={isCurrentDayCompleted}
+            loading={completionLoading}
+            onComplete={handleComplete}
+          />
+        )}
 
         {/* Plan info */}
         <Card className="rounded-xl border-border/40 bg-secondary/30">
