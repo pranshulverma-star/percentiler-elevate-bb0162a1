@@ -50,6 +50,84 @@ export type Database = {
         }
         Relationships: []
       }
+      planner_entries: {
+        Row: {
+          completion_status: Json | null
+          date: string
+          id: string
+          is_mock_day: boolean | null
+          lrdi_sets: number | null
+          lrdi_topic: string | null
+          phone_number: string
+          qa_questions: number | null
+          qa_topic: string | null
+          updated_at: string | null
+          varc_questions: number | null
+          varc_topic: string | null
+          weekly_test: boolean | null
+        }
+        Insert: {
+          completion_status?: Json | null
+          date: string
+          id?: string
+          is_mock_day?: boolean | null
+          lrdi_sets?: number | null
+          lrdi_topic?: string | null
+          phone_number: string
+          qa_questions?: number | null
+          qa_topic?: string | null
+          updated_at?: string | null
+          varc_questions?: number | null
+          varc_topic?: string | null
+          weekly_test?: boolean | null
+        }
+        Update: {
+          completion_status?: Json | null
+          date?: string
+          id?: string
+          is_mock_day?: boolean | null
+          lrdi_sets?: number | null
+          lrdi_topic?: string | null
+          phone_number?: string
+          qa_questions?: number | null
+          qa_topic?: string | null
+          updated_at?: string | null
+          varc_questions?: number | null
+          varc_topic?: string | null
+          weekly_test?: boolean | null
+        }
+        Relationships: []
+      }
+      planner_stats: {
+        Row: {
+          crash_mode: boolean | null
+          current_phase: string | null
+          last_generated_index: number | null
+          phone_number: string
+          start_date: string
+          target_year: number
+          updated_at: string | null
+        }
+        Insert: {
+          crash_mode?: boolean | null
+          current_phase?: string | null
+          last_generated_index?: number | null
+          phone_number: string
+          start_date?: string
+          target_year: number
+          updated_at?: string | null
+        }
+        Update: {
+          crash_mode?: boolean | null
+          current_phase?: string | null
+          last_generated_index?: number | null
+          phone_number?: string
+          start_date?: string
+          target_year?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       profile_percentile_planner: {
         Row: {
           certifications: number | null
