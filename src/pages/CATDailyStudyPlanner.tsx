@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -12,105 +12,36 @@ import {
 import {
   ArrowRight, Calculator, PuzzleIcon, FileText, RefreshCw,
   Target, CalendarDays, BookOpen, ChevronLeft, ChevronRight,
+  AlertTriangle, Zap,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-// ─── Helpers ───
-
-function getLastSundayOfNovember(year: number): Date {
-  // Start from Nov 30 and walk back to find Sunday (day 0)
-  const d = new Date(year, 10, 30); // Nov 30
-  while (d.getDay() !== 0) {
-    d.setDate(d.getDate() - 1);
-  }
-  return d;
-}
-
-function getDaysLeft(targetYear: number): number {
-  const catDate = getLastSundayOfNovember(targetYear);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  catDate.setHours(0, 0, 0, 0);
-  return Math.max(0, Math.ceil((catDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)));
-}
-
-type PhaseName = "Foundation" | "Strength & Sectional" | "Mock Phase" | "Final Revision";
-
-function getPhase(daysLeft: number): PhaseName {
-  if (daysLeft > 210) return "Foundation";
-  if (daysLeft >= 120) return "Strength & Sectional";
-  if (daysLeft >= 45) return "Mock Phase";
-  return "Final Revision";
-}
-
-const PHASE_COLORS: Record<PhaseName, string> = {
-  "Foundation": "bg-blue-500/10 text-blue-600 border-blue-500/20",
-  "Strength & Sectional": "bg-amber-500/10 text-amber-600 border-amber-500/20",
-  "Mock Phase": "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
-  "Final Revision": "bg-red-500/10 text-red-600 border-red-500/20",
-};
-
-// ─── Syllabus Banks ───
-
-const QA_TOPICS = [
-  { chapter: "Number Systems", concepts: ["Divisibility", "HCF & LCM", "Remainders", "Factorials", "Last Digits"] },
-  { chapter: "Arithmetic", concepts: ["Percentages", "Profit & Loss", "SI & CI", "Ratios", "Averages", "Mixtures"] },
-  { chapter: "Algebra", concepts: ["Linear Equations", "Quadratic Equations", "Inequalities", "Functions", "Logs"] },
-  { chapter: "Geometry", concepts: ["Triangles", "Circles", "Coordinate Geometry", "Mensuration", "Polygons"] },
-  { chapter: "Modern Maths", concepts: ["P & C", "Probability", "Set Theory", "Progressions", "Binomial"] },
-  { chapter: "Time & Work", concepts: ["Pipes & Cisterns", "Work Efficiency", "Alternate Days", "Chain Rule"] },
-  { chapter: "Time Speed Distance", concepts: ["Relative Speed", "Boats & Streams", "Trains", "Races", "Circular Motion"] },
-];
-
-const LRDI_TOPICS = [
-  { chapter: "Arrangements", types: ["Linear", "Circular", "Matrix"] },
-  { chapter: "Grouping & Selection", types: ["Team Formation", "Distribution", "Conditional"] },
-  { chapter: "Schedules", types: ["Sequencing", "Slot Allocation", "Timetable"] },
-  { chapter: "Data Interpretation", types: ["Bar Graphs", "Pie Charts", "Tables", "Caselets"] },
-  { chapter: "Puzzles", types: ["Blood Relations", "Coding", "Direction", "Syllogisms"] },
-  { chapter: "Networks", types: ["Shortest Path", "Connectivity", "Flow"] },
-];
-
-const VARC_RC_TOPICS = ["Social Science", "Philosophy", "Economics", "Science & Tech", "Abstract", "History", "Psychology"];
-const VARC_VA_TOPICS = ["Para Jumbles", "Para Summary", "Odd Sentence", "Sentence Completion", "Critical Reasoning"];
-
-function pick<T>(arr: T[], seed: number): T {
-  return arr[Math.abs(seed) % arr.length];
-}
-
-interface DailyTasks {
-  dayNumber: number;
-  quant: { chapter: string; concept: string };
-  lrdi: { chapter: string; type1: string; type2: string };
-  varc: { rcTopic: string; vaTopic: string };
-}
-
-function generateDayTasks(dayNumber: number, _phase: PhaseName): DailyTasks {
-  const seed = dayNumber * 31 + 7;
-  const qaChapter = pick(QA_TOPICS, seed);
-  const qaConcept = pick(qaChapter.concepts, seed + 13);
-
-  const lrdiChapter = pick(LRDI_TOPICS, seed + 5);
-  const lrdiType1 = pick(lrdiChapter.types, seed + 11);
-  const lrdiType2 = pick(lrdiChapter.types, seed + 17);
-
-  const rcTopic = pick(VARC_RC_TOPICS, seed + 23);
-  const vaTopic = pick(VARC_VA_TOPICS, seed + 29);
-
-  return {
-    dayNumber,
-    quant: { chapter: qaChapter.chapter, concept: qaConcept },
-    lrdi: { chapter: lrdiChapter.chapter, type1: lrdiType1, type2: lrdiType2 },
-    varc: { rcTopic, vaTopic },
-  };
-}
+import {
+  generateFullPlan,
+  getDaysUntilCAT,
+  type DailyTask,
+  type PlanConfig,
+} from "@/lib/masterCurriculum";
 
 const fadeUp = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } };
 
+const PHASE_COLORS: Record<string, string> = {
+  "Foundation Phase": "bg-blue-500/10 text-blue-600 border-blue-500/20",
+  "Strength Phase": "bg-amber-500/10 text-amber-600 border-amber-500/20",
+  "Mock Phase": "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
+};
+
 // ─── Lead Capture ───
 
-function LeadCapture({ onComplete }: { onComplete: (phone: string, year: number) => void }) {
+interface LeadData {
+  phone: string;
+  name: string;
+  targetYear: number;
+  prepLevel: string;
+  startDate: string; // ISO date
+}
+
+function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [targetYear, setTargetYear] = useState("");
@@ -129,6 +60,7 @@ function LeadCapture({ onComplete }: { onComplete: (phone: string, year: number)
     setSubmitting(true);
 
     try {
+      // Upsert lead
       const { data: existing } = await supabase
         .from("leads")
         .select("phone_number")
@@ -147,11 +79,44 @@ function LeadCapture({ onComplete }: { onComplete: (phone: string, year: number)
         });
       }
 
+      const today = new Date().toISOString().split("T")[0];
+
+      // Upsert planner_stats
+      const { data: existingStats } = await supabase
+        .from("planner_stats")
+        .select("phone_number, start_date")
+        .eq("phone_number", phone)
+        .maybeSingle();
+
+      const daysLeft = getDaysUntilCAT(parseInt(targetYear));
+      const isCrash = daysLeft <= 50;
+
+      if (!existingStats) {
+        await supabase.from("planner_stats").insert({
+          phone_number: phone,
+          start_date: today,
+          target_year: parseInt(targetYear),
+          crash_mode: isCrash,
+          current_phase: isCrash ? "Mock Phase" : "Foundation Phase",
+          last_generated_index: 0,
+        });
+      }
+
+      const startDate = existingStats?.start_date || today;
+
       localStorage.setItem("planner_phone", phone);
       localStorage.setItem("planner_name", name);
       localStorage.setItem("planner_year", targetYear);
+      localStorage.setItem("planner_prep_level", prepLevel);
+      localStorage.setItem("planner_start_date", startDate);
 
-      onComplete(phone, parseInt(targetYear));
+      onComplete({
+        phone,
+        name,
+        targetYear: parseInt(targetYear),
+        prepLevel,
+        startDate,
+      });
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
@@ -172,7 +137,7 @@ function LeadCapture({ onComplete }: { onComplete: (phone: string, year: number)
             CAT Daily Study Planner
           </h1>
           <p className="text-base md:text-lg text-muted-foreground mt-4 max-w-md mx-auto leading-relaxed">
-            Get a dynamic daily preparation roadmap tailored to your CAT exam date.
+            Get a structured daily preparation roadmap based on the Percentilers master curriculum.
           </p>
         </div>
 
@@ -257,20 +222,53 @@ function LeadCapture({ onComplete }: { onComplete: (phone: string, year: number)
   );
 }
 
+// ─── Mock Day Card ───
+
+function MockDayCard({ task }: { task: DailyTask }) {
+  return (
+    <Card className="rounded-2xl border-2 border-emerald-500/30 shadow-md bg-emerald-500/5">
+      <CardContent className="p-5 md:p-6 space-y-4">
+        <div className="flex items-center gap-3 mb-1">
+          <div className="h-11 w-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">
+            {task.dayIndex + 1}
+          </div>
+          <div>
+            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — Mock Day</p>
+            <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
+          </div>
+        </div>
+        <div className="bg-emerald-500/10 rounded-xl p-4 text-center">
+          <Target className="h-8 w-8 text-emerald-600 mx-auto mb-2" />
+          <p className="font-bold text-foreground text-lg">Full Mock CAT</p>
+          <p className="text-sm text-muted-foreground mt-1">Complete mock test + detailed analysis</p>
+          <p className="text-xs text-muted-foreground mt-2">Nothing else scheduled today — focus entirely on the mock.</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 // ─── Task Card ───
 
-function TaskCard({ tasks }: { tasks: DailyTasks; phase: PhaseName }) {
+function TaskCard({ task }: { task: DailyTask }) {
+  if (task.is_mock_day) return <MockDayCard task={task} />;
+
   return (
     <Card className="rounded-2xl border border-border shadow-md">
       <CardContent className="p-5 md:p-6 space-y-5">
         <div className="flex items-center gap-3 mb-1">
           <div className="h-11 w-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
-            {tasks.dayNumber}
+            {task.dayIndex + 1}
           </div>
           <div>
-            <p className="text-sm font-bold text-foreground">Day {tasks.dayNumber}</p>
-            <p className="text-xs text-muted-foreground">Today's Tasks</p>
+            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1}</p>
+            <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
           </div>
+          {task.weekly_test && (
+            <Badge className="ml-auto bg-amber-500/10 text-amber-600 border-amber-500/20 text-xs">
+              Weekly Test
+            </Badge>
+          )}
         </div>
 
         {/* Quant */}
@@ -280,8 +278,8 @@ function TaskCard({ tasks }: { tasks: DailyTasks; phase: PhaseName }) {
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">📘 Quant</span>
           </div>
           <div className="pl-6 text-sm text-foreground space-y-1">
-            <p><span className="font-medium">{tasks.quant.chapter}</span> — {tasks.quant.concept}</p>
-            <p className="text-muted-foreground">30 practice questions</p>
+            <p className="font-medium">{task.qa_topic}</p>
+            <p className="text-muted-foreground">{task.qa_questions} practice questions</p>
           </div>
         </div>
 
@@ -292,8 +290,8 @@ function TaskCard({ tasks }: { tasks: DailyTasks; phase: PhaseName }) {
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">🧠 LRDI</span>
           </div>
           <div className="pl-6 text-sm text-foreground space-y-1">
-            <p><span className="font-medium">{tasks.lrdi.chapter}</span></p>
-            <p className="text-muted-foreground">2 sets — {tasks.lrdi.type1}, {tasks.lrdi.type2}</p>
+            <p className="font-medium">{task.lrdi_topic}</p>
+            <p className="text-muted-foreground">{task.lrdi_sets} sets</p>
           </div>
         </div>
 
@@ -304,21 +302,30 @@ function TaskCard({ tasks }: { tasks: DailyTasks; phase: PhaseName }) {
             <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">📖 VARC</span>
           </div>
           <div className="pl-6 text-sm text-foreground space-y-1">
-            <p>1 RC — <span className="font-medium">{tasks.varc.rcTopic}</span></p>
-            <p className="text-muted-foreground">8 VA — {tasks.varc.vaTopic}</p>
+            <p className="font-medium">{task.varc_topic}</p>
+            <p className="text-muted-foreground">{task.varc_questions} questions</p>
           </div>
         </div>
 
         {/* Revision */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-4 w-4 text-primary" />
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">🔁 Revision</span>
+        {task.revision && (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <BookOpen className="h-4 w-4 text-primary" />
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">🔁 Revision</span>
+            </div>
+            <div className="pl-6 text-sm text-foreground">
+              <p className="text-muted-foreground">20 min error log review</p>
+            </div>
           </div>
-          <div className="pl-6 text-sm text-foreground">
-            <p className="text-muted-foreground">20 min error log review</p>
+        )}
+
+        {/* Weekly test note */}
+        {task.weekly_test && (
+          <div className="bg-amber-500/5 rounded-xl p-3 border border-amber-500/20">
+            <p className="text-xs font-semibold text-amber-600">📝 30-min weekly test today (in addition to daily practice)</p>
           </div>
-        </div>
+        )}
       </CardContent>
     </Card>
   );
@@ -326,27 +333,51 @@ function TaskCard({ tasks }: { tasks: DailyTasks; phase: PhaseName }) {
 
 // ─── Planner Dashboard ───
 
-function PlannerDashboard({ targetYear, onReset }: { targetYear: number; onReset: () => void }) {
-  const daysLeft = getDaysLeft(targetYear);
-  const phase = getPhase(daysLeft);
-  const userName = localStorage.getItem("planner_name") || "Aspirant";
+function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: () => void }) {
+  const daysLeft = getDaysUntilCAT(leadData.targetYear);
+  const isCrashMode = daysLeft <= 50;
 
-  // Day navigation: user can browse days 1..daysLeft
-  const totalDays = Math.min(daysLeft, 365);
-  const [currentDay, setCurrentDay] = useState(1);
+  const planConfig: PlanConfig = useMemo(() => ({
+    targetYear: leadData.targetYear,
+    startDate: new Date(leadData.startDate),
+    prepLevel: leadData.prepLevel as "Beginner" | "Concepts Done" | "Sectionals" | "Mocks",
+  }), [leadData]);
 
-  const tasks = useMemo(() => generateDayTasks(currentDay, phase), [currentDay, phase]);
+  const fullPlan = useMemo(() => generateFullPlan(planConfig), [planConfig]);
 
-  // Generate a few days around current for a mini-week view
-  const weekDays = useMemo(() => {
-    const start = Math.max(1, currentDay - 2);
-    const end = Math.min(totalDays, start + 6);
-    const days: DailyTasks[] = [];
-    for (let d = start; d <= end; d++) {
-      days.push(generateDayTasks(d, phase));
-    }
-    return days;
-  }, [currentDay, phase, totalDays]);
+  // Current day index = days since start
+  const currentDayIndex = useMemo(() => {
+    const start = new Date(leadData.startDate);
+    start.setHours(0, 0, 0, 0);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.max(0, Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
+  }, [leadData.startDate]);
+
+  const [viewingDay, setViewingDay] = useState(Math.min(currentDayIndex, fullPlan.length - 1));
+
+  useEffect(() => {
+    setViewingDay(Math.min(currentDayIndex, fullPlan.length - 1));
+  }, [currentDayIndex, fullPlan.length]);
+
+  const currentTask = fullPlan[viewingDay] ?? null;
+  const currentPhase = currentTask?.phase || "Foundation Phase";
+
+  // Mini day navigator
+  const navDays = useMemo(() => {
+    const start = Math.max(0, viewingDay - 3);
+    const end = Math.min(fullPlan.length - 1, start + 6);
+    return fullPlan.slice(start, end + 1);
+  }, [viewingDay, fullPlan]);
+
+  if (fullPlan.length === 0) {
+    return (
+      <section className="max-w-2xl mx-auto px-4 py-12 text-center">
+        <p className="text-muted-foreground">CAT {leadData.targetYear} has already passed.</p>
+        <Button variant="outline" className="mt-4" onClick={onReset}>Start Over</Button>
+      </section>
+    );
+  }
 
   return (
     <section className="max-w-2xl mx-auto px-4 py-12">
@@ -355,13 +386,21 @@ function PlannerDashboard({ targetYear, onReset }: { targetYear: number; onReset
         <div className="space-y-4">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-sm text-muted-foreground font-medium mb-1">Welcome, {userName}</p>
+              <p className="text-sm text-muted-foreground font-medium mb-1">Welcome, {leadData.name}</p>
               <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">Your Daily Plan</h1>
             </div>
             <Button variant="outline" size="sm" className="rounded-xl shrink-0 text-xs font-semibold gap-2" onClick={onReset}>
               <RefreshCw className="h-3.5 w-3.5" /> Start Over
             </Button>
           </div>
+
+          {/* Crash mode banner */}
+          {isCrashMode && (
+            <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-3 flex items-center gap-2">
+              <Zap className="h-4 w-4 text-destructive shrink-0" />
+              <p className="text-xs font-semibold text-destructive">CRASH MODE — Only Tier 1 topics. Direct mock preparation.</p>
+            </div>
+          )}
 
           {/* Countdown + Phase */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -372,7 +411,7 @@ function PlannerDashboard({ targetYear, onReset }: { targetYear: number; onReset
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-primary">{daysLeft}</p>
-                  <p className="text-xs text-muted-foreground font-medium">Days Left for CAT {targetYear}</p>
+                  <p className="text-xs text-muted-foreground font-medium">Days Left for CAT {leadData.targetYear}</p>
                 </div>
               </CardContent>
             </Card>
@@ -382,61 +421,81 @@ function PlannerDashboard({ targetYear, onReset }: { targetYear: number; onReset
                   <CalendarDays className="h-5 w-5 text-foreground" />
                 </div>
                 <div>
-                  <Badge className={`${PHASE_COLORS[phase]} text-xs font-semibold border px-3 py-1`}>{phase}</Badge>
+                  <Badge className={`${PHASE_COLORS[currentPhase] || "bg-secondary text-foreground border-border"} text-xs font-semibold border px-3 py-1`}>
+                    {currentPhase}
+                  </Badge>
                   <p className="text-xs text-muted-foreground font-medium mt-1">Current Phase</p>
                 </div>
               </CardContent>
             </Card>
           </div>
+
+          {/* Today indicator */}
+          {viewingDay !== currentDayIndex && currentDayIndex < fullPlan.length && (
+            <Button variant="ghost" size="sm" className="text-xs text-primary" onClick={() => setViewingDay(currentDayIndex)}>
+              <AlertTriangle className="h-3 w-3 mr-1" /> Jump to Today (Day {currentDayIndex + 1})
+            </Button>
+          )}
         </div>
 
         {/* Day Navigator */}
         <div className="flex items-center justify-between">
-          <Button variant="ghost" size="sm" disabled={currentDay <= 1} onClick={() => setCurrentDay(Math.max(1, currentDay - 1))}>
-            <ChevronLeft className="h-4 w-4 mr-1" /> Prev Day
+          <Button variant="ghost" size="sm" disabled={viewingDay <= 0} onClick={() => setViewingDay(Math.max(0, viewingDay - 1))}>
+            <ChevronLeft className="h-4 w-4 mr-1" /> Prev
           </Button>
-          <span className="text-sm font-semibold text-foreground">Day {currentDay} of {totalDays}</span>
-          <Button variant="ghost" size="sm" disabled={currentDay >= totalDays} onClick={() => setCurrentDay(Math.min(totalDays, currentDay + 1))}>
-            Next Day <ChevronRight className="h-4 w-4 ml-1" />
+          <span className="text-sm font-semibold text-foreground">
+            Day {viewingDay + 1} of {fullPlan.length}
+            {viewingDay === currentDayIndex && <span className="text-primary ml-1">(Today)</span>}
+          </span>
+          <Button variant="ghost" size="sm" disabled={viewingDay >= fullPlan.length - 1} onClick={() => setViewingDay(Math.min(fullPlan.length - 1, viewingDay + 1))}>
+            Next <ChevronRight className="h-4 w-4 ml-1" />
           </Button>
         </div>
 
         {/* Mini day selector */}
         <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {weekDays.map((d) => (
+          {navDays.map((d) => (
             <button
-              key={d.dayNumber}
-              onClick={() => setCurrentDay(d.dayNumber)}
+              key={d.dayIndex}
+              onClick={() => setViewingDay(d.dayIndex)}
               className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                d.dayNumber === currentDay
+                d.dayIndex === viewingDay
                   ? "bg-primary text-primary-foreground shadow-md"
+                  : d.dayIndex === currentDayIndex
+                  ? "bg-primary/20 text-primary border border-primary/30"
                   : "bg-secondary text-foreground hover:bg-secondary/80"
               }`}
             >
-              Day {d.dayNumber}
+              {d.dayIndex + 1}
+              {d.is_mock_day && " 🎯"}
             </button>
           ))}
         </div>
 
         {/* Current Day Task Card */}
-        <TaskCard tasks={tasks} phase={phase} />
+        {currentTask && <TaskCard task={currentTask} />}
 
-        {/* Phase guide */}
+        {/* Plan info */}
         <Card className="rounded-xl border-border/40 bg-secondary/30">
           <CardContent className="p-4">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Phase Guide</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Plan Info</p>
             <div className="grid grid-cols-2 gap-2 text-xs">
-              {([
-                ["Foundation", "> 210 days"],
-                ["Strength & Sectional", "120–210 days"],
-                ["Mock Phase", "45–120 days"],
-                ["Final Revision", "< 45 days"],
-              ] as const).map(([p, range]) => (
-                <div key={p} className={`rounded-lg px-3 py-2 border ${phase === p ? "border-primary/30 bg-primary/5" : "border-border/40"}`}>
-                  <span className="font-semibold text-foreground">{p}</span>
-                  <span className="text-muted-foreground ml-1">({range})</span>
-                </div>
-              ))}
+              <div className="rounded-lg px-3 py-2 border border-border/40">
+                <span className="font-semibold text-foreground">Total Days</span>
+                <span className="text-muted-foreground ml-1">{fullPlan.length}</span>
+              </div>
+              <div className="rounded-lg px-3 py-2 border border-border/40">
+                <span className="font-semibold text-foreground">Mock Days</span>
+                <span className="text-muted-foreground ml-1">{fullPlan.filter(d => d.is_mock_day).length}</span>
+              </div>
+              <div className="rounded-lg px-3 py-2 border border-border/40">
+                <span className="font-semibold text-foreground">Prep Level</span>
+                <span className="text-muted-foreground ml-1">{leadData.prepLevel}</span>
+              </div>
+              <div className="rounded-lg px-3 py-2 border border-border/40">
+                <span className="font-semibold text-foreground">Mode</span>
+                <span className="text-muted-foreground ml-1">{isCrashMode ? "Crash" : "Standard"}</span>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -448,35 +507,44 @@ function PlannerDashboard({ targetYear, onReset }: { targetYear: number; onReset
 // ─── Main Page ───
 
 export default function CATDailyStudyPlanner() {
-  const [phase, setPhase] = useState<"lead" | "dashboard">(() => {
+  const [view, setView] = useState<"lead" | "dashboard">(() => {
     return localStorage.getItem("planner_phone") ? "dashboard" : "lead";
   });
-  const [targetYear, setTargetYear] = useState<number>(() => {
-    const stored = localStorage.getItem("planner_year");
-    if (stored) {
-      const parsed = parseInt(stored.replace(/\D/g, ""));
-      return parsed && parsed >= 2025 && parsed <= 2030 ? parsed : new Date().getFullYear() + 1;
-    }
-    return new Date().getFullYear() + 1;
-  });
 
-  const handleLeadComplete = (phone: string, year: number) => {
-    setTargetYear(year);
-    setPhase("dashboard");
+  const [leadData, setLeadData] = useState<LeadData>(() => ({
+    phone: localStorage.getItem("planner_phone") || "",
+    name: localStorage.getItem("planner_name") || "Aspirant",
+    targetYear: (() => {
+      const s = localStorage.getItem("planner_year");
+      if (s) {
+        const p = parseInt(s.replace(/\D/g, ""));
+        return p && p >= 2025 && p <= 2030 ? p : new Date().getFullYear() + 1;
+      }
+      return new Date().getFullYear() + 1;
+    })(),
+    prepLevel: localStorage.getItem("planner_prep_level") || "Beginner",
+    startDate: localStorage.getItem("planner_start_date") || new Date().toISOString().split("T")[0],
+  }));
+
+  const handleLeadComplete = (data: LeadData) => {
+    setLeadData(data);
+    setView("dashboard");
   };
 
   const handleReset = () => {
     localStorage.removeItem("planner_phone");
     localStorage.removeItem("planner_name");
     localStorage.removeItem("planner_year");
-    setPhase("lead");
+    localStorage.removeItem("planner_prep_level");
+    localStorage.removeItem("planner_start_date");
+    setView("lead");
   };
 
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      {phase === "lead" && <LeadCapture onComplete={handleLeadComplete} />}
-      {phase === "dashboard" && <PlannerDashboard targetYear={targetYear} onReset={handleReset} />}
+      {view === "lead" && <LeadCapture onComplete={handleLeadComplete} />}
+      {view === "dashboard" && <PlannerDashboard leadData={leadData} onReset={handleReset} />}
       <Footer />
     </div>
   );
