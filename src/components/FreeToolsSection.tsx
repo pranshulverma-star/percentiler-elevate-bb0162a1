@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { useLeadModal } from "@/components/LeadModalProvider";
 
 const tools = [
-  { icon: CalendarDays, name: "Daily Study Planner", benefit: "Get a day-wise structured preparation roadmap tailored to your target CAT year.", href: "/cat-daily-study-planner", isLink: true },
-  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Enroll for free in our foundation course and start your CAT preparation journey.", href: "#", isLink: false },
-  { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Get a structured performance report in 15 minutes — completely free.", href: "/free-cat-readiness-assessment", isLink: true },
+  { icon: CalendarDays, name: "CAT Daily Study Planner", benefit: "Build consistency week-by-week with a day-wise structured CAT preparation roadmap.", href: "/cat-daily-study-planner", isLink: true },
+  { icon: GraduationCap, name: "CAT Percentile Predictor", benefit: "Know where you stand instantly and plan your target percentile.", href: "https://percentilers.in/cat-percentile-predictor/", isLink: true },
+  { icon: ClipboardCheck, name: "Mock Analysis Framework", benefit: "Convert mock tests into percentile jumps with structured performance analysis.", href: "/free-cat-readiness-assessment", isLink: true },
 ];
 
 const FreeToolsSection = () => {
@@ -22,10 +22,11 @@ const FreeToolsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
         >
-          <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Free Resources</span>
+          <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Free CAT Tools</span>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            Extra Support for <span className="text-primary">Serious Aspirants</span>
+            Free Tools to Strengthen Your <span className="text-primary">CAT Preparation</span>
           </h2>
+          <p className="text-muted-foreground text-base max-w-xl mx-auto">These tools are designed to support — not replace — your structured learning.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
@@ -47,15 +48,11 @@ const FreeToolsSection = () => {
                   <h3 className="font-bold text-foreground mb-2">{t.name}</h3>
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{t.benefit}</p>
                 </div>
-                {t.isLink ? (
+                {t.isLink && (
                   <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
-                    <a href={t.href}>
-                      Use Free Tool <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                    <a href={t.href} target={t.href.startsWith("http") ? "_blank" : undefined} rel={t.href.startsWith("http") ? "noopener noreferrer" : undefined}>
+                      Try Free Tool <ArrowRight className="ml-1 h-3.5 w-3.5" />
                     </a>
-                  </Button>
-                ) : (
-                  <Button variant="default" size="sm" onClick={() => openModal("foundation_course_enroll")}>
-                    Enroll Free
                   </Button>
                 )}
               </Card>

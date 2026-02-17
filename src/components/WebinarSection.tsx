@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { useLeadModal } from "@/components/LeadModalProvider";
 
 const bullets = [
-  "Study structure framework used by 99%ilers",
-  "Mock analysis system to identify weak areas fast",
-  "Strategy blueprint for 95+ percentile",
-  "Common mistakes that cost 10+ marks",
+  "How to structure CAT 2026 preparation from Day 1",
+  "How many mocks you really need — and how to analyze them",
+  "What score is required for IIM ABC, FMS, XLRI",
+  "Why most students plateau at 85 percentile — and how to break through",
 ];
 
 const WebinarSection = () => {
@@ -32,8 +32,11 @@ const WebinarSection = () => {
           <Play className="h-7 w-7 ml-0.5" />
         </div>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-          Confused About CAT? Watch This <span className="text-primary">Free Masterclass.</span>
+          Watch Before You <span className="text-primary">Decide</span>
         </h2>
+        <p className="text-muted-foreground text-base max-w-xl mx-auto">
+          Don't enroll blindly. Attend the Free CAT Masterclass and understand the exact preparation framework for CAT 2026.
+        </p>
       </motion.div>
 
       <ul className="space-y-4 text-left inline-block my-10">
@@ -63,7 +66,7 @@ const WebinarSection = () => {
             window.location.href = "/masterclass";
           });
         }}>
-          Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
+          Watch Free Masterclass Now <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
       </motion.div>
     </div>

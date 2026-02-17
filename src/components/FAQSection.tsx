@@ -2,12 +2,11 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { motion } from "framer-motion";
 
 const faqs = [
-  { q: "Who is this coaching best suited for?", a: "Our programs are designed for serious CAT aspirants — whether you're a first-time taker or a re-taker looking for a structured, result-oriented approach." },
-  { q: "How is Percentilers different from other coaching?", a: "We combine strategic study planning, personalized mock analysis, and expert mentorship. We focus on improving your percentile — not just covering the syllabus." },
-  { q: "Do you offer online classes?", a: "Yes. All our programs are available online with live sessions, recorded lectures, and interactive doubt-clearing sessions." },
-  { q: "What kind of results have your students achieved?", a: "Over 200 students have scored 95+ percentile. Our alumni have converted calls from IIM A, B, C, FMS, XLRI, and other top B-schools." },
-  { q: "Is there a free trial or demo?", a: "Absolutely. Start with our Free Masterclass to experience our teaching methodology and strategy framework before enrolling." },
-  { q: "How do I get started?", a: "Watch the Free Masterclass, explore our programs, and book a strategy call with our team. We'll help you pick the right plan." },
+  { q: "How to prepare for CAT 2026?", a: "Start with a structured day-wise study plan covering VARC, LRDI, and QA. Combine conceptual learning with mock analysis. Percentilers provides a complete preparation framework — watch our Free Masterclass to understand the exact approach." },
+  { q: "What percentile is required for IIM?", a: "For IIM A, B, C you typically need 99+ percentile. For IIM Lucknow, Kozhikode, and Indore, 97-99 percentile is competitive. For newer IIMs, 90-95 percentile can secure calls. Your profile (academics, work experience) also plays a significant role." },
+  { q: "Is CAT tough for working professionals?", a: "CAT is challenging but absolutely crackable for working professionals with the right structure. We specialize in 2-3 hour daily plans, weekend mock optimization, and smart repetition cycles designed for time-constrained aspirants." },
+  { q: "How many mock tests should I attempt for CAT?", a: "Aim for 25-30 full-length mocks and 50+ sectional tests. But quantity alone doesn't help — structured mock analysis is what converts practice into percentile improvement. Our mock analysis framework helps you extract maximum learning from every test." },
+  { q: "What is the CAT syllabus and exam pattern?", a: "CAT tests three sections: VARC (Verbal Ability & Reading Comprehension), LRDI (Logical Reasoning & Data Interpretation), and QA (Quantitative Ability). The exam is 2 hours with ~66 questions. Our structured syllabus roadmap ensures complete coverage with strategic prioritization." },
 ];
 
 const FAQSection = () => (
@@ -25,7 +24,7 @@ const FAQSection = () => (
       >
         <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">FAQ</span>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-          Frequently Asked <span className="text-primary">Questions</span>
+          FAQs — CAT Preparation & <span className="text-primary">MBA Entrance Exam</span>
         </h2>
       </motion.div>
 
