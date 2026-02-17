@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2 } from "lucide-react";
+import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const learningBullets = [
@@ -13,11 +13,11 @@ const learningBullets = [
 ];
 
 const resources = [
-  { icon: FileText, label: "Ebook — Top Secrets to Crack CAT", action: "download" },
-  { icon: BookOpen, label: "Coaching Shortlist Checklist", action: "download" },
-  { icon: BarChart3, label: "Daily Study Planner", action: "planner" },
-  { icon: PenTool, label: "College ROI List", action: "download" },
-  { icon: Download, label: "Handwritten Notes", action: "download" },
+  { icon: FileText, label: "Ebook — Top Secrets to Crack CAT", action: "download", unlockAt: 20 },
+  { icon: BarChart3, label: "Daily Study Planner", action: "planner", unlockAt: 40 },
+  { icon: PenTool, label: "College ROI List", action: "download", unlockAt: 60 },
+  { icon: BookOpen, label: "Coaching Shortlist Checklist", action: "download", unlockAt: 80 },
+  { icon: Download, label: "Handwritten Notes", action: "download", unlockAt: 90 },
 ];
 
 const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
@@ -26,12 +26,16 @@ const MasterclassWatch = () => {
   const navigate = useNavigate();
   const phone = localStorage.getItem("percentilers_phone");
   const [watchPct, setWatchPct] = useState(0);
+  const [maxWatchPct, setMaxWatchPct] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [showUnlockBanner, setShowUnlockBanner] = useState(false);
   const [videoLoading, setVideoLoading] = useState(true);
+  const [isFirstWatch, setIsFirstWatch] = useState(true);
+  const [resumePct, setResumePct] = useState(0);
   const videoRef = useRef<HTMLVideoElement>(null);
   const engagementCreated = useRef(false);
   const lastMilestone = useRef(0);
+  const hasResumed = useRef(false);
 
   // Redirect if no phone
   useEffect(() => {
@@ -49,8 +53,20 @@ const MasterclassWatch = () => {
         .maybeSingle();
       if (data) {
         engagementCreated.current = true;
-        if (data.completed) setCompleted(true);
-        if (data.watch_percentage) setWatchPct(data.watch_percentage);
+        if (data.completed) {
+          setCompleted(true);
+          setIsFirstWatch(false);
+          setMaxWatchPct(100);
+        }
+        if (data.watch_percentage) {
+          setWatchPct(data.watch_percentage);
+          setMaxWatchPct(data.watch_percentage);
+          lastMilestone.current = data.watch_percentage;
+          if (data.watch_percentage > 0 && !data.completed) {
+            setResumePct(data.watch_percentage);
+          }
+          if (data.watch_percentage >= 100) setIsFirstWatch(false);
+        }
       }
     };
     checkEngagement();
@@ -85,29 +101,50 @@ const MasterclassWatch = () => {
 
     const pct = Math.round((video.currentTime / video.duration) * 100);
     setWatchPct(pct);
+    setMaxWatchPct(prev => Math.max(prev, pct));
 
-    const milestones = [25, 50, 75, 90, 100];
+    // On first watch, prevent seeking forward beyond max watched
+    if (isFirstWatch && video.currentTime > (video.duration * maxWatchPct / 100) + 2) {
+      video.currentTime = video.duration * maxWatchPct / 100;
+      return;
+    }
+
+    const milestones = [20, 40, 60, 80, 90, 100];
     for (const m of milestones) {
       if (pct >= m && lastMilestone.current < m) {
         lastMilestone.current = m;
         if (m === 90) setShowUnlockBanner(true);
         if (m === 100) {
           setCompleted(true);
+          setIsFirstWatch(false);
           updateEngagement(100, true);
         } else {
           updateEngagement(m, false);
         }
       }
     }
-  }, [completed, updateEngagement]);
+  }, [completed, updateEngagement, isFirstWatch, maxWatchPct]);
 
   const handleVideoEnded = useCallback(() => {
     if (!completed) {
       setWatchPct(100);
+      setMaxWatchPct(100);
       setCompleted(true);
+      setIsFirstWatch(false);
       updateEngagement(100, true);
     }
   }, [completed, updateEngagement]);
+
+  // Resume from last position
+  const handleLoadedMetadata = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || hasResumed.current || resumePct <= 0) return;
+    hasResumed.current = true;
+    video.currentTime = (video.duration * resumePct) / 100;
+  }, [resumePct]);
+
+  // Prevent seeking on first watch via CSS
+  const videoClassName = `w-full h-full object-contain rounded-2xl${isFirstWatch ? " [&::-webkit-media-controls-timeline]:hidden" : ""}`;
 
   if (!phone) return null;
 
@@ -134,12 +171,13 @@ const MasterclassWatch = () => {
             <video
               id="masterclassVideo"
               ref={videoRef}
-              className="w-full h-full object-contain rounded-2xl"
+              className={videoClassName}
               controls
               preload="metadata"
               onTimeUpdate={handleTimeUpdate}
               onEnded={handleVideoEnded}
               onLoadedData={() => setVideoLoading(false)}
+              onLoadedMetadata={handleLoadedMetadata}
               onContextMenu={(e) => e.preventDefault()}
             >
               <source src={VIDEO_URL} type="video/mp4" />
@@ -189,54 +227,61 @@ const MasterclassWatch = () => {
             </p>
           </div>
 
-          {/* Resource Kit Section — only shown if completed */}
-          {completed && (
-            <section id="resource-kit-section" className="mb-16">
-              <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-                <div className="text-center mb-8">
-                  <div className="flex items-center justify-center gap-2 mb-3">
-                    <Gift className="h-6 w-6 text-primary" />
-                    <h2 className="text-2xl font-bold text-foreground">
-                      CAT Success Resource Kit (Unlocked)
-                    </h2>
-                  </div>
-                  <p className="text-muted-foreground">
-                    You stayed till the end. That already puts you ahead of most aspirants.
-                  </p>
+          {/* Resource Kit Section — progressive unlock */}
+          <section id="resource-kit-section" className="mb-16">
+            <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
+              <div className="text-center mb-8">
+                <div className="flex items-center justify-center gap-2 mb-3">
+                  <Gift className="h-6 w-6 text-primary" />
+                  <h2 className="text-2xl font-bold text-foreground">
+                    CAT Success Resource Kit
+                  </h2>
                 </div>
+                <p className="text-muted-foreground">
+                  Keep watching to unlock all 5 resources.
+                </p>
+              </div>
 
-                <div className="space-y-4 mb-10">
-                  {resources.map((r, i) => (
+              <div className="space-y-4 mb-10">
+                {resources.map((r, i) => {
+                  const unlocked = maxWatchPct >= r.unlockAt;
+                  return (
                     <div
                       key={i}
-                      className="flex items-center justify-between rounded-xl border border-border p-4 hover:shadow-sm transition-shadow"
+                      className={`flex items-center justify-between rounded-xl border p-4 transition-shadow ${unlocked ? "border-border hover:shadow-sm" : "border-border/50 opacity-60"}`}
                     >
                       <div className="flex items-center gap-3">
-                        <r.icon className="h-5 w-5 text-primary shrink-0" />
-                        <span className="font-medium text-foreground">{r.label}</span>
+                        <r.icon className={`h-5 w-5 shrink-0 ${unlocked ? "text-primary" : "text-muted-foreground"}`} />
+                        <span className={`font-medium ${unlocked ? "text-foreground" : "text-muted-foreground"}`}>{r.label}</span>
                       </div>
-                      <Button size="sm" variant="outline" asChild>
-                        <a href={r.action === "planner" ? "/#tools" : "#"}>
-                          {r.action === "planner" ? "Open Planner" : "Download"}
-                        </a>
-                      </Button>
+                      {unlocked ? (
+                        <Button size="sm" variant="outline" asChild>
+                          <a href={r.action === "planner" ? "/#tools" : "#"}>
+                            {r.action === "planner" ? "Open Planner" : "Download"}
+                          </a>
+                        </Button>
+                      ) : (
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Lock className="h-3.5 w-3.5" /> {r.unlockAt}%
+                        </span>
+                      )}
                     </div>
-                  ))}
-                </div>
-
-                <div className="border-t border-border pt-8 text-center">
-                  <Button size="lg" asChild>
-                    <a href="#">
-                      Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" />
-                    </a>
-                  </Button>
-                  <p className="text-sm text-muted-foreground mt-3">
-                    Structured roadmap + daily mentoring + accountability included.
-                  </p>
-                </div>
+                  );
+                })}
               </div>
-            </section>
-          )}
+
+              <div className="border-t border-border pt-8 text-center">
+                <Button size="lg" asChild>
+                  <a href="#">
+                    Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" />
+                  </a>
+                </Button>
+                <p className="text-sm text-muted-foreground mt-3">
+                  Structured roadmap + daily mentoring + accountability included.
+                </p>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
     </div>
