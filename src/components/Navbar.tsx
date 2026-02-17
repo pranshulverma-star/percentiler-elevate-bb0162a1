@@ -6,11 +6,11 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { motion, useSpring } from "framer-motion";
 
 const navLinks = [
-  { label: "Home", href: "#" },
-  { label: "Courses", href: "#courses" },
-  { label: "Results", href: "#results" },
-  { label: "Free Tools", href: "#tools" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/#" },
+  { label: "Courses", href: "/#courses" },
+  { label: "Results", href: "/#results" },
+  { label: "Free Tools", href: "/#tools" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 const Navbar = () => {
