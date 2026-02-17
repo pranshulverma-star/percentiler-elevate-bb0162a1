@@ -26,24 +26,30 @@ const Index = () => (
       {/* Act 1: Hook & Trust */}
       <HeroSection />
       <FeaturedStrip />
-      <TrustStrip />
 
-      {/* Act 2: Proof */}
+      {/* Act 2: Primary CTA */}
+      <WebinarSection />
+
+      {/* Act 3: Trust */}
+      <TrustStrip />
       <ResultsSection />
+
+      {/* Act 4: Tools */}
+      <FreeToolsSection />
+      <PercentilePlannerSection />
+
+      {/* Act 5: Social Proof */}
       <TestimonialsSection />
 
-      {/* Act 3: The Guide */}
-      <FounderSection />
+      {/* Act 6: Your Path */}
+      <PreparationPathSection />
+      <CoursesSection />
       <FacultySection />
 
-      {/* Act 4: Your Path */}
-      <PreparationPathSection />
-      <WebinarSection />
-      <CoursesSection />
-      <PercentilePlannerSection />
-      <FreeToolsSection />
+      {/* Act 7: Story */}
+      <FounderSection />
 
-      {/* Act 5: Close */}
+      {/* Act 8: Close */}
       <FAQSection />
       <FinalCTASection />
     </main>
