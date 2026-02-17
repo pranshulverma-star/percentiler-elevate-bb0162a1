@@ -24,7 +24,7 @@ const results = [
 ];
 
 const ResultsSection = () => (
-  <section id="results" className="py-20 md:py-28 bg-secondary/30 relative overflow-hidden">
+  <section id="results" className="py-14 md:py-28 bg-secondary/30 relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-primary/[0.03] blur-3xl" />
     </div>
@@ -44,7 +44,7 @@ const ResultsSection = () => (
         <p className="text-muted-foreground max-w-lg mx-auto">Real results from real aspirants who followed the system.</p>
       </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
         {results.map((r, i) => (
           <motion.div
             key={r.name}

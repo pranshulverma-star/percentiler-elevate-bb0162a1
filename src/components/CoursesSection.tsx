@@ -26,7 +26,7 @@ const courses = [
 ];
 
 const CoursesSection = () => (
-  <section id="courses" className="py-20 md:py-28 bg-background relative overflow-hidden">
+  <section id="courses" className="py-14 md:py-28 bg-background relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-primary/[0.02] blur-3xl" />
     </div>
@@ -44,7 +44,7 @@ const CoursesSection = () => (
         </h2>
       </motion.div>
 
-      <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
         {courses.map((c, i) => {
           const Icon = c.icon;
           return (

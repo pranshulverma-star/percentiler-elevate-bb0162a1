@@ -38,18 +38,18 @@ const Counter = ({ value, suffix, decimal }: { value: number; suffix: string; de
   }, [value]);
 
   return (
-    <div ref={ref} className="text-4xl md:text-5xl font-bold text-foreground">
+    <div ref={ref} className="text-3xl md:text-5xl font-bold text-foreground">
       {decimal ? count.toFixed(1) : Math.floor(count)}<span className="text-primary">{suffix}</span>
     </div>
   );
 };
 
 const TrustStrip = () => (
-  <section className="py-16 md:py-20 bg-background relative">
+  <section className="py-10 md:py-20 bg-background relative">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-primary/[0.03] blur-3xl" />
     </div>
-    <div className="container mx-auto px-4 md:px-6 grid grid-cols-2 md:grid-cols-4 gap-10 text-center relative z-10">
+    <div className="container mx-auto px-4 md:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 text-center relative z-10">
       {stats.map((s, i) => {
         const Icon = s.icon;
         return (

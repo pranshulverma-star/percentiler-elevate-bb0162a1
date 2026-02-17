@@ -14,7 +14,7 @@ const FreeToolsSection = () => {
   const { openModal } = useLeadModal();
 
   return (
-    <section id="tools" className="py-20 md:py-24 bg-secondary/50">
+    <section id="tools" className="py-14 md:py-24 bg-secondary/50">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           className="text-center mb-14 space-y-3"
@@ -28,7 +28,7 @@ const FreeToolsSection = () => {
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
           {tools.map((t, i) => (
             <motion.div
               key={t.name}

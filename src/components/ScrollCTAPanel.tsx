@@ -44,7 +44,7 @@ const ScrollCTAPanel = () => {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: 100, opacity: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          className="fixed bottom-20 right-4 z-40 w-72 rounded-2xl border border-border bg-card p-5 shadow-xl"
+          className="fixed bottom-16 right-3 md:bottom-20 md:right-4 z-40 w-[calc(100vw-1.5rem)] max-w-72 rounded-2xl border border-border bg-card p-4 md:p-5 shadow-xl"
         >
           <button
             onClick={dismiss}

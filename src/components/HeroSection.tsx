@@ -63,8 +63,8 @@ const HeroSection = () => {
   const { openModal } = useLeadModal();
 
   return (
-    <section className="py-16 md:py-24 bg-background overflow-hidden">
-      <div className="container mx-auto px-4 md:px-6 grid md:grid-cols-2 gap-12 items-center">
+    <section className="py-10 md:py-24 bg-background overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         <motion.div
           className="space-y-6"
           initial={{ opacity: 0, x: -30 }}
@@ -75,14 +75,14 @@ const HeroSection = () => {
             <TrendingUp className="h-4 w-4 text-primary" />
             <span className="text-xs font-semibold text-primary">2,000+ students enrolled this cycle</span>
           </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-foreground">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-foreground">
             From Preparation to 95+ Percentile — <span className="text-primary">With Structure.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-lg">
             Proven CAT coaching + strategic planning tools to maximize your score.
           </p>
-          <div className="flex flex-wrap gap-4 pt-4">
-            <Button size="lg" className="animate-pulse-glow text-base font-bold px-8 py-6 rounded-xl shadow-lg" onClick={() => {
+          <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => {
               openModal("hero_evaluate_profile", () => {
                 const section = document.getElementById("profile-evaluator");
                 if (section) section.scrollIntoView({ behavior: "smooth" });
@@ -90,7 +90,7 @@ const HeroSection = () => {
             }}>
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" className="text-base font-bold px-8 py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" onClick={() => {
+            <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" onClick={() => {
               openModal("hero_masterclass", () => {
                 window.location.href = "/masterclass";
               });
@@ -100,13 +100,13 @@ const HeroSection = () => {
           </div>
         </motion.div>
 
-        <motion.div className="grid grid-cols-2 gap-4" variants={container} initial="hidden" animate="show">
+        <motion.div className="grid grid-cols-2 gap-3 md:gap-4" variants={container} initial="hidden" animate="show">
           {scorecards.map((s, i) => (
             <motion.a href={s.linkedin} target="_blank" rel="noopener noreferrer" key={s.name} variants={item} whileHover={{ y: -6, scale: 1.03 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-              <Card className="p-5 space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-pointer group relative overflow-hidden">
+              <Card className="p-3 md:p-5 space-y-2 md:space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-pointer group relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full" />
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-14 w-14 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
+                  <Avatar className="h-10 w-10 md:h-14 md:w-14 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
                     <AvatarImage src={s.photo} alt={s.name} className="object-cover object-top scale-[1.6] translate-y-[10%]" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{s.initials}</AvatarFallback>
                   </Avatar>
@@ -119,7 +119,7 @@ const HeroSection = () => {
                   </div>
                 </div>
                 <div className="flex items-baseline gap-1.5">
-                  <p className="text-3xl font-bold text-primary group-hover:scale-105 transition-transform origin-left">
+                  <p className="text-2xl md:text-3xl font-bold text-primary group-hover:scale-105 transition-transform origin-left">
                     <AnimatedNumber target={s.percentile} />
                   </p>
                   <span className="text-xs font-medium text-muted-foreground">%ile</span>

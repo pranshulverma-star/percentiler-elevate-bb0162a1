@@ -14,7 +14,7 @@ const WebinarSection = () => {
   const { openModal } = useLeadModal();
 
   return (
-  <section id="masterclass" className="py-20 md:py-28 bg-secondary relative overflow-hidden">
+  <section id="masterclass" className="py-14 md:py-28 bg-secondary relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-1/2 left-0 w-96 h-96 -translate-y-1/2 rounded-full bg-primary/[0.04] blur-3xl" />
     </div>

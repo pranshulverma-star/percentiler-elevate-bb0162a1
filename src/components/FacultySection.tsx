@@ -29,7 +29,7 @@ const faculty = [
 ];
 
 const FacultySection = () => (
-  <section className="py-20 md:py-24 bg-background relative overflow-hidden">
+  <section className="py-14 md:py-24 bg-background relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-primary/[0.02] blur-3xl" />
     </div>
@@ -47,7 +47,7 @@ const FacultySection = () => (
         </h2>
       </motion.div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 max-w-5xl mx-auto">
         {faculty.map((f, i) => (
           <motion.div
             key={f.name}

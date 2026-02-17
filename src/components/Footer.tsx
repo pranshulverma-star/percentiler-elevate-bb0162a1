@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 const Footer = () => (
   <footer className="py-12 border-t border-border bg-background">
     <div className="container mx-auto px-4 md:px-6">
-      <div className="grid md:grid-cols-4 gap-8 mb-8">
-        <div>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
+        <div className="col-span-2 md:col-span-1">
           <h3 className="font-bold text-foreground text-lg mb-3">Percentilers</h3>
           <p className="text-sm text-muted-foreground leading-relaxed">
             Premium CAT coaching for serious aspirants. Structured preparation, expert mentorship, and proven results.
