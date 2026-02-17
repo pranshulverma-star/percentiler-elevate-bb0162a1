@@ -40,11 +40,22 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const { toast } = useToast();
 
   const openModal = (src: string, onSuccess?: () => void) => {
-    setSource(src);
-    setOnSuccessCb(() => onSuccess || null);
-    // Pre-fill with stored values if available
     const storedPhone = localStorage.getItem("percentilers_phone") || "";
     const storedName = localStorage.getItem("percentilers_name") || "";
+
+    // If user already registered, skip the modal and proceed directly
+    if (/^\d{10}$/.test(storedPhone) && storedName) {
+      // Silently upsert with the new source in the background
+      supabase.from("leads").upsert(
+        { phone_number: storedPhone, name: storedName, source: src },
+        { onConflict: "phone_number" }
+      );
+      onSuccess?.();
+      return;
+    }
+
+    setSource(src);
+    setOnSuccessCb(() => onSuccess || null);
     setPhone(storedPhone);
     setName(storedName);
     setOpen(true);
