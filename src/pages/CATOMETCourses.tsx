@@ -187,41 +187,6 @@ const CATOMETCourses = () => {
           </div>
         </section>
 
-        {/* Mini testimonials strip */}
-        <section className="py-6 md:py-8 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
-              {[
-                { name: "Aarav S.", percentile: "99.2%ile", college: "IIM Ahmedabad", quote: "The guarantee course changed my life." },
-                { name: "Priya M.", percentile: "98.5%ile", college: "IIM Bangalore", quote: "Live classes kept me accountable every day." },
-                { name: "Rohan K.", percentile: "96.1%ile", college: "IIM Lucknow", quote: "Recorded course fit perfectly around my job." },
-              ].map((t, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                >
-                  <Card className="p-3 md:p-4 h-full border border-border">
-                    <div className="flex items-center gap-2 mb-1.5 md:mb-2">
-                      <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary/10 flex items-center justify-center text-[10px] md:text-xs font-bold text-primary">
-                        {t.name[0]}
-                      </div>
-                      <div>
-                        <p className="text-[10px] md:text-xs font-semibold text-foreground">{t.name}</p>
-                        <p className="text-[9px] md:text-[10px] text-muted-foreground">{t.college}</p>
-                      </div>
-                      <Badge variant="secondary" className="ml-auto text-[9px] md:text-[10px] font-bold">{t.percentile}</Badge>
-                    </div>
-                    <p className="text-[10px] md:text-xs text-muted-foreground italic">"{t.quote}"</p>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Course Cards */}
         <section className="py-8 md:py-20 bg-secondary/30">
           <div className="container mx-auto px-4">
@@ -324,6 +289,41 @@ const CATOMETCourses = () => {
                   </motion.div>
                 );
               })}
+            </div>
+          </div>
+        </section>
+
+        {/* Mini testimonials strip */}
+        <section className="py-6 md:py-8 bg-background">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
+              {[
+                { name: "Aarav S.", percentile: "99.2%ile", college: "IIM Ahmedabad", quote: "The guarantee course changed my life." },
+                { name: "Priya M.", percentile: "98.5%ile", college: "IIM Bangalore", quote: "Live classes kept me accountable every day." },
+                { name: "Rohan K.", percentile: "96.1%ile", college: "IIM Lucknow", quote: "Recorded course fit perfectly around my job." },
+              ].map((t, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                >
+                  <Card className="p-3 md:p-4 h-full border border-border">
+                    <div className="flex items-center gap-2 mb-1.5 md:mb-2">
+                      <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary/10 flex items-center justify-center text-[10px] md:text-xs font-bold text-primary">
+                        {t.name[0]}
+                      </div>
+                      <div>
+                        <p className="text-[10px] md:text-xs font-semibold text-foreground">{t.name}</p>
+                        <p className="text-[9px] md:text-[10px] text-muted-foreground">{t.college}</p>
+                      </div>
+                      <Badge variant="secondary" className="ml-auto text-[9px] md:text-[10px] font-bold">{t.percentile}</Badge>
+                    </div>
+                    <p className="text-[10px] md:text-xs text-muted-foreground italic">"{t.quote}"</p>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
