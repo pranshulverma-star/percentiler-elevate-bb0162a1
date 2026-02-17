@@ -139,12 +139,29 @@ interface Props {
 
 export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
   const [step, setStep] = useState<Step>("phone");
-  const [form, setForm] = useState<FormData>(initialForm);
+  const [form, setForm] = useState<FormData>(() => {
+    const storedPhone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    return { ...initialForm, phone_number: storedPhone };
+  });
   const [returning, setReturning] = useState(false);
   const [results, setResults] = useState<Results | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Auto-skip phone step if we already have a valid phone
   const progress = step === "phone" ? 15 : step === "form" ? 55 : 100;
+
+  const handleOpen = () => {
+    const storedPhone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    if (/^\d{10}$/.test(storedPhone)) {
+      setForm(f => ({ ...f, phone_number: storedPhone }));
+      setStep("form");
+    }
+  };
+
+  // When modal opens, check if we can skip phone step
+  if (open && step === "phone" && form.phone_number.length === 10) {
+    handleOpen();
+  }
 
   const handlePhoneSubmit = async () => {
     if (form.phone_number.length < 10) return;
@@ -180,6 +197,9 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       target_top20: scores.target_top20,
       target_top30: scores.target_top30,
     });
+
+    // Save phone to localStorage for other tools
+    localStorage.setItem("percentilers_phone", form.phone_number);
 
     // Insert into leads if not exists
     const { data: existingLead } = await supabase
