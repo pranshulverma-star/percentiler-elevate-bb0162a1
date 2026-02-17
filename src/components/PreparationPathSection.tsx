@@ -83,60 +83,63 @@ const PreparationPathSection = () => {
           ))}
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 justify-center mb-10">
+        <div className="flex flex-col gap-3 sm:gap-4">
           {pills.map((pill, i) => {
             const Icon = pill.icon;
             const isSelected = selected === pill.id;
             return (
-              <motion.button
-                key={pill.id}
-                onClick={() => setSelected(pill.id)}
-                whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.97 }}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1, duration: 0.3 }}
-                className={`group relative flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium border-2 transition-all duration-300 cursor-pointer text-left ${
-                  isSelected ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20" : "bg-background text-foreground border-border hover:border-primary/40 hover:shadow-md"
-                }`}
-              >
-                <span className={`flex items-center justify-center w-10 h-10 rounded-xl transition-colors duration-300 shrink-0 ${isSelected ? "bg-primary-foreground/20" : "bg-muted group-hover:bg-primary/10"}`}>
-                  <Icon className="h-5 w-5" />
-                </span>
-                <span className="flex-1">{pill.label}</span>
-                <ChevronRight className={`h-4 w-4 transition-transform duration-300 shrink-0 ${isSelected ? "translate-x-0 opacity-100" : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-50"}`} />
-              </motion.button>
+              <div key={pill.id}>
+                <motion.button
+                  onClick={() => setSelected(isSelected ? null : pill.id)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1, duration: 0.3 }}
+                  className={`w-full group relative flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium border-2 transition-all duration-300 cursor-pointer text-left ${
+                    isSelected ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20" : "bg-background text-foreground border-border hover:border-primary/40 hover:shadow-md"
+                  }`}
+                >
+                  <span className={`flex items-center justify-center w-10 h-10 rounded-xl transition-colors duration-300 shrink-0 ${isSelected ? "bg-primary-foreground/20" : "bg-muted group-hover:bg-primary/10"}`}>
+                    <Icon className="h-5 w-5" />
+                  </span>
+                  <span className="flex-1">{pill.label}</span>
+                  <ChevronRight className={`h-4 w-4 transition-transform duration-300 shrink-0 ${isSelected ? "rotate-90" : "group-hover:translate-x-0.5"}`} />
+                </motion.button>
+
+                <AnimatePresence mode="wait">
+                  {isSelected && (
+                    <motion.div
+                      key={pill.id}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="mt-3 rounded-2xl border border-border bg-secondary/60 backdrop-blur-sm p-6 md:p-8 text-center relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-[3rem]" />
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-3">
+                          {recommendations[pill.id].tag}
+                        </span>
+                        <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">{recommendations[pill.id].headline}</h3>
+                        <p className="text-muted-foreground mb-6 max-w-lg mx-auto leading-relaxed text-sm">{recommendations[pill.id].text}</p>
+                        <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                          <Button size="lg" onClick={() => handleCTA("masterclass")} className="shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-shadow">
+                            Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
+                          </Button>
+                          <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" onClick={() => handleCTA("call")}>
+                            <Phone className="mr-1.5 h-4 w-4" /> Book Free Counseling Call
+                          </Button>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             );
           })}
         </div>
-
-        <AnimatePresence mode="wait">
-          {selected && (
-            <motion.div
-              key={selected}
-              initial={{ opacity: 0, y: 24, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -12, scale: 0.97 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-2xl border border-border bg-secondary/60 backdrop-blur-sm p-8 md:p-10 text-center relative overflow-hidden"
-            >
-              <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-[3rem]" />
-              <motion.span initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary mb-4">
-                {recommendations[selected].tag}
-              </motion.span>
-              <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">{recommendations[selected].headline}</h3>
-              <p className="text-muted-foreground mb-8 max-w-lg mx-auto leading-relaxed">{recommendations[selected].text}</p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button size="lg" onClick={() => handleCTA("masterclass")} className="shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-shadow">
-                  Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
-                <Button size="lg" variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all" onClick={() => handleCTA("call")}>
-                  <Phone className="mr-1.5 h-4 w-4" /> Book Free Counseling Call
-                </Button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </section>
   );
