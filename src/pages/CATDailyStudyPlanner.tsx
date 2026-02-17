@@ -12,7 +12,7 @@ import {
 import {
   ArrowRight, Calculator, PuzzleIcon, FileText, RefreshCw,
   Target, CalendarDays, BookOpen, ChevronLeft, ChevronRight,
-  AlertTriangle, Zap,
+  AlertTriangle, Zap, MonitorPlay,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -222,6 +222,22 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
   );
 }
 
+// ─── Day Label Map ───
+
+const DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+const SUBJECT_ICON: Record<string, React.ReactNode> = {
+  QA: <Calculator className="h-4 w-4 text-primary" />,
+  VARC: <FileText className="h-4 w-4 text-primary" />,
+  LRDI: <PuzzleIcon className="h-4 w-4 text-primary" />,
+};
+
+const SUBJECT_EMOJI: Record<string, string> = {
+  QA: "📘",
+  VARC: "📖",
+  LRDI: "🧠",
+};
+
 // ─── Mock Day Card ───
 
 function MockDayCard({ task }: { task: DailyTask }) {
@@ -234,7 +250,7 @@ function MockDayCard({ task }: { task: DailyTask }) {
           </div>
           <div>
             <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — Mock Day</p>
-            <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
+            <p className="text-xs text-muted-foreground">{task.weekLabel} · {DAY_NAMES[task.dayOfWeek]}</p>
           </div>
         </div>
         <div className="bg-emerald-500/10 rounded-xl p-4 text-center">
@@ -248,11 +264,9 @@ function MockDayCard({ task }: { task: DailyTask }) {
   );
 }
 
-// ─── Task Card ───
+// ─── Sunday Card ───
 
-function TaskCard({ task }: { task: DailyTask }) {
-  if (task.is_mock_day) return <MockDayCard task={task} />;
-
+function SundayCard({ task }: { task: DailyTask }) {
   return (
     <Card className="rounded-2xl border border-border shadow-md">
       <CardContent className="p-5 md:p-6 space-y-5">
@@ -261,53 +275,19 @@ function TaskCard({ task }: { task: DailyTask }) {
             {task.dayIndex + 1}
           </div>
           <div>
-            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1}</p>
+            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — Sunday</p>
             <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
           </div>
-          {task.weekly_test && (
-            <Badge className="ml-auto bg-amber-500/10 text-amber-600 border-amber-500/20 text-xs">
-              Weekly Test
-            </Badge>
-          )}
         </div>
 
-        {/* Quant */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Calculator className="h-4 w-4 text-primary" />
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">📘 Quant</span>
+        {task.weekly_test && (
+          <div className="bg-amber-500/5 rounded-xl p-4 border border-amber-500/20 text-center">
+            <Target className="h-6 w-6 text-amber-600 mx-auto mb-2" />
+            <p className="font-bold text-foreground">30-Min Weekly Test</p>
+            <p className="text-xs text-muted-foreground mt-1">Covers this week's topics across QA, LRDI & VARC</p>
           </div>
-          <div className="pl-6 text-sm text-foreground space-y-1">
-            <p className="font-medium">{task.qa_topic}</p>
-            <p className="text-muted-foreground">{task.qa_questions} practice questions</p>
-          </div>
-        </div>
+        )}
 
-        {/* LRDI */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <PuzzleIcon className="h-4 w-4 text-primary" />
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">🧠 LRDI</span>
-          </div>
-          <div className="pl-6 text-sm text-foreground space-y-1">
-            <p className="font-medium">{task.lrdi_topic}</p>
-            <p className="text-muted-foreground">{task.lrdi_sets} sets</p>
-          </div>
-        </div>
-
-        {/* VARC */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <FileText className="h-4 w-4 text-primary" />
-            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">📖 VARC</span>
-          </div>
-          <div className="pl-6 text-sm text-foreground space-y-1">
-            <p className="font-medium">{task.varc_topic}</p>
-            <p className="text-muted-foreground">{task.varc_questions} questions</p>
-          </div>
-        </div>
-
-        {/* Revision */}
         {task.revision && (
           <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -315,17 +295,80 @@ function TaskCard({ task }: { task: DailyTask }) {
               <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">🔁 Revision</span>
             </div>
             <div className="pl-6 text-sm text-foreground">
-              <p className="text-muted-foreground">20 min error log review</p>
+              <p className="text-muted-foreground">Review error log &amp; revisit weak areas from the week</p>
             </div>
           </div>
         )}
 
-        {/* Weekly test note */}
-        {task.weekly_test && (
-          <div className="bg-amber-500/5 rounded-xl p-3 border border-amber-500/20">
-            <p className="text-xs font-semibold text-amber-600">📝 30-min weekly test today (in addition to daily practice)</p>
+        {!task.weekly_test && !task.revision && (
+          <div className="text-center py-4">
+            <p className="text-sm text-muted-foreground">Rest day — light revision only</p>
           </div>
         )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// ─── Subject Day Card ───
+
+function TaskCard({ task }: { task: DailyTask }) {
+  if (task.is_mock_day) return <MockDayCard task={task} />;
+  if (task.subjectFocus === "WEEKLY_TEST") return <SundayCard task={task} />;
+
+  const subject = task.subjectFocus;
+  const icon = SUBJECT_ICON[subject];
+  const emoji = SUBJECT_EMOJI[subject];
+
+  return (
+    <Card className="rounded-2xl border border-border shadow-md">
+      <CardContent className="p-5 md:p-6 space-y-5">
+        {/* Day header */}
+        <div className="flex items-center gap-3 mb-1">
+          <div className="h-11 w-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
+            {task.dayIndex + 1}
+          </div>
+          <div>
+            <p className="text-sm font-bold text-foreground">
+              Day {task.dayIndex + 1} — {DAY_NAMES[task.dayOfWeek]}
+            </p>
+            <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
+          </div>
+          <Badge className="ml-auto bg-primary/10 text-primary border-primary/20 text-xs font-semibold">
+            {subject} Day
+          </Badge>
+        </div>
+
+        {/* Video instruction */}
+        {task.showVideo && task.videoHours > 0 && (
+          <div className={`rounded-xl p-4 border ${task.videoOptional ? "bg-secondary/40 border-border/60" : "bg-primary/5 border-primary/20"}`}>
+            <div className="flex items-center gap-2 mb-1">
+              <MonitorPlay className="h-4 w-4 text-primary" />
+              <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                📺 Concept Video {task.videoOptional && <span className="text-muted-foreground font-normal">(Optional)</span>}
+              </span>
+            </div>
+            <p className="text-sm text-foreground pl-6">
+              Watch concept video (~{task.videoHours} hrs) before practice
+            </p>
+          </div>
+        )}
+
+        {/* Subject practice */}
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            {icon}
+            <span className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+              {emoji} {subject}
+            </span>
+          </div>
+          <div className="pl-6 text-sm text-foreground space-y-1">
+            <p className="font-medium">{task.topic}</p>
+            {task.questionCount > 0 && (
+              <p className="text-muted-foreground">{task.questionCount} {task.questionLabel}</p>
+            )}
+          </div>
+        </div>
       </CardContent>
     </Card>
   );

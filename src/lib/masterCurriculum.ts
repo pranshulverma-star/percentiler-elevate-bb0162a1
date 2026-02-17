@@ -1,55 +1,56 @@
 // ─── Master Curriculum: Fixed Academic Sequence ───
-// This order NEVER changes. No randomness. No shuffling.
+// Subject-Dedicated Weekly Structure:
+// Mon=QA, Tue=VARC, Wed=LRDI, Thu=QA, Fri=VARC, Sat=LRDI, Sun=Test+Revision
 
 export interface WeekCurriculum {
-  label: string;          // e.g. "April Week 1"
+  label: string;
   qa_topic: string;
   qa_questions: number;
+  qa_video_hours: number;
   lrdi_topic: string;
   lrdi_sets: number;
+  lrdi_video_hours: number;
   varc_topic: string;
   varc_questions: number;
+  varc_video_hours: number;
   weekly_test: boolean;
+  revision: boolean;
 }
 
 export const MASTER_CURRICULUM: WeekCurriculum[] = [
   // April
-  { label: "April Week 1", qa_topic: "Vedic Maths + Ratios", qa_questions: 60, lrdi_topic: "Logic Puzzles", lrdi_sets: 13, varc_topic: "Grammar + Vocab + Reading", varc_questions: 70, weekly_test: false },
-  { label: "April Week 2", qa_topic: "Percentages", qa_questions: 50, lrdi_topic: "Circular + Double Line-up", lrdi_sets: 20, varc_topic: "PJ + Odd One Out", varc_questions: 35, weekly_test: true },
-  { label: "April Week 3", qa_topic: "Profit & Loss + SICI", qa_questions: 80, lrdi_topic: "Venn Diagrams", lrdi_sets: 30, varc_topic: "Summary + Completion", varc_questions: 35, weekly_test: true },
-  { label: "April Week 4", qa_topic: "Time & Work + Intro TSD", qa_questions: 80, lrdi_topic: "Games & Tournaments", lrdi_sets: 15, varc_topic: "CR Assumption", varc_questions: 30, weekly_test: true },
+  { label: "April Week 1", qa_topic: "Vedic Maths + Ratios", qa_questions: 60, qa_video_hours: 3, lrdi_topic: "Logic Puzzles", lrdi_sets: 14, lrdi_video_hours: 2, varc_topic: "Grammar + Vocab + Reading", varc_questions: 70, varc_video_hours: 2, weekly_test: false, revision: false },
+  { label: "April Week 2", qa_topic: "Percentages", qa_questions: 50, qa_video_hours: 2, lrdi_topic: "Circular + Double Line-up", lrdi_sets: 20, lrdi_video_hours: 2, varc_topic: "PJ + Odd One Out", varc_questions: 35, varc_video_hours: 1.5, weekly_test: true, revision: true },
+  { label: "April Week 3", qa_topic: "Profit & Loss + SICI", qa_questions: 80, qa_video_hours: 3, lrdi_topic: "Venn Diagrams", lrdi_sets: 30, lrdi_video_hours: 1.5, varc_topic: "Summary + Completion", varc_questions: 35, varc_video_hours: 1, weekly_test: true, revision: true },
+  { label: "April Week 4", qa_topic: "Time & Work + Intro TSD", qa_questions: 80, qa_video_hours: 3, lrdi_topic: "Games & Tournaments", lrdi_sets: 15, lrdi_video_hours: 2, varc_topic: "CR Assumption", varc_questions: 30, varc_video_hours: 1.5, weekly_test: true, revision: true },
   // May
-  { label: "May Week 1", qa_topic: "Finish TSD + Quadratic", qa_questions: 130, lrdi_topic: "Network & 3D", lrdi_sets: 15, varc_topic: "CR Inference", varc_questions: 30, weekly_test: true },
-  { label: "May Week 2", qa_topic: "AP GP HP", qa_questions: 100, lrdi_topic: "Line/Bar Graph", lrdi_sets: 15, varc_topic: "CR Conclusion", varc_questions: 30, weekly_test: true },
-  { label: "May Week 3", qa_topic: "Inequality + Logs", qa_questions: 150, lrdi_topic: "Pie Charts", lrdi_sets: 20, varc_topic: "RC GMAT", varc_questions: 21, weekly_test: true },
-  { label: "May Week 4", qa_topic: "Max/Min + Functions", qa_questions: 90, lrdi_topic: "% Based DI", lrdi_sets: 20, varc_topic: "RC + Summary", varc_questions: 21, weekly_test: true },
+  { label: "May Week 1", qa_topic: "Finish TSD + Quadratic", qa_questions: 130, qa_video_hours: 3, lrdi_topic: "Network & 3D", lrdi_sets: 15, lrdi_video_hours: 2, varc_topic: "CR Inference", varc_questions: 30, varc_video_hours: 1, weekly_test: true, revision: true },
+  { label: "May Week 2", qa_topic: "AP GP HP", qa_questions: 100, qa_video_hours: 2, lrdi_topic: "Line/Bar Graph", lrdi_sets: 15, lrdi_video_hours: 1.5, varc_topic: "CR Conclusion", varc_questions: 30, varc_video_hours: 1, weekly_test: true, revision: true },
+  { label: "May Week 3", qa_topic: "Inequality + Logs", qa_questions: 150, qa_video_hours: 3, lrdi_topic: "Pie Charts", lrdi_sets: 20, lrdi_video_hours: 1.5, varc_topic: "RC GMAT", varc_questions: 21, varc_video_hours: 1, weekly_test: true, revision: true },
+  { label: "May Week 4", qa_topic: "Max/Min + Functions", qa_questions: 90, qa_video_hours: 2, lrdi_topic: "% Based DI", lrdi_sets: 20, lrdi_video_hours: 1.5, varc_topic: "RC + Summary", varc_questions: 21, varc_video_hours: 0, weekly_test: true, revision: true },
   // June
-  { label: "June Week 1", qa_topic: "Circles + Triangles", qa_questions: 90, lrdi_topic: "Avg Based DI", lrdi_sets: 20, varc_topic: "PJ + RC", varc_questions: 21, weekly_test: true },
-  { label: "June Week 2", qa_topic: "Quadrilaterals", qa_questions: 80, lrdi_topic: "Mixed CAT Sets", lrdi_sets: 15, varc_topic: "Grammar + RC Timed", varc_questions: 20, weekly_test: true },
-  { label: "June Week 3", qa_topic: "Mensuration + PnC", qa_questions: 120, lrdi_topic: "CAT PYQ Reasoning", lrdi_sets: 21, varc_topic: "Summary + RC Timed", varc_questions: 20, weekly_test: true },
-  { label: "June Week 4", qa_topic: "Probability + Factorials", qa_questions: 100, lrdi_topic: "Puzzle Revision", lrdi_sets: 14, varc_topic: "VARC Sectionals", varc_questions: 30, weekly_test: true },
+  { label: "June Week 1", qa_topic: "Circles + Triangles", qa_questions: 90, qa_video_hours: 2, lrdi_topic: "Avg Based DI", lrdi_sets: 20, lrdi_video_hours: 1, varc_topic: "PJ + RC", varc_questions: 21, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "June Week 2", qa_topic: "Quadrilaterals", qa_questions: 80, qa_video_hours: 1.5, lrdi_topic: "Mixed CAT Sets", lrdi_sets: 15, lrdi_video_hours: 0, varc_topic: "Grammar + RC Timed", varc_questions: 20, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "June Week 3", qa_topic: "Mensuration + PnC", qa_questions: 120, qa_video_hours: 2, lrdi_topic: "CAT PYQ Reasoning", lrdi_sets: 21, lrdi_video_hours: 0, varc_topic: "Summary + RC Timed", varc_questions: 20, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "June Week 4", qa_topic: "Probability + Factorials", qa_questions: 100, qa_video_hours: 1.5, lrdi_topic: "Puzzle Revision", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "VARC Sectionals", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
   // July
-  { label: "July Week 1", qa_topic: "Prime/HCF/LCM", qa_questions: 40, lrdi_topic: "Reasoning Sectionals", lrdi_sets: 14, varc_topic: "Mixed VARC", varc_questions: 30, weekly_test: true },
-  { label: "July Week 2", qa_topic: "Remainders + QA Tests", qa_questions: 40, lrdi_topic: "Advanced DI Tests", lrdi_sets: 14, varc_topic: "Reading Drills", varc_questions: 30, weekly_test: true },
-  { label: "July Week 3", qa_topic: "Arithmetic Revision", qa_questions: 120, lrdi_topic: "Puzzle Reinforcement", lrdi_sets: 14, varc_topic: "Advanced RC", varc_questions: 30, weekly_test: true },
-  { label: "July Week 4", qa_topic: "Algebra Revision", qa_questions: 100, lrdi_topic: "LRDI Sectionals", lrdi_sets: 14, varc_topic: "Full VARC Test", varc_questions: 30, weekly_test: true },
+  { label: "July Week 1", qa_topic: "Prime/HCF/LCM", qa_questions: 40, qa_video_hours: 1, lrdi_topic: "Reasoning Sectionals", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "Mixed VARC", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "July Week 2", qa_topic: "Remainders + QA Tests", qa_questions: 40, qa_video_hours: 0, lrdi_topic: "Advanced DI Tests", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "Reading Drills", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "July Week 3", qa_topic: "Arithmetic Revision", qa_questions: 120, qa_video_hours: 0, lrdi_topic: "Puzzle Reinforcement", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "Advanced RC", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "July Week 4", qa_topic: "Algebra Revision", qa_questions: 100, qa_video_hours: 0, lrdi_topic: "LRDI Sectionals", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "Full VARC Test", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
   // August
-  { label: "August Week 1", qa_topic: "Geometry Revision", qa_questions: 100, lrdi_topic: "Tough Set Drill", lrdi_sets: 14, varc_topic: "RC + PJ Mixed", varc_questions: 30, weekly_test: true },
-  { label: "August Week 2", qa_topic: "Modern Maths Revision", qa_questions: 50, lrdi_topic: "Speed Set Practice", lrdi_sets: 14, varc_topic: "Sectionals + Errors", varc_questions: 30, weekly_test: true },
-  { label: "August Week 3", qa_topic: "Number System Revision", qa_questions: 80, lrdi_topic: "CAT Caselets", lrdi_sets: 14, varc_topic: "VA-RC Split", varc_questions: 30, weekly_test: true },
-  { label: "August Week 4", qa_topic: "QA Sectionals", qa_questions: 90, lrdi_topic: "LRDI Full-Length Sectionals", lrdi_sets: 14, varc_topic: "VARC Full-Length", varc_questions: 30, weekly_test: true },
+  { label: "August Week 1", qa_topic: "Geometry Revision", qa_questions: 100, qa_video_hours: 0, lrdi_topic: "Tough Set Drill", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "RC + PJ Mixed", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "August Week 2", qa_topic: "Modern Maths Revision", qa_questions: 50, qa_video_hours: 0, lrdi_topic: "Speed Set Practice", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "Sectionals + Errors", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "August Week 3", qa_topic: "Number System Revision", qa_questions: 80, qa_video_hours: 0, lrdi_topic: "CAT Caselets", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "VA-RC Split", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
+  { label: "August Week 4", qa_topic: "QA Sectionals", qa_questions: 90, qa_video_hours: 0, lrdi_topic: "LRDI Full-Length Sectionals", lrdi_sets: 14, lrdi_video_hours: 0, varc_topic: "VARC Full-Length", varc_questions: 30, varc_video_hours: 0, weekly_test: true, revision: true },
 ];
 
-// Total curriculum days = 20 weeks × 7 = 140 days
+// ─── Skip Hierarchy ───
 
-// ─── Skip Hierarchy (for crash mode / compression) ───
-
-// Tier 3: Skip first in crash mode
 const TIER_3_QA = ["Vedic Maths", "Profit & Loss", "Max/Min", "Quadrilaterals", "Mensuration", "Probability", "PnC"];
 const TIER_3_LRDI = ["Logic Puzzles", "Games & Tournaments", "Line/Bar Graph"];
 const TIER_3_VARC = ["Grammar", "Vocab"];
 
-// Tier 2: Compress if needed
 const TIER_2_LABELS = ["Revision", "Sectionals", "Advanced DI", "Advanced RC"];
 
 function isTier3Week(w: WeekCurriculum): boolean {
@@ -62,22 +63,48 @@ function isTier2Week(w: WeekCurriculum): boolean {
   return TIER_2_LABELS.some(t => w.qa_topic.includes(t) || w.lrdi_topic.includes(t) || w.varc_topic.includes(t));
 }
 
+// ─── Subject Focus Type ───
+
+export type SubjectFocus = "QA" | "VARC" | "LRDI" | "WEEKLY_TEST" | "MOCK";
+
+// Day-of-week mapping: 0=Mon..6=Sun
+const DAY_SUBJECT: SubjectFocus[] = [
+  "QA",     // Monday
+  "VARC",   // Tuesday
+  "LRDI",   // Wednesday
+  "QA",     // Thursday
+  "VARC",   // Friday
+  "LRDI",   // Saturday
+  "WEEKLY_TEST", // Sunday
+];
+
 // ─── Daily Task ───
 
 export interface DailyTask {
-  dayIndex: number;       // 0-based from start_date
+  dayIndex: number;
   weekLabel: string;
-  dayOfWeek: number;      // 0=Mon .. 6=Sun
+  dayOfWeek: number;        // 0=Mon..6=Sun
+  subjectFocus: SubjectFocus;
+  // Only the focused subject's data is populated (except Sunday which has no practice)
+  topic: string;
+  questionCount: number;    // questions or sets depending on subject
+  questionLabel: string;    // "questions" or "sets"
+  // Video instruction
+  videoHours: number;       // 0 = no video
+  videoOptional: boolean;   // true for "Concepts Done" prep level
+  showVideo: boolean;       // false for Sectionals/Mocks prep levels
+  // State flags
+  is_mock_day: boolean;
+  weekly_test: boolean;
+  revision: boolean;
+  phase: string;
+  // Legacy compat fields (all subjects for the week — used in Sunday display)
   qa_topic: string;
   qa_questions: number;
   lrdi_topic: string;
   lrdi_sets: number;
   varc_topic: string;
   varc_questions: number;
-  is_mock_day: boolean;
-  weekly_test: boolean;
-  revision: boolean;
-  phase: string;
 }
 
 // ─── Prep Level Modifiers ───
@@ -99,7 +126,7 @@ function applyPrepModifier(
 // ─── Core Engine ───
 
 export function getLastSundayOfNovember(year: number): Date {
-  const d = new Date(year, 10, 30); // Nov 30
+  const d = new Date(year, 10, 30);
   while (d.getDay() !== 0) d.setDate(d.getDate() - 1);
   return d;
 }
@@ -115,7 +142,6 @@ export function getDaysUntilCAT(targetYear: number): number {
 export function getPhaseLabel(daysLeft: number, dayIndex: number, totalDays: number): string {
   const daysFromEnd = totalDays - dayIndex;
   if (daysFromEnd <= 45) return "Mock Phase";
-  // Check if in revision weeks (weeks 15-20 roughly)
   if (daysLeft <= 120) return "Strength Phase";
   return "Foundation Phase";
 }
@@ -124,6 +150,32 @@ export interface PlanConfig {
   targetYear: number;
   startDate: Date;
   prepLevel: PrepLevel;
+}
+
+function getVideoInstruction(
+  week: WeekCurriculum,
+  subject: SubjectFocus,
+  isFirstSubjectDay: boolean,
+  prepLevel: PrepLevel
+): { videoHours: number; videoOptional: boolean; showVideo: boolean } {
+  if (!isFirstSubjectDay) return { videoHours: 0, videoOptional: false, showVideo: false };
+
+  let hours = 0;
+  if (subject === "QA") hours = week.qa_video_hours;
+  else if (subject === "VARC") hours = week.varc_video_hours;
+  else if (subject === "LRDI") hours = week.lrdi_video_hours;
+
+  if (hours <= 0) return { videoHours: 0, videoOptional: false, showVideo: false };
+
+  if (prepLevel === "Sectionals" || prepLevel === "Mocks") {
+    return { videoHours: 0, videoOptional: false, showVideo: false };
+  }
+
+  return {
+    videoHours: hours,
+    videoOptional: prepLevel === "Concepts Done",
+    showVideo: true,
+  };
 }
 
 export function generateFullPlan(config: PlanConfig): DailyTask[] {
@@ -140,104 +192,185 @@ export function generateFullPlan(config: PlanConfig): DailyTask[] {
   const MOCK_RESERVE = 45;
   const curriculumDays = Math.max(0, totalDays - MOCK_RESERVE);
 
-  // Build the curriculum sequence, applying skip/compression
+  // Build curriculum sequence with skip/compression
   let weeks = [...MASTER_CURRICULUM];
 
   if (isCrashMode) {
-    // Only Tier 1 topics
     weeks = weeks.filter(w => !isTier3Week(w) && !isTier2Week(w));
   } else if (curriculumDays < 140) {
-    // Need to compress: first remove Tier 3, then Tier 2
     const tier1Weeks = weeks.filter(w => !isTier3Week(w));
     if (tier1Weeks.length * 7 <= curriculumDays) {
       weeks = tier1Weeks;
     } else {
-      // Further compress: remove Tier 2
       weeks = tier1Weeks.filter(w => !isTier2Week(w));
     }
   }
 
-  // Flatten weeks into daily tasks
   const dailyTasks: DailyTask[] = [];
   let dayIndex = 0;
 
-  // Curriculum phase
+  // Curriculum phase — subject-dedicated days
   for (const week of weeks) {
     if (dayIndex >= curriculumDays) break;
 
     const daysThisWeek = Math.min(7, curriculumDays - dayIndex);
     const { qaQ, varcQ } = applyPrepModifier(week.qa_questions, week.varc_questions, prepLevel);
 
+    // Split across dedicated days:
+    // QA: Mon(0) + Thu(3) → half each
+    const qaPerDay = Math.ceil(qaQ / 2);
+    const qaDay2 = qaQ - qaPerDay; // handles odd numbers
+    // VARC: Tue(1) + Fri(4) → half each
+    const varcPerDay = Math.ceil(varcQ / 2);
+    const varcDay2 = varcQ - varcPerDay;
+    // LRDI: Wed(2) + Sat(5) → half each
+    const lrdiPerDay = Math.ceil(week.lrdi_sets / 2);
+    const lrdiDay2 = week.lrdi_sets - lrdiPerDay;
+
     for (let d = 0; d < daysThisWeek; d++) {
-      const dayQA = Math.round(qaQ / 7);
-      const dayVARC = Math.round(varcQ / 7);
-      const dayLRDI = Math.round(week.lrdi_sets / 7) || 1;
+      const subject = DAY_SUBJECT[d];
+      // Determine if this is the first or second occurrence of the subject this week
+      const isFirstSubjectDay = d === 0 || d === 1 || d === 2; // Mon/Tue/Wed are first occurrences
+
+      let topic = "";
+      let questionCount = 0;
+      let questionLabel = "questions";
+
+      if (subject === "QA") {
+        topic = week.qa_topic;
+        questionCount = isFirstSubjectDay ? qaPerDay : qaDay2;
+        questionLabel = "questions";
+      } else if (subject === "VARC") {
+        topic = week.varc_topic;
+        questionCount = isFirstSubjectDay ? varcPerDay : varcDay2;
+        questionLabel = "questions";
+      } else if (subject === "LRDI") {
+        topic = week.lrdi_topic;
+        questionCount = isFirstSubjectDay ? lrdiPerDay : lrdiDay2;
+        questionLabel = "sets";
+      } else if (subject === "WEEKLY_TEST") {
+        topic = "Weekly Test + Revision";
+        questionCount = 0;
+        questionLabel = "";
+      }
+
+      const video = subject !== "WEEKLY_TEST"
+        ? getVideoInstruction(week, subject, isFirstSubjectDay, prepLevel)
+        : { videoHours: 0, videoOptional: false, showVideo: false };
+
       const isSunday = d === 6;
+      const showRevision = isSunday && week.revision && !isCrashMode;
 
       dailyTasks.push({
         dayIndex,
         weekLabel: week.label,
         dayOfWeek: d,
-        qa_topic: week.qa_topic,
-        qa_questions: dayQA,
-        lrdi_topic: week.lrdi_topic,
-        lrdi_sets: dayLRDI,
-        varc_topic: week.varc_topic,
-        varc_questions: dayVARC,
+        subjectFocus: subject,
+        topic,
+        questionCount,
+        questionLabel,
+        videoHours: video.videoHours,
+        videoOptional: video.videoOptional,
+        showVideo: video.showVideo,
         is_mock_day: false,
         weekly_test: isSunday && week.weekly_test,
-        revision: !isCrashMode,
+        revision: showRevision,
         phase: getPhaseLabel(totalDays - dayIndex, dayIndex, totalDays),
+        // Legacy fields
+        qa_topic: week.qa_topic,
+        qa_questions: qaPerDay,
+        lrdi_topic: week.lrdi_topic,
+        lrdi_sets: lrdiPerDay,
+        varc_topic: week.varc_topic,
+        varc_questions: varcPerDay,
       });
       dayIndex++;
     }
   }
 
-  // Mock phase: last 45 days (or remaining days)
-  const mockStart = dayIndex;
-  const mockEnd = totalDays;
-  // Continue from August Week 4 content for non-mock days
+  // ─── Mock Phase: last 45 days ───
   const lastWeek = MASTER_CURRICULUM[MASTER_CURRICULUM.length - 1];
   const { qaQ: mockQA, varcQ: mockVARC } = applyPrepModifier(lastWeek.qa_questions, lastWeek.varc_questions, prepLevel);
+  const mockStart = dayIndex;
+  const mockEnd = totalDays;
 
   for (let i = mockStart; i < mockEnd; i++) {
-    // In mock phase, day-of-week relative to mock start
     const mockDayOfWeek = (i - mockStart) % 7;
-    // Fixed mock days: Wednesday (2) and Sunday (6)
+    // Mock days: Wed (2) and Sun (6)
     const isMockDay = mockDayOfWeek === 2 || mockDayOfWeek === 6;
-    // Max 2 mocks per week already enforced by Wed+Sun
 
     if (isMockDay) {
       dailyTasks.push({
         dayIndex: i,
         weekLabel: "Mock Phase",
         dayOfWeek: mockDayOfWeek,
+        subjectFocus: "MOCK",
+        topic: "Full Mock CAT + Analysis",
+        questionCount: 0,
+        questionLabel: "",
+        videoHours: 0,
+        videoOptional: false,
+        showVideo: false,
+        is_mock_day: true,
+        weekly_test: false,
+        revision: false,
+        phase: "Mock Phase",
         qa_topic: "Full Mock CAT + Analysis",
         qa_questions: 0,
         lrdi_topic: "Full Mock CAT + Analysis",
         lrdi_sets: 0,
         varc_topic: "Full Mock CAT + Analysis",
         varc_questions: 0,
-        is_mock_day: true,
-        weekly_test: false,
-        revision: false,
-        phase: "Mock Phase",
       });
     } else {
+      // Non-mock days in mock phase: subject-dedicated structure continues
+      const subject = DAY_SUBJECT[mockDayOfWeek];
+      const isFirst = mockDayOfWeek === 0 || mockDayOfWeek === 1 || mockDayOfWeek === 2;
+
+      let topic = "";
+      let qCount = 0;
+      let qLabel = "questions";
+
+      if (subject === "QA") {
+        topic = lastWeek.qa_topic;
+        qCount = Math.ceil(mockQA / 2);
+        if (!isFirst) qCount = mockQA - Math.ceil(mockQA / 2);
+      } else if (subject === "VARC") {
+        topic = lastWeek.varc_topic;
+        qCount = Math.ceil(mockVARC / 2);
+        if (!isFirst) qCount = mockVARC - Math.ceil(mockVARC / 2);
+      } else if (subject === "LRDI") {
+        topic = lastWeek.lrdi_topic;
+        qCount = Math.ceil(lastWeek.lrdi_sets / 2);
+        qLabel = "sets";
+        if (!isFirst) qCount = lastWeek.lrdi_sets - Math.ceil(lastWeek.lrdi_sets / 2);
+      } else if (subject === "WEEKLY_TEST") {
+        topic = "Revision + Light Practice";
+        qCount = 0;
+        qLabel = "";
+      }
+
       dailyTasks.push({
         dayIndex: i,
         weekLabel: "Mock Phase – Practice",
         dayOfWeek: mockDayOfWeek,
-        qa_topic: lastWeek.qa_topic,
-        qa_questions: Math.round(mockQA / 7),
-        lrdi_topic: lastWeek.lrdi_topic,
-        lrdi_sets: Math.round(lastWeek.lrdi_sets / 7) || 1,
-        varc_topic: lastWeek.varc_topic,
-        varc_questions: Math.round(mockVARC / 7),
+        subjectFocus: subject === "WEEKLY_TEST" ? "WEEKLY_TEST" : subject,
+        topic,
+        questionCount: qCount,
+        questionLabel: qLabel,
+        videoHours: 0,
+        videoOptional: false,
+        showVideo: false,
         is_mock_day: false,
         weekly_test: false,
-        revision: !isCrashMode,
+        revision: !isCrashMode && subject === "WEEKLY_TEST",
         phase: "Mock Phase",
+        qa_topic: lastWeek.qa_topic,
+        qa_questions: Math.ceil(mockQA / 2),
+        lrdi_topic: lastWeek.lrdi_topic,
+        lrdi_sets: Math.ceil(lastWeek.lrdi_sets / 2),
+        varc_topic: lastWeek.varc_topic,
+        varc_questions: Math.ceil(mockVARC / 2),
       });
     }
   }
@@ -245,7 +378,6 @@ export function generateFullPlan(config: PlanConfig): DailyTask[] {
   return dailyTasks;
 }
 
-// Get a single day's task by index
 export function getDayTask(config: PlanConfig, dayIndex: number): DailyTask | null {
   const plan = generateFullPlan(config);
   return plan[dayIndex] ?? null;
