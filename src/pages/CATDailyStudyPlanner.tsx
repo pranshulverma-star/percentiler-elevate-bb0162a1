@@ -6,14 +6,36 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import {
-  ArrowRight, Calculator, PuzzleIcon, FileText, RefreshCw,
-  Target, CalendarDays, BookOpen, ChevronLeft, ChevronRight,
-  AlertTriangle, Zap, MonitorPlay, CheckCircle2, Phone, Play,
-  Flame, TrendingUp,
+  ArrowRight,
+  Calculator,
+  PuzzleIcon,
+  FileText,
+  RefreshCw,
+  Target,
+  CalendarDays,
+  BookOpen,
+  ChevronLeft,
+  ChevronRight,
+  AlertTriangle,
+  Zap,
+  MonitorPlay,
+  CheckCircle2,
+  Phone,
+  Play,
+  Flame,
+  
+  X,
+  Trophy,
+  BarChart3,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -38,6 +60,47 @@ const PHASE_COLORS: Record<string, string> = {
   "Strength Phase": "bg-amber-500/10 text-amber-600 border-amber-500/20",
   "Mock Phase": "bg-emerald-500/10 text-emerald-600 border-emerald-500/20",
 };
+
+// ─── Pseudo Ranking ───
+
+function calculateRank(heatScore: number, currentStreak: number): number {
+  const rank = 10000 - (heatScore * 90) - (currentStreak * 10);
+  return Math.max(35, rank);
+}
+
+interface RankTier {
+  label: string;
+  color: string;
+}
+
+function getRankTier(rank: number): RankTier {
+  if (rank >= 7000) return { label: "Explorer", color: "bg-muted text-muted-foreground border-border" };
+  if (rank >= 4000) return { label: "Focused", color: "bg-blue-500/10 text-blue-600 border-blue-500/20" };
+  if (rank >= 2000) return { label: "Challenger", color: "bg-amber-500/10 text-amber-600 border-amber-500/20" };
+  if (rank >= 500) return { label: "Contender", color: "bg-primary/10 text-primary border-primary/20" };
+  return { label: "99%ile Path", color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" };
+}
+
+function calculateCurrentStreak(completedDays: Set<string>, _startDate: string): number {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  let streak = 0;
+  const d = new Date(today);
+
+  for (let i = 0; i < 365; i++) {
+    const dateStr = d.toISOString().split("T")[0];
+    // Check if any subject was completed on this date
+    const hasActivity = Array.from(completedDays).some(k => k.startsWith(dateStr + "|"));
+    if (hasActivity) {
+      streak++;
+    } else if (i > 0) {
+      // Allow today to be incomplete, break on past gaps
+      break;
+    }
+    d.setDate(d.getDate() - 1);
+  }
+  return streak;
+}
 
 // ─── Lead Capture ───
 
@@ -219,6 +282,76 @@ const SUBJECT_EMOJI: Record<string, string> = {
   LRDI: "🧠",
 };
 
+// ─── Premium Top Stats Strip ───
+
+function StatsStrip({
+  daysLeft,
+  currentPhase,
+  currentStreak,
+  syllabusPercent,
+  rank,
+  rankTier,
+}: {
+  daysLeft: number;
+  currentPhase: string;
+  currentStreak: number;
+  syllabusPercent: number;
+  rank: number;
+  rankTier: RankTier;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="rounded-2xl border border-border/60 bg-card shadow-sm overflow-hidden"
+    >
+      <div className="grid grid-cols-5 divide-x divide-border/40">
+        {/* Days Left */}
+        <div className="px-3 py-4 text-center">
+          <div className="flex items-center justify-center gap-1 mb-1">
+            <Target className="h-3.5 w-3.5 text-primary" />
+          </div>
+          <p className="text-lg font-bold text-foreground leading-none">{daysLeft}</p>
+          <p className="text-[10px] text-muted-foreground font-medium mt-1">Days Left</p>
+        </div>
+        {/* Phase */}
+        <div className="px-3 py-4 text-center flex flex-col items-center justify-center">
+          <CalendarDays className="h-3.5 w-3.5 text-muted-foreground mb-1" />
+          <Badge className={`${PHASE_COLORS[currentPhase] || "bg-secondary text-foreground border-border"} text-[10px] font-semibold border px-2 py-0.5`}>
+            {currentPhase.replace(" Phase", "")}
+          </Badge>
+          <p className="text-[10px] text-muted-foreground font-medium mt-1">Phase</p>
+        </div>
+        {/* Streak */}
+        <div className="px-3 py-4 text-center">
+          <Flame className="h-3.5 w-3.5 text-primary mx-auto mb-1" />
+          <p className="text-lg font-bold text-foreground leading-none">{currentStreak}</p>
+          <p className="text-[10px] text-muted-foreground font-medium mt-1">Streak</p>
+        </div>
+        {/* Syllabus % */}
+        <div className="px-3 py-4 text-center">
+          <BarChart3 className="h-3.5 w-3.5 text-muted-foreground mx-auto mb-1" />
+          <p className="text-lg font-bold text-foreground leading-none">{syllabusPercent}%</p>
+          <p className="text-[10px] text-muted-foreground font-medium mt-1">Syllabus</p>
+        </div>
+        {/* Rank */}
+        <div className="px-3 py-4 text-center">
+          <Trophy className="h-3.5 w-3.5 text-amber-500 mx-auto mb-1" />
+          <p className="text-lg font-bold text-foreground leading-none">#{rank}</p>
+          <Badge className={`${rankTier.color} text-[9px] font-semibold border px-1.5 py-0 mt-1`}>
+            {rankTier.label}
+          </Badge>
+        </div>
+      </div>
+      {/* Syllabus progress bar */}
+      <div className="px-4 pb-3">
+        <Progress value={syllabusPercent} className="h-1.5 rounded-full" />
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── Completion Button ───
 
 function CompletionButton({
@@ -259,10 +392,10 @@ function CompletionButton({
 
 function MockDayCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
   return (
-    <Card className="rounded-2xl border-2 border-emerald-500/30 shadow-md bg-emerald-500/5">
+    <Card className="rounded-2xl border-2 border-emerald-500/30 shadow-lg bg-emerald-500/5">
       <CardContent className="p-5 md:p-6 space-y-4">
         <div className="flex items-center gap-3 mb-1">
-          <div className="h-11 w-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm">
+          <div className="h-11 w-11 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-sm shadow-md">
             {task.dayIndex + 1}
           </div>
           <div>
@@ -286,10 +419,10 @@ function MockDayCard({ task, completed, loading, onComplete }: { task: DailyTask
 
 function SundayCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
   return (
-    <Card className="rounded-2xl border border-border shadow-md">
+    <Card className="rounded-2xl border border-border shadow-lg">
       <CardContent className="p-5 md:p-6 space-y-5">
         <div className="flex items-center gap-3 mb-1">
-          <div className="h-11 w-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
+          <div className="h-11 w-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shadow-md">
             {task.dayIndex + 1}
           </div>
           <div>
@@ -337,10 +470,10 @@ function TaskCard({ task, completed, loading, onComplete }: { task: DailyTask; c
   const emoji = SUBJECT_EMOJI[subject];
 
   return (
-    <Card className="rounded-2xl border border-border shadow-md">
+    <Card className="rounded-2xl border border-border shadow-lg">
       <CardContent className="p-5 md:p-6 space-y-5">
         <div className="flex items-center gap-3 mb-1">
-          <div className="h-11 w-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm">
+          <div className="h-11 w-11 rounded-xl bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shadow-md">
             {task.dayIndex + 1}
           </div>
           <div>
@@ -376,61 +509,88 @@ function TaskCard({ task, completed, loading, onComplete }: { task: DailyTask; c
   );
 }
 
-// ─── Sales Signal Banners ───
+// ─── Sticky Bottom CTA Bar ───
 
-function SalesSignalBanner({ heatData }: { heatData: HeatScoreData | null }) {
-  if (!heatData) return null;
+function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | null; inactiveDays: number }) {
+  const [dismissed, setDismissed] = useState(false);
 
-  if (heatData.lead_category === "Very Hot") {
-    return (
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-r from-amber-500/10 to-primary/10 border border-amber-500/30 rounded-xl p-4">
-        <div className="flex items-center gap-2 mb-2">
-          <Flame className="h-5 w-5 text-amber-500" />
-          <p className="font-bold text-foreground text-sm">Based on your consistency, you just unlocked a Special Discount on our Courses</p>
-        </div>
-        <Button size="sm" className="rounded-xl gap-2 font-semibold" asChild>
-          <a href="/mentorship">
-            <Play className="h-3.5 w-3.5" /> Book Free Counseling Call
-          </a>
-        </Button>
-      </motion.div>
-    );
+  useEffect(() => {
+    const dismissedAt = localStorage.getItem("planner_cta_dismissed_at");
+    if (dismissedAt) {
+      const hoursSince = (Date.now() - parseInt(dismissedAt)) / (1000 * 60 * 60);
+      if (hoursSince < 24) setDismissed(true);
+    }
+  }, []);
+
+  const handleDismiss = () => {
+    setDismissed(true);
+    localStorage.setItem("planner_cta_dismissed_at", Date.now().toString());
+  };
+
+  // Determine which CTA to show — same logic, enhanced presentation
+  let ctaContent: { headline: string; cta: string; href: string; icon: React.ReactNode } | null = null;
+
+  if (inactiveDays >= 3) {
+    ctaContent = {
+      headline: "Consistency broken. Want help getting back on track?",
+      cta: "Watch Masterclass",
+      href: "/masterclass",
+      icon: <Play className="h-4 w-4" />,
+    };
+  } else if (heatData?.lead_category === "Very Hot") {
+    ctaContent = {
+      headline: "You just unlocked a Special Discount on our Courses",
+      cta: "Book Free Counseling Call",
+      href: "/mentorship",
+      icon: <Play className="h-4 w-4" />,
+    };
+  } else if (heatData?.lead_category === "Hot") {
+    ctaContent = {
+      headline: "You're preparing seriously. Want structured mentorship?",
+      cta: "Book Your 1st Nudge Call for Free",
+      href: "/mentorship",
+      icon: <Phone className="h-4 w-4" />,
+    };
   }
 
-  if (heatData.lead_category === "Hot") {
-    return (
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-        <div className="flex items-center gap-2 mb-2">
-          <TrendingUp className="h-5 w-5 text-primary" />
-          <p className="font-bold text-foreground text-sm">You're preparing seriously. Want structured mentorship?</p>
-        </div>
-        <Button size="sm" variant="outline" className="rounded-xl gap-2 font-semibold" asChild>
-          <a href="/mentorship">
-            <Phone className="h-3.5 w-3.5" /> Book Your 1st Nudge Call for Free
-          </a>
-        </Button>
-      </motion.div>
-    );
-  }
-
-  return null;
-}
-
-function InactivityBanner({ inactiveDays }: { inactiveDays: number }) {
-  if (inactiveDays < 3) return null;
+  if (!ctaContent || dismissed) return null;
 
   return (
-    <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-destructive/5 border border-destructive/20 rounded-xl p-4">
-      <div className="flex items-center gap-2 mb-2">
-        <AlertTriangle className="h-5 w-5 text-destructive" />
-        <p className="font-bold text-foreground text-sm">Consistency broken. Want help getting back on track?</p>
-      </div>
-      <Button size="sm" variant="outline" className="rounded-xl gap-2 font-semibold" asChild>
-        <a href="/masterclass">
-          <Play className="h-3.5 w-3.5" /> Watch Masterclass
-        </a>
-      </Button>
-    </motion.div>
+    <AnimatePresence>
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 100, opacity: 0 }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        className="fixed bottom-0 left-0 right-0 z-40"
+      >
+        <div className="bg-foreground border-t border-border/20 shadow-2xl">
+          <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs md:text-sm font-semibold text-background truncate">
+                {ctaContent.headline}
+              </p>
+            </div>
+            <Button
+              size="sm"
+              className="shrink-0 rounded-xl font-semibold gap-2 shadow-lg shadow-primary/30"
+              asChild
+            >
+              <a href={ctaContent.href}>
+                {ctaContent.icon} {ctaContent.cta}
+              </a>
+            </Button>
+            <button
+              onClick={handleDismiss}
+              className="shrink-0 text-background/50 hover:text-background transition-colors p-1"
+              aria-label="Dismiss"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 
@@ -471,7 +631,6 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
     const loadData = async () => {
       const phone = leadData.phone;
 
-      // Fetch all completed activities
       const { data: activities } = await supabase
         .from("planner_activity")
         .select("date, subject")
@@ -482,11 +641,9 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
         setCompletedDays(keys);
       }
 
-      // Fetch heat score
       const heat = await fetchHeatScore(phone);
       setHeatData(heat);
 
-      // Check inactivity
       const inactive = await getInactiveDays(phone);
       setInactiveDays(inactive);
     };
@@ -496,7 +653,6 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   const currentTask = fullPlan[viewingDay] ?? null;
   const currentPhase = currentTask?.phase || "Foundation Phase";
 
-  // Get the date for a given day index
   const getDateForDay = useCallback((dayIndex: number): string => {
     const start = new Date(leadData.startDate);
     start.setHours(0, 0, 0, 0);
@@ -505,7 +661,6 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
     return date.toISOString().split("T")[0];
   }, [leadData.startDate]);
 
-  // Get subject key for completion tracking
   const getSubjectKey = (task: DailyTask): string => {
     if (task.is_mock_day) return "MOCK";
     if (task.subjectFocus === "WEEKLY_TEST") return "TEST";
@@ -525,11 +680,7 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
 
     try {
       await logActivity(leadData.phone, date, subject);
-
-      // Update local state
       setCompletedDays(prev => new Set(prev).add(`${date}|${subject}`));
-
-      // Recalculate heat score
       const newHeat = await recalculateHeatScore(leadData.phone, isCrashMode, daysLeft);
       setHeatData(newHeat);
       setInactiveDays(0);
@@ -539,6 +690,28 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
       setCompletionLoading(false);
     }
   };
+
+  // Calculate derived stats
+  const currentStreak = useMemo(
+    () => calculateCurrentStreak(completedDays, leadData.startDate),
+    [completedDays, leadData.startDate]
+  );
+
+  const syllabusPercent = useMemo(() => {
+    if (fullPlan.length === 0) return 0;
+    const completedCount = fullPlan.filter(d => {
+      const dateStr = getDateForDay(d.dayIndex);
+      const subjectKey = getSubjectKey(d);
+      return completedDays.has(`${dateStr}|${subjectKey}`);
+    }).length;
+    return Math.round((completedCount / fullPlan.length) * 100);
+  }, [fullPlan, completedDays, getDateForDay]);
+
+  const rank = useMemo(
+    () => calculateRank(heatData?.heat_score ?? 0, currentStreak),
+    [heatData, currentStreak]
+  );
+  const rankTier = useMemo(() => getRankTier(rank), [rank]);
 
   // Mini day navigator
   const navDays = useMemo(() => {
@@ -557,21 +730,21 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   }
 
   return (
-    <section className="max-w-2xl mx-auto px-4 py-12">
-      <motion.div {...fadeUp} className="space-y-8">
-        {/* Header */}
-        <div className="space-y-4">
+    <>
+      <section className="max-w-2xl mx-auto px-4 py-8 pb-24">
+        <motion.div {...fadeUp} className="space-y-6">
+          {/* Header */}
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-sm text-muted-foreground font-medium mb-1">Welcome, {leadData.name}</p>
               <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">Your Daily Plan</h1>
             </div>
             <Button variant="outline" size="sm" className="rounded-xl shrink-0 text-xs font-semibold gap-2" onClick={onReset}>
-              <RefreshCw className="h-3.5 w-3.5" /> Start Over
+              <RefreshCw className="h-3.5 w-3.5" /> Reset
             </Button>
           </div>
 
-          {/* Crash mode banner */}
+          {/* Crash mode */}
           {isCrashMode && (
             <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-3 flex items-center gap-2">
               <Zap className="h-4 w-4 text-destructive shrink-0" />
@@ -579,38 +752,19 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
             </div>
           )}
 
-          {/* Inactivity banner */}
-          <InactivityBanner inactiveDays={inactiveDays} />
+          {/* Premium Stats Strip */}
+          <StatsStrip
+            daysLeft={daysLeft}
+            currentPhase={currentPhase}
+            currentStreak={currentStreak}
+            syllabusPercent={syllabusPercent}
+            rank={rank}
+            rankTier={rankTier}
+          />
 
-          {/* Sales signal banner */}
-          <SalesSignalBanner heatData={heatData} />
-
-          {/* Countdown + Phase */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <Card className="rounded-xl border-primary/20 bg-primary/5">
-              <CardContent className="p-4 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <Target className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-primary">{daysLeft}</p>
-                  <p className="text-xs text-muted-foreground font-medium">Days Left for CAT {leadData.targetYear}</p>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="rounded-xl border-border/60">
-              <CardContent className="p-4 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-lg bg-secondary flex items-center justify-center">
-                  <CalendarDays className="h-5 w-5 text-foreground" />
-                </div>
-                <div>
-                  <Badge className={`${PHASE_COLORS[currentPhase] || "bg-secondary text-foreground border-border"} text-xs font-semibold border px-3 py-1`}>
-                    {currentPhase}
-                  </Badge>
-                  <p className="text-xs text-muted-foreground font-medium mt-1">Current Phase</p>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Rank subtext */}
+          <div className="text-center">
+            <p className="text-xs text-muted-foreground">🏅 Your Rank: <span className="font-semibold text-foreground">#{rank}</span> · <span className="italic">Climb higher with consistency.</span></p>
           </div>
 
           {/* Today indicator */}
@@ -619,86 +773,64 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
               <AlertTriangle className="h-3 w-3 mr-1" /> Jump to Today (Day {currentDayIndex + 1})
             </Button>
           )}
-        </div>
 
-        {/* Day Navigator */}
-        <div className="flex items-center justify-between">
-          <Button variant="ghost" size="sm" disabled={viewingDay <= 0} onClick={() => setViewingDay(Math.max(0, viewingDay - 1))}>
-            <ChevronLeft className="h-4 w-4 mr-1" /> Prev
-          </Button>
-          <span className="text-sm font-semibold text-foreground">
-            Day {viewingDay + 1} of {fullPlan.length}
-            {viewingDay === currentDayIndex && <span className="text-primary ml-1">(Today)</span>}
-          </span>
-          <Button variant="ghost" size="sm" disabled={viewingDay >= fullPlan.length - 1} onClick={() => setViewingDay(Math.min(fullPlan.length - 1, viewingDay + 1))}>
-            Next <ChevronRight className="h-4 w-4 ml-1" />
-          </Button>
-        </div>
+          {/* Day Navigator */}
+          <div className="flex items-center justify-between">
+            <Button variant="ghost" size="sm" disabled={viewingDay <= 0} onClick={() => setViewingDay(Math.max(0, viewingDay - 1))}>
+              <ChevronLeft className="h-4 w-4 mr-1" /> Prev
+            </Button>
+            <span className="text-sm font-semibold text-foreground">
+              Day {viewingDay + 1} of {fullPlan.length}
+              {viewingDay === currentDayIndex && <span className="text-primary ml-1">(Today)</span>}
+            </span>
+            <Button variant="ghost" size="sm" disabled={viewingDay >= fullPlan.length - 1} onClick={() => setViewingDay(Math.min(fullPlan.length - 1, viewingDay + 1))}>
+              Next <ChevronRight className="h-4 w-4 ml-1" />
+            </Button>
+          </div>
 
-        {/* Mini day selector */}
-        <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {navDays.map((d) => {
-            const dayDate = getDateForDay(d.dayIndex);
-            const subjectKey = getSubjectKey(d);
-            const isDone = completedDays.has(`${dayDate}|${subjectKey}`);
-            return (
-              <button
-                key={d.dayIndex}
-                onClick={() => setViewingDay(d.dayIndex)}
-                className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
-                  d.dayIndex === viewingDay
-                    ? "bg-primary text-primary-foreground shadow-md"
-                    : d.dayIndex === currentDayIndex
-                    ? "bg-primary/20 text-primary border border-primary/30"
-                    : isDone
-                    ? "bg-emerald-500/15 text-emerald-600 border border-emerald-500/30"
-                    : "bg-secondary text-foreground hover:bg-secondary/80"
-                }`}
-              >
-                {d.dayIndex + 1}
-                {d.is_mock_day && " 🎯"}
-                {isDone && " ✓"}
-              </button>
-            );
-          })}
-        </div>
+          {/* Mini day selector */}
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            {navDays.map((d) => {
+              const dayDate = getDateForDay(d.dayIndex);
+              const subjectKey = getSubjectKey(d);
+              const isDone = completedDays.has(`${dayDate}|${subjectKey}`);
+              return (
+                <button
+                  key={d.dayIndex}
+                  onClick={() => setViewingDay(d.dayIndex)}
+                  className={`shrink-0 px-4 py-2 rounded-xl text-sm font-semibold transition-all ${
+                    d.dayIndex === viewingDay
+                      ? "bg-primary text-primary-foreground shadow-md"
+                      : d.dayIndex === currentDayIndex
+                      ? "bg-primary/20 text-primary border border-primary/30"
+                      : isDone
+                      ? "bg-emerald-500/15 text-emerald-600 border border-emerald-500/30"
+                      : "bg-secondary text-foreground hover:bg-secondary/80"
+                  }`}
+                >
+                  {d.dayIndex + 1}
+                  {d.is_mock_day && " 🎯"}
+                  {isDone && " ✓"}
+                </button>
+              );
+            })}
+          </div>
 
-        {/* Current Day Task Card */}
-        {currentTask && (
-          <TaskCard
-            task={currentTask}
-            completed={isCurrentDayCompleted}
-            loading={completionLoading}
-            onComplete={handleComplete}
-          />
-        )}
+          {/* Current Day Task Card */}
+          {currentTask && (
+            <TaskCard
+              task={currentTask}
+              completed={isCurrentDayCompleted}
+              loading={completionLoading}
+              onComplete={handleComplete}
+            />
+          )}
+        </motion.div>
+      </section>
 
-        {/* Plan info */}
-        <Card className="rounded-xl border-border/40 bg-secondary/30">
-          <CardContent className="p-4">
-            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Plan Info</p>
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="rounded-lg px-3 py-2 border border-border/40">
-                <span className="font-semibold text-foreground">Total Days</span>
-                <span className="text-muted-foreground ml-1">{fullPlan.length}</span>
-              </div>
-              <div className="rounded-lg px-3 py-2 border border-border/40">
-                <span className="font-semibold text-foreground">Mock Days</span>
-                <span className="text-muted-foreground ml-1">{fullPlan.filter(d => d.is_mock_day).length}</span>
-              </div>
-              <div className="rounded-lg px-3 py-2 border border-border/40">
-                <span className="font-semibold text-foreground">Prep Level</span>
-                <span className="text-muted-foreground ml-1">{leadData.prepLevel}</span>
-              </div>
-              <div className="rounded-lg px-3 py-2 border border-border/40">
-                <span className="font-semibold text-foreground">Mode</span>
-                <span className="text-muted-foreground ml-1">{isCrashMode ? "Crash" : "Standard"}</span>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-    </section>
+      {/* Sticky Bottom CTA — enhanced presentation, same trigger logic */}
+      <StickyCTABar heatData={heatData} inactiveDays={inactiveDays} />
+    </>
   );
 }
 
