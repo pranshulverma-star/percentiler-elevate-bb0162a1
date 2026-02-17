@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -125,6 +125,13 @@ const RegistrationForm = () => {
 };
 
 const Masterclass = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const phone = localStorage.getItem("percentilers_phone");
+    if (phone) navigate("/masterclass/watch", { replace: true });
+  }, [navigate]);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
