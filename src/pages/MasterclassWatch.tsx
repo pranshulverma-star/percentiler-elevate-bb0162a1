@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift } from "lucide-react";
+import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 const learningBullets = [
@@ -20,12 +20,16 @@ const resources = [
   { icon: Download, label: "Handwritten Notes", action: "download" },
 ];
 
+const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
+
 const MasterclassWatch = () => {
   const navigate = useNavigate();
   const phone = localStorage.getItem("percentilers_phone");
   const [watchPct, setWatchPct] = useState(0);
   const [completed, setCompleted] = useState(false);
   const [showUnlockBanner, setShowUnlockBanner] = useState(false);
+  const [videoLoading, setVideoLoading] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const engagementCreated = useRef(false);
   const lastMilestone = useRef(0);
 
@@ -74,33 +78,35 @@ const MasterclassWatch = () => {
     }
   }, [phone]);
 
-  // Simulated video progress (replace with real video player events)
-  useEffect(() => {
-    if (completed) return;
+  // Real video progress tracking
+  const handleTimeUpdate = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !video.duration || completed) return;
 
-    const interval = setInterval(() => {
-      setWatchPct((prev) => {
-        const next = Math.min(prev + 1, 100);
+    const pct = Math.round((video.currentTime / video.duration) * 100);
+    setWatchPct(pct);
 
-        // Milestone tracking
-        const milestones = [25, 50, 75, 90, 100];
-        for (const m of milestones) {
-          if (next >= m && lastMilestone.current < m) {
-            lastMilestone.current = m;
-            if (m === 90) setShowUnlockBanner(true);
-            if (m === 100) {
-              setCompleted(true);
-              updateEngagement(100, true);
-            } else {
-              updateEngagement(m, false);
-            }
-          }
+    const milestones = [25, 50, 75, 90, 100];
+    for (const m of milestones) {
+      if (pct >= m && lastMilestone.current < m) {
+        lastMilestone.current = m;
+        if (m === 90) setShowUnlockBanner(true);
+        if (m === 100) {
+          setCompleted(true);
+          updateEngagement(100, true);
+        } else {
+          updateEngagement(m, false);
         }
-        return next;
-      });
-    }, 600); // ~1 min total for demo
+      }
+    }
+  }, [completed, updateEngagement]);
 
-    return () => clearInterval(interval);
+  const handleVideoEnded = useCallback(() => {
+    if (!completed) {
+      setWatchPct(100);
+      setCompleted(true);
+      updateEngagement(100, true);
+    }
   }, [completed, updateEngagement]);
 
   if (!phone) return null;
@@ -119,13 +125,26 @@ const MasterclassWatch = () => {
       <main className="py-8 md:py-16">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
           {/* Video Player Area */}
-          <div className="relative aspect-video bg-foreground rounded-2xl overflow-hidden mb-2">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-primary-foreground">
-                <p className="text-lg font-semibold mb-2">Masterclass Video</p>
-                <p className="text-sm text-primary-foreground/70">AWS Video Player Placeholder</p>
+          <div className="relative aspect-video bg-black rounded-2xl overflow-hidden mb-2">
+            {videoLoading && (
+              <div className="absolute inset-0 flex items-center justify-center z-10 bg-black">
+                <Loader2 className="h-10 w-10 text-primary animate-spin" />
               </div>
-            </div>
+            )}
+            <video
+              id="masterclassVideo"
+              ref={videoRef}
+              className="w-full h-full object-contain rounded-2xl"
+              controls
+              preload="metadata"
+              onTimeUpdate={handleTimeUpdate}
+              onEnded={handleVideoEnded}
+              onLoadedData={() => setVideoLoading(false)}
+              onContextMenu={(e) => e.preventDefault()}
+            >
+              <source src={VIDEO_URL} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
 
           {/* Progress bar */}
