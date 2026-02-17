@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock } from "lucide-react";
+import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 const learningBullets = [
   "Eligibility Criteria and When to Start",
@@ -33,6 +34,8 @@ const MasterclassWatch = () => {
   const [videoLoading, setVideoLoading] = useState(true);
   const [isFirstWatch, setIsFirstWatch] = useState(true);
   const [resumePct, setResumePct] = useState(0);
+  const [showApplyConfirm, setShowApplyConfirm] = useState(false);
+  const [applyLoading, setApplyLoading] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const engagementCreated = useRef(false);
   const lastMilestone = useRef(0);
@@ -147,6 +150,38 @@ const MasterclassWatch = () => {
   // Prevent seeking on first watch via CSS
   const videoClassName = `w-full h-full object-contain rounded-2xl${isFirstWatch ? " [&::-webkit-media-controls-timeline]:hidden" : ""}`;
 
+  const handleApply = useCallback(async () => {
+    if (!phone) return;
+    setApplyLoading(true);
+    try {
+      // Upsert lead as very hot source
+      const { data: existing } = await supabase
+        .from("leads")
+        .select("phone_number")
+        .eq("phone_number", phone)
+        .maybeSingle();
+
+      if (existing) {
+        await supabase
+          .from("leads")
+          .update({ source: "masterclass_apply_95", current_status: "very_hot" })
+          .eq("phone_number", phone);
+      } else {
+        await supabase.from("leads").insert({
+          phone_number: phone,
+          name: localStorage.getItem("percentilers_name") || null,
+          source: "masterclass_apply_95",
+          current_status: "very_hot",
+        });
+      }
+    } catch {
+      // silent fail
+    } finally {
+      setApplyLoading(false);
+      setShowApplyConfirm(true);
+    }
+  }, [phone]);
+
   if (!phone) return null;
 
   return (
@@ -218,10 +253,8 @@ const MasterclassWatch = () => {
 
           {/* CTA */}
           <div className="text-center mb-16">
-            <Button size="lg" asChild>
-              <a href="#">
-                Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" />
-              </a>
+            <Button size="lg" onClick={handleApply} disabled={applyLoading}>
+              {applyLoading ? "Submitting..." : (<>Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" /></>)}
             </Button>
             <p className="text-sm text-muted-foreground mt-3">
               Limited seats. Mentor interaction included.
@@ -272,10 +305,8 @@ const MasterclassWatch = () => {
               </div>
 
               <div className="border-t border-border pt-8 text-center">
-                <Button size="lg" asChild>
-                  <a href="#">
-                    Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" />
-                  </a>
+                <Button size="lg" onClick={handleApply} disabled={applyLoading}>
+                  {applyLoading ? "Submitting..." : (<>Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" /></>)}
                 </Button>
                 <p className="text-sm text-muted-foreground mt-3">
                   Structured roadmap + daily mentoring + accountability included.
@@ -283,6 +314,32 @@ const MasterclassWatch = () => {
               </div>
             </div>
           </section>
+
+          {/* Apply Confirmation Dialog */}
+          <Dialog open={showApplyConfirm} onOpenChange={setShowApplyConfirm}>
+            <DialogContent className="max-w-sm text-center">
+              <DialogTitle className="sr-only">Application Confirmed</DialogTitle>
+              <div className="flex flex-col items-center gap-4 py-4">
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">
+                  <PartyPopper className="h-7 w-7 text-primary" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground">You're In! 🎉</h3>
+                <p className="text-muted-foreground text-sm">
+                  Our counselor will connect with you shortly to discuss the 95%ile Guarantee Batch.
+                </p>
+                <div className="w-full space-y-3 pt-2">
+                  <Button size="lg" className="w-full" asChild>
+                    <a href="tel:+919911928071">
+                      <Phone className="mr-2 h-4 w-4" /> Call Now — +91 99119 28071
+                    </a>
+                  </Button>
+                  <Button variant="outline" className="w-full" onClick={() => setShowApplyConfirm(false)}>
+                    I'll wait for the call
+                  </Button>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </main>
     </div>
