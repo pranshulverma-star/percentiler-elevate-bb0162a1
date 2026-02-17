@@ -9,12 +9,12 @@ import { motion } from "framer-motion";
 import mentorPhoto from "@/assets/mentor-pranshul.jpg";
 
 const bullets = [
-  "When to start CAT prep for maximum advantage",
-  "Which colleges to target based on YOUR profile",
-  "Best ROI MBA colleges (beyond IIM hype)",
-  "Live CAT problem solving (see how simple it gets)",
-  "How to improve your profile before interviews",
-  "How to choose the right CAT coaching",
+  "Eligibility Criteria and When to Start",
+  "How to make your Foundation Strong",
+  "How to build your profile",
+  "MBA exams apart from CAT",
+  "Best B-Schools in India",
+  "How to choose the Best Coaching for you",
 ];
 
 const socialProofStats = [
@@ -201,17 +201,17 @@ const Masterclass = () => {
               </div>
 
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight text-foreground">
-                Most CAT Aspirants Don't Fail Because They're Weak.{" "}
-                <span className="text-primary">They Fail Because They Start Wrong.</span>
+                CAT Demystified:{" "}
+                <span className="text-primary">Everything You Need to Know Before You Start.</span>
               </h1>
 
               <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">
-                In this masterclass, I'll show you the structured roadmap that separates serious aspirants from average ones — the same framework behind 200+ students scoring 95+ percentile.
+                A complete walkthrough covering eligibility, foundation building, profile development, top B-Schools, and coaching selection — plus a giveaway at the end!
               </p>
 
               {/* Bullets */}
               <div className="space-y-5">
-                <h2 className="text-base font-bold text-foreground">What You'll Learn</h2>
+                <h2 className="text-base font-bold text-foreground">What We'll Be Covering</h2>
                 <ul className="space-y-3">
                   {bullets.map((b, i) => (
                     <motion.li

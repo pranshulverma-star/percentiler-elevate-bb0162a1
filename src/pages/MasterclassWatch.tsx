@@ -5,11 +5,12 @@ import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTo
 import { supabase } from "@/integrations/supabase/client";
 
 const learningBullets = [
-  "Ideal prep start timeline",
-  "ROI-focused college targeting",
-  "Profile improvement roadmap",
-  "CAT solving framework",
-  "Coaching selection checklist",
+  "Eligibility Criteria and When to Start",
+  "How to make your Foundation Strong",
+  "How to build your profile",
+  "MBA exams apart from CAT",
+  "Best B-Schools in India",
+  "How to choose the Best Coaching for you",
 ];
 
 const resources = [
