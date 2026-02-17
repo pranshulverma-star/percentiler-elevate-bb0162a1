@@ -34,10 +34,10 @@ const FinalCTASection = () => {
           </motion.div>
 
           <h2 className="text-2xl md:text-5xl font-bold text-background leading-tight">
-            Ready to Improve Your<br /><span className="text-primary">Percentile?</span>
+            Your CAT 2026 Attempt Can Be Random.<br />Or It Can Be <span className="text-primary">Structured.</span>
           </h2>
           <p className="text-background/60 text-lg max-w-md mx-auto">
-            Take the first step toward your dream B-school today.
+            You decide. Start your structured CAT preparation journey today.
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4 w-full max-w-md mx-auto">
@@ -46,15 +46,17 @@ const FinalCTASection = () => {
                 window.location.href = "/masterclass";
               });
             }}>
-              Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
+              Watch Free CAT Masterclass <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
             <Button
               size="lg"
               variant="outline"
               className="border-background/30 text-background bg-background/10 hover:bg-background hover:text-foreground text-sm md:text-base px-6 py-5 md:px-8 md:py-6 rounded-xl transition-all duration-300 w-full sm:w-auto"
-              onClick={() => openModal("final_cta_strategy_call")}
+              asChild
             >
-              Book Free Strategy Call
+              <a href="/cat-daily-study-planner">
+                Try Free Planner
+              </a>
             </Button>
           </div>
         </motion.div>
