@@ -83,15 +83,15 @@ const stagger = {
 // ─── NAVBAR ─────────────────────────────────────────────
 const Navbar = () =>
 <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b">
-    <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
-      <a href="/" className="text-xl font-bold text-foreground tracking-tight">
+    <div className="max-w-6xl mx-auto flex items-center justify-between px-4 md:px-6 py-3 md:py-4">
+      <a href="/" className="text-lg md:text-xl font-bold text-foreground tracking-tight">
         Percentilers
       </a>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2 md:gap-3">
         <Badge variant="secondary" className="text-xs font-medium hidden sm:inline-flex">
           100% Free
         </Badge>
-        <Button size="sm" className="rounded-xl font-semibold" asChild>
+        <Button size="sm" className="rounded-xl font-semibold text-xs md:text-sm px-3 md:px-4" asChild>
           <a href="#start-assessment">Take Assessment</a>
         </Button>
       </div>
@@ -102,33 +102,30 @@ const Navbar = () =>
 // ─── HERO ───────────────────────────────────────────────
 const HeroSection = ({ onStart }: {onStart: () => void;}) =>
 <section className="relative overflow-hidden">
-    {/* Subtle background pattern */}
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,hsl(var(--primary)/0.04),transparent_50%)]" />
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,hsl(var(--primary)/0.03),transparent_50%)]" />
 
-    <div className="relative max-w-5xl mx-auto px-4 pt-20 pb-16 text-center">
+    <div className="relative max-w-5xl mx-auto px-4 pt-12 md:pt-20 pb-10 md:pb-16 text-center">
       <motion.div {...fadeUp}>
-        <div className="inline-flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-5 py-2 mb-8">
-          <Award className="h-4 w-4 text-primary" />
-          <span className="text-sm font-semibold text-foreground">Trusted by 10,000+ CAT Aspirants</span>
+        <div className="inline-flex items-center gap-1.5 md:gap-2 bg-primary/5 border border-primary/10 rounded-full px-3 md:px-5 py-1.5 md:py-2 mb-6 md:mb-8">
+          <Award className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" />
+          <span className="text-xs md:text-sm font-semibold text-foreground">Trusted by 10,000+ CAT Aspirants</span>
         </div>
 
-        <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-bold text-foreground leading-[1.15] max-w-4xl mx-auto">
+        <h1 className="text-3xl md:text-5xl lg:text-[3.5rem] font-bold text-foreground leading-[1.15] max-w-4xl mx-auto">
           Know Exactly Where You Stand for{" "}
-          <span className="text-primary">CAT 2026
-        </span>
+          <span className="text-primary">CAT 2026</span>
         </h1>
 
-        <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-4 md:mt-6 text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           Get a structured, AI-scored performance report in just 15 minutes.
           Identify your strengths, weaknesses, and the exact gaps between you and your target percentile.
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10">
+        <div className="flex flex-col items-center justify-center gap-3 md:gap-4 mt-8 md:mt-10">
           <Button size="lg"
-        className="text-base px-10 py-6 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all"
+        className="text-base px-8 md:px-10 py-5 md:py-6 rounded-2xl font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
         onClick={onStart}>
-
             Start Free Assessment <ChevronRight className="ml-1 h-5 w-5" />
           </Button>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -138,21 +135,19 @@ const HeroSection = ({ onStart }: {onStart: () => void;}) =>
         </div>
       </motion.div>
 
-      {/* Trust metrics */}
       <motion.div
       {...fadeUp}
       transition={{ delay: 0.3, duration: 0.5 }}
-      className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-
+      className="mt-10 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-3xl mx-auto">
         {[
       { value: "10K+", label: "Assessments Taken" },
       { value: "4.8★", label: "User Rating" },
       { value: "15 min", label: "Quick & Precise" },
       { value: "Free", label: "No Card Required" }].
       map((m) =>
-      <div key={m.label} className="text-center py-4">
-            <p className="text-2xl md:text-3xl font-bold text-foreground">{m.value}</p>
-            <p className="text-xs text-muted-foreground mt-1">{m.label}</p>
+      <div key={m.label} className="text-center py-3 md:py-4">
+            <p className="text-xl md:text-3xl font-bold text-foreground">{m.value}</p>
+            <p className="text-[10px] md:text-xs text-muted-foreground mt-1">{m.label}</p>
           </div>
       )}
       </motion.div>
@@ -177,41 +172,40 @@ const SectionSelector = ({
 
 
 }: {selected: SectionFilter;onSelect: (s: SectionFilter) => void;onStartAssessment: () => void;}) =>
-<section className="py-20" id="start-assessment">
+<section className="py-12 md:py-20" id="start-assessment">
     <div className="max-w-4xl mx-auto px-4">
-      <motion.div {...fadeUp} className="text-center mb-12">
-        <Badge variant="secondary" className="mb-4 text-xs font-medium uppercase tracking-wider px-4 py-1.5">
+      <motion.div {...fadeUp} className="text-center mb-8 md:mb-12">
+        <Badge variant="secondary" className="mb-3 md:mb-4 text-xs font-medium uppercase tracking-wider px-3 md:px-4 py-1.5">
           Choose Your Focus
         </Badge>
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground">
+        <h2 className="text-xl md:text-3xl font-bold text-foreground">
           What would you like to test yourself on?
         </h2>
-        <p className="text-muted-foreground mt-3 max-w-lg mx-auto">
+        <p className="text-muted-foreground mt-2 md:mt-3 max-w-lg mx-auto text-sm md:text-base">
           Pick a section to deep-dive or go mixed for a full diagnostic.
         </p>
       </motion.div>
 
-      <motion.div variants={stagger} initial="initial" whileInView="animate" viewport={{ once: true }} className="grid sm:grid-cols-2 gap-4">
+      <motion.div variants={stagger} initial="initial" whileInView="animate" viewport={{ once: true }} className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
         {sectionOptions.map((opt) => {
         const isActive = selected === opt.key;
         return (
           <motion.div key={opt.key} variants={fadeUp}>
               <button
               onClick={() => onSelect(opt.key)}
-              className={`w-full text-left p-6 rounded-2xl border-2 transition-all duration-200 group ${
+              className={`w-full text-left p-4 md:p-6 rounded-2xl border-2 transition-all duration-200 group ${
               isActive ?
               "border-primary bg-primary/[0.03] shadow-md shadow-primary/5" :
               "border-border bg-background hover:border-primary/20 hover:shadow-sm"}`
               }>
-
-                <div className="flex items-start gap-4">
-                  <div className={`p-3 rounded-2xl transition-colors ${isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
-                    <opt.icon className="h-5 w-5" />
+                <div className="flex items-start gap-3 md:gap-4">
+                  <div className={`p-2.5 md:p-3 rounded-xl md:rounded-2xl transition-colors shrink-0 ${isActive ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                    <opt.icon className="h-4 w-4 md:h-5 md:w-5" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-bold text-foreground text-base">{opt.label}</p>
-                    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{opt.desc}</p>
-                    <p className="text-xs text-muted-foreground mt-2">10 Questions · 15 min</p>
+                    <p className="font-bold text-foreground text-sm md:text-base">{opt.label}</p>
+                    <p className="text-xs md:text-sm text-muted-foreground mt-0.5 md:mt-1 leading-relaxed">{opt.desc}</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground mt-1.5 md:mt-2">10 Questions · 15 min</p>
                   </div>
                   <div className={`shrink-0 mt-1 h-5 w-5 rounded-full border-2 flex items-center justify-center transition-all ${
                 isActive ? "border-primary bg-primary" : "border-muted-foreground/30"}`
@@ -221,17 +215,14 @@ const SectionSelector = ({
                 </div>
               </button>
             </motion.div>);
-
       })}
       </motion.div>
 
-      {/* Take Assessment CTA */}
-      <motion.div {...fadeUp} className="text-center mt-10">
+      <motion.div {...fadeUp} className="text-center mt-8 md:mt-10">
         <Button
         size="lg"
-        className="rounded-2xl px-12 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+        className="rounded-2xl px-8 md:px-12 py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
         onClick={onStartAssessment}>
-
           Take Assessment <ArrowRight className="ml-2 h-5 w-5" />
         </Button>
         <p className="text-xs text-muted-foreground mt-3">
@@ -244,14 +235,14 @@ const SectionSelector = ({
 
 // ─── HOW IT WORKS ───────────────────────────────────────
 const HowItWorks = () =>
-<section className="py-16">
+<section className="py-12 md:py-16">
     <div className="max-w-4xl mx-auto px-4">
-      <motion.div {...fadeUp} className="text-center mb-12">
-        <h2 className="text-2xl md:text-3xl font-bold text-foreground">How It Works</h2>
-        <p className="text-muted-foreground mt-3">Three simple steps to your personalized readiness report.</p>
+      <motion.div {...fadeUp} className="text-center mb-8 md:mb-12">
+        <h2 className="text-xl md:text-3xl font-bold text-foreground">How It Works</h2>
+        <p className="text-muted-foreground mt-2 md:mt-3 text-sm md:text-base">Three simple steps to your personalized readiness report.</p>
       </motion.div>
 
-      <motion.div variants={stagger} initial="initial" whileInView="animate" viewport={{ once: true }} className="grid md:grid-cols-3 gap-6">
+      <motion.div variants={stagger} initial="initial" whileInView="animate" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {[
       { step: "01", icon: ClipboardList, title: "Enter Your Details", desc: "Tell us your name, phone, and target percentile so we can personalize your report." },
       { step: "02", icon: FileText, title: "Answer 10 Questions", desc: "Carefully crafted questions across difficulty levels — complete in 15 minutes." },
@@ -259,13 +250,13 @@ const HowItWorks = () =>
       map((s) =>
       <motion.div key={s.step} variants={fadeUp}>
             <Card className="rounded-2xl border-0 shadow-sm h-full">
-              <CardContent className="pt-6 pb-6 text-center">
+              <CardContent className="pt-5 pb-5 md:pt-6 md:pb-6 text-center">
                 <span className="text-xs font-bold text-primary tracking-widest">STEP {s.step}</span>
-                <div className="mx-auto mt-3 mb-4 inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/5">
-                  <s.icon className="h-6 w-6 text-primary" />
+                <div className="mx-auto mt-2.5 md:mt-3 mb-3 md:mb-4 inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/5">
+                  <s.icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                 </div>
-                <h3 className="font-bold text-foreground mb-2">{s.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
+                <h3 className="font-bold text-foreground mb-1.5 md:mb-2 text-sm md:text-base">{s.title}</h3>
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
               </CardContent>
             </Card>
           </motion.div>
@@ -277,20 +268,20 @@ const HowItWorks = () =>
 
 // ─── TRUST SECTION ──────────────────────────────────────
 const TrustSection = () =>
-<section className="py-12 bg-secondary/30">
+<section className="py-10 md:py-12 bg-secondary/30">
     <div className="max-w-4xl mx-auto px-4">
-      <div className="grid sm:grid-cols-3 gap-6 text-center">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 text-center">
         {[
       { icon: Shield, title: "100% Free", desc: "No payment, no card, no hidden charges. Ever." },
       { icon: Brain, title: "Smart Scoring", desc: "Weighted scoring across difficulty, speed, and accuracy." },
       { icon: Users, title: "Built by 99%ilers", desc: "Designed by mentors who scored 99+ percentile in CAT." }].
       map((t) =>
-      <div key={t.title} className="flex flex-col items-center gap-3 py-4">
-            <div className="p-3 rounded-xl bg-primary/5">
-              <t.icon className="h-6 w-6 text-primary" />
+      <div key={t.title} className="flex flex-col items-center gap-2 md:gap-3 py-3 md:py-4">
+            <div className="p-2.5 md:p-3 rounded-xl bg-primary/5">
+              <t.icon className="h-5 w-5 md:h-6 md:w-6 text-primary" />
             </div>
             <h3 className="font-bold text-foreground text-sm">{t.title}</h3>
-            <p className="text-xs text-muted-foreground leading-relaxed max-w-[200px]">{t.desc}</p>
+            <p className="text-xs text-muted-foreground leading-relaxed max-w-[220px]">{t.desc}</p>
           </div>
       )}
       </div>
@@ -339,22 +330,22 @@ const LeadCapture = ({
   const sectionLabel = sectionOptions.find((o) => o.key === sectionFilter)?.label || "Mixed";
 
   return (
-    <section className="py-16 px-4">
+    <section className="py-10 md:py-16 px-4">
       <motion.div {...fadeUp} className="max-w-lg mx-auto">
         <Card className="rounded-2xl shadow-lg border-0">
-          <CardHeader className="text-center pb-2 pt-8">
-            <Badge variant="secondary" className="mx-auto mb-3 text-xs">
+          <CardHeader className="text-center pb-2 pt-6 md:pt-8 px-4 md:px-6">
+            <Badge variant="secondary" className="mx-auto mb-2 md:mb-3 text-xs">
               Section: {sectionLabel}
             </Badge>
-            <CardTitle className="text-2xl font-bold text-foreground">
+            <CardTitle className="text-xl md:text-2xl font-bold text-foreground">
               Get Your Personalized Report
             </CardTitle>
-            <p className="text-sm text-muted-foreground mt-2">
+            <p className="text-xs md:text-sm text-muted-foreground mt-1.5 md:mt-2">
               Fill in your details to begin the 15-minute assessment.
             </p>
           </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-5 mt-4">
+          <CardContent className="px-4 md:px-6">
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5 mt-3 md:mt-4">
               <div className="space-y-1.5">
                 <Label htmlFor="name">Full Name</Label>
                 <Input
@@ -362,9 +353,8 @@ const LeadCapture = ({
                   placeholder="Your full name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="rounded-xl h-12"
+                  className="rounded-xl h-11 md:h-12"
                   maxLength={100} />
-
                 {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
               </div>
               <div className="space-y-1.5">
@@ -374,15 +364,14 @@ const LeadCapture = ({
                   placeholder="10-digit phone number"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                  className="rounded-xl h-12"
+                  className="rounded-xl h-11 md:h-12"
                   maxLength={10} />
-
                 {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
               </div>
               <div className="space-y-1.5">
                 <Label>Target Percentile</Label>
                 <Select value={target} onValueChange={setTarget}>
-                  <SelectTrigger className="rounded-xl h-12">
+                  <SelectTrigger className="rounded-xl h-11 md:h-12">
                     <SelectValue placeholder="Select target" />
                   </SelectTrigger>
                   <SelectContent>
@@ -394,10 +383,10 @@ const LeadCapture = ({
                 </Select>
                 {errors.target && <p className="text-sm text-destructive">{errors.target}</p>}
               </div>
-              <Button type="submit" className="w-full rounded-2xl py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all">
+              <Button type="submit" className="w-full rounded-2xl py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all">
                 Begin 15-Minute Assessment <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <p className="text-center text-xs text-muted-foreground">
+              <p className="text-center text-[10px] md:text-xs text-muted-foreground">
                 Your data stays private. No spam, we promise.
               </p>
             </form>
@@ -459,48 +448,46 @@ const TestInterface = ({
   const answeredCount = Object.keys(answers).length;
 
   return (
-    <section className="max-w-2xl mx-auto px-4 py-10">
+    <section className="max-w-2xl mx-auto px-4 py-6 md:py-10">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         {/* Header bar */}
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-muted-foreground">
+          <span className="text-xs md:text-sm font-medium text-muted-foreground">
             Question {current + 1} of {filtered.length}
           </span>
-          <div className={`flex items-center gap-1.5 font-mono text-sm font-bold px-3 py-1 rounded-lg ${
+          <div className={`flex items-center gap-1.5 font-mono text-xs md:text-sm font-bold px-2.5 md:px-3 py-1 rounded-lg ${
           timeLeft <= 60 ? "text-destructive bg-destructive/5" : "text-foreground bg-muted"}`
           }>
-            <Clock className="h-4 w-4" />
+            <Clock className="h-3.5 w-3.5 md:h-4 md:w-4" />
             {String(mins).padStart(2, "0")}:{String(secs).padStart(2, "0")}
           </div>
         </div>
 
-        <Progress value={progress} className="mb-6 h-2 rounded-full" />
+        <Progress value={progress} className="mb-4 md:mb-6 h-2 rounded-full" />
 
-        {/* Answered count */}
-        <p className="text-xs text-muted-foreground mb-4">
+        <p className="text-[10px] md:text-xs text-muted-foreground mb-3 md:mb-4">
           {answeredCount} of {filtered.length} answered
         </p>
 
         {/* Question card */}
-        <Card className="rounded-2xl shadow-md border-0 mb-6">
-          <CardContent className="pt-6 pb-6">
-            <div className="flex items-center gap-2 mb-4">
-              <Badge variant="outline" className="text-xs capitalize">{q.section}</Badge>
-              <Badge variant="secondary" className="text-xs capitalize">{q.difficulty}</Badge>
+        <Card className="rounded-2xl shadow-md border-0 mb-4 md:mb-6">
+          <CardContent className="pt-4 pb-4 md:pt-6 md:pb-6 px-4 md:px-6">
+            <div className="flex items-center gap-2 mb-3 md:mb-4">
+              <Badge variant="outline" className="text-[10px] md:text-xs capitalize">{q.section}</Badge>
+              <Badge variant="secondary" className="text-[10px] md:text-xs capitalize">{q.difficulty}</Badge>
             </div>
-            <p className="text-lg font-semibold text-foreground mb-6 leading-relaxed">{q.question}</p>
-            <div className="space-y-3">
+            <p className="text-base md:text-lg font-semibold text-foreground mb-4 md:mb-6 leading-relaxed">{q.question}</p>
+            <div className="space-y-2.5 md:space-y-3">
               {q.options.map((opt, idx) =>
               <button
                 key={idx}
                 onClick={() => selectAnswer(idx)}
-                className={`w-full text-left px-5 py-4 rounded-xl border-2 text-sm font-medium transition-all duration-150 ${
+                className={`w-full text-left px-4 md:px-5 py-3 md:py-4 rounded-xl border-2 text-sm font-medium transition-all duration-150 ${
                 answers[q.id] === idx ?
                 "border-primary bg-primary/5 text-foreground shadow-sm" :
                 "border-border hover:border-primary/30 text-foreground/80 hover:bg-muted/30"}`
                 }>
-
-                  <span className={`inline-flex items-center justify-center h-7 w-7 rounded-lg text-xs font-bold mr-3 shrink-0 ${
+                  <span className={`inline-flex items-center justify-center h-6 w-6 md:h-7 md:w-7 rounded-lg text-[10px] md:text-xs font-bold mr-2.5 md:mr-3 shrink-0 ${
                 answers[q.id] === idx ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`
                 }>
                     {String.fromCharCode(65 + idx)}
@@ -513,23 +500,21 @@ const TestInterface = ({
         </Card>
 
         {/* Navigation */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <Button
             variant="outline"
             onClick={() => setCurrent((p) => Math.max(0, p - 1))}
             disabled={current === 0}
-            className="rounded-xl">
-
-            <ArrowLeft className="h-4 w-4 mr-1" /> Previous
+            className="rounded-xl text-sm">
+            <ArrowLeft className="h-4 w-4 mr-1" /> Prev
           </Button>
 
           {current < filtered.length - 1 ?
-          <Button onClick={() => setCurrent((p) => p + 1)} className="rounded-xl">
+          <Button onClick={() => setCurrent((p) => p + 1)} className="rounded-xl text-sm">
               Next <ArrowRight className="h-4 w-4 ml-1" />
             </Button> :
-
-          <Button onClick={submit} className="rounded-xl font-semibold px-6">
-              Submit Test <CheckCircle2 className="h-4 w-4 ml-1" />
+          <Button onClick={submit} className="rounded-xl font-semibold px-4 md:px-6 text-sm">
+              Submit <CheckCircle2 className="h-4 w-4 ml-1" />
             </Button>
           }
         </div>
@@ -561,26 +546,26 @@ const ResultsSection = ({ result, onRetake }: {result: AssessmentResult;onRetake
   const topPercent = Math.max(0.1, Math.round(rank / 10000 * 1000) / 10);
 
   return (
-    <section className="max-w-3xl mx-auto px-4 py-12">
-      <motion.div {...fadeUp} className="space-y-6">
+    <section className="max-w-3xl mx-auto px-4 py-8 md:py-12">
+      <motion.div {...fadeUp} className="space-y-4 md:space-y-6">
         {/* Score hero */}
         <Card className="rounded-2xl shadow-lg border-0 overflow-hidden">
-          <div className="bg-gradient-to-br from-primary/5 via-background to-primary/3 pt-10 pb-10 text-center">
+          <div className="bg-gradient-to-br from-primary/5 via-background to-primary/3 pt-8 pb-8 md:pt-10 md:pb-10 text-center px-4">
             {stored?.name &&
-            <p className="text-sm text-muted-foreground mb-2">Great effort, <span className="font-semibold text-foreground">{stored.name}</span>!</p>
+            <p className="text-xs md:text-sm text-muted-foreground mb-2">Great effort, <span className="font-semibold text-foreground">{stored.name}</span>!</p>
             }
-            <p className="text-xs text-muted-foreground font-medium uppercase tracking-widest mb-3">Your CAT Readiness Index</p>
+            <p className="text-[10px] md:text-xs text-muted-foreground font-medium uppercase tracking-widest mb-3">Your CAT Readiness Index</p>
 
-            <div className="relative inline-flex items-center justify-center w-36 h-36 rounded-full border-4 border-primary/20">
+            <div className="relative inline-flex items-center justify-center w-28 h-28 md:w-36 md:h-36 rounded-full border-4 border-primary/20">
               <div className="text-center">
-                <p className="text-5xl font-bold text-foreground leading-none">{result.readinessIndex}</p>
-                <p className="text-sm text-muted-foreground">/100</p>
+                <p className="text-4xl md:text-5xl font-bold text-foreground leading-none">{result.readinessIndex}</p>
+                <p className="text-xs md:text-sm text-muted-foreground">/100</p>
               </div>
             </div>
 
-            <div className={`inline-flex items-center gap-2 mt-5 px-5 py-2 rounded-full ${bc.bg}`}>
-              <Award className={`h-4 w-4 ${bc.color}`} />
-              <span className={`text-sm font-bold ${bc.color}`}>{result.band}</span>
+            <div className={`inline-flex items-center gap-2 mt-4 md:mt-5 px-4 md:px-5 py-1.5 md:py-2 rounded-full ${bc.bg}`}>
+              <Award className={`h-3.5 w-3.5 md:h-4 md:w-4 ${bc.color}`} />
+              <span className={`text-xs md:text-sm font-bold ${bc.color}`}>{result.band}</span>
             </div>
           </div>
         </Card>
@@ -589,22 +574,23 @@ const ResultsSection = ({ result, onRetake }: {result: AssessmentResult;onRetake
         <Card className="rounded-2xl border-0 shadow-sm overflow-hidden">
           <CardContent className="p-0">
             <div className="flex items-stretch">
-              <div className="bg-primary/5 flex items-center justify-center px-6 py-5">
-                <Trophy className="h-8 w-8 text-primary" />
+              <div className="bg-primary/5 flex items-center justify-center px-4 md:px-6 py-4 md:py-5">
+                <Trophy className="h-6 w-6 md:h-8 md:w-8 text-primary" />
               </div>
-              <div className="flex-1 flex items-center justify-between px-6 py-5 gap-4 flex-wrap">
+              <div className="flex-1 flex items-center justify-between px-4 md:px-6 py-4 md:py-5 gap-3 md:gap-4 flex-wrap">
                 <div>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Overall Rank</p>
-                  <p className="text-3xl font-bold text-foreground mt-0.5">#{rank.toLocaleString()} <span className="text-base font-normal text-muted-foreground">/ 10,000+</span></p>
+                  <p className="text-[10px] md:text-xs text-muted-foreground font-medium uppercase tracking-wider">Your Overall Rank</p>
+                  <p className="text-2xl md:text-3xl font-bold text-foreground mt-0.5">#{rank.toLocaleString()} <span className="text-sm md:text-base font-normal text-muted-foreground">/ 10,000+</span></p>
                 </div>
-                <Badge className={`text-xs font-bold px-3 py-1 ${topPercent <= 10 ? "bg-green-100 text-green-700 border-green-200" : topPercent <= 30 ? "bg-yellow-100 text-yellow-700 border-yellow-200" : "bg-muted text-muted-foreground"}`}>
+                <Badge className={`text-[10px] md:text-xs font-bold px-2.5 md:px-3 py-0.5 md:py-1 ${topPercent <= 10 ? "bg-green-100 text-green-700 border-green-200" : topPercent <= 30 ? "bg-yellow-100 text-yellow-700 border-yellow-200" : "bg-muted text-muted-foreground"}`}>
                   Top {topPercent}%
                 </Badge>
               </div>
             </div>
           </CardContent>
         </Card>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-3">
           {[
           { icon: Target, label: "Accuracy", value: `${result.accuracyPercent}%`, sub: `${result.correctCount}/${result.totalQuestions} correct` },
           { icon: Clock, label: "Avg Time/Q", value: `${result.avgTimePerQuestion}s`, sub: `${result.timeTaken}s total` },
@@ -612,11 +598,11 @@ const ResultsSection = ({ result, onRetake }: {result: AssessmentResult;onRetake
           { icon: BarChart3, label: "Difficulty Score", value: `${result.difficultyScore}/30`, sub: "Weighted score" }].
           map((s) =>
           <Card key={s.label} className="rounded-2xl border-0 shadow-sm">
-              <CardContent className="pt-5 pb-5 text-center">
-                <s.icon className="h-5 w-5 mx-auto text-primary mb-2" />
-                <p className="text-xs text-muted-foreground">{s.label}</p>
-                <p className="text-xl font-bold text-foreground mt-1">{s.value}</p>
-                <p className="text-[10px] text-muted-foreground mt-0.5">{s.sub}</p>
+              <CardContent className="pt-4 pb-4 md:pt-5 md:pb-5 text-center px-2 md:px-4">
+                <s.icon className="h-4 w-4 md:h-5 md:w-5 mx-auto text-primary mb-1.5 md:mb-2" />
+                <p className="text-[10px] md:text-xs text-muted-foreground">{s.label}</p>
+                <p className="text-lg md:text-xl font-bold text-foreground mt-0.5 md:mt-1">{s.value}</p>
+                <p className="text-[9px] md:text-[10px] text-muted-foreground mt-0.5">{s.sub}</p>
               </CardContent>
             </Card>
           )}
@@ -624,83 +610,80 @@ const ResultsSection = ({ result, onRetake }: {result: AssessmentResult;onRetake
 
         {/* Section breakdown */}
         <Card className="rounded-2xl border-0 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
+          <CardHeader className="pb-2 px-4 md:px-6">
+            <CardTitle className="text-sm md:text-base font-semibold flex items-center gap-2">
               <Brain className="h-4 w-4 text-primary" /> Section-wise Breakdown
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
             {(["quant", "lrdi", "varc"] as const).map((sec) => {
               const d = result.sectionBreakdown[sec];
               const pct = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
               return (
                 <div key={sec}>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-sm font-semibold uppercase text-foreground">{sec}</span>
-                    <span className="text-sm font-bold text-foreground">{d.correct}/{d.total} <span className="text-muted-foreground font-normal">({pct}%)</span></span>
+                    <span className="text-xs md:text-sm font-semibold uppercase text-foreground">{sec}</span>
+                    <span className="text-xs md:text-sm font-bold text-foreground">{d.correct}/{d.total} <span className="text-muted-foreground font-normal">({pct}%)</span></span>
                   </div>
-                  <Progress value={pct} className="h-2.5 rounded-full" />
+                  <Progress value={pct} className="h-2 md:h-2.5 rounded-full" />
                 </div>);
-
             })}
           </CardContent>
         </Card>
 
         {/* Difficulty breakdown */}
         <Card className="rounded-2xl border-0 shadow-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-semibold flex items-center gap-2">
+          <CardHeader className="pb-2 px-4 md:px-6">
+            <CardTitle className="text-sm md:text-base font-semibold flex items-center gap-2">
               <BarChart3 className="h-4 w-4 text-primary" /> Difficulty-wise Breakdown
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
             {(["easy", "medium", "hard"] as const).map((diff) => {
               const d = result.difficultyBreakdown[diff];
               const pct = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
               return (
                 <div key={diff}>
                   <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-sm font-semibold capitalize text-foreground">{diff}</span>
-                    <span className="text-sm font-bold text-foreground">{d.correct}/{d.total} <span className="text-muted-foreground font-normal">({pct}%)</span></span>
+                    <span className="text-xs md:text-sm font-semibold capitalize text-foreground">{diff}</span>
+                    <span className="text-xs md:text-sm font-bold text-foreground">{d.correct}/{d.total} <span className="text-muted-foreground font-normal">({pct}%)</span></span>
                   </div>
-                  <Progress value={pct} className="h-2.5 rounded-full" />
+                  <Progress value={pct} className="h-2 md:h-2.5 rounded-full" />
                 </div>);
-
             })}
           </CardContent>
         </Card>
 
         {/* Insight */}
         <Card className="rounded-2xl border-0 shadow-sm border-l-4 border-l-primary">
-          <CardContent className="pt-6 pb-6">
-            <p className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-primary" /> Personalized Insight
+          <CardContent className="pt-5 pb-5 md:pt-6 md:pb-6 px-4 md:px-6">
+            <p className="text-xs md:text-sm font-bold text-foreground mb-1.5 md:mb-2 flex items-center gap-2">
+              <TrendingUp className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" /> Personalized Insight
             </p>
-            <p className="text-sm text-muted-foreground leading-relaxed">{insight}</p>
+            <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{insight}</p>
           </CardContent>
         </Card>
 
         {/* CTA */}
         <Card className="rounded-2xl border-0 shadow-xl overflow-hidden">
-          <div className="bg-gradient-to-br from-primary/5 to-primary/10 pt-10 pb-10 text-center px-6">
-            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+          <div className="bg-gradient-to-br from-primary/5 to-primary/10 pt-8 pb-8 md:pt-10 md:pb-10 text-center px-4 md:px-6">
+            <h3 className="text-xl md:text-3xl font-bold text-foreground mb-2 md:mb-3">
               Ready to Bridge the Gap?
             </h3>
-            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            <p className="text-sm md:text-base text-muted-foreground mb-6 md:mb-8 max-w-md mx-auto">
               Get structured mentoring from 99+ percentilers and turn your readiness into results.
             </p>
             <Button
               size="lg"
-              className="rounded-2xl px-10 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+              className="rounded-2xl px-8 md:px-10 py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               onClick={() => navigate("/masterclass")}>
-
               Book Free CAT Strategy Call <ChevronRight className="ml-1 h-5 w-5" />
             </Button>
           </div>
         </Card>
 
         {/* Retake */}
-        <div className="text-center pt-2 pb-8">
+        <div className="text-center pt-2 pb-6 md:pb-8">
           <Button variant="outline" className="rounded-xl" onClick={onRetake}>
             Retake Assessment
           </Button>
@@ -775,19 +758,18 @@ const CATReadinessAssessment = () => {
           <TrustSection />
 
           {/* Final CTA */}
-          <section className="py-16 text-center px-4">
+          <section className="py-10 md:py-16 text-center px-4">
             <motion.div {...fadeUp}>
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+              <h2 className="text-xl md:text-3xl font-bold text-foreground mb-3 md:mb-4">
                 Ready to find out where you stand?
               </h2>
-              <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+              <p className="text-sm md:text-base text-muted-foreground mb-6 md:mb-8 max-w-lg mx-auto">
                 Start your free 15-minute assessment now and get your personalized CAT Readiness Index.
               </p>
               <Button
               size="lg"
-              className="rounded-2xl px-10 py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+              className="rounded-2xl px-8 md:px-10 py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
               onClick={() => setPhase("lead")}>
-
                 Start Assessment Now <ChevronRight className="ml-1 h-5 w-5" />
               </Button>
             </motion.div>
