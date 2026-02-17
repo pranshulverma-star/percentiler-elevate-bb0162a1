@@ -183,7 +183,7 @@ const Mentorship = () => {
       <Navbar />
       <main className="pt-16 md:pt-20">
         {/* Hero */}
-        <section className="relative py-8 md:py-16 overflow-hidden">
+        <section className="relative py-5 md:py-16 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-0 left-1/3 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-primary/[0.04] blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-[250px] md:w-[400px] h-[250px] md:h-[400px] rounded-full bg-violet-500/[0.03] blur-3xl" />
@@ -215,7 +215,7 @@ const Mentorship = () => {
 
             {/* Stats */}
             <motion.div
-              className="mt-6 md:mt-10 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 max-w-2xl mx-auto"
+              className="mt-5 md:mt-10 grid grid-cols-4 gap-1.5 md:gap-3 max-w-2xl mx-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -223,13 +223,13 @@ const Mentorship = () => {
               {stats.map((s, i) => {
                 const Icon = s.icon;
                 return (
-                  <div key={i} className="flex items-center gap-2 md:gap-3 bg-card border border-border rounded-xl p-2.5 md:p-3 shadow-sm">
-                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                      <Icon className="h-4 w-4 md:h-5 md:w-5 text-primary" />
+                  <div key={i} className="flex flex-col items-center gap-1 md:flex-row md:gap-3 bg-card border border-border rounded-xl p-2 md:p-3 shadow-sm text-center md:text-left">
+                    <div className="w-7 h-7 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                      <Icon className="h-3.5 w-3.5 md:h-5 md:w-5 text-primary" />
                     </div>
                     <div>
-                      <p className="text-sm md:text-lg font-bold text-foreground leading-none">{s.value}</p>
-                      <p className="text-[8px] md:text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</p>
+                      <p className="text-xs md:text-lg font-bold text-foreground leading-none">{s.value}</p>
+                      <p className="text-[7px] md:text-[10px] text-muted-foreground uppercase tracking-wider">{s.label}</p>
                     </div>
                   </div>
                 );
