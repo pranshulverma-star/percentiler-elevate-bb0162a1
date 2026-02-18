@@ -305,8 +305,8 @@ const MasterclassWatch = () => {
                         <span className={`font-medium ${unlocked ? "text-foreground" : "text-muted-foreground"}`}>{r.label}</span>
                       </div>
                       {unlocked ? (
-                        <Button size="sm" variant="outline" asChild>
-                          <a href={r.action === "planner" ? "/#tools" : "#"}>
+                      <Button size="sm" variant="outline" asChild>
+                          <a href={r.action === "planner" ? "/cat-daily-study-planner" : "#"}>
                             {r.action === "planner" ? "Open Planner" : "Download"}
                           </a>
                         </Button>
