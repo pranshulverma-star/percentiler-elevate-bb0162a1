@@ -13,7 +13,6 @@ const navLinks = [
   { label: "Courses", href: "/#courses" },
   { label: "Results", href: "/#results" },
   { label: "Free Tools", href: "/#tools" },
-  { label: "Contact", href: "/#contact" },
 ];
 
 const Navbar = () => {
