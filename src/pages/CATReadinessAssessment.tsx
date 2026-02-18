@@ -662,7 +662,7 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
   onRecalculate: (target: string) => void;
 }) => {
   const navigate = useNavigate();
-  const { openModal } = useLeadModal();
+  const { openPhoneModal } = useLeadModal();
   const [showCallDialog, setShowCallDialog] = useState(false);
   const [isGated, setIsGated] = useState(() => {
     const phone = localStorage.getItem("percentilers_phone");
@@ -693,7 +693,7 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
       await markLeadHot(phone);
       setShowCallDialog(true);
     } else {
-      openModal("readiness_strategy_call", () => {
+      openPhoneModal("readiness_strategy_call", () => {
         const newPhone = localStorage.getItem("percentilers_phone") || "";
         if (newPhone) markLeadHot(newPhone);
         setShowCallDialog(true);

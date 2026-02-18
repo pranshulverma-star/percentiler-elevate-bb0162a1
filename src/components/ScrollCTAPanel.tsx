@@ -5,7 +5,7 @@ import { useLeadModal } from "@/components/LeadModalProvider";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ScrollCTAPanel = () => {
-  const { openModal } = useLeadModal();
+  const { openContentGate } = useLeadModal();
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [hasClickedCTA, setHasClickedCTA] = useState(false);
@@ -65,7 +65,7 @@ const ScrollCTAPanel = () => {
                 const el = document.getElementById("tools");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               } else {
-                openModal("scroll_cta_study_plan", () => {
+                openContentGate("scroll_cta_study_plan", () => {
                   dismiss();
                   const el = document.getElementById("tools");
                   if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -83,7 +83,7 @@ const ScrollCTAPanel = () => {
               </Button>
             ) : (
               <Button size="sm" variant="outline" onClick={() => {
-                openModal("scroll_cta_masterclass", () => {
+                openContentGate("scroll_cta_masterclass", () => {
                   dismiss();
                   window.location.href = "/masterclass";
                 });

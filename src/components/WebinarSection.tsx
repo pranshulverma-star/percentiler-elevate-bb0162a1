@@ -13,7 +13,7 @@ const bullets = [
 ];
 
 const WebinarSection = () => {
-  const { openModal } = useLeadModal();
+  const { openContentGate } = useLeadModal();
 
   return (
   <section id="masterclass" className="py-10 md:py-16 bg-secondary relative overflow-hidden">
@@ -62,7 +62,7 @@ const WebinarSection = () => {
         transition={{ delay: 0.3 }}
       >
         <Button size="lg" className="animate-pulse-glow text-base px-8 py-6 rounded-xl" onClick={() => {
-          openModal("webinar_section_masterclass", () => {
+          openContentGate("webinar_section_masterclass", () => {
             window.location.href = "/masterclass";
           });
         }}>

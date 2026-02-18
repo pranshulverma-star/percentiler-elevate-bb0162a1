@@ -62,7 +62,7 @@ const item = {
 };
 
 const HeroSection = () => {
-  const { openModal } = useLeadModal();
+  const { openContentGate } = useLeadModal();
   const [plannerOpen, setPlannerOpen] = useState(false);
 
   return (
@@ -89,7 +89,7 @@ const HeroSection = () => {
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
             <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" onClick={() => {
-              openModal("hero_masterclass", () => {
+              openContentGate("hero_masterclass", () => {
                 window.location.href = "/masterclass";
               });
             }}>

@@ -18,7 +18,7 @@ const navLinks = [
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showCallDialog, setShowCallDialog] = useState(false);
-  const { openModal } = useLeadModal();
+  const { openPhoneModal } = useLeadModal();
   const [scrollProgress, setScrollProgress] = useState(0);
 
   const onScroll = useCallback(() => {
@@ -49,7 +49,7 @@ const Navbar = () => {
       await markLeadHot(phone);
       setShowCallDialog(true);
     } else {
-      openModal("navbar_strategy_call", () => {
+      openPhoneModal("navbar_strategy_call", () => {
         const newPhone = localStorage.getItem("percentilers_phone") || "";
         if (newPhone) markLeadHot(newPhone);
         setShowCallDialog(true);

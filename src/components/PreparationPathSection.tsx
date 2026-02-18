@@ -35,7 +35,7 @@ const recommendations: Record<Level, { headline: string; text: string; tag: stri
 const PreparationPathSection = () => {
   const [selected, setSelected] = useState<Level | null>(null);
   const [showCallDialog, setShowCallDialog] = useState(false);
-  const { openModal } = useLeadModal();
+  const { openContentGate, openPhoneModal } = useLeadModal();
 
   const markLeadHot = async (phone: string) => {
     try {
@@ -49,15 +49,15 @@ const PreparationPathSection = () => {
 
   const handlePrimaryCTA = (level: Level) => {
     if (level === "beginner") {
-      openModal("homepage_selector_masterclass", () => {
+      openContentGate("homepage_selector_masterclass", () => {
         window.location.href = "/masterclass";
       });
     } else if (level === "repeater") {
-      openModal("homepage_selector_readiness", () => {
+      openContentGate("homepage_selector_readiness", () => {
         window.location.href = "/free-cat-readiness-assessment";
       });
     } else {
-      openModal("homepage_selector_evaluate", () => {
+      openContentGate("homepage_selector_evaluate", () => {
         const section = document.getElementById("profile-evaluator");
         if (section) section.scrollIntoView({ behavior: "smooth" });
       });
@@ -70,7 +70,7 @@ const PreparationPathSection = () => {
       await markLeadHot(phone);
       setShowCallDialog(true);
     } else {
-      openModal("homepage_selector_call", () => {
+      openPhoneModal("homepage_selector_call", () => {
         const newPhone = localStorage.getItem("percentilers_phone") || "";
         if (newPhone) markLeadHot(newPhone);
         setShowCallDialog(true);

@@ -59,7 +59,7 @@ const courses = [
 
 const FreeCourses = () => {
   const [showCallDialog, setShowCallDialog] = useState(false);
-  const { openModal } = useLeadModal();
+  const { openPhoneModal } = useLeadModal();
 
   const markLeadHot = async (phone: string) => {
     try {
@@ -77,7 +77,7 @@ const FreeCourses = () => {
       await markLeadHot(phone);
       setShowCallDialog(true);
     } else {
-      openModal("free_courses_strategy_call", () => {
+      openPhoneModal("free_courses_strategy_call", () => {
         const newPhone = localStorage.getItem("percentilers_phone") || "";
         if (newPhone) markLeadHot(newPhone);
         setShowCallDialog(true);
