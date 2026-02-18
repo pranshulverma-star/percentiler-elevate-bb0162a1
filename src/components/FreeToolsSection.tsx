@@ -5,9 +5,9 @@ import { motion } from "framer-motion";
 import { useLeadModal } from "@/components/LeadModalProvider";
 
 const tools = [
-  { icon: CalendarDays, name: "Daily Study Planner", benefit: "Get a day-wise structured preparation roadmap tailored to your target CAT year.", href: "/cat-daily-study-planner", isLink: true },
-  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Enroll for free in our foundation course and start your CAT preparation journey.", href: "#", isLink: false },
-  { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Get a structured performance report in 15 minutes — completely free.", href: "/free-cat-readiness-assessment", isLink: true },
+  { icon: CalendarDays, name: "Daily Study Planner", benefit: "Build a day-wise CAT preparation roadmap aligned with the latest syllabus and your target percentile.", href: "/cat-daily-study-planner", isLink: true },
+  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Start your CAT preparation with concept clarity in QA, VARC, and LRDI — completely free.", href: "#", isLink: false },
+  { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Evaluate your current performance level and identify gaps before your next mock test.", href: "/free-cat-readiness-assessment", isLink: true },
 ];
 
 const FreeToolsSection = () => {
@@ -24,7 +24,7 @@ const FreeToolsSection = () => {
         >
           <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Free Resources</span>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-            Extra Support for <span className="text-primary">Serious Aspirants</span>
+            Extra Support for <span className="text-primary">Serious CAT Aspirants</span>
           </h2>
         </motion.div>
 

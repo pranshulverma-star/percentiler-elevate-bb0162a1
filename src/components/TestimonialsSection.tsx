@@ -49,6 +49,7 @@ const TestimonialsSection = () => (
         <h2 className="text-3xl md:text-4xl font-bold text-foreground">
           What Our Students <span className="text-primary">Say</span>
         </h2>
+        <p className="text-muted-foreground max-w-lg mx-auto">Real experiences from aspirants who improved their CAT percentile with structured strategy and mentorship.</p>
       </motion.div>
 
       {/* Text testimonials */}

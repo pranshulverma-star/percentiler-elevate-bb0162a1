@@ -41,7 +41,7 @@ const ResultsSection = () => (
         <h2 className="text-3xl md:text-4xl font-bold text-foreground">
           Our Students Don't Guess. They <span className="text-primary">Improve.</span>
         </h2>
-        <p className="text-muted-foreground max-w-lg mx-auto">Real results from real aspirants who followed the system.</p>
+        <p className="text-muted-foreground max-w-lg mx-auto">Consistent percentile growth through structured CAT preparation, smart mock analysis, and disciplined execution.</p>
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
