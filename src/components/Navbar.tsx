@@ -6,10 +6,11 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import ThemeToggle from "@/components/ThemeToggle";
 import { motion, useSpring } from "framer-motion";
+import { Link } from "react-router-dom";
 import logoImg from "@/assets/logo-percentilers.png";
 
 const navLinks = [
-  { label: "Home", href: "/#" },
+  { label: "Home", href: "/" },
   { label: "Courses", href: "/#courses" },
   { label: "Results", href: "/#results" },
   { label: "Free Tools", href: "/#tools" },
@@ -63,9 +64,9 @@ const Navbar = () => {
           </a>
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((l) => (
-              <a key={l.label} href={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <Link key={l.label} to={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
                 {l.label}
-              </a>
+              </Link>
             ))}
             <Button onClick={handleStrategyCall}>Book Free Strategy Call</Button>
             <ThemeToggle />
@@ -82,9 +83,9 @@ const Navbar = () => {
         {open && (
           <nav className="md:hidden border-t border-border bg-background px-4 pb-4 space-y-3">
             {navLinks.map((l) => (
-              <a key={l.label} href={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
+              <Link key={l.label} to={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
                 {l.label}
-              </a>
+              </Link>
             ))}
             <Button className="w-full" onClick={() => { setOpen(false); handleStrategyCall(); }}>Book Free Strategy Call</Button>
             <div className="flex justify-center pt-1"><ThemeToggle /></div>
