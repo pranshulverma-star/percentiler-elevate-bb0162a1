@@ -1,34 +1,29 @@
 
 
-## Fix: Fetch Missing Name from Database for Returning Users
+## Fix: Subpages Opening at Bottom of Page
 
 ### Problem
 
-When a returning user's phone number is in `localStorage` but their name is not (due to the recent key consolidation), the lead modal still opens and asks for their name -- even though it already exists in the `leads` table.
+When navigating to subpages (e.g., `/masterclass`, `/courses/cat-omet`), the page opens at the current scroll position instead of the top. This happens because `ScrollToHash` in `App.tsx` only watches the `hash` value. When navigating between routes that both have no hash, the `useEffect` doesn't re-trigger since its dependency (`hash`) hasn't changed.
 
-### Solution
+### Fix
 
-Update `LeadModalProvider.tsx` so that when `openModal` is called and the phone exists but the name does not, the system queries the `leads` table to retrieve the name, caches it in `localStorage`, and skips the modal.
+**File: `src/App.tsx`** -- Update `ScrollToHash` to also depend on `pathname`:
 
-### Technical Details
+```typescript
+function ScrollToHash() {
+  const { hash, pathname } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [hash, pathname]);
+  return null;
+}
+```
 
-**File: `src/components/LeadModalProvider.tsx`**
-
-1. Make `openModal` an `async` function.
-2. After reading `percentilers_phone` and `percentilers_name` from `localStorage`, if phone is valid but name is empty, query the `leads` table:
-   ```typescript
-   const { data } = await supabase
-     .from("leads")
-     .select("name")
-     .eq("phone_number", storedPhone)
-     .maybeSingle();
-   if (data?.name) {
-     storedName = data.name;
-     localStorage.setItem("percentilers_name", storedName);
-   }
-   ```
-3. Keep the existing skip logic (`if phone && name, skip modal`) -- now it will also work for users whose name was fetched from the database.
-4. Add a final fallback: if the phone exists but name is still not found anywhere, skip the modal anyway since the phone alone identifies the user.
-
-This is a single-file, backward-compatible change. No database or schema changes are needed.
-
+Adding `pathname` to the dependency array ensures `window.scrollTo(0, 0)` fires on every route change, not just hash changes. Single-line change, no side effects.
