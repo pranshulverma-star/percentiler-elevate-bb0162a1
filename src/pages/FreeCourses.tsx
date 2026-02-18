@@ -124,7 +124,7 @@ const FreeCourses = () => {
       <Navbar />
       <main className="pt-20">
         {/* Hero Section */}
-        <section className="relative py-10 md:py-16 overflow-hidden">
+        <section className="relative py-4 md:py-8 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-20 left-1/4 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
             <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-primary/3 rounded-full blur-3xl" />
