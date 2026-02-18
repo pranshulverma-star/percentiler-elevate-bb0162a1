@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import mentorImg from "@/assets/founder-pranshul.webp";
 
 const FounderSection = () => (
-  <section className="py-14 md:py-28 bg-secondary/50 relative overflow-hidden">
+  <section className="py-10 md:py-16 bg-secondary/50 relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-primary/[0.03] blur-3xl" />
     </div>

@@ -45,7 +45,7 @@ const Counter = ({ value, suffix, decimal }: { value: number; suffix: string; de
 };
 
 const TrustStrip = () => (
-  <section className="py-10 md:py-20 bg-background relative">
+  <section className="py-8 md:py-14 bg-background relative">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-primary/[0.03] blur-3xl" />
     </div>

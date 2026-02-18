@@ -10,7 +10,7 @@ const points = [
 ];
 
 const WhyDifferentSection = () => (
-  <section className="py-14 md:py-24 bg-secondary/30 relative overflow-hidden">
+  <section className="py-10 md:py-16 bg-secondary/30 relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-0 left-1/3 w-[400px] h-[400px] rounded-full bg-primary/[0.03] blur-3xl" />
     </div>

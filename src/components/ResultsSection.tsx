@@ -24,7 +24,7 @@ const results = [
 ];
 
 const ResultsSection = () => (
-  <section id="results" className="py-14 md:py-28 bg-secondary/30 relative overflow-hidden">
+  <section id="results" className="py-10 md:py-16 bg-secondary/30 relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-0 left-0 w-96 h-96 rounded-full bg-primary/[0.03] blur-3xl" />
     </div>
