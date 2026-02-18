@@ -4,7 +4,7 @@ import { Users, Award, Star, Clock } from "lucide-react";
 
 const stats = [
   { value: 2000, suffix: "+", label: "95+ Percentilers Produced", icon: Award },
-  { value: 5000, suffix: "+", label: "Students Trained for CAT & OMETs", icon: Users },
+  { value: 10000, suffix: "+", label: "Students Trained for CAT & OMETs", icon: Users },
   { value: 4.8, suffix: "★", label: "Average Student Rating", decimal: true, icon: Star },
   { value: 8, suffix: "+", label: "Years of CAT Coaching Experience", icon: Clock },
 ];
