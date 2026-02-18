@@ -41,6 +41,22 @@ const MasterclassWatch = () => {
   const lastMilestone = useRef(0);
   const hasResumed = useRef(false);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      "name": "CAT Demystified Masterclass",
+      "description": "Recorded CAT preparation masterclass explaining strategy, syllabus breakdown and mock approach.",
+      "thumbnailUrl": "https://percentilers.in/thumbnail.jpg",
+      "uploadDate": "2025-01-01",
+      "publisher": { "@type": "Organization", "name": "Percentilers" }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
+
   // Redirect if no phone
   useEffect(() => {
     if (!phone) navigate("/masterclass");
