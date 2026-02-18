@@ -132,6 +132,23 @@ const Masterclass = () => {
     if (phone) navigate("/masterclass/watch", { replace: true });
   }, [navigate]);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": "CAT Demystified Masterclass",
+      "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "location": { "@type": "VirtualLocation", "url": "https://percentilers.in/masterclass" },
+      "organizer": { "@type": "Organization", "name": "Percentilers" },
+      "description": "Free CAT masterclass covering preparation strategy, profile building, exam roadmap and MBA entrance guidance."
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navbar */}
