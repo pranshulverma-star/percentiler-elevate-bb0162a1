@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, TrendingUp, GraduationCap } from "lucide-react";
+import { ArrowRight, TrendingUp, GraduationCap, Target } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -73,31 +73,29 @@ const HeroSection = () => {
         >
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5">
             <TrendingUp className="h-4 w-4 text-primary" />
-            <span className="text-xs font-semibold text-primary">CAT 2026 Preparation — Structured Roadmap to IIMs</span>
+            <span className="text-xs font-semibold text-primary">2,000+ students enrolled this cycle</span>
           </div>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-foreground">
-            CAT Preparation 2026 That Turns Effort Into <span className="text-primary">95+ Percentile Results</span>
+            From Preparation to 95+ Percentile — <span className="text-primary">With Structure.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-lg">
-            India's most structured, psychology-backed CAT coaching system for serious MBA aspirants. If you are preparing for CAT 2026, struggling with consistency, mock scores, or time management — this is your structured roadmap to IIMs.
+            Proven CAT coaching + strategic planning tools to maximize your score.
           </p>
-          <div className="flex flex-wrap gap-2 text-xs text-muted-foreground">
-            <span className="inline-flex items-center gap-1 bg-secondary px-3 py-1 rounded-full">🎯 Undergraduates & Working Professionals</span>
-            <span className="inline-flex items-center gap-1 bg-secondary px-3 py-1 rounded-full">🎯 Tier-1 & Tier-2 City Aspirants</span>
-            <span className="inline-flex items-center gap-1 bg-secondary px-3 py-1 rounded-full">🎯 Percentile Certainty</span>
-          </div>
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => {
+              openModal("hero_evaluate_profile", () => {
+                const section = document.getElementById("profile-evaluator");
+                if (section) section.scrollIntoView({ behavior: "smooth" });
+              });
+            }}>
+              <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
+            </Button>
+            <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" onClick={() => {
               openModal("hero_masterclass", () => {
                 window.location.href = "/masterclass";
               });
             }}>
-              Watch Free CAT Masterclass <ArrowRight className="ml-1 h-5 w-5" />
-            </Button>
-            <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" asChild>
-              <a href="/cat-daily-study-planner">
-                Try Free CAT Study Planner
-              </a>
+              Watch Free Masterclass
             </Button>
           </div>
         </motion.div>
