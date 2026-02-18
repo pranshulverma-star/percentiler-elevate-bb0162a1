@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Target } from "lucide-react";
 import { motion } from "framer-motion";
@@ -6,13 +6,6 @@ import PercentilePlannerModal from "./PercentilePlannerModal";
 
 export default function PercentilePlannerSection() {
   const [open, setOpen] = useState(false);
-
-  // Listen for custom event to auto-open modal (e.g. from hero CTA)
-  useEffect(() => {
-    const handler = () => setOpen(true);
-    window.addEventListener("open-profile-evaluator", handler);
-    return () => window.removeEventListener("open-profile-evaluator", handler);
-  }, []);
 
   return (
     <section id="profile-evaluator" className="w-full bg-background py-10 md:py-16 relative overflow-hidden">
