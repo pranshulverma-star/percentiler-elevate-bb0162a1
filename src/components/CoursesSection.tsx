@@ -56,7 +56,12 @@ const CoursesSection = () => (
               transition={{ duration: 0.4, delay: i * 0.15 }}
               whileHover={{ y: -8 }}
             >
-              <Card className="p-6 flex flex-col justify-between h-full hover:shadow-xl transition-all duration-300 group relative overflow-hidden">
+              <Card className="p-6 flex flex-col justify-between h-full hover:shadow-xl transition-all duration-300 group relative overflow-hidden bg-card/80 backdrop-blur-sm">
+                {i === 0 && (
+                  <div className="absolute top-3 -right-8 bg-gradient-to-r from-primary to-amber-500 text-primary-foreground text-[9px] font-bold tracking-wider uppercase px-10 py-1 rotate-45 shadow-md z-10">
+                    Most Popular
+                  </div>
+                )}
                 <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div>
                   <div className="flex items-center justify-between mb-4">

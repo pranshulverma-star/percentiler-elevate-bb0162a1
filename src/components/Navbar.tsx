@@ -56,18 +56,18 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-b border-border">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl shadow-[0_1px_3px_0_rgb(0,0,0,0.04)]">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
           <a href="#" className="flex items-center">
             <img src={logoImg} alt="Percentilers - Prepare, Persevere, Perform" className="h-10 md:h-12 w-auto dark:brightness-0 dark:invert" />
           </a>
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((l) => (
-              <Link key={l.label} to={l.href} className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+              <Link key={l.label} to={l.href} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
                 {l.label}
               </Link>
             ))}
-            <Button onClick={handleStrategyCall}>Book Free Strategy Call</Button>
+            <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%]">Book Free Strategy Call</Button>
             <ThemeToggle />
           </nav>
           <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">

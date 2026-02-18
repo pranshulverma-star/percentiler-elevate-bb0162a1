@@ -20,10 +20,10 @@ const FinalCTASection = () => {
     }
   };
 
-  const handleStrategyCall = async () => {
+  const handleStrategyCall = () => {
     const phone = localStorage.getItem("percentilers_phone") || "";
     if (phone) {
-      await markLeadHot(phone, "final_cta_strategy_call");
+      markLeadHot(phone, "final_cta_strategy_call");
       setShowCallDialog(true);
     } else {
       openPhoneModal("final_cta_strategy_call", () => {
@@ -40,6 +40,8 @@ const FinalCTASection = () => {
         <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-primary/15 blur-3xl" />
         <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full bg-primary/10 blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-3xl" />
+        {/* Dot grid pattern */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, hsl(0 0% 100%) 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
       </div>
 
       <div className="container mx-auto px-4 md:px-6 text-center relative z-10">
@@ -61,7 +63,7 @@ const FinalCTASection = () => {
             <span className="text-xs font-semibold text-primary">Start Your Journey Today</span>
           </motion.div>
 
-          <h2 className="text-2xl md:text-5xl font-bold text-background leading-tight">
+          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-background leading-tight">
             Ready to Improve Your<br /><span className="text-primary">Percentile?</span>
           </h2>
           <p className="text-background/60 text-lg max-w-md mx-auto">

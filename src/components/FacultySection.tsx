@@ -59,7 +59,7 @@ const FacultySection = () => (
             whileHover={{ y: -4 }}
           >
             <div className="relative mx-auto w-fit">
-              <Avatar className="h-20 w-20 ring-4 ring-transparent group-hover:ring-primary/20 transition-all duration-300">
+              <Avatar className="h-20 w-20 md:h-24 md:w-24 ring-4 ring-transparent group-hover:ring-primary/50 transition-all duration-300">
                 <AvatarFallback className="text-lg font-bold bg-secondary text-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
                   {f.initials}
                 </AvatarFallback>

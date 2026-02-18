@@ -66,7 +66,9 @@ const HeroSection = () => {
   const [plannerOpen, setPlannerOpen] = useState(false);
 
   return (
-    <section className="pt-20 pb-10 md:pt-24 md:pb-16 bg-background overflow-hidden">
+    <section className="pt-20 pb-10 md:pt-24 md:pb-16 bg-background overflow-hidden relative">
+      {/* Decorative gradient orb */}
+      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/[0.04] blur-[100px] pointer-events-none" />
       <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         <motion.div
           className="space-y-6"
@@ -74,11 +76,11 @@ const HeroSection = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 animate-shimmer bg-gradient-to-r from-primary/5 via-primary/15 to-primary/5 bg-[length:200%_100%]">
             <TrendingUp className="h-4 w-4 text-primary" />
             <span className="text-xs font-semibold text-primary">2,000+ students enrolled this cycle</span>
           </div>
-          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-foreground">
+          <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight tracking-[-0.02em] text-foreground">
             From CAT Preparation to 95+ Percentile : <span className="text-primary">With Structure.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-lg">
@@ -101,7 +103,7 @@ const HeroSection = () => {
         <motion.div className="grid grid-cols-2 gap-3 md:gap-4" variants={container} initial="hidden" animate="show">
           {scorecards.map((s, i) => (
             <motion.a href={s.linkedin} target="_blank" rel="noopener noreferrer" key={s.name} variants={item} whileHover={{ y: -6, scale: 1.03 }} transition={{ type: "spring", stiffness: 300, damping: 20 }}>
-              <Card className="p-3 md:p-5 space-y-2 md:space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-pointer group relative overflow-hidden">
+              <Card className="p-3 md:p-5 space-y-2 md:space-y-3 hover:shadow-xl transition-shadow duration-300 cursor-pointer group relative overflow-hidden bg-card/80 backdrop-blur-sm border-border/40">
                 <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full" />
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10 md:h-14 md:w-14 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">

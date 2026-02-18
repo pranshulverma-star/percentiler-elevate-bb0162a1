@@ -34,12 +34,12 @@ const FeaturedStrip = () => (
         {[...logos, ...logos].map((logo, i) => (
           <div
             key={`${logo.name}-${i}`}
-            className="flex items-center gap-2.5 shrink-0 select-none opacity-50 grayscale transition-all duration-300 group-hover:opacity-70 group-hover:grayscale-0"
+            className="flex items-center gap-2.5 shrink-0 select-none opacity-60 grayscale transition-all duration-300 group-hover:opacity-80 group-hover:grayscale-0"
           >
             <img
               src={logo.src}
               alt={logo.name}
-              className="h-6 w-6 md:h-7 md:w-7 object-contain rounded-sm"
+              className="h-7 w-7 md:h-9 md:w-9 object-contain rounded-sm"
             />
             <span className="text-sm md:text-base font-semibold tracking-wide text-muted-foreground whitespace-nowrap">
               {logo.name}

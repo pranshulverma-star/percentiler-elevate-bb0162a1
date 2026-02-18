@@ -31,10 +31,10 @@ const FounderSection = () => (
             <img
               src={mentorImg}
               alt="Pranshul Verma - 7x CAT 100%iler"
-              className="relative w-56 h-56 md:w-64 md:h-64 object-cover object-top rounded-2xl shadow-xl grayscale hover:grayscale-0 transition-all duration-700 ring-4 ring-background"
+              className="relative w-56 h-56 md:w-64 md:h-64 object-cover object-top rounded-2xl shadow-xl transition-all duration-700 ring-4 ring-primary/20 ring-offset-4 ring-offset-background"
             />
             <motion.div
-              className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-bold shadow-lg"
+              className="absolute -bottom-4 -right-4 bg-gradient-to-r from-primary to-amber-500 text-primary-foreground px-4 py-2 rounded-xl text-sm font-bold shadow-lg"
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
