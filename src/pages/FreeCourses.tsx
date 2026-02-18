@@ -1,10 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, BookOpen, Brain, Calculator, FileText, Sparkles, Clock, Monitor, Users, Phone, Star } from "lucide-react";
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useLeadModal } from "@/components/LeadModalProvider";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 
 const courses = [
   {
@@ -55,6 +58,32 @@ const courses = [
 ];
 
 const FreeCourses = () => {
+  const [showCallDialog, setShowCallDialog] = useState(false);
+  const { openModal } = useLeadModal();
+
+  const markLeadHot = async (phone: string) => {
+    try {
+      await supabase.functions.invoke("mark-lead-hot", {
+        body: { phone_number: phone, source: "free_courses_strategy_call", name: localStorage.getItem("percentilers_name") || null },
+      });
+    } catch (e) {
+      console.error("Failed to mark lead hot", e);
+    }
+  };
+
+  const handleStrategyCall = async () => {
+    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    if (phone) {
+      await markLeadHot(phone);
+      setShowCallDialog(true);
+    } else {
+      openModal("free_courses_strategy_call", () => {
+        const newPhone = localStorage.getItem("percentilers_phone") || "";
+        if (newPhone) markLeadHot(newPhone);
+        setShowCallDialog(true);
+      });
+    }
+  };
   useEffect(() => {
     document.title = "Free CAT 2026 Courses | QA, VARC, LRDI | Percentilers";
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -148,12 +177,10 @@ const FreeCourses = () => {
                   <Button
                     size="lg"
                     className="w-full text-base h-12 rounded-xl font-semibold hover:shadow-[0_10px_25px_rgba(255,106,0,0.3)] transition-all duration-300"
-                    asChild
+                    onClick={handleStrategyCall}
                   >
-                    <a href="/cat-daily-study-planner">
-                      <Phone className="mr-2 h-4 w-4" />
-                      Book Free Strategy Call
-                    </a>
+                    <Phone className="mr-2 h-4 w-4" />
+                    Book Free Strategy Call
                   </Button>
                   <p className="text-xs text-muted-foreground text-center mt-3">No spam. No fees. Just guidance.</p>
                 </div>
@@ -248,6 +275,32 @@ const FreeCourses = () => {
         </section>
       </main>
       <Footer />
+
+      {/* Call Confirmation Dialog */}
+      <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
+        <DialogContent className="max-w-sm text-center">
+          <DialogTitle className="sr-only">Book a Call</DialogTitle>
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">
+              <Phone className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground">You're In! 🎉</h3>
+            <p className="text-muted-foreground text-sm">
+              Our counselor will connect with you shortly to discuss the 95%ile Guarantee Batch.
+            </p>
+            <div className="w-full space-y-3 pt-2">
+              <Button size="lg" className="w-full" asChild>
+                <a href="tel:+919911928071">
+                  <Phone className="mr-2 h-4 w-4" /> Call Now — +91 99119 28071
+                </a>
+              </Button>
+              <Button variant="outline" className="w-full" onClick={() => setShowCallDialog(false)}>
+                I'll wait for the call
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
