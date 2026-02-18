@@ -38,7 +38,7 @@ const Counter = ({ value, suffix, decimal }: { value: number; suffix: string; de
   }, [value]);
 
   return (
-    <div ref={ref} className="text-3xl md:text-5xl font-bold text-foreground">
+    <div ref={ref} className="text-3xl md:text-5xl font-extrabold text-foreground border-b-2 border-primary/20 pb-1 inline-block">
       {decimal ? count.toFixed(1) : Math.floor(count)}<span className="text-primary">{suffix}</span>
     </div>
   );
@@ -61,7 +61,7 @@ const TrustStrip = () => (
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: i * 0.1 }}
           >
-            <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary mb-2">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-2">
               <Icon className="h-5 w-5" />
             </div>
             <Counter value={s.value} suffix={s.suffix} decimal={s.decimal} />

@@ -31,7 +31,7 @@ const WhyDifferentSection = () => (
         </p>
       </motion.div>
 
-      <ul className="space-y-4 max-w-md mx-auto mb-10">
+      <ul className="space-y-4 max-w-md mx-auto mb-10 border-l-2 border-primary/20 pl-4">
         {points.map((point, i) => (
           <motion.li
             key={point}
@@ -41,7 +41,9 @@ const WhyDifferentSection = () => (
             viewport={{ once: true }}
             transition={{ duration: 0.3, delay: i * 0.08 }}
           >
-            <CheckCircle className="h-5 w-5 text-primary shrink-0" />
+            <div className="bg-primary/10 rounded-full p-1 shrink-0">
+              <CheckCircle className="h-4 w-4 text-primary" />
+            </div>
             <span className="text-foreground font-medium">{point}</span>
           </motion.li>
         ))}

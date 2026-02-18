@@ -82,9 +82,52 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   html, body {
     @apply bg-background text-foreground;
     font-family: 'DM Sans', sans-serif;
     overflow-x: hidden;
+  }
+
+  /* Selection colors */
+  ::selection {
+    background: hsl(25 100% 50% / 0.2);
+    color: hsl(0 0% 8%);
+  }
+  .dark ::selection {
+    background: hsl(25 100% 50% / 0.3);
+    color: hsl(0 0% 95%);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(0 0% 75%);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(25 100% 50% / 0.6);
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: hsl(0 0% 30%);
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: hsl(25 100% 50% / 0.6);
+  }
+}
+
+/* Shimmer animation utility */
+@layer utilities {
+  .animate-shimmer {
+    background-size: 200% 100%;
+    animation: shimmer 2.5s ease-in-out infinite;
   }
 }

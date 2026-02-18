@@ -64,11 +64,11 @@ const TestimonialsSection = () => (
             whileHover={{ y: -4 }}
           >
             <Card className="p-6 flex flex-col justify-between h-full hover:shadow-lg transition-all duration-300 relative overflow-hidden group">
-              <Quote className="absolute top-4 right-4 h-8 w-8 text-primary/10 group-hover:text-primary/20 transition-colors" />
+              <Quote className="absolute top-4 right-4 h-10 w-10 text-primary/10 group-hover:text-primary/20 transition-colors" />
               <div>
                 <div className="flex gap-0.5 mb-3">
                   {Array.from({ length: t.rating }).map((_, j) => (
-                    <Star key={j} className="h-4 w-4 fill-primary text-primary" />
+                    <Star key={j} className="h-4 w-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
                 <p className="font-bold text-foreground text-lg mb-3">"{t.highlight}"</p>
@@ -93,7 +93,8 @@ const TestimonialsSection = () => (
         </div>
       </motion.div>
 
-      <div className="columns-2 md:columns-3 gap-4 max-w-5xl mx-auto">
+      <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-4 md:p-6 border border-border/30 max-w-5xl mx-auto">
+      <div className="columns-2 md:columns-3 gap-4">
         {whatsappScreenshots.map((src, i) => (
           <motion.div
             key={i}
@@ -113,6 +114,7 @@ const TestimonialsSection = () => (
             </div>
           </motion.div>
         ))}
+      </div>
       </div>
     </div>
   </section>

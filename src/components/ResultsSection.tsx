@@ -54,7 +54,7 @@ const ResultsSection = () => (
             transition={{ duration: 0.4, delay: i * 0.08 }}
             whileHover={{ y: -6, scale: 1.02 }}
           >
-            <Card className="p-6 hover:shadow-xl transition-all duration-300 cursor-default group relative overflow-hidden h-full bg-card">
+            <Card className="p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default group relative overflow-hidden h-full bg-card/80 backdrop-blur-sm border-border/30">
               <div className="absolute top-0 right-0 w-20 h-20 bg-primary/5 rounded-bl-full" />
 
               <div className="flex items-center gap-3 mb-4">
@@ -72,7 +72,7 @@ const ResultsSection = () => (
               </div>
 
               <div className="flex items-baseline gap-1.5 mb-2">
-                <span className="text-4xl font-bold text-primary group-hover:scale-105 transition-transform origin-left inline-block">
+                <span className="text-4xl font-bold bg-gradient-to-r from-primary to-amber-500 bg-clip-text text-transparent group-hover:scale-105 transition-transform origin-left inline-block">
                   {r.percentile}
                 </span>
                 <span className="text-sm font-medium text-muted-foreground">%ile</span>
