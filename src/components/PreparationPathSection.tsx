@@ -106,10 +106,10 @@ const PreparationPathSection = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.3 }}
                   className={`w-full group relative flex items-center gap-3 px-5 py-4 rounded-2xl text-sm font-medium border-2 transition-all duration-300 cursor-pointer text-left ${
-                    isSelected ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20" : "bg-background text-foreground border-border hover:border-primary/40 hover:shadow-md"
+                    isSelected ? "bg-primary/10 text-primary border-primary/40 shadow-lg shadow-primary/10" : "bg-background text-foreground border-border hover:border-primary/40 hover:shadow-md"
                   }`}
                 >
-                  <span className={`flex items-center justify-center w-10 h-10 rounded-xl transition-colors duration-300 shrink-0 ${isSelected ? "bg-primary-foreground/20" : "bg-muted group-hover:bg-primary/10"}`}>
+                  <span className={`flex items-center justify-center w-10 h-10 rounded-xl transition-colors duration-300 shrink-0 ${isSelected ? "bg-primary/20 text-primary" : "bg-muted group-hover:bg-primary/10"}`}>
                     <Icon className="h-5 w-5" />
                   </span>
                   <span className="flex-1">{pill.label}</span>
