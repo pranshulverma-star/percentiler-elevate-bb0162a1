@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, BookOpen, Brain, Calculator, FileText, Sparkles, Clock, Monitor, Users, CheckCircle2 } from "lucide-react";
-import { motion } from "framer-motion";
+import { ArrowRight, Play, BookOpen, Brain, Calculator, FileText, Sparkles, Clock, Monitor, Users, CheckCircle2, ChevronDown } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -102,6 +103,12 @@ const cardVariants = {
 };
 
 const FreeCourses = () => {
+  const isMobile = useIsMobile();
+  const [expandedCard, setExpandedCard] = useState<string | null>(null);
+
+  const toggleCard = (name: string) => {
+    setExpandedCard((prev) => (prev === name ? null : name));
+  };
   useEffect(() => {
     document.title = "Free CAT 2026 Courses | QA, VARC, LRDI | Percentilers";
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -193,80 +200,128 @@ const FreeCourses = () => {
           </div>
         </section>
 
-        {/* Courses Grid */}
-        <section className="pb-20 md:pb-32">
+        {/* Courses */}
+        <section className="pb-12 md:pb-20">
           <div className="container mx-auto px-4 md:px-6">
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-50px" }}
-            >
-              {courses.map((course) => (
-                <motion.div key={course.name} variants={cardVariants}>
-                  <a
-                    href={course.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block h-full"
-                  >
-                    <Card className="p-0 h-full flex flex-col hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group relative overflow-hidden border-border/60 hover:border-primary/30 cursor-pointer">
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                      {/* Tag */}
-                      <div className="absolute top-4 right-4 z-10">
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/10 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
-                          {course.tag}
-                        </span>
-                      </div>
-
-                      <div className="p-6 pb-3 relative z-10">
-                        <motion.div
-                          className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 text-primary mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-400 group-hover:shadow-lg group-hover:shadow-primary/20"
-                          whileHover={{ rotate: [0, -5, 5, 0] }}
-                          transition={{ duration: 0.4 }}
+            {/* Mobile: Collapsible accordion */}
+            {isMobile ? (
+              <div className="flex flex-col gap-3 max-w-lg mx-auto">
+                {courses.map((course, i) => {
+                  const isOpen = expandedCard === course.name;
+                  return (
+                    <motion.div
+                      key={course.name}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: i * 0.06 }}
+                    >
+                      <Card className="overflow-hidden border-border/60 transition-all duration-300"
+                        style={{ borderColor: isOpen ? 'hsl(var(--primary) / 0.3)' : undefined }}
+                      >
+                        {/* Collapsed header — always visible */}
+                        <button
+                          onClick={() => toggleCard(course.name)}
+                          className="w-full flex items-center gap-3 p-4 text-left"
                         >
-                          <course.icon className="h-6 w-6" />
-                        </motion.div>
-
-                        <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors duration-300 pr-16">
-                          {course.name}
-                        </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed mb-4">
-                          {course.description}
-                        </p>
-
-                        {/* Highlights */}
-                        <ul className="space-y-1.5 mb-4">
-                          {course.highlights.map((h) => (
-                            <li key={h} className="flex items-start gap-2 text-xs text-muted-foreground">
-                              <CheckCircle2 className="h-3.5 w-3.5 text-primary/60 mt-0.5 shrink-0" />
-                              <span>{h}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Footer with stats */}
-                      <div className="mt-auto border-t border-border/50 px-6 py-4 relative z-10">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-                            <span>{course.stats.sessions} lessons</span>
-                            <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
-                            <span>{course.stats.duration}</span>
+                          <div className="shrink-0 w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                            <course.icon className="h-5 w-5" />
                           </div>
-                          <div className="flex items-center text-sm font-semibold text-primary opacity-70 group-hover:opacity-100 transition-all duration-300">
-                            Enroll Free
-                            <ArrowRight className="ml-1 h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-bold text-sm text-foreground truncate">{course.name}</h3>
+                            <span className="text-[11px] text-muted-foreground">{course.stats.sessions} lessons · {course.stats.duration}</span>
+                          </div>
+                          <ChevronDown className={`h-4 w-4 text-muted-foreground shrink-0 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+                        </button>
+
+                        {/* Expanded content */}
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
+                              className="overflow-hidden"
+                            >
+                              <div className="px-4 pb-4 pt-0 space-y-3">
+                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                  {course.description}
+                                </p>
+                                <ul className="space-y-1.5">
+                                  {course.highlights.map((h) => (
+                                    <li key={h} className="flex items-start gap-2 text-xs text-muted-foreground">
+                                      <CheckCircle2 className="h-3.5 w-3.5 text-primary/60 mt-0.5 shrink-0" />
+                                      <span>{h}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                                <Button size="sm" className="w-full" asChild>
+                                  <a href={course.url} target="_blank" rel="noopener noreferrer">
+                                    Enroll Free <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                                  </a>
+                                </Button>
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </Card>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            ) : (
+              /* Desktop: Full grid */
+              <motion.div
+                className="grid grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto"
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-50px" }}
+              >
+                {courses.map((course) => (
+                  <motion.div key={course.name} variants={cardVariants}>
+                    <a href={course.url} target="_blank" rel="noopener noreferrer" className="block h-full">
+                      <Card className="p-0 h-full flex flex-col hover:shadow-xl hover:shadow-primary/5 transition-all duration-500 group relative overflow-hidden border-border/60 hover:border-primary/30 cursor-pointer">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute top-4 right-4 z-10">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/10 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">
+                            {course.tag}
+                          </span>
+                        </div>
+                        <div className="p-6 pb-3 relative z-10">
+                          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primary/10 text-primary mb-5 group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/20">
+                            <course.icon className="h-6 w-6" />
+                          </div>
+                          <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-primary transition-colors duration-300 pr-16">{course.name}</h3>
+                          <p className="text-sm text-muted-foreground leading-relaxed mb-4">{course.description}</p>
+                          <ul className="space-y-1.5 mb-4">
+                            {course.highlights.map((h) => (
+                              <li key={h} className="flex items-start gap-2 text-xs text-muted-foreground">
+                                <CheckCircle2 className="h-3.5 w-3.5 text-primary/60 mt-0.5 shrink-0" />
+                                <span>{h}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="mt-auto border-t border-border/50 px-6 py-4 relative z-10">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                              <span>{course.stats.sessions} lessons</span>
+                              <span className="w-1 h-1 rounded-full bg-muted-foreground/30" />
+                              <span>{course.stats.duration}</span>
+                            </div>
+                            <div className="flex items-center text-sm font-semibold text-primary opacity-70 group-hover:opacity-100 transition-all duration-300">
+                              Enroll Free
+                              <ArrowRight className="ml-1 h-3.5 w-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Card>
-                  </a>
-                </motion.div>
-              ))}
-            </motion.div>
+                      </Card>
+                    </a>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
 
             {/* Bottom CTA */}
             <motion.div
