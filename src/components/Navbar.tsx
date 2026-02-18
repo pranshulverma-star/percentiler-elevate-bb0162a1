@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import ThemeToggle from "@/components/ThemeToggle";
-import { motion, useSpring } from "framer-motion";
 import { Link } from "react-router-dom";
 import logoImg from "@/assets/logo-percentilers.png";
 
@@ -20,16 +19,19 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showCallDialog, setShowCallDialog] = useState(false);
   const { openModal } = useLeadModal();
-  const scaleX = useSpring(0, { stiffness: 100, damping: 30 });
+  const [scrollProgress, setScrollProgress] = useState(0);
+
+  const onScroll = useCallback(() => {
+    requestAnimationFrame(() => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      setScrollProgress(docHeight > 0 ? window.scrollY / docHeight : 0);
+    });
+  }, []);
 
   useEffect(() => {
-    const onScroll = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      scaleX.set(docHeight > 0 ? window.scrollY / docHeight : 0);
-    };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, [scaleX]);
+  }, [onScroll]);
 
   const markLeadHot = async (phone: string) => {
     try {
@@ -76,9 +78,9 @@ const Navbar = () => {
           </button>
         </div>
         {/* Progress bar attached to bottom of header */}
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary origin-left"
-          style={{ scaleX }}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary origin-left transition-transform duration-150 ease-out"
+          style={{ transform: `scaleX(${scrollProgress})` }}
         />
         {open && (
           <nav className="md:hidden border-t border-border bg-background px-4 pb-4 space-y-3">
