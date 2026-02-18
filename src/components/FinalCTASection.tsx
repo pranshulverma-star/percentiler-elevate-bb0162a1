@@ -1,10 +1,36 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { ArrowRight, Sparkles, Phone } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLeadModal } from "@/components/LeadModalProvider";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 
 const FinalCTASection = () => {
   const { openModal } = useLeadModal();
+  const [showCallDialog, setShowCallDialog] = useState(false);
+
+  const handleStrategyCall = async () => {
+    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    if (phone) {
+      const { data: existing } = await supabase.from("leads").select("id").eq("phone_number", phone).maybeSingle();
+      if (existing) {
+        await supabase.from("leads").update({ source: "final_cta_strategy_call", current_status: "very_hot" }).eq("phone_number", phone);
+      } else {
+        await supabase.from("leads").insert({ phone_number: phone, name: localStorage.getItem("percentilers_name") || null, source: "final_cta_strategy_call", current_status: "very_hot" });
+      }
+      setShowCallDialog(true);
+    } else {
+      openModal("final_cta_strategy_call", () => {
+        // After lead capture, mark as very_hot and show dialog
+        const newPhone = localStorage.getItem("percentilers_phone") || "";
+        if (newPhone) {
+          supabase.from("leads").update({ current_status: "very_hot" }).eq("phone_number", newPhone);
+        }
+        setShowCallDialog(true);
+      });
+    }
+  };
 
   return (
     <section id="contact" className="py-12 md:py-20 bg-foreground relative overflow-hidden">
@@ -52,13 +78,39 @@ const FinalCTASection = () => {
               size="lg"
               variant="outline"
               className="border-background/30 text-background bg-background/10 hover:bg-background hover:text-foreground text-sm md:text-base px-6 py-5 md:px-8 md:py-6 rounded-xl transition-all duration-300 w-full sm:w-auto"
-              onClick={() => openModal("final_cta_strategy_call")}
+              onClick={handleStrategyCall}
             >
               Book Free Strategy Call
             </Button>
           </div>
         </motion.div>
       </div>
+
+      {/* Call Confirmation Dialog */}
+      <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
+        <DialogContent className="max-w-sm text-center">
+          <DialogTitle className="sr-only">Book a Call</DialogTitle>
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">
+              <Phone className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground">You're In! 🎉</h3>
+            <p className="text-muted-foreground text-sm">
+              Our counselor will connect with you shortly to discuss the 95%ile Guarantee Batch.
+            </p>
+            <div className="w-full space-y-3 pt-2">
+              <Button size="lg" className="w-full" asChild>
+                <a href="tel:+919911928071">
+                  <Phone className="mr-2 h-4 w-4" /> Call Now — +91 99119 28071
+                </a>
+              </Button>
+              <Button variant="outline" className="w-full" onClick={() => setShowCallDialog(false)}>
+                I'll wait for the call
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

@@ -34,6 +34,7 @@ import {
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   generateFullPlan,
   getDaysUntilCAT,
@@ -499,6 +500,7 @@ function TaskCard({ task, completed, loading, onComplete }: { task: DailyTask; c
 
 function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | null; inactiveDays: number }) {
   const [dismissed, setDismissed] = useState(false);
+  const [showCallDialog, setShowCallDialog] = useState(false);
 
   useEffect(() => {
     const dismissedAt = localStorage.getItem("planner_cta_dismissed_at");
@@ -542,6 +544,7 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
   if (!ctaContent || dismissed) return null;
 
   return (
+    <>
     <AnimatePresence>
       <motion.div
         initial={{ y: 100, opacity: 0 }}
@@ -560,11 +563,26 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
             <Button
               size="sm"
               className="shrink-0 rounded-xl font-semibold gap-2 shadow-lg shadow-primary/30"
-              asChild
+              onClick={ctaContent.href === "/masterclass" ? undefined : async (e) => {
+                e.preventDefault();
+                const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+                if (phone) {
+                  const { data: existing } = await supabase.from("leads").select("id").eq("phone_number", phone).maybeSingle();
+                  if (existing) {
+                    await supabase.from("leads").update({ source: "planner_counseling_call", current_status: "very_hot" }).eq("phone_number", phone);
+                  } else {
+                    await supabase.from("leads").insert({ phone_number: phone, name: localStorage.getItem("percentilers_name") || null, source: "planner_counseling_call", current_status: "very_hot" });
+                  }
+                }
+                setShowCallDialog(true);
+              }}
+              asChild={ctaContent.href === "/masterclass"}
             >
-              <a href={ctaContent.href}>
-                {ctaContent.icon} {ctaContent.cta}
-              </a>
+              {ctaContent.href === "/masterclass" ? (
+                <a href={ctaContent.href}>{ctaContent.icon} {ctaContent.cta}</a>
+              ) : (
+                <span>{ctaContent.icon} {ctaContent.cta}</span>
+              )}
             </Button>
             <button
               onClick={handleDismiss}
@@ -577,6 +595,33 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
         </div>
       </motion.div>
     </AnimatePresence>
+
+      {/* Call Confirmation Dialog */}
+      <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
+        <DialogContent className="max-w-sm text-center">
+          <DialogTitle className="sr-only">Book a Call</DialogTitle>
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">
+              <Phone className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground">You're In! 🎉</h3>
+            <p className="text-muted-foreground text-sm">
+              Our counselor will connect with you shortly to discuss the 95%ile Guarantee Batch.
+            </p>
+            <div className="w-full space-y-3 pt-2">
+              <Button size="lg" className="w-full" asChild>
+                <a href="tel:+919911928071">
+                  <Phone className="mr-2 h-4 w-4" /> Call Now — +91 99119 28071
+                </a>
+              </Button>
+              <Button variant="outline" className="w-full" onClick={() => setShowCallDialog(false)}>
+                I'll wait for the call
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }
 
