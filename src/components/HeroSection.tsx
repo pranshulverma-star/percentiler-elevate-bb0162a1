@@ -1,10 +1,12 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, TrendingUp, GraduationCap, Target } from "lucide-react";
 import { motion } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLeadModal } from "@/components/LeadModalProvider";
+import PercentilePlannerModal from "@/components/PercentilePlannerModal";
 import studentAayushiJha from "@/assets/student-aayushi-jha.jpeg";
 import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
 import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
@@ -61,6 +63,7 @@ const item = {
 
 const HeroSection = () => {
   const { openModal } = useLeadModal();
+  const [plannerOpen, setPlannerOpen] = useState(false);
 
   return (
     <section className="pt-20 pb-10 md:pt-24 md:pb-16 bg-background overflow-hidden">
@@ -84,9 +87,7 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => {
               openModal("hero_evaluate_profile", () => {
-                const section = document.getElementById("profile-evaluator");
-                if (section) section.scrollIntoView({ behavior: "smooth" });
-                setTimeout(() => window.dispatchEvent(new Event("open-profile-evaluator")), 500);
+                setPlannerOpen(true);
               });
             }}>
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
@@ -133,6 +134,7 @@ const HeroSection = () => {
           ))}
         </motion.div>
       </div>
+      <PercentilePlannerModal open={plannerOpen} onOpenChange={setPlannerOpen} />
     </section>
   );
 };
