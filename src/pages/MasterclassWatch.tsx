@@ -208,6 +208,8 @@ const MasterclassWatch = () => {
               ref={videoRef}
               className={videoClassName}
               controls
+              playsInline
+              webkit-playsinline=""
               preload="metadata"
               onTimeUpdate={handleTimeUpdate}
               onEnded={handleVideoEnded}
