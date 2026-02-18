@@ -123,7 +123,7 @@ const renderCell = (val: boolean | string) => {
 };
 
 const CATOMETCourses = () => {
-  const { openModal } = useLeadModal();
+  const { openPhoneModal } = useLeadModal();
   const [expandedCourse, setExpandedCourse] = useState<string | null>(null);
 
   useEffect(() => {
@@ -478,7 +478,7 @@ const CATOMETCourses = () => {
               <p className="text-sm md:text-base text-muted-foreground">
                 Our academic counselors can help you pick the perfect program based on your goals, schedule, and budget.
               </p>
-              <Button size="lg" className="w-full sm:w-auto" onClick={() => openModal("courses_talk_to_counselor")}>
+              <Button size="lg" className="w-full sm:w-auto" onClick={() => openPhoneModal("courses_talk_to_counselor")}>
                 Book Free Counseling Call
               </Button>
             </motion.div>

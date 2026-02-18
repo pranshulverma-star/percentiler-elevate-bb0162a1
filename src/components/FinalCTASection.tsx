@@ -7,7 +7,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 
 const FinalCTASection = () => {
-  const { openModal } = useLeadModal();
+  const { openContentGate, openPhoneModal } = useLeadModal();
   const [showCallDialog, setShowCallDialog] = useState(false);
 
   const markLeadHot = async (phone: string, source: string) => {
@@ -26,7 +26,7 @@ const FinalCTASection = () => {
       await markLeadHot(phone, "final_cta_strategy_call");
       setShowCallDialog(true);
     } else {
-      openModal("final_cta_strategy_call", () => {
+      openPhoneModal("final_cta_strategy_call", () => {
         const newPhone = localStorage.getItem("percentilers_phone") || "";
         if (newPhone) markLeadHot(newPhone, "final_cta_strategy_call");
         setShowCallDialog(true);
@@ -70,7 +70,7 @@ const FinalCTASection = () => {
 
           <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4 w-full max-w-md mx-auto">
             <Button size="lg" className="text-sm md:text-base px-6 py-5 md:px-8 md:py-6 rounded-xl animate-pulse-glow w-full sm:w-auto" onClick={() => {
-              openModal("final_cta_masterclass", () => {
+              openContentGate("final_cta_masterclass", () => {
                 window.location.href = "/masterclass";
               });
             }}>

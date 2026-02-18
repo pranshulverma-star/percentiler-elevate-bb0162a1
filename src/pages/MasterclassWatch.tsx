@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { setCookie, getCookie } from "@/lib/cookieUtils";
+import { useAuth } from "@/hooks/useAuth";
+import { useLeadModal } from "@/components/LeadModalProvider";
 
 const learningBullets = [
   "Eligibility Criteria and When to Start",
@@ -27,26 +28,11 @@ const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
 
 const MasterclassWatch = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, loading: authLoading, user } = useAuth();
+  const { openPhoneModal } = useLeadModal();
 
-  // Cookie fallback: restore localStorage from cookie if missing
-  let initialPhone = localStorage.getItem("percentilers_phone");
-  if (!initialPhone) {
-    const cookiePhone = getCookie("percentilers_phone");
-    if (cookiePhone && /^\d{10}$/.test(cookiePhone)) {
-      localStorage.setItem("percentilers_phone", cookiePhone);
-      initialPhone = cookiePhone;
-      const cookieName = getCookie("percentilers_name");
-      if (cookieName) localStorage.setItem("percentilers_name", cookieName);
-    }
-  } else {
-    // Ensure cookie is set if localStorage has it
-    if (!getCookie("percentilers_phone")) {
-      setCookie("percentilers_phone", initialPhone, 365);
-      const n = localStorage.getItem("percentilers_name");
-      if (n) setCookie("percentilers_name", n, 365);
-    }
-  }
-  const phone = initialPhone;
+  // Use email as identifier instead of phone
+  const email = user?.email || null;
 
   const [watchPct, setWatchPct] = useState(0);
   const [maxWatchPct, setMaxWatchPct] = useState(0);
@@ -80,19 +66,25 @@ const MasterclassWatch = () => {
     return () => { document.head.removeChild(script); };
   }, []);
 
-  // Redirect if no phone
+  // Redirect if not authenticated
   useEffect(() => {
-    if (!phone) navigate("/masterclass");
-  }, [phone, navigate]);
+    if (!authLoading && !isAuthenticated) navigate("/masterclass");
+  }, [isAuthenticated, authLoading, navigate]);
 
-  // Check existing engagement on load
+  // Check existing engagement on load — use phone from localStorage for backward compat
+  const phone = localStorage.getItem("percentilers_phone") || "";
+  
   useEffect(() => {
-    if (!phone) return;
+    if (!phone && !email) return;
     const checkEngagement = async () => {
+      // Try phone first for backward compat, then email
+      const identifier = phone || email || "";
+      if (!identifier) return;
+      
       const { data } = await supabase
         .from("webinar_engagement")
         .select("watch_percentage, completed")
-        .eq("phone_number", phone)
+        .eq("phone_number", identifier)
         .maybeSingle();
       if (data) {
         engagementCreated.current = true;
@@ -105,22 +97,21 @@ const MasterclassWatch = () => {
           setWatchPct(data.watch_percentage);
           setMaxWatchPct(data.watch_percentage);
           lastMilestone.current = data.watch_percentage;
-          if (data.watch_percentage > 0 && !data.completed) {
-            setResumePct(data.watch_percentage);
-          }
+          if (data.watch_percentage > 0 && !data.completed) setResumePct(data.watch_percentage);
           if (data.watch_percentage >= 100) setIsFirstWatch(false);
         }
       }
     };
     checkEngagement();
-  }, [phone]);
+  }, [phone, email]);
 
   const updateEngagement = useCallback(async (pct: number, isCompleted = false) => {
-    if (!phone) return;
+    const identifier = phone || email || "";
+    if (!identifier) return;
 
     if (!engagementCreated.current) {
       await supabase.from("webinar_engagement").insert({
-        phone_number: phone,
+        phone_number: identifier,
         watch_percentage: pct,
         completed: isCompleted,
       });
@@ -128,57 +119,36 @@ const MasterclassWatch = () => {
     } else {
       await supabase
         .from("webinar_engagement")
-        .update({
-          watch_percentage: pct,
-          completed: isCompleted,
-          updated_at: new Date().toISOString(),
-        })
-        .eq("phone_number", phone);
+        .update({ watch_percentage: pct, completed: isCompleted, updated_at: new Date().toISOString() })
+        .eq("phone_number", identifier);
     }
-  }, [phone]);
+  }, [phone, email]);
 
-  // Real video progress tracking
   const handleTimeUpdate = useCallback(() => {
     const video = videoRef.current;
     if (!video || !video.duration || completed) return;
-
     const pct = Math.round((video.currentTime / video.duration) * 100);
     setWatchPct(pct);
     setMaxWatchPct(prev => Math.max(prev, pct));
-
-    // On first watch, prevent seeking forward beyond max watched
     if (isFirstWatch && video.currentTime > (video.duration * maxWatchPct / 100) + 2) {
       video.currentTime = video.duration * maxWatchPct / 100;
       return;
     }
-
     const milestones = [20, 40, 60, 80, 90, 100];
     for (const m of milestones) {
       if (pct >= m && lastMilestone.current < m) {
         lastMilestone.current = m;
         if (m === 90) setShowUnlockBanner(true);
-        if (m === 100) {
-          setCompleted(true);
-          setIsFirstWatch(false);
-          updateEngagement(100, true);
-        } else {
-          updateEngagement(m, false);
-        }
+        if (m === 100) { setCompleted(true); setIsFirstWatch(false); updateEngagement(100, true); }
+        else updateEngagement(m, false);
       }
     }
   }, [completed, updateEngagement, isFirstWatch, maxWatchPct]);
 
   const handleVideoEnded = useCallback(() => {
-    if (!completed) {
-      setWatchPct(100);
-      setMaxWatchPct(100);
-      setCompleted(true);
-      setIsFirstWatch(false);
-      updateEngagement(100, true);
-    }
+    if (!completed) { setWatchPct(100); setMaxWatchPct(100); setCompleted(true); setIsFirstWatch(false); updateEngagement(100, true); }
   }, [completed, updateEngagement]);
 
-  // Resume from last position
   const handleLoadedMetadata = useCallback(() => {
     const video = videoRef.current;
     if (!video || hasResumed.current || resumePct <= 0) return;
@@ -186,40 +156,35 @@ const MasterclassWatch = () => {
     video.currentTime = (video.duration * resumePct) / 100;
   }, [resumePct]);
 
-  // Prevent seeking on first watch via CSS
   const videoClassName = `w-full h-full object-contain rounded-2xl${isFirstWatch ? " [&::-webkit-media-controls-timeline]:hidden" : ""}`;
 
   const handleApply = useCallback(async () => {
-    if (!phone) return;
-    setApplyLoading(true);
-    try {
-      await supabase.functions.invoke("mark-lead-hot", {
-        body: { phone_number: phone, source: "masterclass_apply_95", name: localStorage.getItem("percentilers_name") || null },
-      });
-    } catch {
-      // silent fail
-    } finally {
-      setApplyLoading(false);
-      setShowApplyConfirm(true);
-    }
-  }, [phone]);
+    // Collect phone first, then mark hot
+    openPhoneModal("masterclass_apply_95", async () => {
+      setApplyLoading(true);
+      try {
+        const p = localStorage.getItem("percentilers_phone") || "";
+        await supabase.functions.invoke("mark-lead-hot", {
+          body: { phone_number: p, source: "masterclass_apply_95", name: user?.user_metadata?.full_name || null, email: user?.email || null },
+        });
+      } catch { /* silent */ }
+      finally { setApplyLoading(false); setShowApplyConfirm(true); }
+    });
+  }, [openPhoneModal, user]);
 
-  if (!phone) return null;
+  if (authLoading || !isAuthenticated) return null;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navbar */}
       <header className="border-b border-border bg-background/95 backdrop-blur">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
-          <a href="/" className="text-xl font-bold tracking-tight text-foreground">
-            Percentilers
-          </a>
+          <a href="/" className="text-xl font-bold tracking-tight text-foreground">Percentilers</a>
         </div>
       </header>
 
       <main className="py-8 md:py-16">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
-          {/* Video Player Area */}
+          {/* Video Player */}
           <div className="relative aspect-video bg-black rounded-2xl overflow-hidden mb-2">
             {videoLoading && !videoError && (
               <div className="absolute inset-0 flex items-center justify-center z-10 bg-black">
@@ -229,83 +194,34 @@ const MasterclassWatch = () => {
             {videoError && (
               <div className="absolute inset-0 flex flex-col items-center justify-center z-20 bg-black/90 gap-4">
                 <p className="text-white text-sm">Video failed to load.</p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setVideoError(false);
-                    setVideoLoading(true);
-                    videoRef.current?.load();
-                  }}
-                >
+                <Button variant="outline" size="sm" onClick={() => { setVideoError(false); setVideoLoading(true); videoRef.current?.load(); }}>
                   <RefreshCw className="mr-2 h-4 w-4" /> Tap to Retry
                 </Button>
               </div>
             )}
             {showTapToPlay && !videoError && !videoLoading && (
-              <button
-                className="absolute inset-0 flex items-center justify-center z-[15] bg-black/40 cursor-pointer"
-                onClick={() => {
-                  videoRef.current?.play().catch(() => {});
-                  setShowTapToPlay(false);
-                }}
-                aria-label="Tap to play video"
-              >
+              <button className="absolute inset-0 flex items-center justify-center z-[15] bg-black/40 cursor-pointer" onClick={() => { videoRef.current?.play().catch(() => {}); setShowTapToPlay(false); }} aria-label="Tap to play video">
                 <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center">
                   <Play className="h-7 w-7 text-primary-foreground ml-1" />
                 </div>
               </button>
             )}
-            <video
-              id="masterclassVideo"
-              ref={videoRef}
-              className={videoClassName}
-              controls
-              playsInline
-              webkit-playsinline=""
-              x-webkit-airplay="allow"
-              preload="auto"
-              onTimeUpdate={handleTimeUpdate}
-              onEnded={handleVideoEnded}
-              onLoadedMetadata={(e) => {
-                setVideoLoading(false);
-                handleLoadedMetadata();
-              }}
-              onCanPlay={() => setVideoLoading(false)}
-              onPlay={() => setShowTapToPlay(false)}
-              onContextMenu={(e) => e.preventDefault()}
-            >
-              <source
-                src={VIDEO_URL}
-                type="video/mp4"
-                onError={() => {
-                  console.error("Video source failed to load:", VIDEO_URL);
-                  setVideoError(true);
-                  setVideoLoading(false);
-                }}
-              />
+            <video id="masterclassVideo" ref={videoRef} className={videoClassName} controls playsInline webkit-playsinline="" x-webkit-airplay="allow" preload="auto" onTimeUpdate={handleTimeUpdate} onEnded={handleVideoEnded} onLoadedMetadata={() => { setVideoLoading(false); handleLoadedMetadata(); }} onCanPlay={() => setVideoLoading(false)} onPlay={() => setShowTapToPlay(false)} onContextMenu={(e) => e.preventDefault()}>
+              <source src={VIDEO_URL} type="video/mp4" onError={() => { setVideoError(true); setVideoLoading(false); }} />
               Your browser does not support the video tag.
             </video>
           </div>
 
-          {/* Progress bar */}
           <div className="w-full bg-muted rounded-full h-1.5 mb-8">
-            <div
-              className="bg-primary h-1.5 rounded-full transition-all duration-500"
-              style={{ width: `${watchPct}%` }}
-            />
+            <div className="bg-primary h-1.5 rounded-full transition-all duration-500" style={{ width: `${watchPct}%` }} />
           </div>
 
-          {/* Unlock Banner */}
           {showUnlockBanner && !completed && (
             <div className="mb-8 rounded-xl border border-primary/30 bg-primary/5 p-4 text-center">
-              <p className="font-semibold text-foreground">
-                🎉 You're about to unlock the free CAT Success Resource Kit.
-              </p>
+              <p className="font-semibold text-foreground">🎉 You're about to unlock the free CAT Success Resource Kit.</p>
             </div>
           )}
 
-          {/* You'll Learn Section */}
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-foreground mb-6">You'll Learn</h2>
             <ul className="space-y-3">
@@ -318,45 +234,33 @@ const MasterclassWatch = () => {
             </ul>
           </section>
 
-          {/* CTA */}
           <div className="text-center mb-16">
             <Button size="lg" onClick={handleApply} disabled={applyLoading}>
               {applyLoading ? "Submitting..." : (<>Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" /></>)}
             </Button>
-            <p className="text-sm text-muted-foreground mt-3">
-              Limited seats. Mentor interaction included.
-            </p>
+            <p className="text-sm text-muted-foreground mt-3">Limited seats. Mentor interaction included.</p>
           </div>
 
-          {/* Resource Kit Section — progressive unlock */}
           <section id="resource-kit-section" className="mb-16">
             <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
               <div className="text-center mb-8">
                 <div className="flex items-center justify-center gap-2 mb-3">
                   <Gift className="h-6 w-6 text-primary" />
-                  <h2 className="text-2xl font-bold text-foreground">
-                    CAT Success Resource Kit
-                  </h2>
+                  <h2 className="text-2xl font-bold text-foreground">CAT Success Resource Kit</h2>
                 </div>
-                <p className="text-muted-foreground">
-                  Keep watching to unlock all 5 resources.
-                </p>
+                <p className="text-muted-foreground">Keep watching to unlock all 5 resources.</p>
               </div>
-
               <div className="space-y-4 mb-10">
                 {resources.map((r, i) => {
                   const unlocked = maxWatchPct >= r.unlockAt;
                   return (
-                    <div
-                      key={i}
-                      className={`flex items-center justify-between rounded-xl border p-4 transition-shadow ${unlocked ? "border-border hover:shadow-sm" : "border-border/50 opacity-60"}`}
-                    >
+                    <div key={i} className={`flex items-center justify-between rounded-xl border p-4 transition-shadow ${unlocked ? "border-border hover:shadow-sm" : "border-border/50 opacity-60"}`}>
                       <div className="flex items-center gap-3">
                         <r.icon className={`h-5 w-5 shrink-0 ${unlocked ? "text-primary" : "text-muted-foreground"}`} />
                         <span className={`font-medium ${unlocked ? "text-foreground" : "text-muted-foreground"}`}>{r.label}</span>
                       </div>
                       {unlocked ? (
-                      <Button size="sm" variant="outline" asChild>
+                        <Button size="sm" variant="outline" asChild>
                           <a href={r.action === "planner" ? "/cat-daily-study-planner" : "#"}>
                             {r.action === "planner" ? "Open Planner" : "Download"}
                           </a>
@@ -370,19 +274,15 @@ const MasterclassWatch = () => {
                   );
                 })}
               </div>
-
               <div className="border-t border-border pt-8 text-center">
                 <Button size="lg" onClick={handleApply} disabled={applyLoading}>
                   {applyLoading ? "Submitting..." : (<>Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" /></>)}
                 </Button>
-                <p className="text-sm text-muted-foreground mt-3">
-                  Structured roadmap + daily mentoring + accountability included.
-                </p>
+                <p className="text-sm text-muted-foreground mt-3">Structured roadmap + daily mentoring + accountability included.</p>
               </div>
             </div>
           </section>
 
-          {/* Apply Confirmation Dialog */}
           <Dialog open={showApplyConfirm} onOpenChange={setShowApplyConfirm}>
             <DialogContent className="max-w-sm text-center">
               <DialogTitle className="sr-only">Application Confirmed</DialogTitle>
@@ -391,18 +291,12 @@ const MasterclassWatch = () => {
                   <PartyPopper className="h-7 w-7 text-primary" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground">You're In! 🎉</h3>
-                <p className="text-muted-foreground text-sm">
-                  Our counselor will connect with you shortly to discuss the 95%ile Guarantee Batch.
-                </p>
+                <p className="text-muted-foreground text-sm">Our counselor will connect with you shortly to discuss the 95%ile Guarantee Batch.</p>
                 <div className="w-full space-y-3 pt-2">
                   <Button size="lg" className="w-full" asChild>
-                    <a href="tel:+919911928071">
-                      <Phone className="mr-2 h-4 w-4" /> Call Now — +91 99119 28071
-                    </a>
+                    <a href="tel:+919911928071"><Phone className="mr-2 h-4 w-4" /> Call Now — +91 99119 28071</a>
                   </Button>
-                  <Button variant="outline" className="w-full" onClick={() => setShowApplyConfirm(false)}>
-                    I'll wait for the call
-                  </Button>
+                  <Button variant="outline" className="w-full" onClick={() => setShowApplyConfirm(false)}>I'll wait for the call</Button>
                 </div>
               </div>
             </DialogContent>

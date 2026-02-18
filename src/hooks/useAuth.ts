@@ -1,0 +1,70 @@
+import { useState, useEffect, useCallback } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable/index";
+import type { User } from "@supabase/supabase-js";
+
+interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  signIn: () => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
+export function useAuth(): AuthState {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        const currentUser = session?.user ?? null;
+        setUser(currentUser);
+        setLoading(false);
+
+        // On sign-in, upsert lead with email + name
+        if (event === "SIGNED_IN" && currentUser?.email) {
+          const email = currentUser.email;
+          const name = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || null;
+
+          // Store in localStorage for backward compat
+          localStorage.setItem("percentilers_email", email);
+          if (name) localStorage.setItem("percentilers_name", name);
+
+          // Upsert lead by email (email column added via migration)
+          await (supabase.from("leads") as any).upsert(
+            { email, name, source: "google_signin" },
+            { onConflict: "email" }
+          );
+        }
+      }
+    );
+
+    // Check existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const signIn = useCallback(async () => {
+    await lovable.auth.signInWithOAuth("google", {
+      redirect_uri: window.location.origin,
+    });
+  }, []);
+
+  const signOut = useCallback(async () => {
+    await supabase.auth.signOut();
+    localStorage.removeItem("percentilers_email");
+  }, []);
+
+  return {
+    user,
+    isAuthenticated: !!user,
+    loading,
+    signIn,
+    signOut,
+  };
+}
