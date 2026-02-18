@@ -132,9 +132,11 @@ const CATOMETCourses = () => {
     script.textContent = JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Course",
-      "name": "CAT + OMET Complete Course",
-      "description": "Structured CAT preparation program covering syllabus, mock analysis, percentile strategy, and mentorship support.",
-      "provider": { "@type": "Organization", "name": "Percentilers" }
+      "name": "CAT + OMET Complete Preparation Course",
+      "description": "Comprehensive CAT coaching with live classes, 30+ mock tests, OMET coverage (XAT, SNAP, NMAT, IIFT), mentorship and profile building.",
+      "provider": { "@type": "Organization", "name": "Percentilers", "url": "https://percentilers.in" },
+      "hasCourseInstance": { "@type": "CourseInstance", "courseMode": "Online", "inLanguage": ["English", "Hindi"] },
+      "offers": { "@type": "Offer", "priceCurrency": "INR", "price": "27999", "availability": "https://schema.org/InStock" }
     });
     document.head.appendChild(script);
     return () => { document.head.removeChild(script); };
