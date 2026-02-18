@@ -128,7 +128,7 @@ const Masterclass = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const phone = localStorage.getItem("percentilers_phone");
+    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone");
     if (phone) navigate("/masterclass/watch", { replace: true });
   }, [navigate]);
 
