@@ -21,7 +21,6 @@ import {
   FileText,
   RefreshCw,
   Target,
-  CalendarDays,
   BookOpen,
   ChevronLeft,
   ChevronRight,
@@ -31,11 +30,7 @@ import {
   CheckCircle2,
   Phone,
   Play,
-  Flame,
-  
   X,
-  Trophy,
-  BarChart3,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -308,45 +303,36 @@ function StatsStrip({
     >
       <div className="grid grid-cols-5 divide-x divide-border/40">
         {/* Days Left */}
-        <div className="px-3 py-4 text-center">
-          <div className="flex items-center justify-center gap-1 mb-1">
-            <Target className="h-3.5 w-3.5 text-primary" />
-          </div>
-          <p className="text-lg font-bold text-foreground leading-none">{daysLeft}</p>
-          <p className="text-[10px] text-muted-foreground font-medium mt-1">Days Left</p>
+        <div className="px-2 py-2 md:px-3 md:py-4 text-center">
+          <p className="text-base md:text-lg font-bold text-foreground leading-none">{daysLeft}</p>
+          <p className="text-[9px] md:text-[10px] text-muted-foreground font-medium mt-0.5">Days Left</p>
         </div>
         {/* Phase */}
-        <div className="px-3 py-4 text-center flex flex-col items-center justify-center">
-          <CalendarDays className="h-3.5 w-3.5 text-muted-foreground mb-1" />
-          <Badge className={`${PHASE_COLORS[currentPhase] || "bg-secondary text-foreground border-border"} text-[10px] font-semibold border px-2 py-0.5`}>
+        <div className="px-2 py-2 md:px-3 md:py-4 text-center flex flex-col items-center justify-center">
+          <Badge className={`${PHASE_COLORS[currentPhase] || "bg-secondary text-foreground border-border"} text-[9px] md:text-[10px] font-semibold border px-1.5 md:px-2 py-0.5`}>
             {currentPhase.replace(" Phase", "")}
           </Badge>
-          <p className="text-[10px] text-muted-foreground font-medium mt-1">Phase</p>
+          <p className="text-[9px] md:text-[10px] text-muted-foreground font-medium mt-0.5">Phase</p>
         </div>
         {/* Streak */}
-        <div className="px-3 py-4 text-center">
-          <Flame className="h-3.5 w-3.5 text-primary mx-auto mb-1" />
-          <p className="text-lg font-bold text-foreground leading-none">{currentStreak}</p>
-          <p className="text-[10px] text-muted-foreground font-medium mt-1">Streak</p>
+        <div className="px-2 py-2 md:px-3 md:py-4 text-center">
+          <p className="text-base md:text-lg font-bold text-foreground leading-none">🔥{currentStreak}</p>
+          <p className="text-[9px] md:text-[10px] text-muted-foreground font-medium mt-0.5">Streak</p>
         </div>
         {/* Syllabus % */}
-        <div className="px-3 py-4 text-center">
-          <BarChart3 className="h-3.5 w-3.5 text-muted-foreground mx-auto mb-1" />
-          <p className="text-lg font-bold text-foreground leading-none">{syllabusPercent}%</p>
-          <p className="text-[10px] text-muted-foreground font-medium mt-1">Syllabus</p>
+        <div className="px-2 py-2 md:px-3 md:py-4 text-center">
+          <p className="text-base md:text-lg font-bold text-foreground leading-none">{syllabusPercent}%</p>
+          <p className="text-[9px] md:text-[10px] text-muted-foreground font-medium mt-0.5">Done</p>
         </div>
         {/* Rank */}
-        <div className="px-3 py-4 text-center">
-          <Trophy className="h-3.5 w-3.5 text-amber-500 mx-auto mb-1" />
-          <p className="text-lg font-bold text-foreground leading-none">#{rank}</p>
-          <Badge className={`${rankTier.color} text-[9px] font-semibold border px-1.5 py-0 mt-1`}>
-            {rankTier.label}
-          </Badge>
+        <div className="px-2 py-2 md:px-3 md:py-4 text-center">
+          <p className="text-base md:text-lg font-bold text-foreground leading-none">#{rank}</p>
+          <p className="text-[9px] md:text-[10px] text-muted-foreground font-medium mt-0.5">{rankTier.label}</p>
         </div>
       </div>
       {/* Syllabus progress bar */}
-      <div className="px-4 pb-3">
-        <Progress value={syllabusPercent} className="h-1.5 rounded-full" />
+      <div className="px-3 pb-2 md:px-4 md:pb-3">
+        <Progress value={syllabusPercent} className="h-1 md:h-1.5 rounded-full" />
       </div>
     </motion.div>
   );
@@ -748,24 +734,25 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
 
   return (
     <>
-      <section className="max-w-2xl mx-auto px-4 py-8 pb-24">
-        <motion.div {...fadeUp} className="space-y-6">
-          {/* Header */}
-          <div className="flex items-start justify-between gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground font-medium mb-1">Welcome, {leadData.name}</p>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">Your Daily Plan</h1>
+      <section className="max-w-2xl mx-auto px-4 pt-4 md:pt-8 pb-24">
+        <motion.div {...fadeUp} className="space-y-3 md:space-y-6">
+          {/* Header — compact on mobile */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="min-w-0">
+              <h1 className="text-lg md:text-3xl font-bold text-foreground tracking-tight truncate">
+                {leadData.name}'s Plan
+              </h1>
             </div>
-            <Button variant="outline" size="sm" className="rounded-xl shrink-0 text-xs font-semibold gap-2" onClick={onReset}>
-              <RefreshCw className="h-3.5 w-3.5" /> Reset
+            <Button variant="outline" size="sm" className="rounded-xl shrink-0 text-xs font-semibold gap-1.5 h-8" onClick={onReset}>
+              <RefreshCw className="h-3 w-3" /> Reset
             </Button>
           </div>
 
           {/* Crash mode */}
           {isCrashMode && (
-            <div className="bg-destructive/10 border border-destructive/20 rounded-xl p-3 flex items-center gap-2">
-              <Zap className="h-4 w-4 text-destructive shrink-0" />
-              <p className="text-xs font-semibold text-destructive">CRASH MODE — Only Tier 1 topics. Direct mock preparation.</p>
+            <div className="bg-destructive/10 border border-destructive/20 rounded-lg p-2 flex items-center gap-2">
+              <Zap className="h-3.5 w-3.5 text-destructive shrink-0" />
+              <p className="text-[11px] font-semibold text-destructive">CRASH MODE — Only Tier 1 topics.</p>
             </div>
           )}
 
@@ -779,34 +766,29 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
             rankTier={rankTier}
           />
 
-          {/* Rank subtext */}
-          <div className="text-center">
-            <p className="text-xs text-muted-foreground">🏅 Your Rank: <span className="font-semibold text-foreground">#{rank}</span> · <span className="italic">Climb higher with consistency.</span></p>
-          </div>
-
-          {/* Today indicator */}
-          {viewingDay !== currentDayIndex && currentDayIndex < fullPlan.length && (
-            <Button variant="ghost" size="sm" className="text-xs text-primary" onClick={() => setViewingDay(currentDayIndex)}>
-              <AlertTriangle className="h-3 w-3 mr-1" /> Jump to Today (Day {currentDayIndex + 1})
-            </Button>
-          )}
-
-          {/* Day Navigator */}
+          {/* Day Navigator + Today jump — single compact row */}
           <div className="flex items-center justify-between">
-            <Button variant="ghost" size="sm" disabled={viewingDay <= 0} onClick={() => setViewingDay(Math.max(0, viewingDay - 1))}>
-              <ChevronLeft className="h-4 w-4 mr-1" /> Prev
+            <Button variant="ghost" size="sm" className="h-8 px-2" disabled={viewingDay <= 0} onClick={() => setViewingDay(Math.max(0, viewingDay - 1))}>
+              <ChevronLeft className="h-4 w-4" />
             </Button>
-            <span className="text-sm font-semibold text-foreground">
-              Day {viewingDay + 1} of {fullPlan.length}
-              {viewingDay === currentDayIndex && <span className="text-primary ml-1">(Today)</span>}
-            </span>
-            <Button variant="ghost" size="sm" disabled={viewingDay >= fullPlan.length - 1} onClick={() => setViewingDay(Math.min(fullPlan.length - 1, viewingDay + 1))}>
-              Next <ChevronRight className="h-4 w-4 ml-1" />
+            <div className="text-center">
+              <span className="text-sm font-semibold text-foreground">
+                Day {viewingDay + 1}/{fullPlan.length}
+                {viewingDay === currentDayIndex && <span className="text-primary ml-1">(Today)</span>}
+              </span>
+              {viewingDay !== currentDayIndex && currentDayIndex < fullPlan.length && (
+                <button className="block text-[10px] text-primary font-medium mx-auto mt-0.5" onClick={() => setViewingDay(currentDayIndex)}>
+                  ↩ Jump to Today
+                </button>
+              )}
+            </div>
+            <Button variant="ghost" size="sm" className="h-8 px-2" disabled={viewingDay >= fullPlan.length - 1} onClick={() => setViewingDay(Math.min(fullPlan.length - 1, viewingDay + 1))}>
+              <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Mini day selector */}
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex gap-1.5 md:gap-2 overflow-x-auto pb-1 md:pb-2 scrollbar-hide">
             {navDays.map((d) => {
               const dayDate = getDateForDay(d.dayIndex);
               const subjectKey = getSubjectKey(d);
