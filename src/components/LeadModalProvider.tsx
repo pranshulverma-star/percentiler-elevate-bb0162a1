@@ -38,13 +38,14 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const { user, isAuthenticated, signIn } = useAuth();
 
   // Content gate: just triggers Google sign-in if not authenticated
-  const openContentGate = async (src: string, onSuccess?: () => void) => {
+  const openContentGate = (src: string, onSuccess?: () => void) => {
     if (isAuthenticated) {
       if (user?.email) {
+        // Fire-and-forget — don't block UI
         (supabase.from("leads") as any).upsert(
           { email: user.email, name: user.user_metadata?.full_name || null, source: src },
           { onConflict: "email" }
-        );
+        ).then(() => {}).catch(() => {});
       }
       onSuccess?.();
       return;
@@ -57,7 +58,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
       if (destination) sessionStorage.setItem("pending_gate_redirect", destination);
     }
 
-    await signIn();
+    signIn();
   };
 
   // Handle post-auth redirect for content gate
@@ -85,17 +86,17 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     // Check if phone already stored
     const storedPhone = localStorage.getItem("percentilers_phone") || "";
     if (/^\d{10}$/.test(storedPhone)) {
-      // Phone already on file
+      // Fire-and-forget — don't block UI
       if (user?.email) {
         (supabase.from("leads") as any).upsert(
           { email: user.email, phone_number: storedPhone, source: src },
           { onConflict: "email" }
-        );
+        ).then(() => {}).catch(() => {});
       } else {
-        supabase.from("leads").upsert(
+        Promise.resolve(supabase.from("leads").upsert(
           { phone_number: storedPhone, source: src },
           { onConflict: "phone_number" }
-        );
+        )).catch(() => {});
       }
       onSuccess?.();
       return;
