@@ -376,7 +376,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
                 <p className="text-sm text-muted-foreground">
                   If you're aiming for {results.target_top10}+, our Free Masterclass shows you the structured preparation plan required to reach it.
                 </p>
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => { window.location.href = "/masterclass/watch"; }}>
                   Watch Free Masterclass
                 </Button>
               </div>
