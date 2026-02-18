@@ -75,12 +75,12 @@ const FreeCourses = () => {
       <Navbar />
       <main>
         {/* Hero Section */}
-        <section className="pt-6 pb-10 lg:pt-20 lg:pb-24 relative overflow-hidden">
+        <section className="pt-6 pb-10 lg:pt-[80px] lg:pb-[70px] relative overflow-hidden">
           {/* Subtle grain texture overlay */}
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")' }} />
 
-          <div className="max-w-[1200px] mx-auto px-4 lg:px-6 relative">
-            <div className="lg:grid lg:gap-[60px] lg:items-center" style={{ gridTemplateColumns: '1.2fr 0.8fr' }}>
+          <div className="max-w-[1100px] mx-auto px-4 lg:px-6 relative">
+            <div className="lg:grid lg:gap-12 lg:items-center" style={{ gridTemplateColumns: '1fr 420px' }}>
               {/* Left Column */}
               <motion.div
                 className="text-center lg:text-left max-w-2xl mx-auto lg:mx-0 space-y-4 lg:space-y-5"
@@ -110,7 +110,7 @@ const FreeCourses = () => {
                   </span>
                 </motion.div>
 
-                <h1 className="text-3xl md:text-5xl lg:text-[60px] lg:leading-[1.08] font-extrabold text-foreground leading-tight tracking-tight">
+                <h1 className="text-3xl md:text-5xl lg:text-[60px] lg:leading-[1.08] lg:max-w-[600px] font-extrabold text-foreground leading-tight tracking-tight">
                   Free CAT 2026{" "}
                   <span className="bg-gradient-to-r from-[#ff6a00] to-[#ff8c42] bg-clip-text text-transparent">Courses</span>
                 </h1>
@@ -120,7 +120,7 @@ const FreeCourses = () => {
                 </p>
 
                 {/* Stats row */}
-                <div className="flex justify-center lg:justify-start gap-4 lg:gap-8 pt-1 text-xs lg:text-sm text-muted-foreground">
+                <div className="flex justify-center lg:justify-start gap-4 lg:gap-5 pt-1 text-xs lg:text-sm text-muted-foreground lg:max-w-[500px]">
                   <span className="flex items-center gap-1.5"><Monitor className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary/60" /> 200+ Lectures</span>
                   <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary/60" /> 45+ Hours</span>
                   <span className="flex items-center gap-1.5"><Users className="h-3.5 w-3.5 lg:h-4 lg:w-4 text-primary/60" /> 10K+ Students</span>
@@ -140,7 +140,7 @@ const FreeCourses = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5, delay: 0.2 }}
               >
-                <div className="rounded-[20px] bg-card/90 backdrop-blur-sm border border-border/40 p-8 shadow-[0_10px_30px_rgba(0,0,0,0.06)]">
+                <div className="rounded-[20px] bg-card/90 backdrop-blur-sm border border-border/40 p-8 lg:p-[32px] shadow-[0_10px_30px_rgba(0,0,0,0.06)] max-w-[420px]">
                   <h3 className="text-xl font-bold text-foreground mb-2">Not sure where to start?</h3>
                   <p className="text-sm text-muted-foreground mb-6">
                     Get a personalised strategy from our 99%ile mentors. Absolutely free.
@@ -164,14 +164,14 @@ const FreeCourses = () => {
 
         {/* Course Cards */}
         <section
-          className="pb-10 pt-6 lg:pb-24 lg:pt-20 relative"
+          className="pb-10 pt-6 lg:pb-20 lg:pt-[70px] relative"
           style={{ background: 'linear-gradient(to bottom, hsl(var(--background)), #f7f7f9)' }}
         >
           {/* Grain overlay */}
           <div className="absolute inset-0 opacity-[0.02] pointer-events-none" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noise\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noise)\'/%3E%3C/svg%3E")' }} />
 
-          <div className="max-w-[1200px] mx-auto px-4 lg:px-6 relative">
-            <div className="flex flex-col gap-3 max-w-3xl mx-auto lg:max-w-none lg:grid lg:grid-cols-2 lg:gap-6">
+          <div className="max-w-[1100px] mx-auto px-4 lg:px-6 relative">
+            <div className="flex flex-col gap-3 max-w-3xl mx-auto lg:max-w-none lg:grid lg:grid-cols-2 lg:gap-[24px]">
               {courses.map((course, i) => (
                 <motion.a
                   key={course.name}
