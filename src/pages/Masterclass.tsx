@@ -74,6 +74,7 @@ const RegistrationForm = () => {
       }
 
       localStorage.setItem("percentilers_phone", phone.trim());
+      localStorage.setItem("percentilers_name", name.trim());
       navigate("/masterclass/watch");
     } catch {
       setError("Something went wrong. Please try again.");
