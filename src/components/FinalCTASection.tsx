@@ -10,23 +10,25 @@ const FinalCTASection = () => {
   const { openModal } = useLeadModal();
   const [showCallDialog, setShowCallDialog] = useState(false);
 
+  const markLeadHot = async (phone: string, source: string) => {
+    try {
+      await supabase.functions.invoke("mark-lead-hot", {
+        body: { phone_number: phone, source, name: localStorage.getItem("percentilers_name") || null },
+      });
+    } catch (e) {
+      console.error("Failed to mark lead hot", e);
+    }
+  };
+
   const handleStrategyCall = async () => {
     const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
     if (phone) {
-      const { data: existing } = await supabase.from("leads").select("id").eq("phone_number", phone).maybeSingle();
-      if (existing) {
-        await supabase.from("leads").update({ source: "final_cta_strategy_call", current_status: "very_hot" }).eq("phone_number", phone);
-      } else {
-        await supabase.from("leads").insert({ phone_number: phone, name: localStorage.getItem("percentilers_name") || null, source: "final_cta_strategy_call", current_status: "very_hot" });
-      }
+      await markLeadHot(phone, "final_cta_strategy_call");
       setShowCallDialog(true);
     } else {
       openModal("final_cta_strategy_call", () => {
-        // After lead capture, mark as very_hot and show dialog
         const newPhone = localStorage.getItem("percentilers_phone") || "";
-        if (newPhone) {
-          supabase.from("leads").update({ current_status: "very_hot" }).eq("phone_number", newPhone);
-        }
+        if (newPhone) markLeadHot(newPhone, "final_cta_strategy_call");
         setShowCallDialog(true);
       });
     }

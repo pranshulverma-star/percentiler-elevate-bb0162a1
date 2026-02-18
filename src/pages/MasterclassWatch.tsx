@@ -170,26 +170,9 @@ const MasterclassWatch = () => {
     if (!phone) return;
     setApplyLoading(true);
     try {
-      // Upsert lead as very hot source
-      const { data: existing } = await supabase
-        .from("leads")
-        .select("phone_number")
-        .eq("phone_number", phone)
-        .maybeSingle();
-
-      if (existing) {
-        await supabase
-          .from("leads")
-          .update({ source: "masterclass_apply_95", current_status: "very_hot" })
-          .eq("phone_number", phone);
-      } else {
-        await supabase.from("leads").insert({
-          phone_number: phone,
-          name: localStorage.getItem("percentilers_name") || null,
-          source: "masterclass_apply_95",
-          current_status: "very_hot",
-        });
-      }
+      await supabase.functions.invoke("mark-lead-hot", {
+        body: { phone_number: phone, source: "masterclass_apply_95", name: localStorage.getItem("percentilers_name") || null },
+      });
     } catch {
       // silent fail
     } finally {
