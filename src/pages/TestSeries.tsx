@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -134,6 +134,21 @@ const leaderboard = [
 const TestSeries = () => {
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "CAT Mock Test Series",
+      "description": "Full-length CAT mock tests with sectional tests and detailed performance analysis dashboard.",
+      "brand": { "@type": "Brand", "name": "Percentilers" },
+      "offers": { "@type": "Offer", "priceCurrency": "INR", "price": "899", "availability": "https://schema.org/InStock" }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
 
   const filters = ["All", "Free", "Sectional", "Full-Length"];
   const filtered = activeFilter === "All"
