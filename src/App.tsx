@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LeadModalProvider } from "@/components/LeadModalProvider";
 
 function ScrollToHash() {
-  const { hash } = useLocation();
+  const { hash, pathname } = useLocation();
   useEffect(() => {
     if (hash) {
       setTimeout(() => {
@@ -16,7 +16,7 @@ function ScrollToHash() {
     } else {
       window.scrollTo(0, 0);
     }
-  }, [hash]);
+  }, [hash, pathname]);
   return null;
 }
 import Index from "./pages/Index";
