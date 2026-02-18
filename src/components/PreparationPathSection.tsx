@@ -37,14 +37,11 @@ const PreparationPathSection = () => {
   const [showCallDialog, setShowCallDialog] = useState(false);
   const { openContentGate, openPhoneModal } = useLeadModal();
 
-  const markLeadHot = async (phone: string) => {
-    try {
-      await supabase.functions.invoke("mark-lead-hot", {
-        body: { phone_number: phone, source: "homepage_selector_call", name: localStorage.getItem("percentilers_name") || null },
-      });
-    } catch (e) {
-      console.error("Failed to mark lead hot", e);
-    }
+  const markLeadHot = (phone: string) => {
+    // Fire-and-forget — don't block UI
+    supabase.functions.invoke("mark-lead-hot", {
+      body: { phone_number: phone, source: "homepage_selector_call", name: localStorage.getItem("percentilers_name") || null },
+    }).catch(() => {});
   };
 
   const handlePrimaryCTA = (level: Level) => {
@@ -64,10 +61,10 @@ const PreparationPathSection = () => {
     }
   };
 
-  const handleSecondaryCTA = async () => {
+  const handleSecondaryCTA = () => {
     const phone = localStorage.getItem("percentilers_phone") || "";
     if (phone) {
-      await markLeadHot(phone);
+      markLeadHot(phone);
       setShowCallDialog(true);
     } else {
       openPhoneModal("homepage_selector_call", () => {

@@ -11,6 +11,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import mentorImg from "@/assets/mentor-pranshul.jpg";
+import studentAarav from "@/assets/student-aarav.jpg";
+import studentPriya from "@/assets/student-priya.jpg";
+import studentRohan from "@/assets/student-rohan.jpg";
 import {
   Shield, Video, BookOpen, Users, Clock, Target,
   CheckCircle2, XCircle, Star, ArrowRight, Sparkles,
@@ -314,9 +317,9 @@ const CATOMETCourses = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4 max-w-4xl mx-auto">
               {[
-                { name: "Aarav S.", percentile: "99.2%ile", college: "IIM Ahmedabad", quote: "The guarantee course changed my life." },
-                { name: "Priya M.", percentile: "98.5%ile", college: "IIM Bangalore", quote: "Live classes kept me accountable every day." },
-                { name: "Rohan K.", percentile: "96.1%ile", college: "IIM Lucknow", quote: "Recorded course fit perfectly around my job." },
+                { name: "Aarav S.", percentile: "99.2%ile", college: "IIM Ahmedabad", quote: "The guarantee course changed my life.", photo: studentAarav },
+                { name: "Priya M.", percentile: "98.5%ile", college: "IIM Bangalore", quote: "Live classes kept me accountable every day.", photo: studentPriya },
+                { name: "Rohan K.", percentile: "96.1%ile", college: "IIM Lucknow", quote: "Recorded course fit perfectly around my job.", photo: studentRohan },
               ].map((t, i) => (
                 <motion.div
                   key={i}
@@ -327,9 +330,7 @@ const CATOMETCourses = () => {
                 >
                   <Card className="p-3 md:p-4 h-full border border-border">
                     <div className="flex items-center gap-2 mb-1.5 md:mb-2">
-                      <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-primary/10 flex items-center justify-center text-[10px] md:text-xs font-bold text-primary">
-                        {t.name[0]}
-                      </div>
+                      <img src={t.photo} alt={t.name} className="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-1 ring-primary/20" />
                       <div>
                         <p className="text-[10px] md:text-xs font-semibold text-foreground">{t.name}</p>
                         <p className="text-[9px] md:text-[10px] text-muted-foreground">{t.college}</p>

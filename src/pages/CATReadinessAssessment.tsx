@@ -532,19 +532,18 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
   const rank = Math.max(1, Math.min(10000, baseRank + jitter));
   const topPercent = Math.max(0.1, Math.round(rank / 10000 * 1000) / 10);
 
-  const markLeadHot = async (phone: string) => {
+  const markLeadHot = (phone: string) => {
     const name = localStorage.getItem("percentilers_name") || "";
-    try {
-      await supabase.functions.invoke("mark-lead-hot", {
-        body: { phone_number: phone, source: "readiness_strategy_call", name },
-      });
-    } catch {}
+    // Fire-and-forget — don't block UI
+    supabase.functions.invoke("mark-lead-hot", {
+      body: { phone_number: phone, source: "readiness_strategy_call", name },
+    }).catch(() => {});
   };
 
-  const handleStrategyCall = async () => {
+  const handleStrategyCall = () => {
     const phone = localStorage.getItem("percentilers_phone") || "";
     if (/^\d{10}$/.test(phone)) {
-      await markLeadHot(phone);
+      markLeadHot(phone);
       setShowCallDialog(true);
     } else {
       openPhoneModal("readiness_strategy_call", () => {
