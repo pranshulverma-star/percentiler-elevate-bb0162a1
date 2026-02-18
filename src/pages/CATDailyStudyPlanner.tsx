@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+// Input removed - no longer needed
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -109,17 +110,19 @@ interface LeadData {
 }
 
 function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
-  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || "");
-  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || "");
+  const { isAuthenticated, user, signIn } = useAuth();
   const [targetYear, setTargetYear] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
   const [prepLevel, setPrepLevel] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [signingIn, setSigningIn] = useState(false);
+
+  // After auth, auto-fill name
+  const name = user?.user_metadata?.full_name || user?.user_metadata?.name || localStorage.getItem("percentilers_name") || "Aspirant";
+  const phone = localStorage.getItem("percentilers_phone") || "";
 
   const handleSubmit = async () => {
-    if (!name.trim()) return setError("Name is required");
-    if (!/^\d{10}$/.test(phone)) return setError("Enter a valid 10-digit phone number");
     if (!targetYear) return setError("Select your target CAT year");
     if (!currentStatus) return setError("Select your current status");
     if (!prepLevel) return setError("Select your prep level");
@@ -127,30 +130,24 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
     setSubmitting(true);
 
     try {
-      const { data: existing } = await supabase
-        .from("leads")
-        .select("phone_number")
-        .eq("phone_number", phone)
-        .maybeSingle();
+      const email = user?.email || null;
 
-      if (!existing) {
-        await supabase.from("leads").insert({
-          name,
-          phone_number: phone,
-          source: "planner",
-          target_year: targetYear,
-          prep_level: prepLevel,
-          current_status: currentStatus,
-          target_percentile: 99,
-        });
+      // Upsert lead with email
+      if (email) {
+        await (supabase.from("leads") as any).upsert(
+          { email, name, phone_number: phone || null, source: "planner", target_year: targetYear, prep_level: prepLevel, current_status: currentStatus, target_percentile: 99 },
+          { onConflict: "email" }
+        );
       }
 
       const today = new Date().toISOString().split("T")[0];
+      // Use phone if available, otherwise use email as identifier for planner_stats
+      const identifier = phone || email || "unknown";
 
       const { data: existingStats } = await supabase
         .from("planner_stats")
         .select("phone_number, start_date")
-        .eq("phone_number", phone)
+        .eq("phone_number", identifier)
         .maybeSingle();
 
       const daysLeft = getDaysUntilCAT(parseInt(targetYear));
@@ -158,7 +155,7 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
 
       if (!existingStats) {
         await supabase.from("planner_stats").insert({
-          phone_number: phone,
+          phone_number: identifier,
           start_date: today,
           target_year: parseInt(targetYear),
           crash_mode: isCrash,
@@ -169,18 +166,25 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
 
       const startDate = existingStats?.start_date || today;
 
-      localStorage.setItem("percentilers_phone", phone);
-      localStorage.setItem("percentilers_name", name);
+      if (name) localStorage.setItem("percentilers_name", name);
       localStorage.setItem("planner_year", targetYear);
       localStorage.setItem("planner_prep_level", prepLevel);
       localStorage.setItem("planner_start_date", startDate);
+      // Store identifier for planner data
+      localStorage.setItem("planner_identifier", identifier);
 
-      onComplete({ phone, name, targetYear: parseInt(targetYear), prepLevel, startDate });
+      onComplete({ phone: identifier, name, targetYear: parseInt(targetYear), prepLevel, startDate });
     } catch {
       setError("Something went wrong. Please try again.");
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleSignIn = async () => {
+    setSigningIn(true);
+    sessionStorage.setItem("pending_gate_source", "planner");
+    await signIn();
   };
 
   return (
@@ -189,7 +193,7 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
       <motion.div {...fadeUp} className="w-full max-w-xl mx-auto px-4 relative z-10">
         <div className="text-center mb-10">
           <Badge className="mb-5 bg-primary/10 text-primary border-primary/20 font-semibold text-xs tracking-wider uppercase px-4 py-1.5">
-            Free Tool · No Login Required
+            Free Tool · Sign in to get started
           </Badge>
           <h1 className="text-4xl md:text-5xl font-bold text-foreground leading-tight tracking-tight">
             CAT Daily Study Planner
@@ -198,70 +202,80 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
             Get a structured daily preparation roadmap based on the Percentilers master curriculum.
           </p>
         </div>
-        <Card className="rounded-2xl shadow-xl border-0 bg-card/80 backdrop-blur-sm">
-          <CardContent className="p-6 md:p-8 space-y-5">
-            <div className="space-y-1.5">
-              <Label htmlFor="name" className="text-sm font-semibold text-foreground">Full Name</Label>
-              <Input id="name" placeholder="Enter your full name" value={name} onChange={(e) => setName(e.target.value)} className="rounded-xl h-12 bg-secondary/50 border-border/60 focus:bg-background transition-colors" />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="phone" className="text-sm font-semibold text-foreground">Phone Number</Label>
-              <Input id="phone" placeholder="10-digit phone number" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} className="rounded-xl h-12 bg-secondary/50 border-border/60 focus:bg-background transition-colors" />
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div className="space-y-1.5">
-                <Label className="text-sm font-semibold text-foreground">Target Year</Label>
-                <Select value={targetYear} onValueChange={setTargetYear}>
-                  <SelectTrigger className="rounded-xl h-12 bg-secondary/50 border-border/60"><SelectValue placeholder="Year" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="2026">2026</SelectItem>
-                    <SelectItem value="2027">2027</SelectItem>
-                    <SelectItem value="2028">2028</SelectItem>
-                  </SelectContent>
-                </Select>
+
+        {!isAuthenticated ? (
+          <Card className="rounded-2xl shadow-xl border-0 bg-card/80 backdrop-blur-sm">
+            <CardContent className="p-6 md:p-8 text-center space-y-5">
+              <p className="text-sm text-muted-foreground">Sign in with Google to create your personalized study plan.</p>
+              <Button
+                className="w-full h-13 rounded-xl text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
+                onClick={handleSignIn}
+                disabled={signingIn}
+              >
+                {signingIn ? "Signing in..." : "Continue with Google"} <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="rounded-2xl shadow-xl border-0 bg-card/80 backdrop-blur-sm">
+            <CardContent className="p-6 md:p-8 space-y-5">
+              <div className="text-sm text-muted-foreground">
+                Welcome, <span className="font-semibold text-foreground">{name}</span> 👋
               </div>
-              <div className="space-y-1.5">
-                <Label className="text-sm font-semibold text-foreground">Status</Label>
-                <Select value={currentStatus} onValueChange={setCurrentStatus}>
-                  <SelectTrigger className="rounded-xl h-12 bg-secondary/50 border-border/60"><SelectValue placeholder="Status" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="College Student">College Student</SelectItem>
-                    <SelectItem value="Working Professional">Working Professional</SelectItem>
-                    <SelectItem value="Drop Year">Drop Year</SelectItem>
-                  </SelectContent>
-                </Select>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div className="space-y-1.5">
+                  <Label className="text-sm font-semibold text-foreground">Target Year</Label>
+                  <Select value={targetYear} onValueChange={setTargetYear}>
+                    <SelectTrigger className="rounded-xl h-12 bg-secondary/50 border-border/60"><SelectValue placeholder="Year" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="2026">2026</SelectItem>
+                      <SelectItem value="2027">2027</SelectItem>
+                      <SelectItem value="2028">2028</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-sm font-semibold text-foreground">Status</Label>
+                  <Select value={currentStatus} onValueChange={setCurrentStatus}>
+                    <SelectTrigger className="rounded-xl h-12 bg-secondary/50 border-border/60"><SelectValue placeholder="Status" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="College Student">College Student</SelectItem>
+                      <SelectItem value="Working Professional">Working Professional</SelectItem>
+                      <SelectItem value="Drop Year">Drop Year</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <Label className="text-sm font-semibold text-foreground">Prep Level</Label>
+                  <Select value={prepLevel} onValueChange={setPrepLevel}>
+                    <SelectTrigger className="rounded-xl h-12 bg-secondary/50 border-border/60"><SelectValue placeholder="Level" /></SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Beginner">Beginner</SelectItem>
+                      <SelectItem value="Concepts Done">Concepts Done</SelectItem>
+                      <SelectItem value="Sectionals">Sectionals</SelectItem>
+                      <SelectItem value="Mocks">Mocks</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
-              <div className="space-y-1.5">
-                <Label className="text-sm font-semibold text-foreground">Prep Level</Label>
-                <Select value={prepLevel} onValueChange={setPrepLevel}>
-                  <SelectTrigger className="rounded-xl h-12 bg-secondary/50 border-border/60"><SelectValue placeholder="Level" /></SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Beginner">Beginner</SelectItem>
-                    <SelectItem value="Concepts Done">Concepts Done</SelectItem>
-                    <SelectItem value="Sectionals">Sectionals</SelectItem>
-                    <SelectItem value="Mocks">Mocks</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <AnimatePresence>
-              {error && (
-                <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="text-sm text-destructive font-medium">
-                  {error}
-                </motion.p>
-              )}
-            </AnimatePresence>
-            <Button className="w-full h-13 rounded-xl text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all" onClick={handleSubmit} disabled={submitting}>
-              {submitting ? <><RefreshCw className="mr-2 h-5 w-5 animate-spin" /> Generating...</> : <>Generate My Daily Plan <ArrowRight className="ml-2 h-5 w-5" /></>}
-            </Button>
-            <p className="text-[11px] text-muted-foreground text-center">No login required · Your plan is saved automatically</p>
-          </CardContent>
-        </Card>
+              <AnimatePresence>
+                {error && (
+                  <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="text-sm text-destructive font-medium">
+                    {error}
+                  </motion.p>
+                )}
+              </AnimatePresence>
+              <Button className="w-full h-13 rounded-xl text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all" onClick={handleSubmit} disabled={submitting}>
+                {submitting ? <><RefreshCw className="mr-2 h-5 w-5 animate-spin" /> Generating...</> : <>Generate My Daily Plan <ArrowRight className="ml-2 h-5 w-5" /></>}
+              </Button>
+              <p className="text-[11px] text-muted-foreground text-center">Your plan is saved automatically</p>
+            </CardContent>
+          </Card>
+        )}
       </motion.div>
     </section>
   );
 }
-
 // ─── Day Label Map ───
 
 const DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -919,11 +933,12 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
 
 export default function CATDailyStudyPlanner() {
   const [view, setView] = useState<"lead" | "dashboard">(() => {
-    return localStorage.getItem("percentilers_phone") ? "dashboard" : "lead";
+    // Check if user has planner data stored
+    return localStorage.getItem("planner_identifier") ? "dashboard" : "lead";
   });
 
   const [leadData, setLeadData] = useState<LeadData>(() => ({
-    phone: localStorage.getItem("percentilers_phone") || "",
+    phone: localStorage.getItem("planner_identifier") || localStorage.getItem("percentilers_phone") || "",
     name: localStorage.getItem("percentilers_name") || "Aspirant",
     targetYear: (() => {
       const s = localStorage.getItem("planner_year");
@@ -943,8 +958,7 @@ export default function CATDailyStudyPlanner() {
   };
 
   const handleReset = () => {
-    localStorage.removeItem("percentilers_phone");
-    localStorage.removeItem("percentilers_name");
+    localStorage.removeItem("planner_identifier");
     localStorage.removeItem("planner_year");
     localStorage.removeItem("planner_prep_level");
     localStorage.removeItem("planner_start_date");

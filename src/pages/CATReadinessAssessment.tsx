@@ -24,6 +24,7 @@ import {
 import { questions, type Section } from "@/data/readinessQuestions";
 import { computeScore, generateInsight, type AssessmentResult } from "@/lib/readinessScoring";
 import { useLeadModal } from "@/components/LeadModalProvider";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Clock, CheckCircle2, ArrowLeft, ArrowRight, Target,
@@ -298,116 +299,8 @@ const TrustSection = () =>
   </section>;
 
 
-// ─── LEAD CAPTURE ───────────────────────────────────────
-const LeadCapture = ({
-  sectionFilter,
-  onSubmit
-
-
-
-}: {sectionFilter: SectionFilter;onSubmit: () => void;}) => {
-  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || "");
-  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || "");
-  const [target, setTarget] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!name.trim()) e.name = "Name is required";
-    if (name.trim().length > 100) e.name = "Name must be under 100 characters";
-    if (!/^\d{10}$/.test(phone)) e.phone = "Enter a valid 10-digit phone number";
-    if (!target) e.target = "Select your target percentile";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
-  const handleSubmit = (ev: React.FormEvent) => {
-    ev.preventDefault();
-    if (!validate()) return;
-    setStored({
-      name: name.trim(),
-      phone,
-      target_percentile: target,
-      section_filter: sectionFilter,
-      assessment_started_at: new Date().toISOString(),
-      answers: {},
-      completed: false
-    });
-    // Save to shared localStorage for cross-tool prefill
-    localStorage.setItem("percentilers_phone", phone);
-    localStorage.setItem("percentilers_name", name.trim());
-    onSubmit();
-  };
-
-  const sectionLabel = sectionOptions.find((o) => o.key === sectionFilter)?.label || "Mixed";
-
-  return (
-    <section className="py-10 md:py-16 px-4">
-      <motion.div {...fadeUp} className="max-w-lg mx-auto">
-        <Card className="rounded-2xl shadow-lg border-0">
-          <CardHeader className="text-center pb-2 pt-6 md:pt-8 px-4 md:px-6">
-            <Badge variant="secondary" className="mx-auto mb-2 md:mb-3 text-xs">
-              Section: {sectionLabel}
-            </Badge>
-            <CardTitle className="text-xl md:text-2xl font-bold text-foreground">
-              Get Your Personalized Report
-            </CardTitle>
-            <p className="text-xs md:text-sm text-muted-foreground mt-1.5 md:mt-2">
-              Fill in your details to begin the 15-minute assessment.
-            </p>
-          </CardHeader>
-          <CardContent className="px-4 md:px-6">
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-5 mt-3 md:mt-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  placeholder="Your full name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="rounded-xl h-11 md:h-12"
-                  maxLength={100} />
-                {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="phone">Phone Number</Label>
-                <Input
-                  id="phone"
-                  placeholder="10-digit phone number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                  className="rounded-xl h-11 md:h-12"
-                  maxLength={10} />
-                {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
-              </div>
-              <div className="space-y-1.5">
-                <Label>Target Percentile</Label>
-                <Select value={target} onValueChange={setTarget}>
-                  <SelectTrigger className="rounded-xl h-11 md:h-12">
-                    <SelectValue placeholder="Select target" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="90+">90+</SelectItem>
-                    <SelectItem value="95+">95+</SelectItem>
-                    <SelectItem value="98+">98+</SelectItem>
-                    <SelectItem value="99+">99+</SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.target && <p className="text-sm text-destructive">{errors.target}</p>}
-              </div>
-              <Button type="submit" className="w-full rounded-2xl py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all">
-                Begin 15-Minute Assessment <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <p className="text-center text-[10px] md:text-xs text-muted-foreground">
-                Your data stays private. No spam, we promise.
-              </p>
-            </form>
-          </CardContent>
-        </Card>
-      </motion.div>
-    </section>);
-
-};
+// LeadCapture removed — assessment now starts directly after section selection
+// Target percentile is collected in the results gate overlay
 
 // ─── TEST INTERFACE ─────────────────────────────────────
 const TestInterface = ({
@@ -544,46 +437,16 @@ const bandConfig: Record<string, {color: string;bg: string;}> = {
 };
 
 const ResultsGateOverlay = ({ onUnlock }: { onUnlock: (target: string) => void }) => {
-  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || "");
-  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || "");
+  const { signIn } = useAuth();
   const [target, setTarget] = useState("90+");
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
 
-  const validate = () => {
-    const e: Record<string, string> = {};
-    const sanitizedName = name.trim().replace(/[^a-zA-Z\s.-]/g, "");
-    if (!sanitizedName) e.name = "Name is required";
-    if (sanitizedName.length > 100) e.name = "Name must be under 100 characters";
-    if (!/^[6-9]\d{9}$/.test(phone)) e.phone = "Enter a valid 10-digit Indian mobile number";
-    if (!target) e.target = "Select your target percentile";
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
-  const handleSubmit = async (ev: React.FormEvent) => {
-    ev.preventDefault();
-    if (!validate()) return;
-    setSubmitting(true);
-    const sanitizedName = name.trim().replace(/[^a-zA-Z\s.-]/g, "");
-
-    // Save to localStorage
-    localStorage.setItem("percentilers_phone", phone);
-    localStorage.setItem("percentilers_name", sanitizedName);
-
-    // Update stored assessment data with target
-    setStored({ name: sanitizedName, phone, target_percentile: target });
-
-    // Upsert lead to database
-    try {
-      await supabase.from("leads").upsert(
-        { phone_number: phone, name: sanitizedName, target_percentile: parseInt(target), source: "readiness_assessment" },
-        { onConflict: "phone_number" }
-      );
-    } catch {}
-
-    setSubmitting(false);
-    onUnlock(target);
+  const handleSignIn = async () => {
+    setSigningIn(true);
+    sessionStorage.setItem("pending_gate_source", "readiness_assessment");
+    sessionStorage.setItem("pending_readiness_target", target);
+    await signIn();
+    // After redirect, the auth state change will handle the rest
   };
 
   return (
@@ -599,33 +462,11 @@ const ResultsGateOverlay = ({ onUnlock }: { onUnlock: (target: string) => void }
               Unlock Your Detailed Results
             </CardTitle>
             <p className="text-xs md:text-sm text-muted-foreground mt-1.5">
-              Enter your details to view your complete CAT Readiness report.
+              Sign in with Google to view your complete CAT Readiness report.
             </p>
           </CardHeader>
           <CardContent className="px-4 md:px-6 pb-6">
-            <form onSubmit={handleSubmit} className="space-y-4 mt-3">
-              <div className="space-y-1.5">
-                <Label htmlFor="gate-name">Full Name</Label>
-                <Input
-                  id="gate-name"
-                  placeholder="Your full name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="rounded-xl h-11 md:h-12"
-                  maxLength={100} />
-                {errors.name && <p className="text-sm text-destructive">{errors.name}</p>}
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="gate-phone">Phone Number</Label>
-                <Input
-                  id="gate-phone"
-                  placeholder="10-digit mobile number"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                  className="rounded-xl h-11 md:h-12"
-                  maxLength={10} />
-                {errors.phone && <p className="text-sm text-destructive">{errors.phone}</p>}
-              </div>
+            <div className="space-y-4 mt-3">
               <div className="space-y-1.5">
                 <Label>Target Percentile</Label>
                 <Select value={target} onValueChange={setTarget}>
@@ -639,15 +480,18 @@ const ResultsGateOverlay = ({ onUnlock }: { onUnlock: (target: string) => void }
                     <SelectItem value="99+">99+</SelectItem>
                   </SelectContent>
                 </Select>
-                {errors.target && <p className="text-sm text-destructive">{errors.target}</p>}
               </div>
-              <Button type="submit" disabled={submitting} className="w-full rounded-2xl py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all">
-                {submitting ? "Loading..." : "Show My Results"} <ChevronRight className="ml-1 h-5 w-5" />
+              <Button
+                onClick={handleSignIn}
+                disabled={signingIn}
+                className="w-full rounded-2xl py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
+              >
+                {signingIn ? "Signing in..." : "Continue with Google"} <ChevronRight className="ml-1 h-5 w-5" />
               </Button>
               <p className="text-center text-[10px] md:text-xs text-muted-foreground">
-                Your data stays private. No spam, we promise.
+                One-tap sign in · No spam, we promise.
               </p>
-            </form>
+            </div>
           </CardContent>
         </Card>
       </motion.div>
@@ -663,16 +507,26 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
 }) => {
   const navigate = useNavigate();
   const { openPhoneModal } = useLeadModal();
+  const { isAuthenticated, user } = useAuth();
   const [showCallDialog, setShowCallDialog] = useState(false);
-  const [isGated, setIsGated] = useState(() => {
-    const phone = localStorage.getItem("percentilers_phone");
-    return !phone;
-  });
+  const [isGated, setIsGated] = useState(() => !isAuthenticated);
+
+  // React to auth state changes (e.g., after Google sign-in redirect)
+  useEffect(() => {
+    if (isAuthenticated && isGated) {
+      const pendingTarget = sessionStorage.getItem("pending_readiness_target") || "90+";
+      sessionStorage.removeItem("pending_readiness_target");
+      setIsGated(false);
+      onRecalculate(pendingTarget);
+    }
+  }, [isAuthenticated]);
+
   const insight = generateInsight(result);
   const stored = getStored();
   const bc = bandConfig[result.band] || { color: "text-foreground", bg: "bg-muted" };
+  const userName = user?.user_metadata?.full_name || stored?.name || "";
 
-  const seed = (stored?.phone || "0").split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  const seed = (user?.email || stored?.phone || "0").split("").reduce((a: number, c: string) => a + c.charCodeAt(0), 0);
   const baseRank = Math.max(1, Math.round(10000 * (1 - result.readinessIndex / 100)));
   const jitter = (seed * 7 + result.readinessIndex * 13) % 200 - 100;
   const rank = Math.max(1, Math.min(10000, baseRank + jitter));
@@ -715,8 +569,8 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
         {/* Score hero */}
         <Card className="rounded-2xl shadow-lg border-0 overflow-hidden">
           <div className="bg-gradient-to-br from-primary/5 via-background to-primary/3 pt-8 pb-8 md:pt-10 md:pb-10 text-center px-4">
-            {stored?.name &&
-            <p className="text-xs md:text-sm text-muted-foreground mb-2">Great effort, <span className="font-semibold text-foreground">{stored.name}</span>!</p>
+            {userName &&
+            <p className="text-xs md:text-sm text-muted-foreground mb-2">Great effort, <span className="font-semibold text-foreground">{userName}</span>!</p>
             }
             <p className="text-[10px] md:text-xs text-muted-foreground font-medium uppercase tracking-widest mb-3">Your CAT Readiness Index</p>
 

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { Target, TrendingUp, Award, Lock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
 
 type Step = "form" | "result";
 
@@ -127,12 +128,10 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
   const [results, setResults] = useState<Results | null>(null);
   const [loading, setLoading] = useState(false);
   const [unlocked, setUnlocked] = useState(false);
-  const [showLeadPopup, setShowLeadPopup] = useState(false);
-  const [leadName, setLeadName] = useState("");
-  const [leadPhone, setLeadPhone] = useState("");
-  const [leadSubmitting, setLeadSubmitting] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { isAuthenticated, user, signIn } = useAuth();
+  const [signingIn, setSigningIn] = useState(false);
 
   const progress = step === "form" ? 50 : 100;
   const twelfthRef = useRef<HTMLInputElement>(null);
@@ -164,16 +163,15 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
     setLoading(false);
     setStep("result");
 
-    // Check if already registered
-    const storedPhone = localStorage.getItem("percentilers_phone") || "";
-    const storedName = localStorage.getItem("percentilers_name") || "";
-    if (/^\d{10}$/.test(storedPhone) && storedName) {
+    // Check if already authenticated
+    if (isAuthenticated) {
       setUnlocked(true);
-      // Save in background
-      saveResults(storedPhone, storedName, result);
+      // Save in background using email
+      const phone = localStorage.getItem("percentilers_phone") || "";
+      const name = user?.user_metadata?.full_name || "";
+      if (phone) saveResults(phone, name, result);
     } else {
       setUnlocked(false);
-      setShowLeadPopup(true);
     }
   };
 
@@ -200,32 +198,22 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
     );
   };
 
-  const sanitizeName = (val: string) => val.replace(/[^a-zA-Z\s.'-]/g, "").slice(0, 100);
-
-  const handleLeadSubmit = async () => {
-    const trimmedName = leadName.trim();
-    if (!trimmedName || trimmedName.length < 2) {
-      toast({ title: "Invalid name", description: "Please enter at least 2 characters.", variant: "destructive" });
-      return;
-    }
-    if (!/^[6-9]\d{9}$/.test(leadPhone)) {
-      toast({ title: "Invalid phone number", description: "Please enter a valid 10-digit Indian mobile number.", variant: "destructive" });
-      return;
-    }
-    setLeadSubmitting(true);
-    try {
-      localStorage.setItem("percentilers_phone", leadPhone);
-      localStorage.setItem("percentilers_name", trimmedName);
-      if (results) await saveResults(leadPhone, trimmedName, results);
-      setUnlocked(true);
-      setShowLeadPopup(false);
-      toast({ title: "Results unlocked!", description: "Here are your target percentiles." });
-    } catch {
-      toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
-    } finally {
-      setLeadSubmitting(false);
-    }
+  const handleGoogleUnlock = async () => {
+    setSigningIn(true);
+    await signIn();
+    // After redirect, auth state change will unlock
   };
+
+  // React to auth changes
+  useEffect(() => {
+    if (isAuthenticated && !unlocked && step === "result" && results) {
+      setUnlocked(true);
+      const phone = localStorage.getItem("percentilers_phone") || "";
+      const name = user?.user_metadata?.full_name || "";
+      if (phone) saveResults(phone, name, results);
+      toast({ title: "Results unlocked!", description: "Here are your target percentiles." });
+    }
+  }, [isAuthenticated]);
 
   const handleClose = () => {
     onOpenChange(false);
@@ -235,9 +223,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       setResults(null);
       setUnlocked(false);
       setNotEligible(false);
-      setShowLeadPopup(false);
-      setLeadName("");
-      setLeadPhone("");
+      setSigningIn(false);
     }, 300);
   };
 
@@ -355,30 +341,15 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
                   </div>
                   <div>
                     <h3 className="font-semibold text-foreground text-base">Unlock Your Results</h3>
-                    <p className="text-xs text-muted-foreground mt-1">Share your details to see your target percentiles.</p>
+                    <p className="text-xs text-muted-foreground mt-1">Sign in with Google to see your target percentiles.</p>
                   </div>
-                  <div className="space-y-3">
-                    <Input
-                      placeholder="Your Name"
-                      value={leadName}
-                      onChange={(e) => setLeadName(sanitizeName(e.target.value))}
-                      className="text-sm"
-                    />
-                    <Input
-                      placeholder="Phone (10 digits)"
-                      value={leadPhone}
-                      onChange={(e) => setLeadPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-                      type="tel"
-                      className="text-sm"
-                    />
-                    <Button
-                      onClick={handleLeadSubmit}
-                      disabled={leadSubmitting}
-                      className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                    >
-                      {leadSubmitting ? "Unlocking..." : "Unlock Results"}
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={handleGoogleUnlock}
+                    disabled={signingIn}
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    {signingIn ? "Signing in..." : "Continue with Google"}
+                  </Button>
                 </div>
               </div>
             )}
