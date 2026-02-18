@@ -57,10 +57,10 @@ const FounderSection = () => (
             The Vision Behind <span className="text-primary">Percentilers</span>
           </h2>
           <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
-            Founded by <strong className="text-foreground">Pranshul Verma</strong>, a 7-time CAT 100 percentiler, Percentilers was born from a single belief: every serious CAT aspirant deserves a clear, structured path to a top percentile.
+            Founded by <strong className="text-foreground">Pranshul Verma</strong>, a 7-time CAT 100 percentiler, Percentilers was built on a simple belief: serious CAT aspirants deserve structured preparation — not random effort.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            After coaching 5,000+ students over 8 years, Pranshul saw that most students didn't lack talent — they lacked direction. That's why we built a system combining expert mentorship, data-driven mock analysis, and disciplined study planning.
+            After mentoring 5,000+ students over 8+ years, the system combines expert strategy, disciplined planning, and data-driven mock analysis.
           </p>
           <div className="flex gap-6 md:gap-8 pt-2 flex-wrap">
             {[

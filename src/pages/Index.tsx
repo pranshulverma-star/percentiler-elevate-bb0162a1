@@ -12,6 +12,7 @@ import CoursesSection from "@/components/CoursesSection";
 import PercentilePlannerSection from "@/components/PercentilePlannerSection";
 import FreeToolsSection from "@/components/FreeToolsSection";
 import FAQSection from "@/components/FAQSection";
+import WhyDifferentSection from "@/components/WhyDifferentSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import ScrollCTAPanel from "@/components/ScrollCTAPanel";
@@ -50,6 +51,7 @@ const Index = () => (
       <FounderSection />
 
       {/* Act 8: Close */}
+      <WhyDifferentSection />
       <FAQSection />
       <FinalCTASection />
     </main>

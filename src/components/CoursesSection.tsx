@@ -9,19 +9,19 @@ const courses = [
     name: "CAT + OMET Complete Course",
     icon: Zap,
     tag: "Most Popular",
-    highlights: ["Full syllabus coverage for CAT, XAT, SNAP & more", "200+ hours of structured video lessons", "Weekly mock tests with detailed analysis"],
+    highlights: ["Full CAT syllabus coverage with structured video lessons", "Sectional practice and weekly mock analysis", "Covers XAT, SNAP & other OMETs"],
   },
   {
     name: "Test Series",
     icon: BarChart3,
     tag: "Best for Practice",
-    highlights: ["30 full-length mocks (latest pattern)", "Sectional tests for targeted practice", "Percentile predictor + analytics dashboard"],
+    highlights: ["Full-length CAT mocks with detailed performance analytics", "Sectional tests for targeted practice", "Percentile predictor support"],
   },
   {
     name: "Mentorship Program",
     icon: Users,
     tag: "1-on-1",
-    highlights: ["1-on-1 mentor sessions with 99%ilers", "Personalized study plan & strategy", "Weekly progress reviews & accountability"],
+    highlights: ["Personalized CAT strategy and accountability sessions", "One-on-one guidance for serious aspirants", "Weekly progress reviews"],
   },
 ];
 
@@ -40,7 +40,7 @@ const CoursesSection = () => (
       >
         <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Programs</span>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-          Our <span className="text-primary">Programs</span>
+          Our CAT Preparation <span className="text-primary">Programs</span>
         </h2>
       </motion.div>
 

@@ -2,12 +2,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { motion } from "framer-motion";
 
 const faqs = [
-  { q: "Who is this coaching best suited for?", a: "Our programs are designed for serious CAT aspirants — whether you're a first-time taker or a re-taker looking for a structured, result-oriented approach." },
-  { q: "How is Percentilers different from other coaching?", a: "We combine strategic study planning, personalized mock analysis, and expert mentorship. We focus on improving your percentile — not just covering the syllabus." },
-  { q: "Do you offer online classes?", a: "Yes. All our programs are available online with live sessions, recorded lectures, and interactive doubt-clearing sessions." },
-  { q: "What kind of results have your students achieved?", a: "Over 200 students have scored 95+ percentile. Our alumni have converted calls from IIM A, B, C, FMS, XLRI, and other top B-schools." },
-  { q: "Is there a free trial or demo?", a: "Absolutely. Start with our Free Masterclass to experience our teaching methodology and strategy framework before enrolling." },
-  { q: "How do I get started?", a: "Watch the Free Masterclass, explore our programs, and book a strategy call with our team. We'll help you pick the right plan." },
+  { q: "How should I start CAT 2026 preparation?", a: "Start with a clear understanding of the CAT syllabus, create a structured study plan, focus on conceptual clarity in Quant, VARC, and LRDI, and begin sectional practice before full-length mock tests." },
+  { q: "What percentile is required for top IIMs?", a: "Top IIMs typically require 99+ percentile overall, along with strong sectional scores. Cut-offs vary by category, profile, and work experience." },
+  { q: "Is CAT coaching necessary to crack the exam?", a: "While self-study is possible, structured CAT coaching helps with syllabus sequencing, mock analysis, strategy refinement, and accountability — which significantly improves percentile outcomes." },
+  { q: "How many mock tests should I attempt for CAT?", a: "Serious aspirants usually attempt 30–40 full-length CAT mocks along with sectional tests. The key is detailed mock analysis, not just attempting tests." },
+  { q: "Can working professionals prepare for CAT successfully?", a: "Yes. With a structured 2–3 hour daily schedule and weekend mock strategy, working professionals consistently achieve 95+ percentile." },
+  { q: "What is included in the CAT syllabus?", a: "The CAT syllabus covers Quantitative Aptitude, Logical Reasoning & Data Interpretation, and Verbal Ability & Reading Comprehension, including arithmetic, algebra, geometry, puzzles, seating arrangements, and RC passages." },
+  { q: "Does Percentilers provide online CAT coaching?", a: "Yes. All programs are delivered online with structured video lessons, live mentorship, mock tests, and performance tracking tools." },
 ];
 
 const FAQSection = () => (

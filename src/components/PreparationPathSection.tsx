@@ -71,7 +71,7 @@ const PreparationPathSection = () => {
             Interactive Guide
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">Where Are You in Your CAT Journey?</h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">Different starting points need different strategies. Tell us where you are — we'll guide you correctly.</p>
+          <p className="text-muted-foreground text-lg max-w-xl mx-auto">Whether you're starting from scratch or targeting 95+ percentile, your CAT preparation needs a different strategy.</p>
         </motion.div>
 
         <div className="flex items-center justify-center gap-2 mb-8">

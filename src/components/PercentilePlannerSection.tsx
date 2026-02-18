@@ -22,10 +22,10 @@ export default function PercentilePlannerSection() {
         >
           <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">Profile Evaluator</span>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-            Not Sure What Percentile You Should <span className="text-primary">Target?</span>
+            Not Sure What CAT Percentile You Should <span className="text-primary">Target?</span>
           </h2>
           <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto">
-            Evaluate your profile and understand what CAT percentile you realistically need.
+            Evaluate your academic profile and understand what CAT percentile you realistically need for top IIMs and B-schools.
           </p>
         </motion.div>
 

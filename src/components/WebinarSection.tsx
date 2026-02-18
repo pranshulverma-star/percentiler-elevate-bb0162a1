@@ -4,10 +4,12 @@ import { motion } from "framer-motion";
 import { useLeadModal } from "@/components/LeadModalProvider";
 
 const bullets = [
-  "Study structure framework used by 99%ilers",
-  "Mock analysis system to identify weak areas fast",
-  "Strategy blueprint for 95+ percentile",
-  "Common mistakes that cost 10+ marks",
+  "CAT eligibility criteria and the ideal timeline to begin preparation",
+  "How to build a strong foundation in Quant, VARC & LRDI",
+  "Profile building strategy for IIMs and top MBA colleges",
+  "MBA entrance exams beyond CAT (XAT, SNAP & others)",
+  "How to evaluate and choose the right CAT coaching",
+  "Understanding cut-offs and realistic target percentiles",
 ];
 
 const WebinarSection = () => {
@@ -32,8 +34,9 @@ const WebinarSection = () => {
           <Play className="h-7 w-7 ml-0.5" />
         </div>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-          Confused About CAT? Watch This <span className="text-primary">Free Masterclass.</span>
+          CAT Demystified: The Strategy <span className="text-primary">Serious Aspirants Follow.</span>
         </h2>
+        <p className="text-muted-foreground max-w-xl mx-auto mt-3">A structured session for students who want clarity, direction, and a realistic roadmap to top B-schools.</p>
       </motion.div>
 
       <ul className="space-y-4 text-left inline-block my-10">

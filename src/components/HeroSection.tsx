@@ -76,10 +76,10 @@ const HeroSection = () => {
             <span className="text-xs font-semibold text-primary">2,000+ students enrolled this cycle</span>
           </div>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight text-foreground">
-            From Preparation to 95+ Percentile — <span className="text-primary">With Structure.</span>
+            From CAT Preparation to 95+ Percentile : <span className="text-primary">With Structure.</span>
           </h1>
           <p className="text-lg text-muted-foreground max-w-lg">
-            Proven CAT coaching + strategic planning tools to maximize your score.
+            Proven CAT coaching + strategic planning tools to help you prepare smarter for CAT 2026 and beyond.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => {
