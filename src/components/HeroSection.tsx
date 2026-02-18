@@ -86,6 +86,7 @@ const HeroSection = () => {
               openModal("hero_evaluate_profile", () => {
                 const section = document.getElementById("profile-evaluator");
                 if (section) section.scrollIntoView({ behavior: "smooth" });
+                setTimeout(() => window.dispatchEvent(new Event("open-profile-evaluator")), 500);
               });
             }}>
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
