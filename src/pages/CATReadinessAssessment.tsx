@@ -8,6 +8,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -16,11 +23,13 @@ import {
 "@/components/ui/select";
 import { questions, type Section } from "@/data/readinessQuestions";
 import { computeScore, generateInsight, type AssessmentResult } from "@/lib/readinessScoring";
+import { useLeadModal } from "@/components/LeadModalProvider";
+import { supabase } from "@/integrations/supabase/client";
 import {
   Clock, CheckCircle2, ArrowLeft, ArrowRight, Target,
   BarChart3, Zap, Brain, ChevronRight, Shield, Users,
   TrendingUp, BookOpen, Calculator, PuzzleIcon, FileText,
-  Shuffle, Award, Timer, ClipboardList, Trophy } from
+  Shuffle, Award, Timer, ClipboardList, Trophy, Phone, GraduationCap } from
 "lucide-react";
 
 type Phase = "hero" | "lead" | "test" | "results";
@@ -536,17 +545,40 @@ const bandConfig: Record<string, {color: string;bg: string;}> = {
 
 const ResultsSection = ({ result, onRetake }: {result: AssessmentResult;onRetake: () => void;}) => {
   const navigate = useNavigate();
+  const { openModal } = useLeadModal();
+  const [showCallDialog, setShowCallDialog] = useState(false);
   const insight = generateInsight(result);
   const stored = getStored();
   const bc = bandConfig[result.band] || { color: "text-foreground", bg: "bg-muted" };
 
-  // Generate a deterministic rank from readiness index (higher score = better rank)
-  // Use a seeded pseudo-random offset based on stored phone for consistency across refreshes
   const seed = (stored?.phone || "0").split("").reduce((a, c) => a + c.charCodeAt(0), 0);
   const baseRank = Math.max(1, Math.round(10000 * (1 - result.readinessIndex / 100)));
-  const jitter = (seed * 7 + result.readinessIndex * 13) % 200 - 100; // -100 to +100
+  const jitter = (seed * 7 + result.readinessIndex * 13) % 200 - 100;
   const rank = Math.max(1, Math.min(10000, baseRank + jitter));
   const topPercent = Math.max(0.1, Math.round(rank / 10000 * 1000) / 10);
+
+  const markLeadHot = async (phone: string) => {
+    const name = localStorage.getItem("percentilers_name") || localStorage.getItem("planner_name") || "";
+    try {
+      await supabase.functions.invoke("mark-lead-hot", {
+        body: { phone_number: phone, source: "readiness_strategy_call", name },
+      });
+    } catch {}
+  };
+
+  const handleStrategyCall = async () => {
+    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    if (/^\d{10}$/.test(phone)) {
+      await markLeadHot(phone);
+      setShowCallDialog(true);
+    } else {
+      openModal("readiness_strategy_call", () => {
+        const newPhone = localStorage.getItem("percentilers_phone") || "";
+        if (newPhone) markLeadHot(newPhone);
+        setShowCallDialog(true);
+      });
+    }
+  };
 
   return (
     <section className="max-w-3xl mx-auto px-4 py-8 md:py-12">
@@ -679,7 +711,7 @@ const ResultsSection = ({ result, onRetake }: {result: AssessmentResult;onRetake
             <Button
               size="lg"
               className="rounded-2xl px-8 md:px-10 py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
-              onClick={() => navigate("/masterclass")}>
+              onClick={handleStrategyCall}>
               Book Free CAT Strategy Call <ChevronRight className="ml-1 h-5 w-5" />
             </Button>
           </div>
@@ -692,6 +724,37 @@ const ResultsSection = ({ result, onRetake }: {result: AssessmentResult;onRetake
           </Button>
         </div>
       </motion.div>
+
+      {/* Call Confirmation Dialog */}
+      <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader className="text-center">
+            <DialogTitle className="text-xl font-bold">You just unlocked your Free Nudge call</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Our mentors will help you create a winning strategy for CAT.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-4">
+            <Button className="w-full rounded-xl py-5 font-semibold" asChild>
+              <a href="tel:+919911928071">
+                <Phone className="mr-2 h-4 w-4" /> Call Now
+              </a>
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full rounded-xl py-5 font-semibold"
+              onClick={() => { setShowCallDialog(false); navigate("/mentorship"); }}>
+              <GraduationCap className="mr-2 h-4 w-4" /> Mentorship Plans
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full rounded-xl text-muted-foreground"
+              onClick={() => setShowCallDialog(false)}>
+              I'll wait for the call
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>);
 
 };
