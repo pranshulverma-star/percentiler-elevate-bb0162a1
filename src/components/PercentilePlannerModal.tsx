@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -135,6 +135,17 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
   const navigate = useNavigate();
 
   const progress = step === "form" ? 50 : 100;
+  const twelfthRef = useRef<HTMLInputElement>(null);
+  const gradRef = useRef<HTMLInputElement>(null);
+  const workexRef = useRef<HTMLInputElement>(null);
+
+  const handleAcademicChange = (key: keyof FormData, val: string, nextRef?: React.RefObject<HTMLInputElement>) => {
+    const cleaned = val.replace(/\D/g, "").slice(0, 2);
+    update(key, cleaned);
+    if (cleaned.length === 2 && nextRef?.current) {
+      nextRef.current.focus();
+    }
+  };
 
   const [notEligible, setNotEligible] = useState(false);
 
@@ -259,15 +270,15 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className="text-xs text-muted-foreground mb-1 block">10th</label>
-                  <Input type="number" placeholder="85" value={form.tenth_score} onChange={(e) => update("tenth_score", e.target.value)} min={0} max={100} />
+                  <Input type="number" placeholder="85" value={form.tenth_score} onChange={(e) => handleAcademicChange("tenth_score", e.target.value, twelfthRef)} min={0} max={100} />
                 </div>
                 <div>
                   <label className="text-xs text-muted-foreground mb-1 block">12th</label>
-                  <Input type="number" placeholder="82" value={form.twelfth_score} onChange={(e) => update("twelfth_score", e.target.value)} min={0} max={100} />
+                  <Input ref={twelfthRef} type="number" placeholder="82" value={form.twelfth_score} onChange={(e) => handleAcademicChange("twelfth_score", e.target.value, gradRef)} min={0} max={100} />
                 </div>
                 <div>
                   <label className="text-xs text-muted-foreground mb-1 block">Graduation</label>
-                  <Input type="number" placeholder="75" value={form.grad_score} onChange={(e) => update("grad_score", e.target.value)} min={0} max={100} />
+                  <Input ref={gradRef} type="number" placeholder="75" value={form.grad_score} onChange={(e) => handleAcademicChange("grad_score", e.target.value, workexRef)} min={0} max={100} />
                 </div>
               </div>
             </div>
@@ -293,7 +304,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
             {/* Work Experience */}
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-foreground">Work Experience (months)</h3>
-              <Input type="number" placeholder="0" value={form.workex_months} onChange={(e) => update("workex_months", e.target.value)} min={0} />
+              <Input ref={workexRef} type="number" placeholder="0" value={form.workex_months} onChange={(e) => update("workex_months", e.target.value)} min={0} />
             </div>
 
             {/* Other fields */}
