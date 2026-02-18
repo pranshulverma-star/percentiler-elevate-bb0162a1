@@ -1,9 +1,24 @@
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LeadModalProvider } from "@/components/LeadModalProvider";
+
+function ScrollToHash() {
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (hash) {
+      setTimeout(() => {
+        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [hash]);
+  return null;
+}
 import Index from "./pages/Index";
 import Masterclass from "./pages/Masterclass";
 import MentorshipPage from "./pages/Mentorship";
@@ -28,6 +43,7 @@ const App = () => (
       <Sonner />
       <LeadModalProvider>
         <BrowserRouter>
+          <ScrollToHash />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/masterclass" element={<Masterclass />} />
