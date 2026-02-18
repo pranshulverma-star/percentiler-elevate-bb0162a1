@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -177,6 +177,22 @@ const stats = [
 const Mentorship = () => {
   const [expandedTier, setExpandedTier] = useState<string | null>("deep-dive");
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "CAT Mentorship Program",
+      "description": "1-on-1 CAT mentorship sessions including mock analysis, strategy planning, accountability follow-ups and personalized study roadmaps.",
+      "provider": { "@type": "Organization", "name": "Percentilers" },
+      "areaServed": { "@type": "Country", "name": "India" },
+      "offers": { "@type": "Offer", "priceCurrency": "INR", "price": "799", "availability": "https://schema.org/InStock" }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
 
   return (
     <>
