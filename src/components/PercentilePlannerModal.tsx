@@ -15,11 +15,11 @@ interface FormData {
   twelfth_score: string;
   grad_score: string;
   grad_stream: string;
+  gender: string;
   workex_months: string;
   gap_years: string;
   internships: string;
   certifications: string;
-  competition_level: string;
 }
 
 interface Results {
@@ -35,17 +35,22 @@ const initialForm: FormData = {
   twelfth_score: "",
   grad_score: "",
   grad_stream: "Engineer",
+  gender: "Male",
   workex_months: "0",
   gap_years: "0",
   internships: "0",
   certifications: "0",
-  competition_level: "Top 20",
 };
 
-function calculateScores(data: FormData): Results {
-  const tenth = Math.min(Number(data.tenth_score) || 0, 100);
-  const twelfth = Math.min(Number(data.twelfth_score) || 0, 100);
-  const grad = Math.min(Number(data.grad_score) || 0, 100);
+function calculateScores(data: FormData): Results | "not_eligible" {
+  const tenth = Math.round(Math.min(Number(data.tenth_score) || 0, 100));
+  const twelfth = Math.round(Math.min(Number(data.twelfth_score) || 0, 100));
+  const grad = Math.round(Math.min(Number(data.grad_score) || 0, 100));
+
+  if (tenth < 45 || twelfth < 45 || grad < 45) {
+    return "not_eligible";
+  }
+
   const workex = Number(data.workex_months) || 0;
   const gaps = Number(data.gap_years) || 0;
   const internships = Number(data.internships) || 0;
@@ -63,11 +68,9 @@ function calculateScores(data: FormData): Results {
   boostScore = Math.max(boostScore - gaps * 3, 0);
   boostScore = Math.min(boostScore, 20);
 
-  let compScore = 15;
-  if (data.competition_level === "Top 10") compScore = 20;
-  else if (data.competition_level === "Top 30") compScore = 10;
+  const genderScore = data.gender === "Female" ? 5 : 0;
 
-  const profileScore = Math.min(academicScore + workScore + boostScore + compScore, 100);
+  const profileScore = Math.min(academicScore + workScore + boostScore + genderScore, 100);
 
   let top10 = 98;
   let top20 = 95;
@@ -133,10 +136,20 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
 
   const progress = step === "form" ? 50 : 100;
 
+  const [notEligible, setNotEligible] = useState(false);
+
   const handleSubmit = () => {
     setLoading(true);
-    const scores = calculateScores(form);
-    setResults(scores);
+    const result = calculateScores(form);
+    if (result === "not_eligible") {
+      setNotEligible(true);
+      setResults(null);
+      setLoading(false);
+      setStep("result");
+      return;
+    }
+    setNotEligible(false);
+    setResults(result);
     setLoading(false);
     setStep("result");
 
@@ -146,7 +159,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
     if (/^\d{10}$/.test(storedPhone) && storedName) {
       setUnlocked(true);
       // Save in background
-      saveResults(storedPhone, storedName, scores);
+      saveResults(storedPhone, storedName, result);
     } else {
       setUnlocked(false);
       setShowLeadPopup(true);
@@ -164,7 +177,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       gap_years: Number(form.gap_years) || null,
       internships: Number(form.internships) || null,
       certifications: Number(form.certifications) || null,
-      competition_level: form.competition_level,
+      competition_level: form.gender,
       profile_score: scores.profile_score,
       target_top10: scores.target_top10,
       target_top20: scores.target_top20,
@@ -210,6 +223,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       setForm(initialForm);
       setResults(null);
       setUnlocked(false);
+      setNotEligible(false);
       setShowLeadPopup(false);
       setLeadName("");
       setLeadPhone("");
@@ -239,6 +253,9 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
             {/* Academics */}
             <div className="space-y-3">
               <h3 className="text-sm font-semibold text-foreground">Academic Scores (%)</h3>
+              <p className="text-[11px] text-muted-foreground/70 italic">
+                (Enter percentages in integer. Conversion: Percentage = CGPA × 9)
+              </p>
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className="text-xs text-muted-foreground mb-1 block">10th</label>
@@ -264,6 +281,15 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
               </div>
             </div>
 
+            {/* Gender */}
+            <div className="space-y-2">
+              <h3 className="text-sm font-semibold text-foreground">Gender</h3>
+              <div className="flex gap-2">
+                <SelectOption label="Male" value="Male" selected={form.gender === "Male"} onClick={(v) => update("gender", v)} />
+                <SelectOption label="Female" value="Female" selected={form.gender === "Female"} onClick={(v) => update("gender", v)} />
+              </div>
+            </div>
+
             {/* Work Experience */}
             <div className="space-y-2">
               <h3 className="text-sm font-semibold text-foreground">Work Experience (months)</h3>
@@ -286,24 +312,28 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
               </div>
             </div>
 
-            {/* Competition */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-foreground">Competition Level</h3>
-              <div className="flex gap-2 flex-wrap">
-                {["Top 10", "Top 20", "Top 30"].map((v) => (
-                  <SelectOption key={v} label={v} value={v} selected={form.competition_level === v} onClick={(val) => update("competition_level", val)} />
-                ))}
-              </div>
-            </div>
-
             <Button onClick={handleSubmit} disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
               {loading ? "Calculating..." : "Get My Target Percentile"}
             </Button>
           </div>
         )}
 
+        {/* Not Eligible */}
+        {step === "result" && notEligible && (
+          <div className="text-center space-y-4 py-6">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-destructive/10 mx-auto">
+              <Lock className="w-7 h-7 text-destructive" />
+            </div>
+            <h3 className="text-lg font-bold text-foreground">Not Eligible for CAT</h3>
+            <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+              A minimum of 45% in 10th, 12th, and Graduation is required to be eligible for CAT.
+            </p>
+            <Button variant="outline" onClick={handleClose}>Close</Button>
+          </div>
+        )}
+
         {/* Result Step */}
-        {step === "result" && results && (
+        {step === "result" && !notEligible && results && (
           <div className="space-y-5 relative">
             {/* Blurred results overlay */}
             {!unlocked && (
