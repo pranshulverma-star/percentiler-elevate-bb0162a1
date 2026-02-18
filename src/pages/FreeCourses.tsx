@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, BookOpen, Brain, Calculator, FileText, Sparkles, Clock, Monitor, Users, CheckCircle2 } from "lucide-react";
@@ -101,6 +102,23 @@ const cardVariants = {
 };
 
 const FreeCourses = () => {
+  useEffect(() => {
+    document.title = "Free CAT 2026 Courses | QA, VARC, LRDI | Percentilers";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    const content = "Access 200+ free video lectures for CAT 2026 preparation. Covers Quantitative Ability, VARC, LRDI with 100 practice sets, arithmetic basics & PYQ solutions by 99%ile mentors.";
+    if (metaDesc) {
+      metaDesc.setAttribute("content", content);
+    } else {
+      const meta = document.createElement("meta");
+      meta.name = "description";
+      meta.content = content;
+      document.head.appendChild(meta);
+    }
+    return () => {
+      document.title = "Percentilers";
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
