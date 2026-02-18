@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import { Card } from "@/components/ui/card";
@@ -125,6 +125,20 @@ const renderCell = (val: boolean | string) => {
 const CATOMETCourses = () => {
   const { openModal } = useLeadModal();
   const [expandedCourse, setExpandedCourse] = useState<string | null>(null);
+
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": "CAT + OMET Complete Course",
+      "description": "Structured CAT preparation program covering syllabus, mock analysis, percentile strategy, and mentorship support.",
+      "provider": { "@type": "Organization", "name": "Percentilers" }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
 
   return (
     <>
