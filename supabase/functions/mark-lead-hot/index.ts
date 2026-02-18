@@ -28,16 +28,25 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { phone_number, source, name } = await req.json();
+    const { phone_number, source, name, email } = await req.json();
 
-    if (!phone_number || typeof phone_number !== "string" || !/^[6-9]\d{9}$/.test(phone_number)) {
+    // Require at least one identifier
+    if (!phone_number && !email) {
+      return new Response(JSON.stringify({ error: "Phone number or email required" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    if (phone_number && (typeof phone_number !== "string" || !/^[6-9]\d{9}$/.test(phone_number))) {
       return new Response(JSON.stringify({ error: "Invalid phone number" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    if (isRateLimited(phone_number)) {
+    const rateLimitKey = phone_number || email;
+    if (isRateLimited(rateLimitKey)) {
       return new Response(JSON.stringify({ error: "Too many requests" }), {
         status: 429,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -49,22 +58,39 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
-    const { data: existing } = await supabase
-      .from("leads")
-      .select("id")
-      .eq("phone_number", phone_number)
-      .maybeSingle();
+    // Try to find existing lead by email first, then phone
+    let existing = null;
+    if (email) {
+      const { data } = await supabase
+        .from("leads")
+        .select("id")
+        .eq("email", email)
+        .maybeSingle();
+      existing = data;
+    }
+    if (!existing && phone_number) {
+      const { data } = await supabase
+        .from("leads")
+        .select("id")
+        .eq("phone_number", phone_number)
+        .maybeSingle();
+      existing = data;
+    }
 
     if (existing) {
+      const updateData: Record<string, string> = { source: source || "strategy_call", current_status: "very_hot" };
+      if (phone_number) updateData.phone_number = phone_number;
+      if (email) updateData.email = email;
       await supabase
         .from("leads")
-        .update({ source: source || "strategy_call", current_status: "very_hot" })
-        .eq("phone_number", phone_number);
+        .update(updateData)
+        .eq("id", existing.id);
     } else {
       await supabase
         .from("leads")
         .insert({
-          phone_number,
+          phone_number: phone_number || null,
+          email: email || null,
           name: name || null,
           source: source || "strategy_call",
           current_status: "very_hot",
