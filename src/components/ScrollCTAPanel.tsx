@@ -9,6 +9,7 @@ const ScrollCTAPanel = () => {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [hasClickedCTA, setHasClickedCTA] = useState(false);
+  const hasPhone = !!localStorage.getItem("percentilers_phone");
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -59,22 +60,37 @@ const ScrollCTAPanel = () => {
           </div>
           <div className="flex flex-col gap-2">
             <Button size="sm" onClick={() => {
-              openModal("scroll_cta_study_plan", () => {
+              if (hasPhone) {
                 dismiss();
                 const el = document.getElementById("tools");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
-              });
+              } else {
+                openModal("scroll_cta_study_plan", () => {
+                  dismiss();
+                  const el = document.getElementById("tools");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                });
+              }
             }}>
               Generate Free Study Plan
             </Button>
-            <Button size="sm" variant="outline" onClick={() => {
-              openModal("scroll_cta_masterclass", () => {
+            {hasPhone ? (
+              <Button size="sm" variant="outline" onClick={() => {
                 dismiss();
-                window.location.href = "/masterclass";
-              });
-            }}>
-              Watch Free Masterclass <ArrowRight className="ml-1 h-3.5 w-3.5" />
-            </Button>
+                window.location.href = "/courses/cat-omet";
+              }}>
+                Apply for 95%ile Batch <ArrowRight className="ml-1 h-3.5 w-3.5" />
+              </Button>
+            ) : (
+              <Button size="sm" variant="outline" onClick={() => {
+                openModal("scroll_cta_masterclass", () => {
+                  dismiss();
+                  window.location.href = "/masterclass";
+                });
+              }}>
+                Watch Free Masterclass <ArrowRight className="ml-1 h-3.5 w-3.5" />
+              </Button>
+            )}
           </div>
         </motion.div>
       )}
