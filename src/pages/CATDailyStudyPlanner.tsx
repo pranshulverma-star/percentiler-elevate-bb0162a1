@@ -553,16 +553,26 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
         className="fixed bottom-0 left-0 right-0 z-40"
       >
-        <div className="bg-foreground border-t border-border/20 shadow-2xl">
-          <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
-            <div className="flex-1 min-w-0">
-              <p className="text-xs md:text-sm font-semibold text-background truncate">
-                {ctaContent.headline}
-              </p>
+        <div className="relative overflow-hidden bg-gradient-to-r from-foreground via-foreground to-foreground border-t border-primary/20">
+          {/* Subtle glow accent */}
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute -top-8 left-1/4 w-40 h-16 bg-primary/20 blur-2xl rounded-full" />
+            <div className="absolute -top-8 right-1/4 w-32 h-12 bg-primary/10 blur-2xl rounded-full" />
+          </div>
+          <div className="relative max-w-2xl mx-auto px-4 py-3.5 flex items-center gap-3">
+            <div className="flex items-center gap-2.5 flex-1 min-w-0">
+              <div className="shrink-0 w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
+                {ctaContent.icon}
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm font-semibold text-background leading-tight truncate">
+                  {ctaContent.headline}
+                </p>
+              </div>
             </div>
             <Button
               size="sm"
-              className="shrink-0 rounded-xl font-semibold gap-2 shadow-lg shadow-primary/30"
+              className="shrink-0 rounded-full font-semibold gap-2 shadow-lg shadow-primary/30 px-5"
               onClick={ctaContent.href === "/masterclass" ? undefined : async (e) => {
                 e.preventDefault();
                 const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
@@ -580,14 +590,14 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
               asChild={ctaContent.href === "/masterclass"}
             >
               {ctaContent.href === "/masterclass" ? (
-                <a href={ctaContent.href}>{ctaContent.icon} {ctaContent.cta}</a>
+                <a href={ctaContent.href}>{ctaContent.cta}</a>
               ) : (
-                <span>{ctaContent.icon} {ctaContent.cta}</span>
+                <span>{ctaContent.cta}</span>
               )}
             </Button>
             <button
               onClick={handleDismiss}
-              className="shrink-0 text-background/50 hover:text-background transition-colors p-1"
+              className="shrink-0 text-background/40 hover:text-background transition-colors p-1 rounded-full hover:bg-background/10"
               aria-label="Dismiss"
             >
               <X className="h-4 w-4" />

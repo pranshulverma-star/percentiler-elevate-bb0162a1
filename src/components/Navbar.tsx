@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Phone } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 import ThemeToggle from "@/components/ThemeToggle";
 import { motion, useSpring } from "framer-motion";
 import logoImg from "@/assets/logo-percentilers.png";
@@ -16,6 +18,7 @@ const navLinks = [
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const [showCallDialog, setShowCallDialog] = useState(false);
   const { openModal } = useLeadModal();
   const scaleX = useSpring(0, { stiffness: 100, damping: 30 });
 
@@ -28,8 +31,28 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [scaleX]);
 
-  const handleStrategyCall = () => {
-    openModal("navbar_strategy_call");
+  const markLeadHot = async (phone: string) => {
+    try {
+      await supabase.functions.invoke("mark-lead-hot", {
+        body: { phone_number: phone, source: "navbar_strategy_call", name: localStorage.getItem("percentilers_name") || null },
+      });
+    } catch (e) {
+      console.error("Failed to mark lead hot", e);
+    }
+  };
+
+  const handleStrategyCall = async () => {
+    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    if (phone) {
+      await markLeadHot(phone);
+      setShowCallDialog(true);
+    } else {
+      openModal("navbar_strategy_call", () => {
+        const newPhone = localStorage.getItem("percentilers_phone") || "";
+        if (newPhone) markLeadHot(newPhone);
+        setShowCallDialog(true);
+      });
+    }
   };
 
   return (
@@ -71,6 +94,32 @@ const Navbar = () => {
       </header>
       {/* Spacer to offset fixed header */}
       <div className="h-16" />
+
+      {/* Call Confirmation Dialog */}
+      <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
+        <DialogContent className="max-w-sm text-center">
+          <DialogTitle className="sr-only">Book a Call</DialogTitle>
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">
+              <Phone className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground">You're In! 🎉</h3>
+            <p className="text-muted-foreground text-sm">
+              Our counselor will connect with you shortly to discuss the 95%ile Guarantee Batch.
+            </p>
+            <div className="w-full space-y-3 pt-2">
+              <Button size="lg" className="w-full" asChild>
+                <a href="tel:+919911928071">
+                  <Phone className="mr-2 h-4 w-4" /> Call Now — +91 99119 28071
+                </a>
+              </Button>
+              <Button variant="outline" className="w-full" onClick={() => setShowCallDialog(false)}>
+                I'll wait for the call
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
