@@ -1,29 +1,19 @@
 
 
-## Fix: Subpages Opening at Bottom of Page
+## Fix: Lead Form Showing for Returning Users + Submission Error
 
-### Problem
-
-When navigating to subpages (e.g., `/masterclass`, `/courses/cat-omet`), the page opens at the current scroll position instead of the top. This happens because `ScrollToHash` in `App.tsx` only watches the `hash` value. When navigating between routes that both have no hash, the `useEffect` doesn't re-trigger since its dependency (`hash`) hasn't changed.
-
-### Fix
-
-**File: `src/App.tsx`** -- Update `ScrollToHash` to also depend on `pathname`:
-
-```typescript
-function ScrollToHash() {
-  const { hash, pathname } = useLocation();
-  useEffect(() => {
-    if (hash) {
-      setTimeout(() => {
-        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }, [hash, pathname]);
-  return null;
-}
+### Change 1: Database Migration
+Add an UPDATE RLS policy to the `leads` table:
+```sql
+CREATE POLICY "Allow anonymous update leads"
+  ON public.leads FOR UPDATE
+  USING (true) WITH CHECK (true);
 ```
 
-Adding `pathname` to the dependency array ensures `window.scrollTo(0, 0)` fires on every route change, not just hash changes. Single-line change, no side effects.
+### Change 2: Store name in localStorage from Masterclass page
+**File:** `src/pages/Masterclass.tsx`
+
+In the `handleSubmit` function, add `localStorage.setItem("percentilers_name", name.trim())` right before the `navigate("/masterclass/watch")` call.
+
+Both changes are minimal and safe — they align with existing patterns used across the rest of the codebase.
+
