@@ -141,8 +141,8 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
     setStep("result");
 
     // Check if already registered
-    const storedPhone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
-    const storedName = localStorage.getItem("percentilers_name") || localStorage.getItem("planner_name") || "";
+    const storedPhone = localStorage.getItem("percentilers_phone") || "";
+    const storedName = localStorage.getItem("percentilers_name") || "";
     if (/^\d{10}$/.test(storedPhone) && storedName) {
       setUnlocked(true);
       // Save in background

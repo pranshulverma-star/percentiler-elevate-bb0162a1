@@ -42,7 +42,7 @@ const Navbar = () => {
   };
 
   const handleStrategyCall = async () => {
-    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    const phone = localStorage.getItem("percentilers_phone") || "";
     if (phone) {
       await markLeadHot(phone);
       setShowCallDialog(true);
