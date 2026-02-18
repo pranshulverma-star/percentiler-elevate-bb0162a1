@@ -1,78 +1,36 @@
 
 
-# Percentilers.in — Premium Homepage Redesign
+## Update "Book Free CAT Strategy Call" CTA on Readiness Assessment Results Page
 
-A complete homepage rebuild for a premium CAT coaching brand, designed to drive users toward the **Free Masterclass** and course purchases.
+### What Changes
 
-**Design System:** White-dominant layout, black headings, orange (#FF6B00) primary CTAs, clean sans-serif typography, generous spacing, subtle shadows, no gradients or flashy animations.
+The CTA button on the readiness assessment results page will be updated to follow the same lead capture and call confirmation flow used across the site (header, Free Courses page, CAT Journey section), with a custom message and an additional "Mentorship Plans" option.
 
----
+### User-Facing Behavior
 
-## 1. Navigation Bar
-- Clean sticky header with Percentilers logo (left)
-- Navigation links: Home, Courses, Results, Free Tools, Contact
-- Right-aligned orange CTA button: "Watch Free Masterclass"
-- Mobile: hamburger menu
+1. User clicks "Book Free CAT Strategy Call" on the results page
+2. If the user already has a phone number stored (returning user): the lead is marked as "very_hot" via the backend function, and a confirmation popup appears
+3. If the user is new: the lead capture modal opens first, then on success the confirmation popup appears
+4. The confirmation popup will show:
+   - Custom heading: **"You just unlocked your Free Nudge call"**
+   - Three options:
+     - **Call Now** — direct dial link to +91 99119 28071
+     - **Mentorship Plans** — navigates to /mentorship
+     - **I'll wait for the call** — closes the dialog
 
-## 2. Hero Section (Above the Fold)
-- **Left side:** Bold headline *"From Preparation to 95+ Percentile — With Structure."*, short subheadline, orange primary CTA ("Watch Free Masterclass"), outlined secondary CTA ("Try Free Study Planner")
-- **Right side:** Clean mockup showing minimal student result scorecards (percentile numbers, college names) — no cluttered poster banners
-- White background, premium spacing
+### Technical Details
 
-## 3. Trust Strip
-- Slim horizontal bar with 4 bold stats: **200+ 95%ilers** · **5000+ Students Trained** · **4.8★ Rating** · **8+ Years Experience**
-- Large numbers, black text, minimal design
+**File: `src/pages/CATReadinessAssessment.tsx`**
 
-## 4. Results Section
-- Headline: *"Our Students Don't Guess. They Improve."*
-- 6 clean result cards in a grid — each showing percentile score, college conversion, and student name
-- Soft shadows, consistent card sizing, white backgrounds
-
-## 5. Testimonials Section
-- Headline: *"What Our Students Say"*
-- 3 text-based testimonial cards with one bold highlight sentence each, uniform height
-- Below: horizontal scrollable carousel for WhatsApp screenshot testimonials with rounded corners and lazy-loaded placeholder images
-
-## 6. Webinar / Masterclass Section (Primary Conversion)
-- Light grey background for contrast
-- Headline: *"Confused About CAT? Watch This Free Masterclass."*
-- 4 bullet points covering study framework, mock analysis, strategy, and common mistakes
-- Prominent orange CTA: "Watch Free Masterclass"
-
-## 7. Courses Section
-- Headline: *"Our Programs"*
-- 3 uniform course cards, each with course name, 3 bullet highlights, and "Explore Program" CTA
-- Clean, no oversized images
-
-## 8. Free Tools Section
-- Headline: *"Extra Support for Serious Aspirants"*
-- 3 minimal cards: Daily Study Planner, Performance Tracker, Free Mock Tests
-- One-line benefit + "Use Free Tool" CTA each
-- Kept visually secondary to courses
-
-## 9. Faculty Section
-- Headline: *"Learn From Experts Who've Been There"*
-- Grid of circular avatar images with bold name and 2-line credential
-- No long bios
-
-## 10. Founder Section
-- Split layout: founder image (left), concise 5–6 line story (right)
-- Headline: *"The Vision Behind Percentilers"*
-
-## 11. FAQ Section
-- Accordion-style Q&A with clean white design
-- SEO-friendly headings, short answers
-
-## 12. Final CTA Section
-- Strong closing headline: *"Ready to Improve Your Percentile?"*
-- Orange primary CTA: "Watch Free Masterclass"
-- Outlined secondary CTA: "Book Free Strategy Call"
-
-## 13. Floating WhatsApp Button
-- Single floating WhatsApp icon (bottom-right corner)
-- No other floating elements
-
----
-
-All sections will be fully responsive, use consistent vertical spacing, and maintain a calm premium academic feel throughout. Placeholder content and images will be used where real assets aren't available yet.
+1. Add imports for `useLeadModal`, `Dialog`/`DialogContent`/`DialogTitle`, and the `supabase` client
+2. Inside the `ResultsSection` component:
+   - Add `showCallDialog` state
+   - Add `markLeadHot` helper (invokes `mark-lead-hot` edge function with source `"readiness_strategy_call"`)
+   - Add `handleStrategyCall` function with the same localStorage check pattern used elsewhere
+   - Replace the current `onClick={() => navigate("/masterclass")}` on the CTA button with `onClick={handleStrategyCall}`
+3. Add the confirmation `Dialog` after the results section markup with:
+   - Custom message: "You just unlocked your Free Nudge call"
+   - "Call Now" button (tel link)
+   - "Mentorship Plans" button linking to `/mentorship`
+   - "I'll wait for the call" dismiss button
 
