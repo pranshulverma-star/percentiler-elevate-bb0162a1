@@ -29,7 +29,7 @@ const faculty = [
 ];
 
 const FacultySection = () => (
-  <section className="py-14 md:py-24 bg-background relative overflow-hidden">
+  <section className="py-10 md:py-16 bg-background relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full bg-primary/[0.02] blur-3xl" />
     </div>

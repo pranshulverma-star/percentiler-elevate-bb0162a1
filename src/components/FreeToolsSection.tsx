@@ -13,7 +13,7 @@ const tools = [
 const FreeToolsSection = () => {
 
   return (
-    <section id="tools" className="py-14 md:py-24 bg-secondary/50">
+    <section id="tools" className="py-10 md:py-16 bg-secondary/50">
       <div className="container mx-auto px-4 md:px-6">
         <motion.div
           className="text-center mb-14 space-y-3"

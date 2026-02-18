@@ -7,7 +7,7 @@ const FinalCTASection = () => {
   const { openModal } = useLeadModal();
 
   return (
-    <section id="contact" className="py-16 md:py-32 bg-foreground relative overflow-hidden">
+    <section id="contact" className="py-12 md:py-20 bg-foreground relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 -right-32 w-80 h-80 rounded-full bg-primary/15 blur-3xl" />
         <div className="absolute -bottom-32 -left-32 w-80 h-80 rounded-full bg-primary/10 blur-3xl" />

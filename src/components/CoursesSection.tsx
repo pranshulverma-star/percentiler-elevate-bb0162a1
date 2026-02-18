@@ -26,7 +26,7 @@ const courses = [
 ];
 
 const CoursesSection = () => (
-  <section id="courses" className="py-14 md:py-28 bg-background relative overflow-hidden">
+  <section id="courses" className="py-10 md:py-16 bg-background relative overflow-hidden">
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] rounded-full bg-primary/[0.02] blur-3xl" />
     </div>
