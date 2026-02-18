@@ -306,8 +306,8 @@ const LeadCapture = ({
 
 
 }: {sectionFilter: SectionFilter;onSubmit: () => void;}) => {
-  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || localStorage.getItem("planner_name") || "");
-  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "");
+  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || "");
+  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || "");
   const [target, setTarget] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -544,8 +544,8 @@ const bandConfig: Record<string, {color: string;bg: string;}> = {
 };
 
 const ResultsGateOverlay = ({ onUnlock }: { onUnlock: (target: string) => void }) => {
-  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || localStorage.getItem("planner_name") || "");
-  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "");
+  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || "");
+  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || "");
   const [target, setTarget] = useState("90+");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -665,7 +665,7 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
   const { openModal } = useLeadModal();
   const [showCallDialog, setShowCallDialog] = useState(false);
   const [isGated, setIsGated] = useState(() => {
-    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone");
+    const phone = localStorage.getItem("percentilers_phone");
     return !phone;
   });
   const insight = generateInsight(result);
@@ -679,7 +679,7 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
   const topPercent = Math.max(0.1, Math.round(rank / 10000 * 1000) / 10);
 
   const markLeadHot = async (phone: string) => {
-    const name = localStorage.getItem("percentilers_name") || localStorage.getItem("planner_name") || "";
+    const name = localStorage.getItem("percentilers_name") || "";
     try {
       await supabase.functions.invoke("mark-lead-hot", {
         body: { phone_number: phone, source: "readiness_strategy_call", name },
@@ -688,7 +688,7 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
   };
 
   const handleStrategyCall = async () => {
-    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    const phone = localStorage.getItem("percentilers_phone") || "";
     if (/^\d{10}$/.test(phone)) {
       await markLeadHot(phone);
       setShowCallDialog(true);

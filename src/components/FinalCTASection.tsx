@@ -21,7 +21,7 @@ const FinalCTASection = () => {
   };
 
   const handleStrategyCall = async () => {
-    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    const phone = localStorage.getItem("percentilers_phone") || "";
     if (phone) {
       await markLeadHot(phone, "final_cta_strategy_call");
       setShowCallDialog(true);

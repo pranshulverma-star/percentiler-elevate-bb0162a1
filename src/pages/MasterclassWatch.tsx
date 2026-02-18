@@ -26,7 +26,7 @@ const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
 
 const MasterclassWatch = () => {
   const navigate = useNavigate();
-  const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone");
+  const phone = localStorage.getItem("percentilers_phone");
   const [watchPct, setWatchPct] = useState(0);
   const [maxWatchPct, setMaxWatchPct] = useState(0);
   const [completed, setCompleted] = useState(false);

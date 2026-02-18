@@ -109,8 +109,8 @@ interface LeadData {
 }
 
 function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
-  const [name, setName] = useState(() => localStorage.getItem("planner_name") || localStorage.getItem("percentilers_name") || "");
-  const [phone, setPhone] = useState(() => localStorage.getItem("planner_phone") || localStorage.getItem("percentilers_phone") || "");
+  const [name, setName] = useState(() => localStorage.getItem("percentilers_name") || "");
+  const [phone, setPhone] = useState(() => localStorage.getItem("percentilers_phone") || "");
   const [targetYear, setTargetYear] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
   const [prepLevel, setPrepLevel] = useState("");
@@ -169,8 +169,8 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
 
       const startDate = existingStats?.start_date || today;
 
-      localStorage.setItem("planner_phone", phone);
-      localStorage.setItem("planner_name", name);
+      localStorage.setItem("percentilers_phone", phone);
+      localStorage.setItem("percentilers_name", name);
       localStorage.setItem("planner_year", targetYear);
       localStorage.setItem("planner_prep_level", prepLevel);
       localStorage.setItem("planner_start_date", startDate);
@@ -575,7 +575,7 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
               className="shrink-0 rounded-full font-semibold gap-2 shadow-lg shadow-primary/30 px-5"
               onClick={ctaContent.href === "/masterclass" ? undefined : async (e) => {
                 e.preventDefault();
-                const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+                const phone = localStorage.getItem("percentilers_phone") || "";
                 if (phone) {
                   try {
                     await supabase.functions.invoke("mark-lead-hot", {
@@ -919,12 +919,12 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
 
 export default function CATDailyStudyPlanner() {
   const [view, setView] = useState<"lead" | "dashboard">(() => {
-    return localStorage.getItem("planner_phone") ? "dashboard" : "lead";
+    return localStorage.getItem("percentilers_phone") ? "dashboard" : "lead";
   });
 
   const [leadData, setLeadData] = useState<LeadData>(() => ({
-    phone: localStorage.getItem("planner_phone") || "",
-    name: localStorage.getItem("planner_name") || "Aspirant",
+    phone: localStorage.getItem("percentilers_phone") || "",
+    name: localStorage.getItem("percentilers_name") || "Aspirant",
     targetYear: (() => {
       const s = localStorage.getItem("planner_year");
       if (s) {
@@ -943,8 +943,8 @@ export default function CATDailyStudyPlanner() {
   };
 
   const handleReset = () => {
-    localStorage.removeItem("planner_phone");
-    localStorage.removeItem("planner_name");
+    localStorage.removeItem("percentilers_phone");
+    localStorage.removeItem("percentilers_name");
     localStorage.removeItem("planner_year");
     localStorage.removeItem("planner_prep_level");
     localStorage.removeItem("planner_start_date");
