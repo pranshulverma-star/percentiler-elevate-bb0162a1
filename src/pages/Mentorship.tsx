@@ -183,7 +183,7 @@ const Mentorship = () => {
       <Navbar />
       <main className="pt-16 md:pt-20">
         {/* Hero */}
-        <section className="relative py-3 md:py-16 overflow-hidden">
+        <section className="relative py-4 md:py-8 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-0 left-1/3 w-[300px] md:w-[500px] h-[300px] md:h-[500px] rounded-full bg-primary/[0.04] blur-3xl" />
             <div className="absolute bottom-0 right-1/4 w-[250px] md:w-[400px] h-[250px] md:h-[400px] rounded-full bg-violet-500/[0.03] blur-3xl" />

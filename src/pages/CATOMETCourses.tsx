@@ -131,7 +131,7 @@ const CATOMETCourses = () => {
       <Navbar />
       <main className="pt-16 md:pt-20">
         {/* Hero – compact */}
-        <section className="relative py-8 md:py-14 overflow-hidden">
+        <section className="relative py-4 md:py-8 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
             <div className="absolute top-1/4 left-1/4 w-[400px] md:w-[600px] h-[400px] md:h-[600px] rounded-full bg-primary/[0.04] blur-3xl" />
           </div>
