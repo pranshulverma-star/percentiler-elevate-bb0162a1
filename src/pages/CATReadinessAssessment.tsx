@@ -711,6 +711,23 @@ const CATReadinessAssessment = () => {
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [sectionFilter, setSectionFilter] = useState<SectionFilter>("mix");
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "CAT Readiness Assessment",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "description": "Free CAT diagnostic test to evaluate preparation level and identify weak sections.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+      "provider": { "@type": "Organization", "name": "Percentilers" }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
+
   // Restore completed assessment on mount
   useEffect(() => {
     const stored = getStored();
