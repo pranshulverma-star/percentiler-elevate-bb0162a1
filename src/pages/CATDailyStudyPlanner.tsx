@@ -567,11 +567,12 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
                 e.preventDefault();
                 const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
                 if (phone) {
-                  const { data: existing } = await supabase.from("leads").select("id").eq("phone_number", phone).maybeSingle();
-                  if (existing) {
-                    await supabase.from("leads").update({ source: "planner_counseling_call", current_status: "very_hot" }).eq("phone_number", phone);
-                  } else {
-                    await supabase.from("leads").insert({ phone_number: phone, name: localStorage.getItem("percentilers_name") || null, source: "planner_counseling_call", current_status: "very_hot" });
+                  try {
+                    await supabase.functions.invoke("mark-lead-hot", {
+                      body: { phone_number: phone, source: "planner_counseling_call", name: localStorage.getItem("percentilers_name") || null },
+                    });
+                  } catch (err) {
+                    console.error("Failed to mark lead hot", err);
                   }
                 }
                 setShowCallDialog(true);
