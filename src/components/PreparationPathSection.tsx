@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Phone, Rocket, RefreshCw, Target, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLeadModal } from "@/components/LeadModalProvider";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { supabase } from "@/integrations/supabase/client";
 
 type Level = "beginner" | "repeater" | "advanced";
 
@@ -32,7 +34,18 @@ const recommendations: Record<Level, { headline: string; text: string; tag: stri
 
 const PreparationPathSection = () => {
   const [selected, setSelected] = useState<Level | null>(null);
+  const [showCallDialog, setShowCallDialog] = useState(false);
   const { openModal } = useLeadModal();
+
+  const markLeadHot = async (phone: string) => {
+    try {
+      await supabase.functions.invoke("mark-lead-hot", {
+        body: { phone_number: phone, source: "homepage_selector_call", name: localStorage.getItem("percentilers_name") || null },
+      });
+    } catch (e) {
+      console.error("Failed to mark lead hot", e);
+    }
+  };
 
   const handlePrimaryCTA = (level: Level) => {
     if (level === "beginner") {
@@ -51,11 +64,22 @@ const PreparationPathSection = () => {
     }
   };
 
-  const handleSecondaryCTA = () => {
-    openModal("homepage_selector_call");
+  const handleSecondaryCTA = async () => {
+    const phone = localStorage.getItem("percentilers_phone") || localStorage.getItem("planner_phone") || "";
+    if (phone) {
+      await markLeadHot(phone);
+      setShowCallDialog(true);
+    } else {
+      openModal("homepage_selector_call", () => {
+        const newPhone = localStorage.getItem("percentilers_phone") || "";
+        if (newPhone) markLeadHot(newPhone);
+        setShowCallDialog(true);
+      });
+    }
   };
 
   return (
+    <>
     <section className="py-10 md:py-16 bg-background relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/[0.03] blur-3xl" />
@@ -151,6 +175,33 @@ const PreparationPathSection = () => {
         </div>
       </div>
     </section>
+
+      {/* Call Confirmation Dialog */}
+      <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
+        <DialogContent className="max-w-sm text-center">
+          <DialogTitle className="sr-only">Book a Call</DialogTitle>
+          <div className="flex flex-col items-center gap-4 py-4">
+            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10">
+              <Phone className="h-7 w-7 text-primary" />
+            </div>
+            <h3 className="text-xl font-bold text-foreground">You're In! 🎉</h3>
+            <p className="text-muted-foreground text-sm">
+              Our counselor will connect with you shortly to discuss the 95%ile Guarantee Batch.
+            </p>
+            <div className="w-full space-y-3 pt-2">
+              <Button size="lg" className="w-full" asChild>
+                <a href="tel:+919911928071">
+                  <Phone className="mr-2 h-4 w-4" /> Call Now — +91 99119 28071
+                </a>
+              </Button>
+              <Button variant="outline" className="w-full" onClick={() => setShowCallDialog(false)}>
+                I'll wait for the call
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 
