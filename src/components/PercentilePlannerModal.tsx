@@ -200,13 +200,38 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
 
   const handleGoogleUnlock = async () => {
     setSigningIn(true);
+    // Save form + results so we can restore after OAuth redirect
+    sessionStorage.setItem("planner_pending", JSON.stringify({ form, results, notEligible }));
     await signIn();
-    // After redirect, auth state change will unlock
   };
 
-  // React to auth changes
+  // Restore state after OAuth redirect
   useEffect(() => {
-    if (isAuthenticated && !unlocked && step === "result" && results) {
+    const pending = sessionStorage.getItem("planner_pending");
+    if (pending && isAuthenticated) {
+      try {
+        const { form: savedForm, results: savedResults, notEligible: savedNotEligible } = JSON.parse(pending);
+        sessionStorage.removeItem("planner_pending");
+        setForm(savedForm);
+        setResults(savedResults);
+        setNotEligible(savedNotEligible);
+        setStep("result");
+        setUnlocked(true);
+        onOpenChange(true);
+        // Save results
+        const phone = localStorage.getItem("percentilers_phone") || "";
+        const name = user?.user_metadata?.full_name || "";
+        if (phone && savedResults) saveResults(phone, name, savedResults);
+        toast({ title: "Results unlocked!", description: "Here are your target percentiles." });
+      } catch {
+        sessionStorage.removeItem("planner_pending");
+      }
+    }
+  }, [isAuthenticated]);
+
+  // React to auth changes (for non-redirect flows)
+  useEffect(() => {
+    if (isAuthenticated && !unlocked && step === "result" && results && !sessionStorage.getItem("planner_pending")) {
       setUnlocked(true);
       const phone = localStorage.getItem("percentilers_phone") || "";
       const name = user?.user_metadata?.full_name || "";

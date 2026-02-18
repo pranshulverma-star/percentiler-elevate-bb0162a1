@@ -51,7 +51,7 @@ export function useAuth(): AuthState {
 
   const signIn = useCallback(async () => {
     await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.origin,
+      redirect_uri: window.location.href,
     });
   }, []);
 
