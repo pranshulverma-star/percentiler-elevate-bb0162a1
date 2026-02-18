@@ -39,15 +39,37 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const openModal = (src: string, onSuccess?: () => void) => {
+  const openModal = async (src: string, onSuccess?: () => void) => {
     const storedPhone = localStorage.getItem("percentilers_phone") || "";
-    const storedName = localStorage.getItem("percentilers_name") || "";
+    let storedName = localStorage.getItem("percentilers_name") || "";
+
+    // If phone exists but name is missing, try fetching from database
+    if (/^\d{10}$/.test(storedPhone) && !storedName) {
+      const { data } = await supabase
+        .from("leads")
+        .select("name")
+        .eq("phone_number", storedPhone)
+        .maybeSingle();
+      if (data?.name) {
+        storedName = data.name;
+        localStorage.setItem("percentilers_name", storedName);
+      }
+    }
 
     // If user already registered, skip the modal and proceed directly
     if (/^\d{10}$/.test(storedPhone) && storedName) {
-      // Silently upsert with the new source in the background
       supabase.from("leads").upsert(
         { phone_number: storedPhone, name: storedName, source: src },
+        { onConflict: "phone_number" }
+      );
+      onSuccess?.();
+      return;
+    }
+
+    // Phone exists but name not found anywhere — skip modal anyway
+    if (/^\d{10}$/.test(storedPhone)) {
+      supabase.from("leads").upsert(
+        { phone_number: storedPhone, source: src },
         { onConflict: "phone_number" }
       );
       onSuccess?.();
