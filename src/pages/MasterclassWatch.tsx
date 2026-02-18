@@ -223,87 +223,72 @@ const MasterclassWatch = () => {
             </div>
           )}
 
-          {/* Resource Kit — Above the fold */}
-          <section id="resource-kit-section" className="mb-10">
-            <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-background p-5 md:p-8 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/[0.06] rounded-bl-full blur-2xl pointer-events-none" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/[0.04] rounded-tr-full blur-xl pointer-events-none" />
+          {/* Resource Kit — Compact */}
+          {(() => {
+            const unlocked = resources.filter(r => maxWatchPct >= r.unlockAt);
+            const locked = resources.filter(r => maxWatchPct < r.unlockAt);
+            const visible = [...unlocked, ...locked.slice(0, 2)];
+            const hiddenCount = resources.length - visible.length;
+            return (
+              <section id="resource-kit-section" className="mb-6">
+                <div className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-background p-4 md:p-5 relative overflow-hidden">
+                  <div className="flex items-center gap-2 mb-3 relative z-10">
+                    <Gift className="h-4 w-4 text-primary" />
+                    <h2 className="text-sm md:text-base font-bold text-foreground">Free Resource Kit</h2>
+                    <span className="ml-auto inline-flex items-center gap-1 text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                      <Flame className="h-2.5 w-2.5" />
+                      {unlocked.length}/{resources.length}
+                    </span>
+                  </div>
 
-              <div className="flex items-center gap-2 mb-1 relative z-10">
-                <Gift className="h-5 w-5 text-primary" />
-                <h2 className="text-lg md:text-xl font-bold text-foreground">Free Resource Kit</h2>
-                <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full">
-                  <Flame className="h-3 w-3" />
-                  {resources.filter(r => maxWatchPct >= r.unlockAt).length}/{resources.length} Unlocked
-                </span>
-              </div>
-              <p className="text-xs text-muted-foreground mb-4 relative z-10">Watch the masterclass to unlock resources worth ₹2,999 — <span className="font-semibold text-primary">FREE</span></p>
-
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 md:gap-3 relative z-10">
-                {resources.map((r, i) => {
-                  const isUnlocked = maxWatchPct >= r.unlockAt;
-                  return (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.08, duration: 0.4 }}
-                      className={`group relative rounded-xl border p-3 md:p-4 text-center transition-all duration-300 ${
-                        isUnlocked
-                          ? "border-primary/30 bg-background shadow-md hover:shadow-lg hover:-translate-y-1 cursor-pointer"
-                          : "border-border/40 bg-muted/30"
-                      }`}
-                    >
-                      {isUnlocked && (
-                        <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
-                          <Sparkles className="h-3 w-3 text-primary-foreground" />
-                        </div>
-                      )}
-                      <div className={`mx-auto w-9 h-9 rounded-lg flex items-center justify-center mb-2 ${
-                        isUnlocked ? "bg-primary/10" : "bg-muted"
-                      }`}>
-                        {isUnlocked ? (
-                          <r.icon className="h-4 w-4 text-primary" />
-                        ) : (
-                          <Lock className="h-4 w-4 text-muted-foreground/50" />
-                        )}
+                  <div className="flex gap-2 overflow-x-auto pb-1 relative z-10 scrollbar-hide">
+                    {visible.map((r, i) => {
+                      const isUnlocked = maxWatchPct >= r.unlockAt;
+                      return (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, scale: 0.95 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.06, duration: 0.3 }}
+                          className={`relative flex-shrink-0 w-28 md:w-32 rounded-lg border p-2.5 text-center transition-all duration-200 ${
+                            isUnlocked
+                              ? "border-primary/30 bg-background shadow-sm hover:shadow-md cursor-pointer"
+                              : "border-border/40 bg-muted/20 opacity-70"
+                          }`}
+                        >
+                          {isUnlocked && (
+                            <div className="absolute -top-1 -right-1 w-4 h-4 bg-primary rounded-full flex items-center justify-center">
+                              <Sparkles className="h-2.5 w-2.5 text-primary-foreground" />
+                            </div>
+                          )}
+                          <div className={`mx-auto w-7 h-7 rounded-md flex items-center justify-center mb-1.5 ${
+                            isUnlocked ? "bg-primary/10" : "bg-muted"
+                          }`}>
+                            {isUnlocked ? <r.icon className="h-3.5 w-3.5 text-primary" /> : <Lock className="h-3 w-3 text-muted-foreground/50" />}
+                          </div>
+                          <p className={`text-[10px] font-medium leading-tight ${isUnlocked ? "text-foreground" : "text-muted-foreground/50"}`}>
+                            {r.label}
+                          </p>
+                          {!isUnlocked && (
+                            <span className="inline-flex items-center gap-0.5 text-[9px] text-muted-foreground/40 font-medium mt-1">
+                              <Lock className="h-2 w-2" /> {r.unlockAt}%
+                            </span>
+                          )}
+                        </motion.div>
+                      );
+                    })}
+                    {hiddenCount > 0 && (
+                      <div className="flex-shrink-0 w-20 rounded-lg border border-dashed border-border/30 flex items-center justify-center text-[10px] text-muted-foreground/40 font-medium">
+                        +{hiddenCount} more
                       </div>
-                      <p className={`text-[11px] md:text-xs font-medium leading-tight mb-2 ${
-                        isUnlocked ? "text-foreground" : "text-muted-foreground/60"
-                      }`}>
-                        {r.label}
-                      </p>
-                      {isUnlocked ? (
-                        <Button size="sm" variant="outline" className="h-7 text-[10px] px-2.5 w-full" asChild>
-                          <a href={r.action === "planner" ? "/cat-daily-study-planner" : "#"}>
-                            {r.action === "planner" ? "Open" : "Get"}
-                          </a>
-                        </Button>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/50 font-medium">
-                          <Lock className="h-2.5 w-2.5" /> Watch {r.unlockAt}%
-                        </span>
-                      )}
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </div>
-          </section>
+                    )}
+                  </div>
+                </div>
+              </section>
+            );
+          })()}
 
-          <section className="mb-12">
-            <h2 className="text-2xl font-bold text-foreground mb-6">You'll Learn</h2>
-            <ul className="space-y-3">
-              {learningBullets.map((b) => (
-                <li key={b} className="flex items-start gap-3">
-                  <CheckCircle className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                  <span className="text-foreground">{b}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          <div className="text-center mb-16">
+          <div className="text-center mb-10">
             <Button size="lg" onClick={handleApply} disabled={applyLoading}>
               {applyLoading ? "Submitting..." : (<>Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" /></>)}
             </Button>
