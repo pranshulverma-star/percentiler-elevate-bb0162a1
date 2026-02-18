@@ -244,9 +244,9 @@ const MasterclassWatch = () => {
             )}
             {showTapToPlay && !videoError && !videoLoading && (
               <button
-                className="absolute inset-0 flex items-center justify-center z-15 bg-black/40 cursor-pointer"
+                className="absolute inset-0 flex items-center justify-center z-[15] bg-black/40 cursor-pointer"
                 onClick={() => {
-                  videoRef.current?.play();
+                  videoRef.current?.play().catch(() => {});
                   setShowTapToPlay(false);
                 }}
                 aria-label="Tap to play video"
@@ -267,13 +267,23 @@ const MasterclassWatch = () => {
               preload="auto"
               onTimeUpdate={handleTimeUpdate}
               onEnded={handleVideoEnded}
-              onLoadedData={() => setVideoLoading(false)}
-              onLoadedMetadata={handleLoadedMetadata}
+              onLoadedMetadata={(e) => {
+                setVideoLoading(false);
+                handleLoadedMetadata();
+              }}
+              onCanPlay={() => setVideoLoading(false)}
               onPlay={() => setShowTapToPlay(false)}
-              onError={() => setVideoError(true)}
               onContextMenu={(e) => e.preventDefault()}
             >
-              <source src={VIDEO_URL} type="video/mp4" />
+              <source
+                src={VIDEO_URL}
+                type="video/mp4"
+                onError={() => {
+                  console.error("Video source failed to load:", VIDEO_URL);
+                  setVideoError(true);
+                  setVideoLoading(false);
+                }}
+              />
               Your browser does not support the video tag.
             </video>
           </div>
