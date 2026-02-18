@@ -1,4 +1,4 @@
-import { useState, createContext, useContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -39,7 +39,6 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   // Content gate: just triggers Google sign-in if not authenticated
   const openContentGate = async (src: string, onSuccess?: () => void) => {
     if (isAuthenticated) {
-      // Already signed in — update source and proceed
       if (user?.email) {
         (supabase.from("leads") as any).upsert(
           { email: user.email, name: user.user_metadata?.full_name || null, source: src },
@@ -53,13 +52,32 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     // Store callback info for after redirect
     sessionStorage.setItem("pending_gate_source", src);
     if (onSuccess) {
-      // Store the intended destination for post-auth redirect
       const destination = extractDestination(onSuccess);
       if (destination) sessionStorage.setItem("pending_gate_redirect", destination);
     }
 
     await signIn();
   };
+
+  // Handle post-auth redirect for content gate
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const pendingSource = sessionStorage.getItem("pending_gate_source");
+    if (pendingSource) {
+      sessionStorage.removeItem("pending_gate_source");
+      if (user?.email) {
+        (supabase.from("leads") as any).upsert(
+          { email: user.email, name: user.user_metadata?.full_name || null, source: pendingSource },
+          { onConflict: "email" }
+        );
+      }
+      const redirect = sessionStorage.getItem("pending_gate_redirect");
+      if (redirect) {
+        sessionStorage.removeItem("pending_gate_redirect");
+        window.location.href = redirect;
+      }
+    }
+  }, [isAuthenticated, user]);
 
   // Phone modal: shows single-field phone form for call/apply CTAs
   const openPhoneModal = (src: string, onSuccess?: () => void) => {
