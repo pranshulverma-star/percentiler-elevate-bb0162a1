@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import mentorPhoto from "@/assets/mentor-pranshul.jpg";
+import { setCookie, getCookie } from "@/lib/cookieUtils";
 
 const bullets = [
   "Eligibility Criteria and When to Start",
@@ -75,6 +76,8 @@ const RegistrationForm = () => {
 
       localStorage.setItem("percentilers_phone", phone.trim());
       localStorage.setItem("percentilers_name", name.trim());
+      setCookie("percentilers_phone", phone.trim(), 365);
+      setCookie("percentilers_name", name.trim(), 365);
       navigate("/masterclass/watch");
     } catch {
       setError("Something went wrong. Please try again.");
@@ -129,7 +132,16 @@ const Masterclass = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const phone = localStorage.getItem("percentilers_phone");
+    let phone = localStorage.getItem("percentilers_phone");
+    if (!phone) {
+      const cookiePhone = getCookie("percentilers_phone");
+      if (cookiePhone && /^\d{10}$/.test(cookiePhone)) {
+        localStorage.setItem("percentilers_phone", cookiePhone);
+        const cookieName = getCookie("percentilers_name");
+        if (cookieName) localStorage.setItem("percentilers_name", cookieName);
+        phone = cookiePhone;
+      }
+    }
     if (phone) navigate("/masterclass/watch", { replace: true });
   }, [navigate]);
 

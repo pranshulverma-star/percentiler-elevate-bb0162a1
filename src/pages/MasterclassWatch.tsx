@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper } from "lucide-react";
+import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { setCookie, getCookie } from "@/lib/cookieUtils";
 
 const learningBullets = [
   "Eligibility Criteria and When to Start",
@@ -26,7 +27,27 @@ const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
 
 const MasterclassWatch = () => {
   const navigate = useNavigate();
-  const phone = localStorage.getItem("percentilers_phone");
+
+  // Cookie fallback: restore localStorage from cookie if missing
+  let initialPhone = localStorage.getItem("percentilers_phone");
+  if (!initialPhone) {
+    const cookiePhone = getCookie("percentilers_phone");
+    if (cookiePhone && /^\d{10}$/.test(cookiePhone)) {
+      localStorage.setItem("percentilers_phone", cookiePhone);
+      initialPhone = cookiePhone;
+      const cookieName = getCookie("percentilers_name");
+      if (cookieName) localStorage.setItem("percentilers_name", cookieName);
+    }
+  } else {
+    // Ensure cookie is set if localStorage has it
+    if (!getCookie("percentilers_phone")) {
+      setCookie("percentilers_phone", initialPhone, 365);
+      const n = localStorage.getItem("percentilers_name");
+      if (n) setCookie("percentilers_name", n, 365);
+    }
+  }
+  const phone = initialPhone;
+
   const [watchPct, setWatchPct] = useState(0);
   const [maxWatchPct, setMaxWatchPct] = useState(0);
   const [completed, setCompleted] = useState(false);
@@ -36,6 +57,8 @@ const MasterclassWatch = () => {
   const [resumePct, setResumePct] = useState(0);
   const [showApplyConfirm, setShowApplyConfirm] = useState(false);
   const [applyLoading, setApplyLoading] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const [showTapToPlay, setShowTapToPlay] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const engagementCreated = useRef(false);
   const lastMilestone = useRef(0);
@@ -198,10 +221,40 @@ const MasterclassWatch = () => {
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
           {/* Video Player Area */}
           <div className="relative aspect-video bg-black rounded-2xl overflow-hidden mb-2">
-            {videoLoading && (
+            {videoLoading && !videoError && (
               <div className="absolute inset-0 flex items-center justify-center z-10 bg-black">
                 <Loader2 className="h-10 w-10 text-primary animate-spin" />
               </div>
+            )}
+            {videoError && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center z-20 bg-black/90 gap-4">
+                <p className="text-white text-sm">Video failed to load.</p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setVideoError(false);
+                    setVideoLoading(true);
+                    videoRef.current?.load();
+                  }}
+                >
+                  <RefreshCw className="mr-2 h-4 w-4" /> Tap to Retry
+                </Button>
+              </div>
+            )}
+            {showTapToPlay && !videoError && !videoLoading && (
+              <button
+                className="absolute inset-0 flex items-center justify-center z-15 bg-black/40 cursor-pointer"
+                onClick={() => {
+                  videoRef.current?.play();
+                  setShowTapToPlay(false);
+                }}
+                aria-label="Tap to play video"
+              >
+                <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center">
+                  <Play className="h-7 w-7 text-primary-foreground ml-1" />
+                </div>
+              </button>
             )}
             <video
               id="masterclassVideo"
@@ -210,11 +263,14 @@ const MasterclassWatch = () => {
               controls
               playsInline
               webkit-playsinline=""
-              preload="metadata"
+              x-webkit-airplay="allow"
+              preload="auto"
               onTimeUpdate={handleTimeUpdate}
               onEnded={handleVideoEnded}
               onLoadedData={() => setVideoLoading(false)}
               onLoadedMetadata={handleLoadedMetadata}
+              onPlay={() => setShowTapToPlay(false)}
+              onError={() => setVideoError(true)}
               onContextMenu={(e) => e.preventDefault()}
             >
               <source src={VIDEO_URL} type="video/mp4" />

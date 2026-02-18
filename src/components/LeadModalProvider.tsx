@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { setCookie, getCookie } from "@/lib/cookieUtils";
 
 const currentYear = new Date().getFullYear();
 const targetYears = [currentYear, currentYear + 1, currentYear + 2].map(String);
@@ -40,8 +41,22 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const { toast } = useToast();
 
   const openModal = async (src: string, onSuccess?: () => void) => {
-    const storedPhone = localStorage.getItem("percentilers_phone") || "";
+    let storedPhone = localStorage.getItem("percentilers_phone") || "";
+    if (!storedPhone) {
+      const cookiePhone = getCookie("percentilers_phone");
+      if (cookiePhone && /^\d{10}$/.test(cookiePhone)) {
+        storedPhone = cookiePhone;
+        localStorage.setItem("percentilers_phone", cookiePhone);
+      }
+    }
     let storedName = localStorage.getItem("percentilers_name") || "";
+    if (!storedName) {
+      const cookieName = getCookie("percentilers_name");
+      if (cookieName) {
+        storedName = cookieName;
+        localStorage.setItem("percentilers_name", cookieName);
+      }
+    }
 
     // If phone exists but name is missing, try fetching from database
     if (/^\d{10}$/.test(storedPhone) && !storedName) {
@@ -109,6 +124,8 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
       if (error) throw error;
       localStorage.setItem("percentilers_phone", phone);
       localStorage.setItem("percentilers_name", trimmedName);
+      setCookie("percentilers_phone", phone, 365);
+      setCookie("percentilers_name", trimmedName, 365);
       toast({ title: "Request received!", description: "Our team will reach out to you shortly." });
       setOpen(false);
       setName("");
