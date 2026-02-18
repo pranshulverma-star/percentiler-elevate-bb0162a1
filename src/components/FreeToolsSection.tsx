@@ -6,7 +6,7 @@ import { useLeadModal } from "@/components/LeadModalProvider";
 
 const tools = [
   { icon: CalendarDays, name: "Daily Study Planner", benefit: "Build a day-wise CAT preparation roadmap aligned with the latest syllabus and your target percentile.", href: "/cat-daily-study-planner", isLink: true },
-  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Start your CAT preparation with concept clarity in QA, VARC, and LRDI — completely free.", href: "#", isLink: false },
+  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Start your CAT preparation with concept clarity in QA, VARC, and LRDI : completely free.", href: "#", isLink: false },
   { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Evaluate your current performance level and identify gaps before your next mock test.", href: "/free-cat-readiness-assessment", isLink: true },
 ];
 
