@@ -33,20 +33,17 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
 
-  const markLeadHot = async (phone: string) => {
-    try {
-      await supabase.functions.invoke("mark-lead-hot", {
-        body: { phone_number: phone, source: "navbar_strategy_call", name: localStorage.getItem("percentilers_name") || null },
-      });
-    } catch (e) {
-      console.error("Failed to mark lead hot", e);
-    }
+  const markLeadHot = (phone: string) => {
+    // Fire-and-forget — don't block UI
+    supabase.functions.invoke("mark-lead-hot", {
+      body: { phone_number: phone, source: "navbar_strategy_call", name: localStorage.getItem("percentilers_name") || null },
+    }).catch(() => {});
   };
 
-  const handleStrategyCall = async () => {
+  const handleStrategyCall = () => {
     const phone = localStorage.getItem("percentilers_phone") || "";
     if (phone) {
-      await markLeadHot(phone);
+      markLeadHot(phone);
       setShowCallDialog(true);
     } else {
       openPhoneModal("navbar_strategy_call", () => {

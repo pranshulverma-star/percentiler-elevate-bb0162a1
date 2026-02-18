@@ -67,9 +67,12 @@ const MasterclassWatch = () => {
     return () => { document.head.removeChild(script); };
   }, []);
 
-  // Redirect if not authenticated
+  // Redirect if not authenticated — add small delay to let session establish after OAuth redirect
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) navigate("/masterclass");
+    if (!authLoading && !isAuthenticated) {
+      const timer = setTimeout(() => navigate("/masterclass"), 500);
+      return () => clearTimeout(timer);
+    }
   }, [isAuthenticated, authLoading, navigate]);
 
   // Check existing engagement on load — use phone from localStorage for backward compat
@@ -173,7 +176,12 @@ const MasterclassWatch = () => {
     });
   }, [openPhoneModal, user]);
 
-  if (authLoading || !isAuthenticated) return null;
+  if (authLoading) return (
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <Loader2 className="h-8 w-8 text-primary animate-spin" />
+    </div>
+  );
+  if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen bg-background">
