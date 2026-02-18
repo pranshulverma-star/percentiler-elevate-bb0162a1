@@ -11,6 +11,7 @@ import MasterclassWatch from "./pages/MasterclassWatch";
 import CATReadinessAssessment from "./pages/CATReadinessAssessment";
 import CATDailyStudyPlanner from "./pages/CATDailyStudyPlanner";
 import CATOMETCourses from "./pages/CATOMETCourses";
+import FreeCourses from "./pages/FreeCourses";
 import TestSeries from "./pages/TestSeries";
 import Terms from "./pages/Terms";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
             <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
             <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
+            <Route path="/free-courses" element={<FreeCourses />} />
             <Route path="/test-series" element={<TestSeries />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />

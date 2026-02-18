@@ -2,16 +2,15 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CalendarDays, GraduationCap, ClipboardCheck, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
-import { useLeadModal } from "@/components/LeadModalProvider";
+
 
 const tools = [
   { icon: CalendarDays, name: "Daily Study Planner", benefit: "Build a day-wise CAT preparation roadmap aligned with the latest syllabus and your target percentile.", href: "/cat-daily-study-planner", isLink: true },
-  { icon: GraduationCap, name: "Free Foundation Course", benefit: "Start your CAT preparation with concept clarity in QA, VARC, and LRDI : completely free.", href: "#", isLink: false },
+  { icon: GraduationCap, name: "Free Courses", benefit: "Access free CAT preparation courses covering QA, VARC, LRDI, and more : completely free.", href: "/free-courses", isLink: true },
   { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Evaluate your current performance level and identify gaps before your next mock test.", href: "/free-cat-readiness-assessment", isLink: true },
 ];
 
 const FreeToolsSection = () => {
-  const { openModal } = useLeadModal();
 
   return (
     <section id="tools" className="py-14 md:py-24 bg-secondary/50">
@@ -47,17 +46,11 @@ const FreeToolsSection = () => {
                   <h3 className="font-bold text-foreground mb-2">{t.name}</h3>
                   <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{t.benefit}</p>
                 </div>
-                {t.isLink ? (
-                  <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
+                <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
                     <a href={t.href}>
-                      Use Free Tool <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                      {t.name === "Free Courses" ? "Explore Free Courses" : "Use Free Tool"} <ArrowRight className="ml-1 h-3.5 w-3.5" />
                     </a>
                   </Button>
-                ) : (
-                  <Button variant="default" size="sm" onClick={() => openModal("foundation_course_enroll")}>
-                    Enroll Free
-                  </Button>
-                )}
               </Card>
             </motion.div>
           ))}
