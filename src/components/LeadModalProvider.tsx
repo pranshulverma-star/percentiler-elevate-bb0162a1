@@ -32,6 +32,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const [source, setSource] = useState("");
   const [onSuccessCb, setOnSuccessCb] = useState<(() => void) | null>(null);
   const [phone, setPhone] = useState("");
+  const [nameInput, setNameInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
   const { user, isAuthenticated, signIn } = useAuth();
@@ -103,6 +104,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     setSource(src);
     setOnSuccessCb(() => onSuccess || null);
     setPhone("");
+    setNameInput("");
     setPhoneOpen(true);
   };
 
@@ -119,7 +121,8 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     setSubmitting(true);
     try {
       const email = user?.email || null;
-      const name = user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || null;
+      const name = nameInput || user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || null;
+      if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
       if (email) {
         // Link phone to existing email-based lead
@@ -166,6 +169,15 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
                 Hi <span className="font-semibold text-foreground">{userName}</span> 👋
               </div>
             )}
+            {!userName && (
+              <Input
+                placeholder="Your Name"
+                value={nameInput}
+                onChange={(e) => setNameInput(e.target.value)}
+                required
+                autoFocus
+              />
+            )}
             <Input
               placeholder="Phone Number (10 digits)"
               value={phone}
@@ -173,7 +185,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
               required
               pattern="[6-9]\d{9}"
               title="Enter a valid 10-digit Indian mobile number"
-              autoFocus
+              autoFocus={!!userName}
             />
             <Button type="submit" className="w-full" disabled={submitting}>
               {submitting ? "Submitting…" : "Continue"}
