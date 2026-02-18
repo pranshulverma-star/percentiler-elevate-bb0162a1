@@ -623,6 +623,23 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   const [inactiveDays, setInactiveDays] = useState(0);
 
   useEffect(() => {
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "CAT Daily Study Planner",
+      "applicationCategory": "EducationalApplication",
+      "operatingSystem": "Web",
+      "description": "Free CAT study planner tool that generates a structured day-wise preparation roadmap with progress tracking.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+      "provider": { "@type": "Organization", "name": "Percentilers" }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
+
+  useEffect(() => {
     setViewingDay(Math.min(currentDayIndex, fullPlan.length - 1));
   }, [currentDayIndex, fullPlan.length]);
 
