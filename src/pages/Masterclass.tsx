@@ -7,6 +7,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import mentorPhoto from "@/assets/mentor-pranshul.jpg";
 import { useAuth } from "@/hooks/useAuth";
+import studentAnanya from "@/assets/student-ananya.jpg";
+import studentKarthik from "@/assets/student-karthik.jpg";
+import studentDivya from "@/assets/student-divya.jpg";
 
 const bullets = [
   "Eligibility Criteria and When to Start",
@@ -32,9 +35,9 @@ const featuredLogos = [
 ];
 
 const testimonialSnippets = [
-  { name: "Ananya S.", text: "Jumped from 85 to 98 percentile in 4 months.", score: "99.4%ile" },
-  { name: "Karthik N.", text: "Got into IIM Bangalore. The mentoring was personal.", score: "98.7%ile" },
-  { name: "Divya S.", text: "Clear plan, weekly targets, honest feedback.", score: "97.9%ile" },
+  { name: "Ananya S.", text: "Jumped from 85 to 98 percentile in 4 months.", score: "99.4%ile", photo: studentAnanya },
+  { name: "Karthik N.", text: "Got into IIM Bangalore. The mentoring was personal.", score: "98.7%ile", photo: studentKarthik },
+  { name: "Divya S.", text: "Clear plan, weekly targets, honest feedback.", score: "97.9%ile", photo: studentDivya },
 ];
 
 const RegistrationCard = () => {
@@ -213,16 +216,19 @@ const Masterclass = () => {
               {testimonialSnippets.map((t, i) => (
                 <motion.div key={t.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}>
                   <Card className="p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
-                    <div className="flex items-center gap-1 mb-3">
+                    <div className="flex items-center gap-3 mb-3">
+                      <img src={t.photo} alt={t.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20" />
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                        <span className="text-xs font-bold text-primary">{t.score}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1 mb-2">
                       {[...Array(5)].map((_, j) => (
                         <Star key={j} className="h-3.5 w-3.5 fill-primary text-primary" />
                       ))}
                     </div>
-                    <p className="text-sm text-muted-foreground mb-3">"{t.text}"</p>
-                    <div className="flex items-center justify-between">
-                      <p className="text-sm font-semibold text-foreground">{t.name}</p>
-                      <span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">{t.score}</span>
-                    </div>
+                    <p className="text-sm text-muted-foreground">"{t.text}"</p>
                   </Card>
                 </motion.div>
               ))}

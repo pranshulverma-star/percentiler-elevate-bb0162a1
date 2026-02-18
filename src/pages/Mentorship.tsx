@@ -7,7 +7,13 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import mentorImg from "@/assets/mentor-pranshul.jpg";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import studentNaira from "@/assets/student-naira.jpg";
+import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
+import studentHardik from "@/assets/student-hardik.jpg";
+import studentAnkur from "@/assets/student-ankur.jpg";
+import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
+import studentShivam from "@/assets/student-shivam.jpg";
 import {
   Phone, Video, FileText, Repeat, Calendar,
   ArrowRight, Sparkles, Star, CheckCircle2,
@@ -435,36 +441,42 @@ const Mentorship = () => {
                   name: "Naira Khurana",
                   college: "IIM C",
                   initials: "NK",
+                  photo: studentNaira,
                   text: "In the first call, we cut the clutter and fixed a 7-day plan. Two follow-ups later, my accuracy climbed 63%→82% and I averaged 94 %ile across the last 4 mocks. Best part? I finally knew exactly what to do each week.",
                 },
                 {
                   name: "Aayushi Rana",
                   college: "XLRI",
                   initials: "AR",
+                  photo: studentAayushiRana,
                   text: "Pranshul's 60-min Deep Dive + Docs gave me a 4-week roadmap and a mock-review template. The weekly 10-min check-ins kept me honest.",
                 },
                 {
                   name: "Hardik Patel",
                   college: "SPJIMS",
                   initials: "HP",
+                  photo: studentHardik,
                   text: "The 30-min Clarity session was all I needed. I got a simple plan, error-log sheet, and a 'how to review mocks' rubric. Went from 0 to 2 mocks/week, QA rose 42→63 marks in a month, and LRDI stopped feeling like roulette. Zero fluff—just direction.",
                 },
                 {
                   name: "Ankur Yadav",
                   college: "IIM B",
                   initials: "AY",
+                  photo: studentAnkur,
                   text: "Buddy plan kept me accountable. Small weekly wins resulted in big confidence. QA rose from 36 to 58 marks in a month with weekly error-log audits.",
                 },
                 {
                   name: "Vishvajeet",
                   college: "XLRI",
                   initials: "VS",
+                  photo: studentVishwajeet,
                   text: "One 30-min call cut my study clutter. I finally knew what to do this week and did it. Booked 2 mocks/week; VARC accuracy jumped 62% → 80% in 14 days.",
                 },
                 {
                   name: "Shivam",
                   college: "FMS",
                   initials: "SH",
+                  photo: studentShivam,
                   text: "Deep Dive + Docs = instant clarity. My mock review went from random to routine. Averaged 93%ile across the last 3 mocks (up from ~82).",
                 },
               ].map((t, i) => (
@@ -478,6 +490,7 @@ const Mentorship = () => {
                   <Card className="p-3 md:p-5 h-full flex flex-col border border-border">
                     <div className="flex items-center gap-2 md:gap-3 mb-2 md:mb-3">
                       <Avatar className="h-8 w-8 md:h-10 md:w-10 ring-2 ring-primary/20">
+                        <AvatarImage src={t.photo} alt={t.name} className="object-cover" />
                         <AvatarFallback className="text-[10px] md:text-xs font-bold bg-primary/10 text-primary">
                           {t.initials}
                         </AvatarFallback>
