@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw } from "lucide-react";
+import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw, Flame, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useLeadModal } from "@/components/LeadModalProvider";
@@ -212,15 +213,83 @@ const MasterclassWatch = () => {
             </video>
           </div>
 
-          <div className="w-full bg-muted rounded-full h-1.5 mb-8">
+          <div className="w-full bg-muted rounded-full h-1.5 mb-6">
             <div className="bg-primary h-1.5 rounded-full transition-all duration-500" style={{ width: `${watchPct}%` }} />
           </div>
 
           {showUnlockBanner && !completed && (
-            <div className="mb-8 rounded-xl border border-primary/30 bg-primary/5 p-4 text-center">
+            <div className="mb-6 rounded-xl border border-primary/30 bg-primary/5 p-4 text-center">
               <p className="font-semibold text-foreground">🎉 You're about to unlock the free CAT Success Resource Kit.</p>
             </div>
           )}
+
+          {/* Resource Kit — Above the fold */}
+          <section id="resource-kit-section" className="mb-10">
+            <div className="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.04] to-background p-5 md:p-8 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/[0.06] rounded-bl-full blur-2xl pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 bg-primary/[0.04] rounded-tr-full blur-xl pointer-events-none" />
+
+              <div className="flex items-center gap-2 mb-1 relative z-10">
+                <Gift className="h-5 w-5 text-primary" />
+                <h2 className="text-lg md:text-xl font-bold text-foreground">Free Resource Kit</h2>
+                <span className="ml-auto inline-flex items-center gap-1 text-[11px] font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full">
+                  <Flame className="h-3 w-3" />
+                  {resources.filter(r => maxWatchPct >= r.unlockAt).length}/{resources.length} Unlocked
+                </span>
+              </div>
+              <p className="text-xs text-muted-foreground mb-4 relative z-10">Watch the masterclass to unlock resources worth ₹2,999 — <span className="font-semibold text-primary">FREE</span></p>
+
+              <div className="grid grid-cols-2 md:grid-cols-5 gap-2.5 md:gap-3 relative z-10">
+                {resources.map((r, i) => {
+                  const isUnlocked = maxWatchPct >= r.unlockAt;
+                  return (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.08, duration: 0.4 }}
+                      className={`group relative rounded-xl border p-3 md:p-4 text-center transition-all duration-300 ${
+                        isUnlocked
+                          ? "border-primary/30 bg-background shadow-md hover:shadow-lg hover:-translate-y-1 cursor-pointer"
+                          : "border-border/40 bg-muted/30"
+                      }`}
+                    >
+                      {isUnlocked && (
+                        <div className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                          <Sparkles className="h-3 w-3 text-primary-foreground" />
+                        </div>
+                      )}
+                      <div className={`mx-auto w-9 h-9 rounded-lg flex items-center justify-center mb-2 ${
+                        isUnlocked ? "bg-primary/10" : "bg-muted"
+                      }`}>
+                        {isUnlocked ? (
+                          <r.icon className="h-4 w-4 text-primary" />
+                        ) : (
+                          <Lock className="h-4 w-4 text-muted-foreground/50" />
+                        )}
+                      </div>
+                      <p className={`text-[11px] md:text-xs font-medium leading-tight mb-2 ${
+                        isUnlocked ? "text-foreground" : "text-muted-foreground/60"
+                      }`}>
+                        {r.label}
+                      </p>
+                      {isUnlocked ? (
+                        <Button size="sm" variant="outline" className="h-7 text-[10px] px-2.5 w-full" asChild>
+                          <a href={r.action === "planner" ? "/cat-daily-study-planner" : "#"}>
+                            {r.action === "planner" ? "Open" : "Get"}
+                          </a>
+                        </Button>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/50 font-medium">
+                          <Lock className="h-2.5 w-2.5" /> Watch {r.unlockAt}%
+                        </span>
+                      )}
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
 
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-foreground mb-6">You'll Learn</h2>
@@ -240,48 +309,6 @@ const MasterclassWatch = () => {
             </Button>
             <p className="text-sm text-muted-foreground mt-3">Limited seats. Mentor interaction included.</p>
           </div>
-
-          <section id="resource-kit-section" className="mb-16">
-            <div className="rounded-2xl border border-border bg-card p-8 md:p-10 shadow-sm">
-              <div className="text-center mb-8">
-                <div className="flex items-center justify-center gap-2 mb-3">
-                  <Gift className="h-6 w-6 text-primary" />
-                  <h2 className="text-2xl font-bold text-foreground">CAT Success Resource Kit</h2>
-                </div>
-                <p className="text-muted-foreground">Keep watching to unlock all 5 resources.</p>
-              </div>
-              <div className="space-y-4 mb-10">
-                {resources.map((r, i) => {
-                  const unlocked = maxWatchPct >= r.unlockAt;
-                  return (
-                    <div key={i} className={`flex items-center justify-between rounded-xl border p-4 transition-shadow ${unlocked ? "border-border hover:shadow-sm" : "border-border/50 opacity-60"}`}>
-                      <div className="flex items-center gap-3">
-                        <r.icon className={`h-5 w-5 shrink-0 ${unlocked ? "text-primary" : "text-muted-foreground"}`} />
-                        <span className={`font-medium ${unlocked ? "text-foreground" : "text-muted-foreground"}`}>{r.label}</span>
-                      </div>
-                      {unlocked ? (
-                        <Button size="sm" variant="outline" asChild>
-                          <a href={r.action === "planner" ? "/cat-daily-study-planner" : "#"}>
-                            {r.action === "planner" ? "Open Planner" : "Download"}
-                          </a>
-                        </Button>
-                      ) : (
-                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Lock className="h-3.5 w-3.5" /> {r.unlockAt}%
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <div className="border-t border-border pt-8 text-center">
-                <Button size="lg" onClick={handleApply} disabled={applyLoading}>
-                  {applyLoading ? "Submitting..." : (<>Apply for 95%ile Guarantee Batch <ArrowRight className="ml-1 h-4 w-4" /></>)}
-                </Button>
-                <p className="text-sm text-muted-foreground mt-3">Structured roadmap + daily mentoring + accountability included.</p>
-              </div>
-            </div>
-          </section>
 
           <Dialog open={showApplyConfirm} onOpenChange={setShowApplyConfirm}>
             <DialogContent className="max-w-sm text-center">
