@@ -63,7 +63,7 @@ const HeroSection = () => {
   const { openModal } = useLeadModal();
 
   return (
-    <section className="py-10 md:py-24 bg-background overflow-hidden">
+    <section className="pt-20 pb-10 md:pt-24 md:pb-16 bg-background overflow-hidden">
       <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         <motion.div
           className="space-y-6"
