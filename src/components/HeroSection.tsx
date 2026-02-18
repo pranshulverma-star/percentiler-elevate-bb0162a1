@@ -85,11 +85,7 @@ const HeroSection = () => {
             Proven CAT coaching + strategic planning tools to help you prepare smarter for CAT 2026 and beyond.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
-            <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => {
-              openModal("hero_evaluate_profile", () => {
-                setPlannerOpen(true);
-              });
-            }}>
+            <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => setPlannerOpen(true)}>
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
             <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" onClick={() => {
