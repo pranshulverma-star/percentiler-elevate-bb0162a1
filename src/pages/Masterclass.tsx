@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle, Users, Award, Shield, Star, Play } from "lucid
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
-import mentorPhoto from "@/assets/mentor-pranshul.jpg";
+import mentorPhoto from "@/assets/founder-pranshul.webp";
 import { useAuth } from "@/hooks/useAuth";
 import studentAnanya from "@/assets/student-ananya.jpg";
 import studentKarthik from "@/assets/student-karthik.jpg";
