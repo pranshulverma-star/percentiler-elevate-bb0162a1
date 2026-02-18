@@ -4,6 +4,7 @@ import { Menu, X } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import ThemeToggle from "@/components/ThemeToggle";
 import { motion, useSpring } from "framer-motion";
+import logoImg from "@/assets/logo-percentilers.png";
 
 const navLinks = [
   { label: "Home", href: "/#" },
@@ -35,8 +36,8 @@ const Navbar = () => {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-b border-border">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
-          <a href="#" className="text-lg md:text-xl font-bold tracking-tight text-foreground">
-            Percentilers
+          <a href="#" className="flex items-center">
+            <img src={logoImg} alt="Percentilers - Prepare, Persevere, Perform" className="h-10 md:h-12 w-auto dark:brightness-0 dark:invert" />
           </a>
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((l) => (
