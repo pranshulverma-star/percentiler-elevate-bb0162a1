@@ -1,36 +1,51 @@
 
 
-## Update "Book Free CAT Strategy Call" CTA on Readiness Assessment Results Page
+## Skip Lead Capture Before Test, Gate Results Instead
 
 ### What Changes
 
-The CTA button on the readiness assessment results page will be updated to follow the same lead capture and call confirmation flow used across the site (header, Free Courses page, CAT Journey section), with a custom message and an additional "Mentorship Plans" option.
+The CAT Readiness Assessment flow will be restructured so users can take the test without providing details first. Lead capture moves to the results page, where results are blurred behind an overlay until the user submits their info (or if they're already known).
+
+### Current Flow
+```text
+Hero -> Lead Capture (name/phone/target) -> Test -> Results
+```
+
+### New Flow
+```text
+Hero -> Section Select -> Test -> Results (gated if unknown user)
+```
 
 ### User-Facing Behavior
 
-1. User clicks "Book Free CAT Strategy Call" on the results page
-2. If the user already has a phone number stored (returning user): the lead is marked as "very_hot" via the backend function, and a confirmation popup appears
-3. If the user is new: the lead capture modal opens first, then on success the confirmation popup appears
-4. The confirmation popup will show:
-   - Custom heading: **"You just unlocked your Free Nudge call"**
-   - Three options:
-     - **Call Now** — direct dial link to +91 99119 28071
-     - **Mentorship Plans** — navigates to /mentorship
-     - **I'll wait for the call** — closes the dialog
+1. "Start Assessment" / "Take Assessment" buttons go directly to the test -- no lead form upfront
+2. After completing the test, the system checks localStorage for an existing phone number
+3. **Known user** (phone found): Results shown immediately, no blur
+4. **New user** (no phone): Results render blurred with a lead capture overlay on top. Submitting the form lifts the blur and reveals the full report
+5. The target percentile defaults to "90+" for scoring when not provided upfront; the gated form includes a target percentile selector to recalculate if needed
 
 ### Technical Details
 
 **File: `src/pages/CATReadinessAssessment.tsx`**
 
-1. Add imports for `useLeadModal`, `Dialog`/`DialogContent`/`DialogTitle`, and the `supabase` client
-2. Inside the `ResultsSection` component:
-   - Add `showCallDialog` state
-   - Add `markLeadHot` helper (invokes `mark-lead-hot` edge function with source `"readiness_strategy_call"`)
-   - Add `handleStrategyCall` function with the same localStorage check pattern used elsewhere
-   - Replace the current `onClick={() => navigate("/masterclass")}` on the CTA button with `onClick={handleStrategyCall}`
-3. Add the confirmation `Dialog` after the results section markup with:
-   - Custom message: "You just unlocked your Free Nudge call"
-   - "Call Now" button (tel link)
-   - "Mentorship Plans" button linking to `/mentorship`
-   - "I'll wait for the call" dismiss button
+1. **Remove the "lead" phase**
+   - Change `Phase` type from `"hero" | "lead" | "test" | "results"` to `"hero" | "test" | "results"`
+   - Change `setPhase("lead")` on line 839 (SectionSelector CTA) to `setPhase("test")`
+   - Change `setPhase("lead")` on line 855 (final CTA) to `setPhase("test")`
+   - Remove the `phase === "lead"` rendering on line 863
+   - Store section_filter and assessment_started_at when transitioning to test phase
 
+2. **Add gated results logic to ResultsSection**
+   - Add `isGated` state, initialized by checking localStorage for `percentilers_phone` or `planner_phone`
+   - When gated: wrap all results content in a blurred container (`blur-lg pointer-events-none select-none`)
+   - Show an overlay card on top with:
+     - Heading: "Unlock Your Detailed Results"
+     - Fields: Name, Phone (10-digit Indian mobile validation), Target Percentile
+     - Submit button: "Show My Results"
+   - On submit: save to localStorage, upsert lead to `leads` table, set `isGated = false`, recalculate score with chosen target percentile
+
+3. **Lines affected**
+   - Line 35: Update Phase type
+   - Lines 839, 855: Change `setPhase("lead")` to `setPhase("test")` + store metadata
+   - Line 863: Remove `phase === "lead"` block
+   - Lines 546-758: Add gating logic and overlay to ResultsSection
