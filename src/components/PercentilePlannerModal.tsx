@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -128,6 +129,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
   const [leadPhone, setLeadPhone] = useState("");
   const [leadSubmitting, setLeadSubmitting] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const progress = step === "form" ? 50 : 100;
 
@@ -376,7 +378,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
                 <p className="text-sm text-muted-foreground">
                   If you're aiming for {results.target_top10}+, our Free Masterclass shows you the structured preparation plan required to reach it.
                 </p>
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => { window.location.href = "/masterclass/watch"; }}>
+                <Button className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => { handleClose(); setTimeout(() => navigate("/masterclass/watch"), 300); }}>
                   Watch Free Masterclass
                 </Button>
               </div>
