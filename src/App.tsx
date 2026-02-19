@@ -24,7 +24,7 @@ import Masterclass from "./pages/Masterclass";
 import MentorshipPage from "./pages/Mentorship";
 import MasterclassWatch from "./pages/MasterclassWatch";
 import CATReadinessAssessment from "./pages/CATReadinessAssessment";
-import WebinarRegister from "./pages/WebinarRegister";
+
 import CATDailyStudyPlanner from "./pages/CATDailyStudyPlanner";
 import CATOMETCourses from "./pages/CATOMETCourses";
 import FreeCourses from "./pages/FreeCourses";
@@ -50,7 +50,7 @@ const App = () => (
             <Route path="/masterclass" element={<Masterclass />} />
             <Route path="/mentorship" element={<MentorshipPage />} />
             <Route path="/masterclass/watch" element={<MasterclassWatch />} />
-            <Route path="/masterclass/register" element={<WebinarRegister />} />
+            
             <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
             <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
             <Route path="/courses/cat-omet" element={<CATOMETCourses />} />

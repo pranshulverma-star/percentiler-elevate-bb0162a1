@@ -232,8 +232,12 @@ const Masterclass = () => {
         </div>
       </div>
 
-      <main className="py-12 md:py-20">
+      <main className="py-8 md:py-20">
         <div className="container mx-auto px-4 md:px-6 max-w-6xl">
+          {/* Mobile: CTA card first, then content */}
+          <div className="lg:hidden mb-8">
+            <RegistrationCard />
+          </div>
           <div className="grid lg:grid-cols-[1fr_380px] gap-10 md:gap-14 items-start mb-20">
             <motion.div className="space-y-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="flex items-start gap-5">
@@ -267,7 +271,7 @@ const Masterclass = () => {
               </div>
             </motion.div>
 
-            <motion.div id="register" className="lg:sticky lg:top-24" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+            <motion.div id="register" className="hidden lg:block lg:sticky lg:top-24" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
               <RegistrationCard />
             </motion.div>
           </div>
