@@ -192,7 +192,7 @@ const CATOMETCourses = () => {
               <img
                   src={mentorImg}
                   alt="Pranshul Verma – 7x CAT 100%iler"
-                  className="relative w-12 h-12 md:w-16 md:h-16 rounded-full object-cover ring-2 ring-primary/30"
+                  className="relative w-12 h-12 md:w-16 md:h-16 rounded-full object-cover object-[center_15%] scale-[1.3] ring-2 ring-primary/30"
                 />
               </div>
               <div>
