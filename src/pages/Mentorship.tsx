@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import mentorImg from "@/assets/mentor-pranshul.jpg";
+import mentorImg from "@/assets/founder-pranshul.webp";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import studentNaira from "@/assets/student-naira.jpg";
 import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
@@ -271,16 +271,16 @@ const Mentorship = () => {
             >
               <img
                 src={mentorImg}
-                alt="Pranshul Agrawal"
-                className="w-12 h-12 md:w-20 md:h-20 rounded-full object-cover border-2 md:border-4 border-primary/20 shadow-lg shrink-0"
+                alt="Pranshul Verma"
+                className="w-12 h-12 md:w-20 md:h-20 rounded-full object-cover object-[center_15%] scale-[1.3] border-2 md:border-4 border-primary/20 shadow-lg shrink-0"
               />
               <div className="space-y-0.5 md:space-y-1">
                 <div className="flex items-center gap-1.5 md:gap-2 flex-wrap">
-                  <h3 className="text-sm md:text-lg font-bold text-foreground">Pranshul Agrawal</h3>
+                  <h3 className="text-sm md:text-lg font-bold text-foreground">Pranshul Verma</h3>
                   <Badge className="bg-primary text-primary-foreground text-[8px] md:text-[10px]">7x CAT 100%iler</Badge>
                 </div>
                 <p className="text-[10px] md:text-sm text-muted-foreground">
-                  IIM Ahmedabad alumnus · 10,000+ students mentored
+                  TISS Mumbai Alumni · 10,000+ students mentored
                 </p>
               </div>
             </motion.div>
