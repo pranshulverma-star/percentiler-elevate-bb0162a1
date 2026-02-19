@@ -71,7 +71,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-5 sm:p-6">
         <DialogHeader>
           <DialogTitle>{title || "One Last Step"}</DialogTitle>
           <DialogDescription>{description || "Share your phone number so we can personalize your experience."}</DialogDescription>
