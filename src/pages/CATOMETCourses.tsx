@@ -10,7 +10,7 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import mentorImg from "@/assets/mentor-pranshul.jpg";
+import mentorImg from "@/assets/founder-pranshul.webp";
 import studentAarav from "@/assets/student-aarav.jpg";
 import studentPriya from "@/assets/student-priya.jpg";
 import studentRohan from "@/assets/student-rohan.jpg";
@@ -189,18 +189,18 @@ const CATOMETCourses = () => {
             >
               <div className="relative shrink-0">
                 <div className="absolute -inset-1 rounded-full bg-primary/20 blur-sm" />
-                <img
+              <img
                   src={mentorImg}
-                  alt="Pranshul Agrawal – 7x CAT 100%iler"
+                  alt="Pranshul Verma – 7x CAT 100%iler"
                   className="relative w-12 h-12 md:w-16 md:h-16 rounded-full object-cover ring-2 ring-primary/30"
                 />
               </div>
               <div>
                 <p className="text-xs md:text-sm font-bold text-foreground">
-                  Designed by Pranshul Agrawal{" "}
+                  Designed by Pranshul Verma{" "}
                   <Badge className="bg-primary/10 text-primary text-[8px] md:text-[9px] ml-1 align-middle">7x CAT 100%iler</Badge>
                 </p>
-                <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5">IIM-A Alumni · 10,000+ students mentored</p>
+                <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5">TISS Mumbai Alumni · 10,000+ students mentored</p>
               </div>
             </motion.div>
           </div>
