@@ -45,6 +45,7 @@ const MasterclassWatch = () => {
   const [applyLoading, setApplyLoading] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const [showTapToPlay, setShowTapToPlay] = useState(true);
+  const [videoReady, setVideoReady] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const engagementCreated = useRef(false);
   const lastMilestone = useRef(0);
@@ -84,7 +85,7 @@ const MasterclassWatch = () => {
       return;
     }
     if (!hasPhone) {
-      navigate("/masterclass/register", { replace: true });
+      navigate("/masterclass", { replace: true });
       return;
     }
   }, [isAuthenticated, authLoading, phoneLoading, hasPhone, navigate]);
@@ -167,6 +168,12 @@ const MasterclassWatch = () => {
     video.currentTime = (video.duration * resumePct) / 100;
   }, [resumePct]);
 
+  // Safari iOS fix: ensure video element is ready before showing controls
+  const handleCanPlayThrough = useCallback(() => {
+    setVideoLoading(false);
+    setVideoReady(true);
+  }, []);
+
   const videoClassName = `w-full h-full object-contain rounded-2xl${isFirstWatch ? " [&::-webkit-media-controls-timeline]:hidden" : ""}`;
 
   const handleApply = useCallback(async () => {
@@ -212,15 +219,43 @@ const MasterclassWatch = () => {
                 </Button>
               </div>
             )}
-            {showTapToPlay && !videoError && !videoLoading && (
-              <button className="absolute inset-0 flex items-center justify-center z-[15] bg-black/40 cursor-pointer" onClick={() => { videoRef.current?.play().catch(() => {}); setShowTapToPlay(false); }} aria-label="Tap to play video">
+            {showTapToPlay && !videoError && videoReady && (
+              <button className="absolute inset-0 flex items-center justify-center z-[15] bg-black/40 cursor-pointer" onClick={() => {
+                const v = videoRef.current;
+                if (!v) return;
+                // Safari iOS: ensure currentTime is set before play
+                if (v.currentTime === 0 && resumePct <= 0) v.currentTime = 0.001;
+                v.play().then(() => setShowTapToPlay(false)).catch(() => {
+                  // Retry with muted for autoplay policy
+                  v.muted = true;
+                  v.play().then(() => { setShowTapToPlay(false); v.muted = false; }).catch(() => {});
+                });
+              }} aria-label="Tap to play video">
                 <div className="w-16 h-16 rounded-full bg-primary/90 flex items-center justify-center">
                   <Play className="h-7 w-7 text-primary-foreground ml-1" />
                 </div>
               </button>
             )}
-            <video id="masterclassVideo" ref={videoRef} className={videoClassName} controls playsInline webkit-playsinline="" x-webkit-airplay="allow" preload="auto" onTimeUpdate={handleTimeUpdate} onEnded={handleVideoEnded} onLoadedMetadata={() => { setVideoLoading(false); handleLoadedMetadata(); }} onCanPlay={() => setVideoLoading(false)} onPlay={() => setShowTapToPlay(false)} onContextMenu={(e) => e.preventDefault()}>
-              <source src={VIDEO_URL} type="video/mp4" onError={() => { setVideoError(true); setVideoLoading(false); }} />
+            <video
+              id="masterclassVideo"
+              ref={videoRef}
+              className={videoClassName}
+              controls
+              playsInline
+              webkit-playsinline=""
+              x-webkit-airplay="allow"
+              preload="metadata"
+              onTimeUpdate={handleTimeUpdate}
+              onEnded={handleVideoEnded}
+              onLoadedMetadata={() => { setVideoLoading(false); handleLoadedMetadata(); }}
+              onCanPlay={() => setVideoLoading(false)}
+              onCanPlayThrough={handleCanPlayThrough}
+              onPlay={() => setShowTapToPlay(false)}
+              onWaiting={() => setVideoLoading(true)}
+              onPlaying={() => setVideoLoading(false)}
+              onContextMenu={(e) => e.preventDefault()}
+            >
+              <source src={VIDEO_URL} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' onError={() => { setVideoError(true); setVideoLoading(false); }} />
               Your browser does not support the video tag.
             </video>
           </div>
