@@ -52,7 +52,6 @@ const TestimonialsSection = () => (
         <p className="text-muted-foreground max-w-lg mx-auto">Real experiences from aspirants who improved their CAT percentile with structured strategy and mentorship.</p>
       </motion.div>
 
-      {/* Text testimonials */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-12 md:mb-16">
         {testimonials.map((t, i) => (
           <motion.div
@@ -80,7 +79,6 @@ const TestimonialsSection = () => (
         ))}
       </div>
 
-      {/* WhatsApp screenshots - Masonry grid */}
       <motion.div
         className="text-center mb-8 space-y-2"
         initial={{ opacity: 0, y: 20 }}
@@ -108,6 +106,8 @@ const TestimonialsSection = () => (
               <img
                 src={src}
                 alt={`Student testimonial ${i + 1}`}
+                width={400}
+                height={600}
                 className="w-full h-auto object-contain"
                 loading="lazy"
               />

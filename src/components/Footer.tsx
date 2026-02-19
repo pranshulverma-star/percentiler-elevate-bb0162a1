@@ -7,7 +7,7 @@ const Footer = () => (
     <div className="container mx-auto px-4 md:px-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mb-8">
         <div className="col-span-2 md:col-span-1">
-          <img src={logoImg} alt="Percentilers" className="h-10 w-auto mb-3 dark:brightness-0 dark:invert" />
+          <img src={logoImg} alt="Percentilers" width={120} height={40} className="h-10 w-auto mb-3 dark:brightness-0 dark:invert" loading="lazy" />
           <p className="text-sm text-muted-foreground leading-relaxed">
             Premium CAT coaching for serious aspirants. Structured preparation, expert mentorship, and proven results.
           </p>

@@ -59,7 +59,7 @@ const ResultsSection = () => (
 
               <div className="flex items-center gap-3 mb-4">
                 <Avatar className="h-12 w-12 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
-                  <AvatarImage src={r.photo} alt={r.name} className="object-cover object-top scale-[1.3] translate-y-[5%]" />
+                  <AvatarImage src={r.photo} alt={r.name} width={48} height={48} loading="lazy" className="object-cover object-top scale-[1.3] translate-y-[5%]" />
                   <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{r.initials}</AvatarFallback>
                 </Avatar>
                 <div>
