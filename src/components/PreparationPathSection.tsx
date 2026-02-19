@@ -46,13 +46,9 @@ const PreparationPathSection = () => {
 
   const handlePrimaryCTA = (level: Level) => {
     if (level === "beginner") {
-      openContentGate("homepage_selector_masterclass", () => {
-        window.location.href = "/masterclass";
-      });
+      window.location.href = "/masterclass";
     } else if (level === "repeater") {
-      openContentGate("homepage_selector_readiness", () => {
-        window.location.href = "/free-cat-readiness-assessment";
-      });
+      window.location.href = "/free-cat-readiness-assessment";
     } else {
       openContentGate("homepage_selector_evaluate", () => {
         const section = document.getElementById("profile-evaluator");
