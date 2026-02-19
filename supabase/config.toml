@@ -2,3 +2,6 @@ project_id = "kknunfavfvaqrphgcrku"
 
 [functions.mark-lead-hot]
 verify_jwt = false
+
+[functions.sync-lead-to-sheet]
+verify_jwt = false

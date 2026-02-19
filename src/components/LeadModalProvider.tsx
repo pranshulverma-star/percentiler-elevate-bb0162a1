@@ -139,6 +139,10 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
       }
 
       localStorage.setItem("percentilers_phone", phone);
+      // Fire-and-forget: sync to Google Sheet
+      supabase.functions.invoke("sync-lead-to-sheet", {
+        body: { phone_number: phone, email, source },
+      }).catch(() => {});
       toast({ title: "Phone number saved!", description: "Our team will reach out to you shortly." });
       setPhoneOpen(false);
       setPhone("");
