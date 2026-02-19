@@ -90,12 +90,8 @@ const HeroSection = () => {
             <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => setPlannerOpen(true)}>
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" onClick={() => {
-              openContentGate("hero_masterclass", () => {
-                window.location.href = "/masterclass";
-              });
-            }}>
-              Watch Free Masterclass
+            <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" asChild>
+              <a href="/masterclass">Watch Free Masterclass</a>
             </Button>
           </div>
         </motion.div>
