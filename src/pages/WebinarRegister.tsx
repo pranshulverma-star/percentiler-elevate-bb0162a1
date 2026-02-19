@@ -32,7 +32,7 @@ const WebinarRegister = () => {
     }
     setSubmitting(true);
     try {
-      await (supabase.from("leads") as any).upsert(
+      const { error } = await (supabase.from("leads") as any).upsert(
         {
           user_id: user?.id,
           email: user?.email,
@@ -43,6 +43,7 @@ const WebinarRegister = () => {
         },
         { onConflict: "user_id" }
       );
+      if (error) throw error;
 
       localStorage.setItem("percentilers_phone", phone);
 
