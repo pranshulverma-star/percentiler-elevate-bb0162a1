@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -704,17 +704,23 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
     setViewingDay(Math.min(currentDayIndex, fullPlan.length - 1));
   }, [currentDayIndex, fullPlan.length]);
 
-  // Detect second session — trigger phone modal
+  // Detect second session — trigger phone modal (only after phone loading completes)
+  const phoneLoadingDone = useRef(false);
   useEffect(() => {
+    if (hasPhone) return; // Already have phone, skip
+    // Wait until useLeadPhone has finished loading
+    if (phoneLoadingDone.current) return; // Only run once
+    // useLeadPhone starts with loading=true; when it finishes we can check
     const sessionCount = parseInt(localStorage.getItem("planner_session_count") || "0", 10);
     const newCount = sessionCount + 1;
     localStorage.setItem("planner_session_count", newCount.toString());
+    phoneLoadingDone.current = true;
     if (newCount >= 2 && !hasPhone) {
       // Delay slightly so planner loads first
       const t = setTimeout(() => setShowPhoneModal(true), 2000);
       return () => clearTimeout(t);
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [hasPhone]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load existing completion data + heat score on mount
   useEffect(() => {
@@ -771,13 +777,16 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
     try {
       await logActivity(leadData.phone, date, subject);
       setCompletedDays(prev => new Set(prev).add(`${date}|${subject}`));
-      const newHeat = await recalculateHeatScore(leadData.phone, isCrashMode, daysLeft);
-      setHeatData(newHeat);
       setInactiveDays(0);
 
-      // Soft phone capture: trigger on first-ever task completion
+      // Fire-and-forget: recalculate heat score in background (don't block UI)
+      recalculateHeatScore(leadData.phone, isCrashMode, daysLeft)
+        .then(newHeat => setHeatData(newHeat))
+        .catch(err => console.error("Heat score recalc failed:", err));
+
+      // Soft phone capture: trigger on first-ever task completion (delayed, non-blocking)
       if (completedDays.size === 0 && !hasPhone) {
-        setTimeout(() => setShowPhoneModal(true), 800);
+        setTimeout(() => setShowPhoneModal(true), 1500);
       }
     } catch (err) {
       console.error("Failed to log activity:", err);

@@ -100,6 +100,9 @@ const RegistrationCard = () => {
     navigate("/masterclass/watch");
   };
 
+  // Only disable during active sign-in, not during initial auth loading when already signed in
+  const isButtonDisabled = loading && !isAuthenticated;
+
   return (
     <>
       <Card className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-lg">
@@ -114,7 +117,7 @@ const RegistrationCard = () => {
           size="lg"
           className="w-full h-12 text-base animate-pulse-glow"
           onClick={handleCTA}
-          disabled={loading}
+          disabled={isButtonDisabled}
         >
           {!isAuthenticated ? (
             <>
@@ -164,13 +167,13 @@ const Masterclass = () => {
     }
   }, [isAuthenticated, loading, phoneLoading, hasPhone, navigate]);
 
-  // Upsert lead on auth
+  // Upsert lead on auth (fire-and-forget)
   useEffect(() => {
     if (!isAuthenticated || !user?.email) return;
     (supabase.from("leads") as any).upsert(
       { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: "masterclass" },
       { onConflict: "user_id" }
-    );
+    ).catch(() => {});
   }, [isAuthenticated, user]);
 
   useEffect(() => {
