@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import SEO from "@/components/SEO";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -202,6 +203,11 @@ const Mentorship = () => {
 
   return (
     <>
+      <SEO
+        title="CAT Mentorship Program | Personalized Online CAT Coaching"
+        description="Join our personalized CAT mentorship program and experience structured online CAT coaching designed to help serious aspirants crack the CAT exam."
+        canonical="https://percentilers.in/mentorship"
+      />
       <Navbar />
       <main className="pt-16 md:pt-20">
         {/* Hero */}

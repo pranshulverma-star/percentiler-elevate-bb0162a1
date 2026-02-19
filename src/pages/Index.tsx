@@ -3,6 +3,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturedStrip from "@/components/FeaturedStrip";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 // Lazy load below-the-fold sections
 const TrustStrip = lazy(() => import("@/components/TrustStrip"));
@@ -25,6 +26,11 @@ const LazyFallback = () => <div className="min-h-[200px]" />;
 
 const Index = () => (
   <>
+    <SEO
+      title="Best CAT Coaching for 95+ Percentile | Online CAT Coaching – Percentilers"
+      description="Percentilers offers structured CAT preparation and online CAT coaching to help you crack the CAT exam with 95+ percentile. Join one of the best CAT coaching programs focused on execution, mentorship, and performance tracking."
+      canonical="https://percentilers.in/"
+    />
     <Navbar />
     <main>
       {/* Act 1: Hook & Trust — above the fold, eagerly loaded */}

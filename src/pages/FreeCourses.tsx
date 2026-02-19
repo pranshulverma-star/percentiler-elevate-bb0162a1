@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, BookOpen, Brain, Calculator, FileText, Sparkles, Clock, Monitor, Users, Phone, Star } from "lucide-react";
 import { motion } from "framer-motion";
@@ -98,6 +99,11 @@ const FreeCourses = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Free CAT Courses | Online CAT Preparation Resources"
+        description="Access free CAT preparation courses including foundation building, mock strategies, and section-wise practice from one of the best online CAT coaching platforms."
+        canonical="https://percentilers.in/free-courses"
+      />
       <Navbar />
       <main>
         {/* Hero Section */}

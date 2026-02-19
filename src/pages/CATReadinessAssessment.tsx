@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -801,6 +802,11 @@ const CATReadinessAssessment = () => {
 
   return (
     <main className="min-h-screen bg-background">
+      <SEO
+        title="Free CAT Readiness Test | CAT Exam Self-Assessment Tool"
+        description="Take the free CAT readiness test to evaluate your CAT exam preparation level. Get performance insights used inside our best CAT coaching program."
+        canonical="https://percentilers.in/free-cat-readiness-assessment"
+      />
       <Navbar />
 
       {isLanding &&

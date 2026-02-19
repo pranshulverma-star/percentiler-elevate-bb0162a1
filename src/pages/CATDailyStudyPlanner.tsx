@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from "react";
+import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
@@ -998,6 +999,11 @@ export default function CATDailyStudyPlanner() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Free CAT Daily Study Planner | Structured CAT Preparation Tool"
+        description="Create a structured daily CAT preparation plan with our free CAT study planner. Designed by mentors from one of the best online CAT coaching platforms."
+        canonical="https://percentilers.in/cat-daily-study-planner"
+      />
       <Navbar />
       {view === "lead" && <LeadCapture onComplete={handleLeadComplete} />}
       {view === "dashboard" && <PlannerDashboard leadData={leadData} onReset={handleReset} />}

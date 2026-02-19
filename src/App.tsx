@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LeadModalProvider } from "@/components/LeadModalProvider";
+import { HelmetProvider } from "react-helmet-async";
 
 function ScrollToHash() {
   const { hash, pathname } = useLocation();
@@ -47,6 +48,7 @@ const PageLoader = () => (
 );
 
 const App = () => (
+  <HelmetProvider>
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
@@ -76,6 +78,7 @@ const App = () => (
       </LeadModalProvider>
     </TooltipProvider>
   </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;
