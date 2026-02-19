@@ -97,6 +97,20 @@ Deno.serve(async (req) => {
         });
     }
 
+    // Fire-and-forget: sync to Google Sheet
+    const sheetWebhookUrl = Deno.env.get("GOOGLE_SHEET_WEBHOOK_URL");
+    if (sheetWebhookUrl) {
+      const syncPayload: Record<string, unknown> = { source: source || "strategy_call", current_status: "very_hot" };
+      if (phone_number) syncPayload.phone_number = phone_number;
+      if (email) syncPayload.email = email;
+      if (name) syncPayload.name = name;
+      fetch(sheetWebhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(syncPayload),
+      }).catch((e) => console.error("Sheet sync fire-and-forget failed:", e));
+    }
+
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
