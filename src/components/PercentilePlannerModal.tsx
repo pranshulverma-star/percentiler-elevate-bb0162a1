@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { Target, TrendingUp, Award, Lock } from "lucide-react";
+import { Target, TrendingUp, Award, Lock, Sparkles, ArrowRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { useLeadPhone } from "@/hooks/useLeadPhone";
+import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 
 type Step = "form" | "result";
 
@@ -117,6 +119,16 @@ const SelectOption = ({
   </button>
 );
 
+function getInsight(results: Results): string {
+  if (results.strength === "Strong") {
+    return "Your academic profile is strong. Focus on maintaining CAT preparation consistency — a structured plan will help you convert your profile into IIM calls.";
+  }
+  if (results.strength === "Competitive") {
+    return "Your profile is competitive but there's room to strengthen it. A higher CAT score can compensate — focus on targeted prep and mock analysis.";
+  }
+  return "Your profile needs a strong CAT score to compensate. Start early, focus on fundamentals, and take sectional tests regularly to build accuracy.";
+}
+
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -127,10 +139,12 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
   const [form, setForm] = useState<FormData>(initialForm);
   const [results, setResults] = useState<Results | null>(null);
   const [loading, setLoading] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
+  const [showRoadmap, setShowRoadmap] = useState(false);
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user, signIn } = useAuth();
+  const { hasPhone, refetch: refetchPhone } = useLeadPhone();
   const [signingIn, setSigningIn] = useState(false);
 
   const progress = step === "form" ? 50 : 100;
@@ -148,6 +162,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
 
   const [notEligible, setNotEligible] = useState(false);
 
+  // STEP 1 & 2: Allow fill WITHOUT sign-in, show FULL result
   const handleSubmit = () => {
     setLoading(true);
     const result = calculateScores(form);
@@ -162,22 +177,15 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
     setResults(result);
     setLoading(false);
     setStep("result");
-
-    // Check if already authenticated
-    if (isAuthenticated) {
-      setUnlocked(true);
-      // Save in background using email
-      const phone = localStorage.getItem("percentilers_phone") || "";
-      const name = user?.user_metadata?.full_name || "";
-      if (phone) saveResults(phone, name, result);
-    } else {
-      setUnlocked(false);
-    }
   };
 
-  const saveResults = async (phone: string, name: string, scores: Results) => {
+  const saveResults = async (scores: Results) => {
+    const phone = localStorage.getItem("percentilers_phone") || "";
+    const name = user?.user_metadata?.full_name || "";
+    if (!phone && !user?.id) return;
+    
     await supabase.from("profile_percentile_planner").insert({
-      phone_number: phone,
+      phone_number: phone || user?.email || "unknown",
       tenth_score: Number(form.tenth_score) || null,
       twelfth_score: Number(form.twelfth_score) || null,
       grad_score: Number(form.grad_score) || null,
@@ -192,17 +200,29 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       target_top20: scores.target_top20,
       target_top30: scores.target_top30,
     });
-    await supabase.from("leads").upsert(
-      { phone_number: phone, name, source: "profile_planner" },
-      { onConflict: "phone_number" }
-    );
   };
 
-  const handleGoogleUnlock = async () => {
-    setSigningIn(true);
-    // Save form + results so we can restore after OAuth redirect
-    sessionStorage.setItem("planner_pending", JSON.stringify({ form, results, notEligible }));
-    await signIn();
+  // STEP 3: "Unlock My Personalized Plan" button handler
+  const handleUnlockRoadmap = async () => {
+    if (!isAuthenticated) {
+      setSigningIn(true);
+      sessionStorage.setItem("planner_pending", JSON.stringify({ form, results, notEligible }));
+      await signIn();
+      return;
+    }
+    // Authenticated — check phone
+    if (!hasPhone) {
+      setShowPhoneModal(true);
+    } else {
+      setShowRoadmap(true);
+      if (results) saveResults(results);
+    }
+  };
+
+  const handlePhoneSuccess = () => {
+    refetchPhone();
+    setShowRoadmap(true);
+    if (results) saveResults(results);
   };
 
   // Restore state after OAuth redirect
@@ -216,29 +236,24 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
         setResults(savedResults);
         setNotEligible(savedNotEligible);
         setStep("result");
-        setUnlocked(true);
         onOpenChange(true);
-        // Save results
-        const phone = localStorage.getItem("percentilers_phone") || "";
-        const name = user?.user_metadata?.full_name || "";
-        if (phone && savedResults) saveResults(phone, name, savedResults);
-        toast({ title: "Results unlocked!", description: "Here are your target percentiles." });
+        // After sign-in, check if phone exists
+        refetchPhone();
       } catch {
         sessionStorage.removeItem("planner_pending");
       }
     }
   }, [isAuthenticated]);
 
-  // React to auth changes (for non-redirect flows)
+  // After auth redirect, if phone exists, auto-show roadmap
   useEffect(() => {
-    if (isAuthenticated && !unlocked && step === "result" && results && !sessionStorage.getItem("planner_pending")) {
-      setUnlocked(true);
-      const phone = localStorage.getItem("percentilers_phone") || "";
-      const name = user?.user_metadata?.full_name || "";
-      if (phone) saveResults(phone, name, results);
-      toast({ title: "Results unlocked!", description: "Here are your target percentiles." });
+    if (isAuthenticated && step === "result" && results && !showRoadmap) {
+      if (hasPhone) {
+        setShowRoadmap(true);
+        saveResults(results);
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, hasPhone, step, results]);
 
   const handleClose = () => {
     onOpenChange(false);
@@ -246,7 +261,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       setStep("form");
       setForm(initialForm);
       setResults(null);
-      setUnlocked(false);
+      setShowRoadmap(false);
       setNotEligible(false);
       setSigningIn(false);
     }, 300);
@@ -256,130 +271,104 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
     setForm((f) => ({ ...f, [key]: val }));
 
   return (
-    <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl p-6">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-foreground">
-            CAT Target Percentile Planner
-          </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground">
-            Fill in your academic profile to find your target CAT percentile.
-          </DialogDescription>
-        </DialogHeader>
+    <>
+      <Dialog open={open} onOpenChange={handleClose}>
+        <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl p-6">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold text-foreground">
+              CAT Target Percentile Planner
+            </DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">
+              Fill in your academic profile to find your target CAT percentile.
+            </DialogDescription>
+          </DialogHeader>
 
-        <Progress value={progress} className="h-1.5 mb-4 [&>div]:bg-primary" />
+          <Progress value={progress} className="h-1.5 mb-4 [&>div]:bg-primary" />
 
-        {/* Form Step */}
-        {step === "form" && (
-          <div className="space-y-5">
-            {/* Academics */}
-            <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">Academic Scores (%)</h3>
-              <p className="text-[11px] text-muted-foreground/70 italic">
-                (Enter percentages in integer. Conversion: Percentage = CGPA × 9)
-              </p>
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">10th</label>
-                  <Input type="number" placeholder="85" value={form.tenth_score} onChange={(e) => handleAcademicChange("tenth_score", e.target.value, twelfthRef)} min={0} max={100} />
-                </div>
-                <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">12th</label>
-                  <Input ref={twelfthRef} type="number" placeholder="82" value={form.twelfth_score} onChange={(e) => handleAcademicChange("twelfth_score", e.target.value, gradRef)} min={0} max={100} />
-                </div>
-                <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">Graduation</label>
-                  <Input ref={gradRef} type="number" placeholder="75" value={form.grad_score} onChange={(e) => handleAcademicChange("grad_score", e.target.value, workexRef)} min={0} max={100} />
-                </div>
-              </div>
-            </div>
-
-            {/* Stream */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-foreground">Graduation Stream</h3>
-              <div className="flex gap-2">
-                <SelectOption label="Engineer" value="Engineer" selected={form.grad_stream === "Engineer"} onClick={(v) => update("grad_stream", v)} />
-                <SelectOption label="Non-Engineer" value="Non-Engineer" selected={form.grad_stream === "Non-Engineer"} onClick={(v) => update("grad_stream", v)} />
-              </div>
-            </div>
-
-            {/* Gender */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-foreground">Gender</h3>
-              <div className="flex gap-2">
-                <SelectOption label="Male" value="Male" selected={form.gender === "Male"} onClick={(v) => update("gender", v)} />
-                <SelectOption label="Female" value="Female" selected={form.gender === "Female"} onClick={(v) => update("gender", v)} />
-              </div>
-            </div>
-
-            {/* Work Experience */}
-            <div className="space-y-2">
-              <h3 className="text-sm font-semibold text-foreground">Work Experience (months)</h3>
-              <Input ref={workexRef} type="number" placeholder="0" value={form.workex_months} onChange={(e) => update("workex_months", e.target.value)} min={0} />
-            </div>
-
-            {/* Other fields */}
-            <div className="grid grid-cols-3 gap-3">
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Gap Years</label>
-                <Input type="number" value={form.gap_years} onChange={(e) => update("gap_years", e.target.value)} min={0} />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Internships</label>
-                <Input type="number" value={form.internships} onChange={(e) => update("internships", e.target.value)} min={0} />
-              </div>
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Certifications</label>
-                <Input type="number" value={form.certifications} onChange={(e) => update("certifications", e.target.value)} min={0} />
-              </div>
-            </div>
-
-            <Button onClick={handleSubmit} disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-              {loading ? "Calculating..." : "Get My Target Percentile"}
-            </Button>
-          </div>
-        )}
-
-        {/* Not Eligible */}
-        {step === "result" && notEligible && (
-          <div className="text-center space-y-4 py-6">
-            <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-destructive/10 mx-auto">
-              <Lock className="w-7 h-7 text-destructive" />
-            </div>
-            <h3 className="text-lg font-bold text-foreground">Not Eligible for CAT</h3>
-            <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-              A minimum of 45% in 10th, 12th, and Graduation is required to be eligible for CAT.
-            </p>
-            <Button variant="outline" onClick={handleClose}>Close</Button>
-          </div>
-        )}
-
-        {/* Result Step */}
-        {step === "result" && !notEligible && results && (
-          <div className="space-y-5 relative">
-            {/* Blurred results overlay */}
-            {!unlocked && (
-              <div className="absolute inset-0 z-10 flex items-center justify-center">
-                <div className="bg-background/80 backdrop-blur-sm rounded-2xl p-6 text-center space-y-4 border border-border shadow-lg max-w-xs mx-4">
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mx-auto">
-                    <Lock className="w-6 h-6 text-primary" />
+          {/* Form Step — NO sign-in required */}
+          {step === "form" && (
+            <div className="space-y-5">
+              <div className="space-y-3">
+                <h3 className="text-sm font-semibold text-foreground">Academic Scores (%)</h3>
+                <p className="text-[11px] text-muted-foreground/70 italic">
+                  (Enter percentages in integer. Conversion: Percentage = CGPA × 9)
+                </p>
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">10th</label>
+                    <Input type="number" placeholder="85" value={form.tenth_score} onChange={(e) => handleAcademicChange("tenth_score", e.target.value, twelfthRef)} min={0} max={100} />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground text-base">Unlock Your Results</h3>
-                    <p className="text-xs text-muted-foreground mt-1">Sign in with Google to see your target percentiles.</p>
+                    <label className="text-xs text-muted-foreground mb-1 block">12th</label>
+                    <Input ref={twelfthRef} type="number" placeholder="82" value={form.twelfth_score} onChange={(e) => handleAcademicChange("twelfth_score", e.target.value, gradRef)} min={0} max={100} />
                   </div>
-                  <Button
-                    onClick={handleGoogleUnlock}
-                    disabled={signingIn}
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  >
-                    {signingIn ? "Signing in..." : "Continue with Google"}
-                  </Button>
+                  <div>
+                    <label className="text-xs text-muted-foreground mb-1 block">Graduation</label>
+                    <Input ref={gradRef} type="number" placeholder="75" value={form.grad_score} onChange={(e) => handleAcademicChange("grad_score", e.target.value, workexRef)} min={0} max={100} />
+                  </div>
                 </div>
               </div>
-            )}
 
-            <div className={!unlocked ? "blur-md select-none pointer-events-none" : ""}>
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold text-foreground">Graduation Stream</h3>
+                <div className="flex gap-2">
+                  <SelectOption label="Engineer" value="Engineer" selected={form.grad_stream === "Engineer"} onClick={(v) => update("grad_stream", v)} />
+                  <SelectOption label="Non-Engineer" value="Non-Engineer" selected={form.grad_stream === "Non-Engineer"} onClick={(v) => update("grad_stream", v)} />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold text-foreground">Gender</h3>
+                <div className="flex gap-2">
+                  <SelectOption label="Male" value="Male" selected={form.gender === "Male"} onClick={(v) => update("gender", v)} />
+                  <SelectOption label="Female" value="Female" selected={form.gender === "Female"} onClick={(v) => update("gender", v)} />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <h3 className="text-sm font-semibold text-foreground">Work Experience (months)</h3>
+                <Input ref={workexRef} type="number" placeholder="0" value={form.workex_months} onChange={(e) => update("workex_months", e.target.value)} min={0} />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Gap Years</label>
+                  <Input type="number" value={form.gap_years} onChange={(e) => update("gap_years", e.target.value)} min={0} />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Internships</label>
+                  <Input type="number" value={form.internships} onChange={(e) => update("internships", e.target.value)} min={0} />
+                </div>
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Certifications</label>
+                  <Input type="number" value={form.certifications} onChange={(e) => update("certifications", e.target.value)} min={0} />
+                </div>
+              </div>
+
+              <Button onClick={handleSubmit} disabled={loading} className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
+                {loading ? "Calculating..." : "Get My Target Percentile"}
+              </Button>
+            </div>
+          )}
+
+          {/* Not Eligible */}
+          {step === "result" && notEligible && (
+            <div className="text-center space-y-4 py-6">
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-destructive/10 mx-auto">
+                <Lock className="w-7 h-7 text-destructive" />
+              </div>
+              <h3 className="text-lg font-bold text-foreground">Not Eligible for CAT</h3>
+              <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+                A minimum of 45% in 10th, 12th, and Graduation is required to be eligible for CAT.
+              </p>
+              <Button variant="outline" onClick={handleClose}>Close</Button>
+            </div>
+          )}
+
+          {/* Result Step — FULL result shown, NO gate */}
+          {step === "result" && !notEligible && results && (
+            <div className="space-y-5">
+              {/* Profile Strength + Percentile bands — always visible */}
               <div className="text-center space-y-1">
                 <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-semibold">
                   <Award className="w-4 h-4" />
@@ -411,18 +400,71 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
                 </div>
               </div>
 
-              <div className="bg-primary/5 border border-primary/15 rounded-xl p-4 text-center space-y-3 mt-4">
-                <p className="text-sm text-muted-foreground">
-                  If you're aiming for {results.target_top10}+, our Free Masterclass shows you the structured preparation plan required to reach it.
-                </p>
-                <Button className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => { handleClose(); setTimeout(() => navigate("/masterclass/watch"), 300); }}>
-                  Watch Free Masterclass
-                </Button>
+              {/* 1 Short Insight — always visible */}
+              <div className="bg-primary/5 border border-primary/15 rounded-xl p-4 space-y-1">
+                <p className="text-xs font-semibold text-foreground">💡 Quick Insight</p>
+                <p className="text-xs text-muted-foreground leading-relaxed">{getInsight(results)}</p>
               </div>
+
+              {/* UPGRADE BLOCK — Gate for deeper roadmap */}
+              {!showRoadmap && (
+                <div className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-2xl p-5 text-center space-y-3">
+                  <Sparkles className="w-6 h-6 text-primary mx-auto" />
+                  <h3 className="text-base font-bold text-foreground">Want a Personalized CAT Execution Roadmap?</h3>
+                  <p className="text-xs text-muted-foreground">Get a structured improvement plan based on your profile.</p>
+                  <Button onClick={handleUnlockRoadmap} disabled={signingIn} className="w-full">
+                    {signingIn ? "Signing in..." : "Unlock My Personalized Plan"} <ArrowRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+
+              {/* Detailed Roadmap — only after sign-in + phone */}
+              {showRoadmap && (
+                <div className="space-y-4 border-t border-border pt-4">
+                  <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" /> Your Personalized Roadmap
+                  </h3>
+                  
+                  {results.strength === "Strong" && (
+                    <div className="space-y-3 text-sm text-muted-foreground">
+                      <p>✅ <strong className="text-foreground">Mock Strategy:</strong> Start full-length mocks immediately. Target 1 mock/week with detailed analysis.</p>
+                      <p>📊 <strong className="text-foreground">Focus Area:</strong> Your profile is strong — focus on converting calls with a 98+ percentile. Practice LRDI sets for speed.</p>
+                      <p>📅 <strong className="text-foreground">Timeline:</strong> With consistent prep, you can achieve your target in 4-5 months.</p>
+                    </div>
+                  )}
+                  {results.strength === "Competitive" && (
+                    <div className="space-y-3 text-sm text-muted-foreground">
+                      <p>📘 <strong className="text-foreground">Foundation First:</strong> Spend 6-8 weeks on concepts before jumping into mocks.</p>
+                      <p>🎯 <strong className="text-foreground">Target Score:</strong> Aim for {results.target_top20}+ to compensate for profile gaps. Focus on your strongest section first.</p>
+                      <p>⏰ <strong className="text-foreground">Daily Plan:</strong> 3-4 hours/day with structured rotation: QA (Mon/Thu), VARC (Tue/Fri), LRDI (Wed/Sat).</p>
+                    </div>
+                  )}
+                  {results.strength === "Moderate" && (
+                    <div className="space-y-3 text-sm text-muted-foreground">
+                      <p>🚀 <strong className="text-foreground">Start Immediately:</strong> Begin with fundamentals — Number Systems, RC passages, and basic DI sets.</p>
+                      <p>📈 <strong className="text-foreground">Score Requirement:</strong> You need {results.target_top10}+ to get top IIM calls. Build accuracy before speed.</p>
+                      <p>📅 <strong className="text-foreground">6-Month Plan:</strong> Months 1-2: Concepts → Months 3-4: Sectionals → Months 5-6: Full Mocks.</p>
+                      <p>💡 <strong className="text-foreground">Profile Building:</strong> Consider certifications or internships to strengthen your profile alongside prep.</p>
+                    </div>
+                  )}
+
+                  <Button className="w-full" onClick={() => { handleClose(); setTimeout(() => navigate("/cat-daily-study-planner"), 300); }}>
+                    Start My Daily Study Plan <ArrowRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </div>
+              )}
             </div>
-          </div>
-        )}
-      </DialogContent>
-    </Dialog>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Phone capture modal */}
+      <PhoneCaptureModal
+        open={showPhoneModal}
+        onOpenChange={setShowPhoneModal}
+        source="profile_planner_roadmap"
+        onSuccess={handlePhoneSuccess}
+      />
+    </>
   );
 }

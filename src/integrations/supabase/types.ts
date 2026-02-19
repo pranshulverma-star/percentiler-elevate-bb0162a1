@@ -18,35 +18,41 @@ export type Database = {
         Row: {
           created_at: string
           current_status: string | null
+          email: string | null
           id: string
           name: string | null
-          phone_number: string
+          phone_number: string | null
           prep_level: string | null
           source: string | null
           target_percentile: number | null
           target_year: string | null
+          user_id: string | null
         }
         Insert: {
           created_at?: string
           current_status?: string | null
+          email?: string | null
           id?: string
           name?: string | null
-          phone_number: string
+          phone_number?: string | null
           prep_level?: string | null
           source?: string | null
           target_percentile?: number | null
           target_year?: string | null
+          user_id?: string | null
         }
         Update: {
           created_at?: string
           current_status?: string | null
+          email?: string | null
           id?: string
           name?: string | null
-          phone_number?: string
+          phone_number?: string | null
           prep_level?: string | null
           source?: string | null
           target_percentile?: number | null
           target_year?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }

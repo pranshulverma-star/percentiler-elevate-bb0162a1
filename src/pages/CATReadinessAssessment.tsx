@@ -23,14 +23,15 @@ import {
 "@/components/ui/select";
 import { questions, type Section } from "@/data/readinessQuestions";
 import { computeScore, generateInsight, type AssessmentResult } from "@/lib/readinessScoring";
-import { useLeadModal } from "@/components/LeadModalProvider";
 import { useAuth } from "@/hooks/useAuth";
+import { useLeadPhone } from "@/hooks/useLeadPhone";
+import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
 import {
   Clock, CheckCircle2, ArrowLeft, ArrowRight, Target,
   BarChart3, Zap, Brain, ChevronRight, Shield, Users,
   TrendingUp, BookOpen, Calculator, PuzzleIcon, FileText,
-  Shuffle, Award, Timer, ClipboardList, Trophy, Phone, GraduationCap } from
+  Shuffle, Award, Timer, ClipboardList, Trophy, Phone, GraduationCap, Lock } from
 "lucide-react";
 
 type Phase = "hero" | "test" | "results";
@@ -66,12 +67,10 @@ function setStored(data: Partial<StoredData>) {
 
 function getFilteredQuestions(filter: SectionFilter) {
   if (filter === "mix") {
-    // Pick ~3-4 from each section for a balanced 10-question mix
     const sections: Section[] = ["quant", "lrdi", "varc"];
     const picked: typeof questions = [];
     for (const sec of sections) {
       const pool = questions.filter((q) => q.section === sec);
-      // Shuffle and take 3 (or 4 for first section to reach 10)
       const shuffled = [...pool].sort(() => Math.random() - 0.5);
       picked.push(...shuffled.slice(0, picked.length === 0 ? 4 : 3));
     }
@@ -177,10 +176,6 @@ const SectionSelector = ({
   selected,
   onSelect,
   onStartAssessment
-
-
-
-
 }: {selected: SectionFilter;onSelect: (s: SectionFilter) => void;onStartAssessment: () => void;}) =>
 <section className="py-12 md:py-20" id="start-assessment">
     <div className="max-w-4xl mx-auto px-4">
@@ -254,9 +249,9 @@ const HowItWorks = () =>
 
       <motion.div variants={stagger} initial="initial" whileInView="animate" viewport={{ once: true }} className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {[
-      { step: "01", icon: ClipboardList, title: "Enter Your Details", desc: "Tell us your name, phone, and target percentile so we can personalize your report." },
+      { step: "01", icon: ClipboardList, title: "Choose a Section", desc: "Pick your focus area or take a balanced mixed assessment." },
       { step: "02", icon: FileText, title: "Answer 10 Questions", desc: "Carefully crafted questions across difficulty levels — complete in 15 minutes." },
-      { step: "03", icon: TrendingUp, title: "Get Your Report", desc: "Receive your CAT Readiness Index with section-wise breakdown and actionable insights." }].
+      { step: "03", icon: TrendingUp, title: "Get Your Report", desc: "Receive your CAT Readiness Index with score, rank, and personalized insight." }].
       map((s) =>
       <motion.div key={s.step} variants={fadeUp}>
             <Card className="rounded-2xl border-0 shadow-sm h-full">
@@ -299,16 +294,10 @@ const TrustSection = () =>
   </section>;
 
 
-// LeadCapture removed — assessment now starts directly after section selection
-// Target percentile is collected in the results gate overlay
-
 // ─── TEST INTERFACE ─────────────────────────────────────
 const TestInterface = ({
   sectionFilter,
   onComplete
-
-
-
 }: {sectionFilter: SectionFilter;onComplete: (answers: Record<number, number>, timeTaken: number) => void;}) => {
   const filtered = useMemo(() => getFilteredQuestions(sectionFilter), [sectionFilter]);
   const [current, setCurrent] = useState(0);
@@ -355,7 +344,6 @@ const TestInterface = ({
   return (
     <section className="max-w-2xl mx-auto px-4 py-6 md:py-10">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        {/* Header bar */}
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs md:text-sm font-medium text-muted-foreground">
             Question {current + 1} of {filtered.length}
@@ -374,7 +362,6 @@ const TestInterface = ({
           {answeredCount} of {filtered.length} answered
         </p>
 
-        {/* Question card */}
         <Card className="rounded-2xl shadow-md border-0 mb-4 md:mb-6">
           <CardContent className="pt-4 pb-4 md:pt-6 md:pb-6 px-4 md:px-6">
             <div className="flex items-center gap-2 mb-3 md:mb-4">
@@ -404,7 +391,6 @@ const TestInterface = ({
           </CardContent>
         </Card>
 
-        {/* Navigation */}
         <div className="flex items-center justify-between gap-2">
           <Button
             variant="outline"
@@ -436,69 +422,6 @@ const bandConfig: Record<string, {color: string;bg: string;}> = {
   Advanced: { color: "text-green-600", bg: "bg-green-50" }
 };
 
-const ResultsGateOverlay = ({ onUnlock }: { onUnlock: (target: string) => void }) => {
-  const { signIn } = useAuth();
-  const [target, setTarget] = useState("90+");
-  const [signingIn, setSigningIn] = useState(false);
-
-  const handleSignIn = async () => {
-    setSigningIn(true);
-    sessionStorage.setItem("pending_gate_source", "readiness_assessment");
-    sessionStorage.setItem("pending_readiness_target", target);
-    await signIn();
-    // After redirect, the auth state change will handle the rest
-  };
-
-  return (
-    <div className="absolute inset-0 z-20 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-background/60 backdrop-blur-sm" />
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }}>
-        <Card className="relative z-10 rounded-2xl shadow-2xl border-0 max-w-md w-full">
-          <CardHeader className="text-center pb-2 pt-6 md:pt-8 px-4 md:px-6">
-            <div className="mx-auto mb-3 inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
-              <Trophy className="h-6 w-6 text-primary" />
-            </div>
-            <CardTitle className="text-xl md:text-2xl font-bold text-foreground">
-              Unlock Your Detailed Results
-            </CardTitle>
-            <p className="text-xs md:text-sm text-muted-foreground mt-1.5">
-              Sign in with Google to view your complete CAT Readiness report.
-            </p>
-          </CardHeader>
-          <CardContent className="px-4 md:px-6 pb-6">
-            <div className="space-y-4 mt-3">
-              <div className="space-y-1.5">
-                <Label>Target Percentile</Label>
-                <Select value={target} onValueChange={setTarget}>
-                  <SelectTrigger className="rounded-xl h-11 md:h-12">
-                    <SelectValue placeholder="Select target" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="90+">90+</SelectItem>
-                    <SelectItem value="95+">95+</SelectItem>
-                    <SelectItem value="98+">98+</SelectItem>
-                    <SelectItem value="99+">99+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button
-                onClick={handleSignIn}
-                disabled={signingIn}
-                className="w-full rounded-2xl py-5 md:py-6 text-base font-semibold shadow-lg hover:shadow-xl transition-all"
-              >
-                {signingIn ? "Signing in..." : "Continue with Google"} <ChevronRight className="ml-1 h-5 w-5" />
-              </Button>
-              <p className="text-center text-[10px] md:text-xs text-muted-foreground">
-                One-tap sign in · No spam, we promise.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </motion.div>
-    </div>
-  );
-};
-
 const ResultsSection = ({ result, onRetake, onRecalculate }: {
   result: AssessmentResult;
   sectionFilter: SectionFilter;
@@ -506,20 +429,29 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
   onRecalculate: (target: string) => void;
 }) => {
   const navigate = useNavigate();
-  const { openPhoneModal } = useLeadModal();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, signIn } = useAuth();
+  const { hasPhone, refetch: refetchPhone } = useLeadPhone();
   const [showCallDialog, setShowCallDialog] = useState(false);
-  const [isGated, setIsGated] = useState(() => !isAuthenticated);
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [detailsUnlocked, setDetailsUnlocked] = useState(false);
+  const [signingIn, setSigningIn] = useState(false);
+  const [target, setTarget] = useState("90+");
 
-  // React to auth state changes (e.g., after Google sign-in redirect)
+  // After auth redirect, check for pending unlock
   useEffect(() => {
-    if (isAuthenticated && isGated) {
-      const pendingTarget = sessionStorage.getItem("pending_readiness_target") || "90+";
-      sessionStorage.removeItem("pending_readiness_target");
-      setIsGated(false);
-      onRecalculate(pendingTarget);
+    if (isAuthenticated) {
+      const pendingTarget = sessionStorage.getItem("pending_readiness_target");
+      if (pendingTarget) {
+        sessionStorage.removeItem("pending_readiness_target");
+        setTarget(pendingTarget);
+        onRecalculate(pendingTarget);
+      }
+      // If has phone, auto-unlock details
+      if (hasPhone) {
+        setDetailsUnlocked(true);
+      }
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, hasPhone]);
 
   const insight = generateInsight(result);
   const stored = getStored();
@@ -532,9 +464,29 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
   const rank = Math.max(1, Math.min(10000, baseRank + jitter));
   const topPercent = Math.max(0.1, Math.round(rank / 10000 * 1000) / 10);
 
+  const handleUnlockDetails = async () => {
+    if (!isAuthenticated) {
+      setSigningIn(true);
+      sessionStorage.setItem("pending_readiness_target", target);
+      sessionStorage.setItem("pending_gate_source", "readiness_assessment");
+      await signIn();
+      return;
+    }
+    // Authenticated — check phone
+    if (!hasPhone) {
+      setShowPhoneModal(true);
+    } else {
+      setDetailsUnlocked(true);
+    }
+  };
+
+  const handlePhoneSuccess = () => {
+    refetchPhone();
+    setDetailsUnlocked(true);
+  };
+
   const markLeadHot = (phone: string) => {
     const name = localStorage.getItem("percentilers_name") || "";
-    // Fire-and-forget — don't block UI
     supabase.functions.invoke("mark-lead-hot", {
       body: { phone_number: phone, source: "readiness_strategy_call", name },
     }).catch(() => {});
@@ -546,26 +498,14 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
       markLeadHot(phone);
       setShowCallDialog(true);
     } else {
-      openPhoneModal("readiness_strategy_call", () => {
-        const newPhone = localStorage.getItem("percentilers_phone") || "";
-        if (newPhone) markLeadHot(newPhone);
-        setShowCallDialog(true);
-      });
+      setShowPhoneModal(true);
     }
-  };
-
-  const handleUnlock = (target: string) => {
-    setIsGated(false);
-    onRecalculate(target);
   };
 
   return (
     <section className="max-w-3xl mx-auto px-4 py-8 md:py-12 relative">
-      {/* Gated overlay */}
-      {isGated && <ResultsGateOverlay onUnlock={handleUnlock} />}
-
-      <motion.div {...fadeUp} className={`space-y-4 md:space-y-6 transition-all duration-700 ${isGated ? "blur-lg pointer-events-none select-none" : ""}`}>
-        {/* Score hero */}
+      <motion.div {...fadeUp} className="space-y-4 md:space-y-6">
+        {/* Score hero — ALWAYS visible */}
         <Card className="rounded-2xl shadow-lg border-0 overflow-hidden">
           <div className="bg-gradient-to-br from-primary/5 via-background to-primary/3 pt-8 pb-8 md:pt-10 md:pb-10 text-center px-4">
             {userName &&
@@ -587,7 +527,7 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
           </div>
         </Card>
 
-        {/* Rank card */}
+        {/* Rank card — ALWAYS visible */}
         <Card className="rounded-2xl border-0 shadow-sm overflow-hidden">
           <CardContent className="p-0">
             <div className="flex items-stretch">
@@ -607,6 +547,7 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
           </CardContent>
         </Card>
 
+        {/* Quick stats — ALWAYS visible */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-3">
           {[
           { icon: Target, label: "Accuracy", value: `${result.accuracyPercent}%`, sub: `${result.correctCount}/${result.totalQuestions} correct` },
@@ -625,61 +566,103 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
           )}
         </div>
 
-        {/* Section breakdown */}
-        <Card className="rounded-2xl border-0 shadow-sm">
-          <CardHeader className="pb-2 px-4 md:px-6">
-            <CardTitle className="text-sm md:text-base font-semibold flex items-center gap-2">
-              <Brain className="h-4 w-4 text-primary" /> Section-wise Breakdown
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
-            {(["quant", "lrdi", "varc"] as const).map((sec) => {
-              const d = result.sectionBreakdown[sec];
-              const pct = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
-              return (
-                <div key={sec}>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs md:text-sm font-semibold uppercase text-foreground">{sec}</span>
-                    <span className="text-xs md:text-sm font-bold text-foreground">{d.correct}/{d.total} <span className="text-muted-foreground font-normal">({pct}%)</span></span>
-                  </div>
-                  <Progress value={pct} className="h-2 md:h-2.5 rounded-full" />
-                </div>);
-            })}
-          </CardContent>
-        </Card>
-
-        {/* Difficulty breakdown */}
-        <Card className="rounded-2xl border-0 shadow-sm">
-          <CardHeader className="pb-2 px-4 md:px-6">
-            <CardTitle className="text-sm md:text-base font-semibold flex items-center gap-2">
-              <BarChart3 className="h-4 w-4 text-primary" /> Difficulty-wise Breakdown
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
-            {(["easy", "medium", "hard"] as const).map((diff) => {
-              const d = result.difficultyBreakdown[diff];
-              const pct = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
-              return (
-                <div key={diff}>
-                  <div className="flex items-center justify-between mb-1.5">
-                    <span className="text-xs md:text-sm font-semibold capitalize text-foreground">{diff}</span>
-                    <span className="text-xs md:text-sm font-bold text-foreground">{d.correct}/{d.total} <span className="text-muted-foreground font-normal">({pct}%)</span></span>
-                  </div>
-                  <Progress value={pct} className="h-2 md:h-2.5 rounded-full" />
-                </div>);
-            })}
-          </CardContent>
-        </Card>
-
-        {/* Insight */}
+        {/* 1 short insight — ALWAYS visible */}
         <Card className="rounded-2xl border-0 shadow-sm border-l-4 border-l-primary">
           <CardContent className="pt-5 pb-5 md:pt-6 md:pb-6 px-4 md:px-6">
             <p className="text-xs md:text-sm font-bold text-foreground mb-1.5 md:mb-2 flex items-center gap-2">
-              <TrendingUp className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" /> Personalized Insight
+              <TrendingUp className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" /> Quick Insight
             </p>
             <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{insight}</p>
           </CardContent>
         </Card>
+
+        {/* UNLOCK BUTTON — above blurred sections */}
+        {!detailsUnlocked && (
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="space-y-1.5 flex-1">
+                <Label className="text-xs">Target Percentile</Label>
+                <Select value={target} onValueChange={setTarget}>
+                  <SelectTrigger className="rounded-xl h-10">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="90+">90+</SelectItem>
+                    <SelectItem value="95+">95+</SelectItem>
+                    <SelectItem value="98+">98+</SelectItem>
+                    <SelectItem value="99+">99+</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <Button
+              size="lg"
+              className="w-full rounded-2xl py-5 text-base font-semibold"
+              onClick={handleUnlockDetails}
+              disabled={signingIn}
+            >
+              {signingIn ? "Signing in..." : "Unlock Detailed Analysis"} <Lock className="ml-2 h-4 w-4" />
+            </Button>
+          </div>
+        )}
+
+        {/* Section breakdown — BLURRED unless unlocked */}
+        <div className={`transition-all duration-500 ${!detailsUnlocked ? "blur-lg pointer-events-none select-none" : ""}`}>
+          <Card className="rounded-2xl border-0 shadow-sm">
+            <CardHeader className="pb-2 px-4 md:px-6">
+              <CardTitle className="text-sm md:text-base font-semibold flex items-center gap-2">
+                <Brain className="h-4 w-4 text-primary" /> Section-wise Breakdown
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+              {(["quant", "lrdi", "varc"] as const).map((sec) => {
+                const d = result.sectionBreakdown[sec];
+                const pct = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
+                return (
+                  <div key={sec}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs md:text-sm font-semibold uppercase text-foreground">{sec}</span>
+                      <span className="text-xs md:text-sm font-bold text-foreground">{d.correct}/{d.total} <span className="text-muted-foreground font-normal">({pct}%)</span></span>
+                    </div>
+                    <Progress value={pct} className="h-2 md:h-2.5 rounded-full" />
+                  </div>);
+              })}
+            </CardContent>
+          </Card>
+
+          {/* Difficulty breakdown */}
+          <Card className="rounded-2xl border-0 shadow-sm mt-4">
+            <CardHeader className="pb-2 px-4 md:px-6">
+              <CardTitle className="text-sm md:text-base font-semibold flex items-center gap-2">
+                <BarChart3 className="h-4 w-4 text-primary" /> Difficulty-wise Breakdown
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3 md:space-y-4 px-4 md:px-6">
+              {(["easy", "medium", "hard"] as const).map((diff) => {
+                const d = result.difficultyBreakdown[diff];
+                const pct = d.total > 0 ? Math.round(d.correct / d.total * 100) : 0;
+                return (
+                  <div key={diff}>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span className="text-xs md:text-sm font-semibold capitalize text-foreground">{diff}</span>
+                      <span className="text-xs md:text-sm font-bold text-foreground">{d.correct}/{d.total} <span className="text-muted-foreground font-normal">({pct}%)</span></span>
+                    </div>
+                    <Progress value={pct} className="h-2 md:h-2.5 rounded-full" />
+                  </div>);
+              })}
+            </CardContent>
+          </Card>
+
+          {/* Personalized Insight */}
+          <Card className="rounded-2xl border-0 shadow-sm border-l-4 border-l-primary mt-4">
+            <CardContent className="pt-5 pb-5 md:pt-6 md:pb-6 px-4 md:px-6">
+              <p className="text-xs md:text-sm font-bold text-foreground mb-1.5 md:mb-2 flex items-center gap-2">
+                <TrendingUp className="h-3.5 w-3.5 md:h-4 md:w-4 text-primary" /> Personalized Improvement Analysis
+              </p>
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{insight}</p>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* CTA */}
         <Card className="rounded-2xl border-0 shadow-xl overflow-hidden">
@@ -706,6 +689,14 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
           </Button>
         </div>
       </motion.div>
+
+      {/* Phone capture modal */}
+      <PhoneCaptureModal
+        open={showPhoneModal}
+        onOpenChange={setShowPhoneModal}
+        source="readiness_assessment"
+        onSuccess={handlePhoneSuccess}
+      />
 
       {/* Call Confirmation Dialog */}
       <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
@@ -812,7 +803,6 @@ const CATReadinessAssessment = () => {
     <main className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Landing page sections — only show on hero phase */}
       {isLanding &&
       <>
           <HeroSection onStart={() => {
@@ -825,7 +815,6 @@ const CATReadinessAssessment = () => {
           <HowItWorks />
           <TrustSection />
 
-          {/* Final CTA */}
           <section className="py-10 md:py-16 text-center px-4">
             <motion.div {...fadeUp}>
               <h2 className="text-xl md:text-3xl font-bold text-foreground mb-3 md:mb-4">

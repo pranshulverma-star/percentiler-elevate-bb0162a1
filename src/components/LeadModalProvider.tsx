@@ -40,11 +40,10 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   // Content gate: just triggers Google sign-in if not authenticated
   const openContentGate = (src: string, onSuccess?: () => void) => {
     if (isAuthenticated) {
-      if (user?.email) {
-        // Fire-and-forget — don't block UI
+      if (user?.id) {
         (supabase.from("leads") as any).upsert(
-          { email: user.email, name: user.user_metadata?.full_name || null, source: src },
-          { onConflict: "email" }
+          { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: src },
+          { onConflict: "user_id" }
         ).then(() => {}).catch(() => {});
       }
       onSuccess?.();
@@ -67,10 +66,10 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     const pendingSource = sessionStorage.getItem("pending_gate_source");
     if (pendingSource) {
       sessionStorage.removeItem("pending_gate_source");
-      if (user?.email) {
+      if (user?.id) {
         (supabase.from("leads") as any).upsert(
-          { email: user.email, name: user.user_metadata?.full_name || null, source: pendingSource },
-          { onConflict: "email" }
+          { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: pendingSource },
+          { onConflict: "user_id" }
         );
       }
       const redirect = sessionStorage.getItem("pending_gate_redirect");
@@ -86,17 +85,11 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     // Check if phone already stored
     const storedPhone = localStorage.getItem("percentilers_phone") || "";
     if (/^\d{10}$/.test(storedPhone)) {
-      // Fire-and-forget — don't block UI
-      if (user?.email) {
+      if (user?.id) {
         (supabase.from("leads") as any).upsert(
-          { email: user.email, phone_number: storedPhone, source: src },
-          { onConflict: "email" }
+          { user_id: user.id, email: user.email, phone_number: storedPhone, source: src },
+          { onConflict: "user_id" }
         ).then(() => {}).catch(() => {});
-      } else {
-        Promise.resolve(supabase.from("leads").upsert(
-          { phone_number: storedPhone, source: src },
-          { onConflict: "phone_number" }
-        )).catch(() => {});
       }
       onSuccess?.();
       return;
@@ -125,11 +118,10 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
       const name = nameInput || user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || null;
       if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
-      if (email) {
-        // Link phone to existing email-based lead
+      if (user?.id) {
         await (supabase.from("leads") as any).upsert(
-          { email, phone_number: phone, name, source },
-          { onConflict: "email" }
+          { user_id: user.id, email: email, phone_number: phone, name, source },
+          { onConflict: "user_id" }
         );
       } else {
         await supabase.from("leads").upsert(
