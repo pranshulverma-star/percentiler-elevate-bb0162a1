@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
-import { useLeadModal } from "@/components/LeadModalProvider";
+import { useLeadPhone } from "@/hooks/useLeadPhone";
 
 const learningBullets = [
   "Eligibility Criteria and When to Start",
@@ -30,10 +30,9 @@ const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
 const MasterclassWatch = () => {
   const navigate = useNavigate();
   const { isAuthenticated, loading: authLoading, user } = useAuth();
-  const { openPhoneModal } = useLeadModal();
+  const { hasPhone, phone: leadPhone, loading: phoneLoading } = useLeadPhone();
 
-  // Use email as identifier instead of phone
-  const email = user?.email || null;
+  const identifier = leadPhone || user?.email || "";
 
   const [watchPct, setWatchPct] = useState(0);
   const [maxWatchPct, setMaxWatchPct] = useState(0);
@@ -67,24 +66,33 @@ const MasterclassWatch = () => {
     return () => { document.head.removeChild(script); };
   }, []);
 
-  // Redirect if not authenticated — add small delay to let session establish after OAuth redirect
+  // Use auth state listener to handle session changes
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      const timer = setTimeout(() => navigate("/masterclass"), 500);
-      return () => clearTimeout(timer);
-    }
-  }, [isAuthenticated, authLoading, navigate]);
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        navigate("/masterclass", { replace: true });
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [navigate]);
 
-  // Check existing engagement on load — use phone from localStorage for backward compat
-  const phone = localStorage.getItem("percentilers_phone") || "";
-  
+  // Redirect if not authenticated or no phone
   useEffect(() => {
-    if (!phone && !email) return;
+    if (authLoading || phoneLoading) return;
+    if (!isAuthenticated) {
+      navigate("/masterclass", { replace: true });
+      return;
+    }
+    if (!hasPhone) {
+      navigate("/masterclass/register", { replace: true });
+      return;
+    }
+  }, [isAuthenticated, authLoading, phoneLoading, hasPhone, navigate]);
+
+  // Check existing engagement on load
+  useEffect(() => {
+    if (!identifier) return;
     const checkEngagement = async () => {
-      // Try phone first for backward compat, then email
-      const identifier = phone || email || "";
-      if (!identifier) return;
-      
       const { data } = await supabase
         .from("webinar_engagement")
         .select("watch_percentage, completed")
@@ -107,10 +115,9 @@ const MasterclassWatch = () => {
       }
     };
     checkEngagement();
-  }, [phone, email]);
+  }, [identifier]);
 
   const updateEngagement = useCallback(async (pct: number, isCompleted = false) => {
-    const identifier = phone || email || "";
     if (!identifier) return;
 
     if (!engagementCreated.current) {
@@ -126,7 +133,7 @@ const MasterclassWatch = () => {
         .update({ watch_percentage: pct, completed: isCompleted, updated_at: new Date().toISOString() })
         .eq("phone_number", identifier);
     }
-  }, [phone, email]);
+  }, [identifier]);
 
   const handleTimeUpdate = useCallback(() => {
     const video = videoRef.current;
@@ -163,25 +170,22 @@ const MasterclassWatch = () => {
   const videoClassName = `w-full h-full object-contain rounded-2xl${isFirstWatch ? " [&::-webkit-media-controls-timeline]:hidden" : ""}`;
 
   const handleApply = useCallback(async () => {
-    // Collect phone first, then mark hot
-    openPhoneModal("masterclass_apply_95", async () => {
-      setApplyLoading(true);
-      try {
-        const p = localStorage.getItem("percentilers_phone") || "";
-        await supabase.functions.invoke("mark-lead-hot", {
-          body: { phone_number: p, source: "masterclass_apply_95", name: user?.user_metadata?.full_name || null, email: user?.email || null },
-        });
-      } catch { /* silent */ }
-      finally { setApplyLoading(false); setShowApplyConfirm(true); }
-    });
-  }, [openPhoneModal, user]);
+    setApplyLoading(true);
+    try {
+      const p = localStorage.getItem("percentilers_phone") || "";
+      await supabase.functions.invoke("mark-lead-hot", {
+        body: { phone_number: p, source: "masterclass_apply_95", name: user?.user_metadata?.full_name || null, email: user?.email || null },
+      });
+    } catch { /* silent */ }
+    finally { setApplyLoading(false); setShowApplyConfirm(true); }
+  }, [user]);
 
-  if (authLoading) return (
+  if (authLoading || phoneLoading) return (
     <div className="min-h-screen bg-background flex items-center justify-center">
       <Loader2 className="h-8 w-8 text-primary animate-spin" />
     </div>
   );
-  if (!isAuthenticated) return null;
+  if (!isAuthenticated || !hasPhone) return null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -231,7 +235,7 @@ const MasterclassWatch = () => {
             </div>
           )}
 
-          {/* Resource Kit — Compact */}
+          {/* Resource Kit */}
           {(() => {
             const unlocked = resources.filter(r => maxWatchPct >= r.unlockAt);
             const locked = resources.filter(r => maxWatchPct < r.unlockAt);

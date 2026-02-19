@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import mentorPhoto from "@/assets/founder-pranshul.webp";
 import { useAuth } from "@/hooks/useAuth";
+import { useLeadPhone } from "@/hooks/useLeadPhone";
 import studentAnanya from "@/assets/student-ananya.jpg";
 import studentKarthik from "@/assets/student-karthik.jpg";
 import studentDivya from "@/assets/student-divya.jpg";
@@ -44,7 +45,6 @@ const RegistrationCard = () => {
   const { signIn, loading } = useAuth();
 
   const handleGoogleSignIn = async () => {
-    // Store intended redirect for after OAuth
     sessionStorage.setItem("pending_gate_redirect", "/masterclass/watch");
     sessionStorage.setItem("pending_gate_source", "masterclass");
     await signIn();
@@ -88,20 +88,40 @@ const RegistrationCard = () => {
 const Masterclass = () => {
   const navigate = useNavigate();
   const { isAuthenticated, loading, user } = useAuth();
+  const { hasPhone, loading: phoneLoading } = useLeadPhone();
 
-  // Redirect if already authenticated
+  // Redirect based on auth + phone status
   useEffect(() => {
-    if (!loading && isAuthenticated) {
-      // Upsert lead with source
-      if (user?.email) {
-        (supabase.from("leads") as any).upsert(
-          { email: user.email, name: user.user_metadata?.full_name || null, source: "masterclass" },
-          { onConflict: "email" }
-        );
-      }
-      navigate("/masterclass/watch", { replace: true });
+    if (loading || phoneLoading) return;
+    if (!isAuthenticated) return; // Show registration page
+
+    // Upsert lead
+    if (user?.email) {
+      (supabase.from("leads") as any).upsert(
+        { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: "masterclass" },
+        { onConflict: "user_id" }
+      );
     }
-  }, [isAuthenticated, loading, navigate, user]);
+
+    if (hasPhone) {
+      navigate("/masterclass/watch", { replace: true });
+    } else {
+      navigate("/masterclass/register", { replace: true });
+    }
+  }, [isAuthenticated, loading, phoneLoading, hasPhone, navigate, user]);
+
+  // Listen for auth state changes to handle redirect after sign-in
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        // Small delay to let state settle, then re-evaluate
+        setTimeout(() => {
+          // The useEffect above will handle the redirect
+        }, 300);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -120,11 +140,10 @@ const Masterclass = () => {
     return () => { document.head.removeChild(script); };
   }, []);
 
-  if (loading) return null;
+  if (loading || phoneLoading) return null;
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navbar */}
       <header className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
           <a href="/" className="text-xl font-bold tracking-tight text-foreground">
@@ -136,7 +155,6 @@ const Masterclass = () => {
         </div>
       </header>
 
-      {/* Social Proof Stats Strip */}
       <div className="border-b border-border py-4 bg-secondary/50">
         <div className="container mx-auto px-4 md:px-6">
           <div className="flex flex-wrap justify-center items-center gap-6 md:gap-12">
@@ -154,7 +172,6 @@ const Masterclass = () => {
         </div>
       </div>
 
-      {/* As Featured In */}
       <div className="py-6 border-b border-border">
         <p className="text-center text-[10px] font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-4">
           As Featured In
@@ -168,7 +185,6 @@ const Masterclass = () => {
         </div>
       </div>
 
-      {/* Hero — Mentor Section */}
       <main className="py-12 md:py-20">
         <div className="container mx-auto px-4 md:px-6 max-w-6xl">
           <div className="grid lg:grid-cols-[1fr_380px] gap-10 md:gap-14 items-start mb-20">
@@ -209,7 +225,6 @@ const Masterclass = () => {
             </motion.div>
           </div>
 
-          {/* Testimonials */}
           <motion.div className="mb-20" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }}>
             <h2 className="text-2xl font-bold text-foreground text-center mb-8">Students Who Took This Masterclass</h2>
             <div className="grid md:grid-cols-3 gap-5">
@@ -235,7 +250,6 @@ const Masterclass = () => {
             </div>
           </motion.div>
 
-          {/* Bottom CTA */}
           <motion.div className="text-center py-12 rounded-2xl bg-foreground" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
             <h2 className="text-2xl md:text-3xl font-bold text-background mb-3">
               Don't Wait for Motivation. Start With a Plan.

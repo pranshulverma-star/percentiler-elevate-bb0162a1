@@ -22,7 +22,7 @@ export function useAuth(): AuthState {
         setUser(currentUser);
         setLoading(false);
 
-        // On sign-in, upsert lead with email + name
+        // On sign-in, upsert lead with user_id, email + name
         if (event === "SIGNED_IN" && currentUser?.email) {
           const email = currentUser.email;
           const name = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || null;
@@ -31,10 +31,10 @@ export function useAuth(): AuthState {
           localStorage.setItem("percentilers_email", email);
           if (name) localStorage.setItem("percentilers_name", name);
 
-          // Upsert lead by email (email column added via migration)
+          // Upsert lead by user_id
           await (supabase.from("leads") as any).upsert(
-            { email, name, source: "google_signin" },
-            { onConflict: "email" }
+            { user_id: currentUser.id, email, name, source: "google_signin" },
+            { onConflict: "user_id" }
           );
         }
       }
