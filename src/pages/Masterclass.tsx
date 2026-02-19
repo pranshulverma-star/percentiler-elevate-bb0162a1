@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, Users, Award, Shield, Star, Play } from "lucide-react";
@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import mentorPhoto from "@/assets/founder-pranshul.webp";
 import { useAuth } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
+import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import studentAnanya from "@/assets/student-ananya.jpg";
 import studentKarthik from "@/assets/student-karthik.jpg";
 import studentDivya from "@/assets/student-divya.jpg";
@@ -41,87 +42,135 @@ const testimonialSnippets = [
   { name: "Divya S.", text: "Clear plan, weekly targets, honest feedback.", score: "97.9%ile", photo: studentDivya },
 ];
 
-const RegistrationCard = () => {
-  const { signIn, loading } = useAuth();
+const GoogleSignInButton = ({ className }: { className?: string }) => {
+  const { signIn, loading, isAuthenticated, user } = useAuth();
 
   const handleGoogleSignIn = async () => {
-    sessionStorage.setItem("pending_gate_redirect", "/masterclass/watch");
+    sessionStorage.setItem("pending_gate_redirect", "/masterclass");
     sessionStorage.setItem("pending_gate_source", "masterclass");
     await signIn();
   };
 
+  if (isAuthenticated) {
+    return (
+      <div className={`flex items-center gap-2 ${className}`}>
+        <img src={user?.user_metadata?.avatar_url} alt="" className="w-7 h-7 rounded-full" />
+        <span className="text-xs text-muted-foreground hidden sm:inline">{user?.email}</span>
+      </div>
+    );
+  }
+
   return (
-    <Card className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-lg">
-      <div className="text-center mb-6">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-3">
-          <Play className="h-5 w-5 ml-0.5" />
+    <Button
+      size="sm"
+      variant="outline"
+      className={`gap-2 text-xs font-medium ${className}`}
+      onClick={handleGoogleSignIn}
+      disabled={loading}
+    >
+      <svg className="h-4 w-4" viewBox="0 0 24 24">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+      Sign in
+    </Button>
+  );
+};
+
+const RegistrationCard = () => {
+  const { isAuthenticated, signIn, loading } = useAuth();
+  const { hasPhone } = useLeadPhone();
+  const navigate = useNavigate();
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
+
+  const handleCTA = async () => {
+    if (!isAuthenticated) {
+      sessionStorage.setItem("pending_gate_redirect", "/masterclass");
+      sessionStorage.setItem("pending_gate_source", "masterclass");
+      await signIn();
+      return;
+    }
+    if (!hasPhone) {
+      setShowPhoneModal(true);
+      return;
+    }
+    navigate("/masterclass/watch");
+  };
+
+  return (
+    <>
+      <Card className="rounded-2xl border border-border bg-card p-6 md:p-8 shadow-lg">
+        <div className="text-center mb-6">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-3">
+            <Play className="h-5 w-5 ml-0.5" />
+          </div>
+          <h2 className="text-xl font-bold text-foreground">Watch Free Masterclass</h2>
+          <p className="text-sm text-muted-foreground mt-1">Free · 45 min · Structured mentoring</p>
         </div>
-        <h2 className="text-xl font-bold text-foreground">Reserve Your Seat</h2>
-        <p className="text-sm text-muted-foreground mt-1">Free · 45 min · Structured mentoring</p>
-      </div>
-      <Button
-        size="lg"
-        className="w-full h-12 text-base animate-pulse-glow"
-        onClick={handleGoogleSignIn}
-        disabled={loading}
-      >
-        <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
-          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-        </svg>
-        Continue with Google
-      </Button>
-      <div className="mt-5 pt-4 border-t border-border space-y-2 text-center">
-        <p className="text-xs text-muted-foreground">
-          Next structured batch closes soon.
-        </p>
-        <p className="text-xs font-medium text-foreground/70">
-          2,000+ CAT aspirants registered in last cycle
-        </p>
-      </div>
-    </Card>
+        <Button
+          size="lg"
+          className="w-full h-12 text-base animate-pulse-glow"
+          onClick={handleCTA}
+          disabled={loading}
+        >
+          {!isAuthenticated ? (
+            <>
+              <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Continue with Google to Watch
+            </>
+          ) : !hasPhone ? (
+            "Register & Watch"
+          ) : (
+            "Watch Now →"
+          )}
+        </Button>
+        <div className="mt-5 pt-4 border-t border-border space-y-2 text-center">
+          <p className="text-xs text-muted-foreground">
+            Next structured batch closes soon.
+          </p>
+          <p className="text-xs font-medium text-foreground/70">
+            2,000+ CAT aspirants registered in last cycle
+          </p>
+        </div>
+      </Card>
+      <PhoneCaptureModal
+        open={showPhoneModal}
+        onOpenChange={setShowPhoneModal}
+        source="masterclass"
+        onSuccess={() => navigate("/masterclass/watch")}
+      />
+    </>
   );
 };
 
 const Masterclass = () => {
-  const navigate = useNavigate();
   const { isAuthenticated, loading, user } = useAuth();
   const { hasPhone, loading: phoneLoading } = useLeadPhone();
+  const navigate = useNavigate();
 
-  // Redirect based on auth + phone status
+  // If user is fully authenticated with phone, auto-redirect to watch
   useEffect(() => {
     if (loading || phoneLoading) return;
-    if (!isAuthenticated) return; // Show registration page
-
-    // Upsert lead
-    if (user?.email) {
-      (supabase.from("leads") as any).upsert(
-        { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: "masterclass" },
-        { onConflict: "user_id" }
-      );
-    }
-
-    if (hasPhone) {
+    if (isAuthenticated && hasPhone) {
       navigate("/masterclass/watch", { replace: true });
-    } else {
-      navigate("/masterclass/register", { replace: true });
     }
-  }, [isAuthenticated, loading, phoneLoading, hasPhone, navigate, user]);
+  }, [isAuthenticated, loading, phoneLoading, hasPhone, navigate]);
 
-  // Listen for auth state changes to handle redirect after sign-in
+  // Upsert lead on auth
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN") {
-        // Small delay to let state settle, then re-evaluate
-        setTimeout(() => {
-          // The useEffect above will handle the redirect
-        }, 300);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, []);
+    if (!isAuthenticated || !user?.email) return;
+    (supabase.from("leads") as any).upsert(
+      { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: "masterclass" },
+      { onConflict: "user_id" }
+    );
+  }, [isAuthenticated, user]);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -149,9 +198,7 @@ const Masterclass = () => {
           <a href="/" className="text-xl font-bold tracking-tight text-foreground">
             Percentilers
           </a>
-          <Button size="sm" variant="outline" asChild>
-            <a href="#register">Register Now</a>
-          </Button>
+          <GoogleSignInButton />
         </div>
       </header>
 
