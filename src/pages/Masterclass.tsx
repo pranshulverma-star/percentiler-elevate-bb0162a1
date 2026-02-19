@@ -189,7 +189,6 @@ const Masterclass = () => {
     return () => { document.head.removeChild(script); };
   }, []);
 
-  if (loading || phoneLoading) return null;
 
   return (
     <div className="min-h-screen bg-background">

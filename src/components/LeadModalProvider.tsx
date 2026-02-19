@@ -155,7 +155,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     <LeadModalContext.Provider value={{ openContentGate, openPhoneModal, openModal }}>
       {children}
       <Dialog open={phoneOpen} onOpenChange={setPhoneOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-5 sm:p-6">
           <DialogHeader>
             <DialogTitle>One Last Step</DialogTitle>
             <DialogDescription>Share your phone number so our team can connect with you.</DialogDescription>
