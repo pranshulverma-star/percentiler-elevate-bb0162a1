@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, Users, Award, Shield, Star, Play } from "lucide-react";
 import { Card } from "@/components/ui/card";
@@ -192,6 +193,11 @@ const Masterclass = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Free CAT Masterclass | CAT Preparation Strategy for 95+ Percentile"
+        description="Watch the free CAT masterclass and learn a proven CAT exam strategy used in our best CAT coaching program. Discover how to structure your CAT preparation for 95+ percentile."
+        canonical="https://percentilers.in/masterclass"
+      />
       <header className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
           <a href="/" className="text-xl font-bold tracking-tight text-foreground">

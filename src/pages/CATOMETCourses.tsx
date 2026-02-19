@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import SEO from "@/components/SEO";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -147,6 +148,11 @@ const CATOMETCourses = () => {
 
   return (
     <>
+      <SEO
+        title="Online CAT Coaching Programs | Best CAT Preparation Courses"
+        description="Explore structured online CAT coaching programs designed for serious CAT exam aspirants aiming for 95+ percentile with proven preparation systems."
+        canonical="https://percentilers.in/courses/cat-omet"
+      />
       <Navbar />
       <main className="pt-16 md:pt-20">
         {/* Hero – compact */}
