@@ -34,7 +34,6 @@ const Navbar = () => {
   }, [onScroll]);
 
   const markLeadHot = (phone: string) => {
-    // Fire-and-forget — don't block UI
     supabase.functions.invoke("mark-lead-hot", {
       body: { phone_number: phone, source: "navbar_strategy_call", name: localStorage.getItem("percentilers_name") || null },
     }).catch(() => {});
@@ -59,7 +58,7 @@ const Navbar = () => {
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl shadow-[0_1px_3px_0_rgb(0,0,0,0.04)]">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
           <a href="#" className="flex items-center">
-            <img src={logoImg} alt="Percentilers - Prepare, Persevere, Perform" className="h-10 md:h-12 w-auto dark:brightness-0 dark:invert" />
+            <img src={logoImg} alt="Percentilers - Prepare, Persevere, Perform" width={120} height={40} className="h-10 md:h-12 w-auto dark:brightness-0 dark:invert" />
           </a>
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((l) => (
@@ -74,7 +73,6 @@ const Navbar = () => {
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
-        {/* Progress bar attached to bottom of header */}
         <div
           className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary origin-left transition-transform duration-150 ease-out"
           style={{ transform: `scaleX(${scrollProgress})` }}
@@ -91,10 +89,8 @@ const Navbar = () => {
           </nav>
         )}
       </header>
-      {/* Spacer to offset fixed header */}
       <div className="h-16" />
 
-      {/* Call Confirmation Dialog */}
       <Dialog open={showCallDialog} onOpenChange={setShowCallDialog}>
         <DialogContent className="max-w-sm text-center">
           <DialogTitle className="sr-only">Book a Call</DialogTitle>

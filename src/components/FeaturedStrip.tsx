@@ -26,7 +26,6 @@ const FeaturedStrip = () => (
     </motion.p>
 
     <div className="relative w-full overflow-hidden group">
-      {/* Fade edges */}
       <div className="pointer-events-none absolute inset-y-0 left-0 w-20 z-10 bg-gradient-to-r from-secondary/30 to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-20 z-10 bg-gradient-to-l from-secondary/30 to-transparent" />
 
@@ -39,6 +38,8 @@ const FeaturedStrip = () => (
             <img
               src={logo.src}
               alt={logo.name}
+              width={36}
+              height={36}
               className="h-7 w-7 md:h-9 md:w-9 object-contain rounded-sm"
             />
             <span className="text-sm md:text-base font-semibold tracking-wide text-muted-foreground whitespace-nowrap">

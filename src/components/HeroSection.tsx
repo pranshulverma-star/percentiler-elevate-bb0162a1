@@ -3,14 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, TrendingUp, GraduationCap, Target } from "lucide-react";
 import { motion } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLeadModal } from "@/components/LeadModalProvider";
-import PercentilePlannerModal from "@/components/PercentilePlannerModal";
 import studentAayushiJha from "@/assets/student-aayushi-jha.jpeg";
 import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
 import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
 import studentSaloni from "@/assets/student-saloni.jpeg";
+
+const PercentilePlannerModal = lazy(() => import("@/components/PercentilePlannerModal"));
 
 const scorecards = [
   { name: "Aayushi Jha", percentile: "99.7", college: "FMS Delhi", initials: "AJ", photo: studentAayushiJha, linkedin: "https://www.linkedin.com/in/ayushi-jha-fms/" },
@@ -67,7 +68,6 @@ const HeroSection = () => {
 
   return (
     <section className="pt-20 pb-10 md:pt-24 md:pb-16 bg-background overflow-hidden relative">
-      {/* Decorative gradient orb */}
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/[0.04] blur-[100px] pointer-events-none" />
       <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         <motion.div
@@ -107,7 +107,7 @@ const HeroSection = () => {
                 <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full" />
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10 md:h-14 md:w-14 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
-                    <AvatarImage src={s.photo} alt={s.name} className="object-cover object-top scale-[1.6] translate-y-[10%]" />
+                    <AvatarImage src={s.photo} alt={s.name} width={56} height={56} className="object-cover object-top scale-[1.6] translate-y-[10%]" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{s.initials}</AvatarFallback>
                   </Avatar>
                   <div>
@@ -132,7 +132,11 @@ const HeroSection = () => {
           ))}
         </motion.div>
       </div>
-      <PercentilePlannerModal open={plannerOpen} onOpenChange={setPlannerOpen} />
+      {plannerOpen && (
+        <Suspense fallback={null}>
+          <PercentilePlannerModal open={plannerOpen} onOpenChange={setPlannerOpen} />
+        </Suspense>
+      )}
     </section>
   );
 };

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,23 +19,32 @@ function ScrollToHash() {
   }, [hash, pathname]);
   return null;
 }
-import Index from "./pages/Index";
-import Masterclass from "./pages/Masterclass";
-import MentorshipPage from "./pages/Mentorship";
-import MasterclassWatch from "./pages/MasterclassWatch";
-import CATReadinessAssessment from "./pages/CATReadinessAssessment";
 
-import CATDailyStudyPlanner from "./pages/CATDailyStudyPlanner";
-import CATOMETCourses from "./pages/CATOMETCourses";
-import FreeCourses from "./pages/FreeCourses";
-import TestSeries from "./pages/TestSeries";
-import Terms from "./pages/Terms";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import RefundPolicy from "./pages/RefundPolicy";
-import Contact from "./pages/Contact";
-import NotFound from "./pages/NotFound";
+// Eagerly load homepage
+import Index from "./pages/Index";
+
+// Lazy load all other routes
+const Masterclass = lazy(() => import("./pages/Masterclass"));
+const MentorshipPage = lazy(() => import("./pages/Mentorship"));
+const MasterclassWatch = lazy(() => import("./pages/MasterclassWatch"));
+const CATReadinessAssessment = lazy(() => import("./pages/CATReadinessAssessment"));
+const CATDailyStudyPlanner = lazy(() => import("./pages/CATDailyStudyPlanner"));
+const CATOMETCourses = lazy(() => import("./pages/CATOMETCourses"));
+const FreeCourses = lazy(() => import("./pages/FreeCourses"));
+const TestSeries = lazy(() => import("./pages/TestSeries"));
+const Terms = lazy(() => import("./pages/Terms"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
+const Contact = lazy(() => import("./pages/Contact"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
+
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -45,23 +54,24 @@ const App = () => (
       <LeadModalProvider>
         <BrowserRouter>
           <ScrollToHash />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/masterclass" element={<Masterclass />} />
-            <Route path="/mentorship" element={<MentorshipPage />} />
-            <Route path="/masterclass/watch" element={<MasterclassWatch />} />
-            
-            <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
-            <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
-            <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
-            <Route path="/free-courses" element={<FreeCourses />} />
-            <Route path="/test-series" element={<TestSeries />} />
-            <Route path="/terms" element={<Terms />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/refund-policy" element={<RefundPolicy />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/masterclass" element={<Masterclass />} />
+              <Route path="/mentorship" element={<MentorshipPage />} />
+              <Route path="/masterclass/watch" element={<MasterclassWatch />} />
+              <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
+              <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
+              <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
+              <Route path="/free-courses" element={<FreeCourses />} />
+              <Route path="/test-series" element={<TestSeries />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/refund-policy" element={<RefundPolicy />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
         </BrowserRouter>
       </LeadModalProvider>
     </TooltipProvider>
