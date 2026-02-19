@@ -36,6 +36,8 @@ import {
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import PhoneCaptureModal from "@/components/PhoneCaptureModal";
+import { useLeadPhone } from "@/hooks/useLeadPhone";
 import {
   generateFullPlan,
   getDaysUntilCAT,
@@ -655,6 +657,8 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
 function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: () => void }) {
   const daysLeft = getDaysUntilCAT(leadData.targetYear);
   const isCrashMode = daysLeft <= 50;
+  const { hasPhone, refetch: refetchPhone } = useLeadPhone();
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
 
   const planConfig: PlanConfig = useMemo(() => ({
     targetYear: leadData.targetYear,
@@ -698,6 +702,18 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   useEffect(() => {
     setViewingDay(Math.min(currentDayIndex, fullPlan.length - 1));
   }, [currentDayIndex, fullPlan.length]);
+
+  // Detect second session — trigger phone modal
+  useEffect(() => {
+    const sessionCount = parseInt(localStorage.getItem("planner_session_count") || "0", 10);
+    const newCount = sessionCount + 1;
+    localStorage.setItem("planner_session_count", newCount.toString());
+    if (newCount >= 2 && !hasPhone) {
+      // Delay slightly so planner loads first
+      const t = setTimeout(() => setShowPhoneModal(true), 2000);
+      return () => clearTimeout(t);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Load existing completion data + heat score on mount
   useEffect(() => {
@@ -757,6 +773,11 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
       const newHeat = await recalculateHeatScore(leadData.phone, isCrashMode, daysLeft);
       setHeatData(newHeat);
       setInactiveDays(0);
+
+      // Soft phone capture: trigger on first-ever task completion
+      if (completedDays.size === 0 && !hasPhone) {
+        setTimeout(() => setShowPhoneModal(true), 800);
+      }
     } catch (err) {
       console.error("Failed to log activity:", err);
     } finally {
@@ -925,6 +946,16 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
 
       {/* Sticky Bottom CTA — enhanced presentation, same trigger logic */}
       <StickyCTABar heatData={heatData} inactiveDays={inactiveDays} />
+
+      {/* Soft phone capture modal */}
+      <PhoneCaptureModal
+        open={showPhoneModal}
+        onOpenChange={setShowPhoneModal}
+        source="planner_mentor_feedback"
+        onSuccess={refetchPhone}
+        title="Want Mentor Feedback on Your Plan?"
+        description="Share your phone number so our mentors can review your progress and guide you."
+      />
     </>
   );
 }

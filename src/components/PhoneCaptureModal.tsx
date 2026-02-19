@@ -12,9 +12,11 @@ interface PhoneCaptureModalProps {
   onOpenChange: (open: boolean) => void;
   source: string;
   onSuccess: () => void;
+  title?: string;
+  description?: string;
 }
 
-export default function PhoneCaptureModal({ open, onOpenChange, source, onSuccess }: PhoneCaptureModalProps) {
+export default function PhoneCaptureModal({ open, onOpenChange, source, onSuccess, title, description }: PhoneCaptureModalProps) {
   const [phone, setPhone] = useState("");
   const [targetYear, setTargetYear] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -71,8 +73,8 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>One Last Step</DialogTitle>
-          <DialogDescription>Share your phone number so we can personalize your experience.</DialogDescription>
+          <DialogTitle>{title || "One Last Step"}</DialogTitle>
+          <DialogDescription>{description || "Share your phone number so we can personalize your experience."}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
           {userName && (
