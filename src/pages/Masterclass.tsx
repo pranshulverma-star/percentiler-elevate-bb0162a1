@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { trackLead, trackRegistration } from "@/lib/tracking";
 import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -90,6 +91,7 @@ const RegistrationCard = () => {
     if (!isAuthenticated) {
       sessionStorage.setItem("pending_gate_redirect", "/masterclass");
       sessionStorage.setItem("pending_gate_source", "masterclass");
+      trackRegistration("masterclass_google_signin");
       await signIn();
       return;
     }
