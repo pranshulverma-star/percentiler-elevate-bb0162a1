@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw, Flame, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { trackInitiateCheckout } from "@/lib/tracking";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
@@ -177,6 +178,7 @@ const MasterclassWatch = () => {
   const videoClassName = `w-full h-full object-contain rounded-2xl${isFirstWatch ? " [&::-webkit-media-controls-timeline]:hidden" : ""}`;
 
   const handleApply = useCallback(async () => {
+    trackInitiateCheckout("masterclass_apply_95");
     setApplyLoading(true);
     try {
       const p = localStorage.getItem("percentilers_phone") || "";

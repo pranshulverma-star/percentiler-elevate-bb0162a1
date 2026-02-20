@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { trackLead, trackInitiateCheckout } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Phone } from "lucide-react";
 import { motion } from "framer-motion";
@@ -21,6 +22,7 @@ const FinalCTASection = () => {
   };
 
   const handleStrategyCall = () => {
+    trackInitiateCheckout("final_cta_strategy_call");
     const phone = localStorage.getItem("percentilers_phone") || "";
     if (phone) {
       markLeadHot(phone, "final_cta_strategy_call");

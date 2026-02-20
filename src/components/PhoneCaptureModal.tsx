@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { trackLead } from "@/lib/tracking";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -55,6 +56,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
         body: { phone_number: phone, email, source },
       }).catch(() => {});
 
+      trackLead(source);
       toast({ title: "Phone number saved!", description: "You're all set." });
       onOpenChange(false);
       setPhone("");

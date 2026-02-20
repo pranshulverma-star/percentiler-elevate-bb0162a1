@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { trackLead } from "@/lib/tracking";
 import { Button } from "@/components/ui/button";
 import { X, ArrowRight, Sparkles } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
@@ -60,6 +61,7 @@ const ScrollCTAPanel = () => {
           </div>
           <div className="flex flex-col gap-2">
             <Button size="sm" onClick={() => {
+              trackLead("scroll_cta_study_plan");
               if (hasPhone) {
                 dismiss();
                 const el = document.getElementById("tools");
