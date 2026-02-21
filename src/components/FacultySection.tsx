@@ -2,6 +2,8 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 
 import facultyGaurav from "@/assets/faculty-gaurav.jpeg";
+import facultyShweta from "@/assets/faculty-shweta.png";
+import facultyPuru from "@/assets/faculty-puru.png";
 
 const faculty = [
   {
@@ -9,14 +11,14 @@ const faculty = [
     role: "Academic Head",
     description: "7x CAT 100%iler since 2006. Two decades of strategy and mentoring expertise.",
     initials: "MR",
-    photo: null,
+    photo: null as string | null,
   },
   {
     name: "Shweta Ma'am",
     role: "VARC Faculty",
     description: "SRCC & IIM Calcutta alumna. 4x 100%ile in VARC.",
     initials: "SM",
-    photo: null as string | null,
+    photo: facultyShweta,
   },
   {
     name: "Gaurav Sharma Sir",
@@ -30,7 +32,7 @@ const faculty = [
     role: "QA & LRDI Faculty",
     description: "99.5+%ile in CAT QA & LRDI. Currently at IIT.",
     initials: "PJ",
-    photo: null as string | null,
+    photo: facultyPuru,
   },
 ];
 
