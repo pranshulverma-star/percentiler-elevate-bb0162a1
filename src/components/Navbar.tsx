@@ -9,10 +9,11 @@ import { Link } from "react-router-dom";
 import logoImg from "@/assets/logo-percentilers.png";
 
 const navLinks = [
-  { label: "Home", href: "/" },
-  { label: "Courses", href: "/#courses" },
-  { label: "Results", href: "/#results" },
-  { label: "Free Tools", href: "/#tools" },
+  { label: "Home", href: "/", external: false },
+  { label: "Courses", href: "/#courses", external: false },
+  { label: "Results", href: "/#results", external: false },
+  { label: "Free Tools", href: "/#tools", external: false },
+  { label: "Blogs", href: "https://old.percentilers.in/blog/", external: true },
 ];
 
 const Navbar = () => {
@@ -61,11 +62,17 @@ const Navbar = () => {
             <img src={logoImg} alt="Percentilers - Prepare, Persevere, Perform" width={120} height={40} className="h-10 md:h-12 w-auto dark:brightness-0 dark:invert" />
           </a>
           <nav className="hidden md:flex items-center gap-8">
-            {navLinks.map((l) => (
-              <Link key={l.label} to={l.href} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
-                {l.label}
-              </Link>
-            ))}
+            {navLinks.map((l) =>
+              l.external ? (
+                <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+                  {l.label}
+                </a>
+              ) : (
+                <Link key={l.label} to={l.href} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+                  {l.label}
+                </Link>
+              )
+            )}
             <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%]">Book Free Strategy Call</Button>
             <ThemeToggle />
           </nav>
@@ -79,11 +86,17 @@ const Navbar = () => {
         />
         {open && (
           <nav className="md:hidden border-t border-border bg-background px-4 pb-4 space-y-3">
-            {navLinks.map((l) => (
-              <Link key={l.label} to={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
-                {l.label}
-              </Link>
-            ))}
+            {navLinks.map((l) =>
+              l.external ? (
+                <a key={l.label} href={l.href} target="_blank" rel="noopener noreferrer" className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
+                  {l.label}
+                </a>
+              ) : (
+                <Link key={l.label} to={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
+                  {l.label}
+                </Link>
+              )
+            )}
             <Button className="w-full" onClick={() => { setOpen(false); handleStrategyCall(); }}>Book Free Strategy Call</Button>
             <div className="flex justify-center pt-1"><ThemeToggle /></div>
           </nav>
