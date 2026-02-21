@@ -67,7 +67,7 @@ const HeroSection = () => {
   const [plannerOpen, setPlannerOpen] = useState(false);
 
   return (
-    <section className="pt-20 pb-10 md:pt-24 md:pb-16 bg-background overflow-hidden relative">
+    <section className="pt-6 pb-10 md:pt-10 md:pb-16 bg-background overflow-hidden relative">
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/[0.04] blur-[100px] pointer-events-none" />
       <div className="container mx-auto px-4 md:px-6 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
         <motion.div
