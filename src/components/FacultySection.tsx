@@ -1,5 +1,7 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
+
+import facultyGaurav from "@/assets/faculty-gaurav.jpeg";
 
 const faculty = [
   {
@@ -7,24 +9,28 @@ const faculty = [
     role: "Academic Head",
     description: "7x CAT 100%iler since 2006. Two decades of strategy and mentoring expertise.",
     initials: "MR",
+    photo: null,
   },
   {
-    name: "Mahajan Sir",
+    name: "Shweta Ma'am",
     role: "VARC Faculty",
-    description: "SRCC & IIM Calcutta alumnus. 4x 100%ile in VARC.",
-    initials: "MS",
+    description: "SRCC & IIM Calcutta alumna. 4x 100%ile in VARC.",
+    initials: "SM",
+    photo: null as string | null,
   },
   {
     name: "Gaurav Sharma Sir",
     role: "QA & LRDI Faculty",
     description: "18 years of teaching. Consistent 99+%ile scorer in CAT.",
     initials: "GS",
+    photo: facultyGaurav,
   },
   {
     name: "Puru Jain Sir",
     role: "QA & LRDI Faculty",
     description: "99.5+%ile in CAT QA & LRDI. Currently at IIT.",
     initials: "PJ",
+    photo: null as string | null,
   },
 ];
 
@@ -60,6 +66,9 @@ const FacultySection = () => (
           >
             <div className="relative mx-auto w-fit">
               <Avatar className="h-20 w-20 md:h-24 md:w-24 ring-4 ring-transparent group-hover:ring-primary/50 transition-all duration-300">
+                {f.photo ? (
+                  <AvatarImage src={f.photo} alt={f.name} className="object-cover object-top scale-[1.2]" />
+                ) : null}
                 <AvatarFallback className="text-lg font-bold bg-secondary text-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
                   {f.initials}
                 </AvatarFallback>
