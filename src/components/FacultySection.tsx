@@ -4,14 +4,15 @@ import { motion } from "framer-motion";
 import facultyGaurav from "@/assets/faculty-gaurav.jpeg";
 import facultyShweta from "@/assets/faculty-shweta.png";
 import facultyPuru from "@/assets/faculty-puru.png";
+import facultyPranshul from "@/assets/founder-pranshul.webp";
 
 const faculty = [
   {
-    name: "Mayank Raj Singh Sir",
-    role: "Academic Head",
-    description: "7x CAT 100%iler since 2006. Two decades of strategy and mentoring expertise.",
-    initials: "MR",
-    photo: null as string | null,
+    name: "Pranshul Verma",
+    role: "Founder",
+    description: "TISS Alumni. 7x CAT 100%iler. Founder of Percentilers.",
+    initials: "PV",
+    photo: facultyPranshul,
   },
   {
     name: "Shweta Ma'am",
@@ -69,7 +70,7 @@ const FacultySection = () => (
             <div className="relative mx-auto w-fit">
               <Avatar className="h-20 w-20 md:h-24 md:w-24 ring-4 ring-transparent group-hover:ring-primary/50 transition-all duration-300">
                 {f.photo ? (
-                  <AvatarImage src={f.photo} alt={f.name} className="object-cover object-top scale-[1.2]" />
+                  <AvatarImage src={f.photo} alt={f.name} className="object-cover object-[center_20%]" />
                 ) : null}
                 <AvatarFallback className="text-lg font-bold bg-secondary text-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
                   {f.initials}
