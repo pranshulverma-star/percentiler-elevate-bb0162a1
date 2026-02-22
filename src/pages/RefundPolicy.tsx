@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 const RefundPolicy = () => (
   <>
     <Navbar />
-    <main className="container mx-auto px-4 md:px-6 py-16 max-w-3xl">
+    <main className="container mx-auto px-4 md:px-6 pt-6 pb-16 max-w-3xl">
       <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Refund &amp; Cancellation Policy</h1>
       <p className="text-sm text-muted-foreground mb-8">Last updated: February 17, 2026</p>
 

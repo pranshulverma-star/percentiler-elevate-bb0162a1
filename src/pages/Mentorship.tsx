@@ -209,7 +209,7 @@ const Mentorship = () => {
         canonical="https://percentilers.in/mentorship"
       />
       <Navbar />
-      <main className="pt-16 md:pt-20">
+      <main>
         {/* Hero */}
         <section className="relative py-4 md:py-8 overflow-hidden">
           <div className="absolute inset-0 pointer-events-none">
