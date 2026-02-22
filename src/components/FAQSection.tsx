@@ -1,5 +1,4 @@
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { motion } from "framer-motion";
 
 const faqs = [
   { q: "How should I start CAT 2026 preparation?", a: "Start with a clear understanding of the CAT syllabus, create a structured study plan, focus on conceptual clarity in Quant, VARC, and LRDI, and begin sectional practice before full-length mock tests." },
@@ -18,17 +17,12 @@ const FAQSection = () => (
     </div>
 
     <div className="container mx-auto px-4 md:px-6 max-w-3xl relative z-10">
-      <motion.div
-        className="text-center mb-14 space-y-3"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-      >
+      <div className="text-center mb-14 space-y-3">
         <span className="inline-block text-xs font-bold tracking-[0.3em] uppercase text-primary/60">FAQ</span>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground">
           Frequently Asked <span className="text-primary">Questions</span>
         </h2>
-      </motion.div>
+      </div>
 
       <Accordion type="single" collapsible className="w-full space-y-3">
         {faqs.map((f, i) => (
