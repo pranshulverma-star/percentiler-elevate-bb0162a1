@@ -65,28 +65,36 @@
     }
     </script>
     <meta property="og:image" content="https://percentilers.in/og-image.jpg">
-    <!-- Meta Pixel Code -->
+    <!-- Defer third-party scripts to improve FCP -->
     <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '2817957891821505');
-      fbq('track', 'PageView');
-    </script>
-    <!-- End Meta Pixel Code -->
+      function loadThirdParty() {
+        // Meta Pixel
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '2817957891821505');
+        fbq('track', 'PageView');
 
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-672956729"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'AW-672956729');
+        // Google tag (gtag.js)
+        var g=document.createElement('script');g.async=!0;
+        g.src='https://www.googletagmanager.com/gtag/js?id=AW-672956729';
+        document.head.appendChild(g);
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', 'AW-672956729');
+      }
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadThirdParty, {timeout: 3000});
+      } else {
+        setTimeout(loadThirdParty, 1500);
+      }
     </script>
   </head>
   <body>
