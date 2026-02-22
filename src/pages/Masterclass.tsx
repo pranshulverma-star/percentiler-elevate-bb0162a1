@@ -168,6 +168,7 @@ const Masterclass = () => {
   const { isAuthenticated, loading, user } = useAuth();
   const { hasPhone, loading: phoneLoading } = useLeadPhone();
   const navigate = useNavigate();
+  const [showPhoneModal, setShowPhoneModal] = useState(false);
 
   // If user is fully authenticated with phone, auto-redirect to watch
   useEffect(() => {
@@ -176,6 +177,14 @@ const Masterclass = () => {
       navigate("/masterclass/watch", { replace: true });
     }
   }, [isAuthenticated, loading, phoneLoading, hasPhone, navigate]);
+
+  // Auto-open phone modal if authenticated but no phone
+  useEffect(() => {
+    if (loading || phoneLoading) return;
+    if (isAuthenticated && !hasPhone) {
+      setShowPhoneModal(true);
+    }
+  }, [isAuthenticated, loading, phoneLoading, hasPhone]);
 
   // Upsert lead on auth (fire-and-forget)
   useEffect(() => {
@@ -332,6 +341,12 @@ const Masterclass = () => {
           </motion.div>
         </div>
       </main>
+      <PhoneCaptureModal
+        open={showPhoneModal}
+        onOpenChange={setShowPhoneModal}
+        source="masterclass"
+        onSuccess={() => navigate("/masterclass/watch")}
+      />
     </div>
   );
 };
