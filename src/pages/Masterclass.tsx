@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { trackLead, trackRegistration } from "@/lib/tracking";
+
 import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import mentorPhoto from "@/assets/founder-pranshul.webp";
 import { useAuth } from "@/hooks/useAuth";
-import { useLeadPhone } from "@/hooks/useLeadPhone";
+
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import studentAnanya from "@/assets/student-ananya.jpg";
 import studentKarthik from "@/assets/student-karthik.jpg";
@@ -81,37 +81,32 @@ const GoogleSignInButton = ({ className }: { className?: string }) => {
   );
 };
 
+const hasLocalUser = () => {
+  try {
+    const stored = localStorage.getItem("percentilers_phone");
+    return stored && /^\d{10}$/.test(stored);
+  } catch { return false; }
+};
+
 const RegistrationCard = () => {
-  const { isAuthenticated, signIn, loading } = useAuth();
-  const { hasPhone, loading: phoneLoading } = useLeadPhone();
   const navigate = useNavigate();
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
-  // Auto-open phone modal if authenticated but no phone
-  useEffect(() => {
-    if (loading || phoneLoading) return;
-    if (isAuthenticated && !hasPhone) {
-      setShowPhoneModal(true);
-    }
-  }, [isAuthenticated, loading, phoneLoading, hasPhone]);
-
-  const handleCTA = async () => {
-    if (!isAuthenticated) {
-      sessionStorage.setItem("pending_gate_redirect", "/masterclass");
-      sessionStorage.setItem("pending_gate_source", "masterclass");
-      trackRegistration("masterclass_google_signin");
-      await signIn();
+  const handleCTA = () => {
+    if (hasLocalUser()) {
+      setRedirecting(true);
+      navigate("/masterclass/watch");
       return;
     }
-    if (!hasPhone) {
-      setShowPhoneModal(true);
-      return;
-    }
-    navigate("/masterclass/watch");
+    setShowPhoneModal(true);
   };
 
-  // Only disable during active sign-in, not during initial auth loading when already signed in
-  const isButtonDisabled = loading && !isAuthenticated;
+  const handlePhoneSuccess = () => {
+    setShowPhoneModal(false);
+    setRedirecting(true);
+    navigate("/masterclass/watch");
+  };
 
   return (
     <>
@@ -127,23 +122,9 @@ const RegistrationCard = () => {
           size="lg"
           className="w-full h-12 text-base animate-pulse-glow"
           onClick={handleCTA}
-          disabled={isButtonDisabled}
+          disabled={redirecting}
         >
-          {!isAuthenticated ? (
-            <>
-              <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
-                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-              </svg>
-              Continue with Google to Watch
-            </>
-          ) : !hasPhone ? (
-            "Register & Watch"
-          ) : (
-            "Watch Now →"
-          )}
+          {redirecting ? "Redirecting…" : "Watch Masterclass →"}
         </Button>
         <div className="mt-5 pt-4 border-t border-border space-y-2 text-center">
           <p className="text-xs text-muted-foreground">
@@ -158,35 +139,24 @@ const RegistrationCard = () => {
         open={showPhoneModal}
         onOpenChange={setShowPhoneModal}
         source="masterclass"
-        onSuccess={() => navigate("/masterclass/watch")}
+        onSuccess={handlePhoneSuccess}
       />
     </>
   );
 };
 
 const Masterclass = () => {
-  const { isAuthenticated, loading, user } = useAuth();
-  const { hasPhone, loading: phoneLoading } = useLeadPhone();
+  const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
-  const [showPhoneModal, setShowPhoneModal] = useState(false);
 
-  // If user is fully authenticated with phone, auto-redirect to watch
+  // Auto-redirect if user already has phone stored
   useEffect(() => {
-    if (loading || phoneLoading) return;
-    if (isAuthenticated && hasPhone) {
+    if (hasLocalUser()) {
       navigate("/masterclass/watch", { replace: true });
     }
-  }, [isAuthenticated, loading, phoneLoading, hasPhone, navigate]);
+  }, [navigate]);
 
-  // Auto-open phone modal if authenticated but no phone
-  useEffect(() => {
-    if (loading || phoneLoading) return;
-    if (isAuthenticated && !hasPhone) {
-      setShowPhoneModal(true);
-    }
-  }, [isAuthenticated, loading, phoneLoading, hasPhone]);
-
-  // Upsert lead on auth (fire-and-forget)
+  // Upsert lead on auth (fire-and-forget, no blocking)
   useEffect(() => {
     if (!isAuthenticated || !user?.email) return;
     (supabase.from("leads") as any).upsert(
@@ -341,12 +311,6 @@ const Masterclass = () => {
           </motion.div>
         </div>
       </main>
-      <PhoneCaptureModal
-        open={showPhoneModal}
-        onOpenChange={setShowPhoneModal}
-        source="masterclass"
-        onSuccess={() => navigate("/masterclass/watch")}
-      />
     </div>
   );
 };
