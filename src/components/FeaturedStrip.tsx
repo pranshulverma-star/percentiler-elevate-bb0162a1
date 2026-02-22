@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import logoHT from "@/assets/logo-hindustan-times.png";
 import logoZee from "@/assets/logo-zee-news.png";
 import logoDH from "@/assets/logo-deccan-herald.png";
@@ -15,15 +14,9 @@ const logos = [
 
 const FeaturedStrip = () => (
   <section className="py-8 md:py-10 bg-secondary/30 border-y border-border overflow-hidden">
-    <motion.p
-      className="text-center text-[10px] font-semibold tracking-[0.25em] uppercase text-muted-foreground mb-6"
-      initial={{ opacity: 0, y: 8 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.4 }}
-    >
+    <p className="text-center text-[10px] font-semibold tracking-[0.25em] uppercase text-muted-foreground mb-6">
       As Featured In
-    </motion.p>
+    </p>
 
     <div className="relative w-full overflow-hidden group">
       <div className="pointer-events-none absolute inset-y-0 left-0 w-20 z-10 bg-gradient-to-r from-secondary/30 to-transparent" />

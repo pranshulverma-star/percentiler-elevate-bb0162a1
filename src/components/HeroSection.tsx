@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowRight, TrendingUp, GraduationCap, Target } from "lucide-react";
-import { motion } from "framer-motion";
 import { useEffect, useRef, lazy, Suspense } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLeadModal } from "@/components/LeadModalProvider";
@@ -52,14 +51,35 @@ const AnimatedNumber = ({ target }: { target: string }) => {
   return <div ref={ref}>{value.toFixed(1)}</div>;
 };
 
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.12 } },
-};
+const AnimatedProgressBar = ({ percentile, delay }: { percentile: number; delay: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const animated = useRef(false);
 
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" as const } },
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !animated.current) {
+          animated.current = true;
+          setTimeout(() => {
+            el.style.width = `${percentile}%`;
+          }, delay * 1000);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [percentile, delay]);
+
+  return (
+    <div
+      ref={ref}
+      className="h-full bg-primary rounded-full transition-[width] duration-[1200ms] ease-out"
+      style={{ width: 0 }}
+    />
+  );
 };
 
 const HeroSection = () => {
@@ -116,7 +136,7 @@ const HeroSection = () => {
                   <span className="text-xs font-medium text-muted-foreground">%ile</span>
                 </div>
                 <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
-                  <motion.div className="h-full bg-primary rounded-full" initial={{ width: 0 }} whileInView={{ width: `${parseFloat(s.percentile)}%` }} viewport={{ once: true }} transition={{ duration: 1.2, delay: i * 0.15, ease: "easeOut" }} />
+                  <AnimatedProgressBar percentile={parseFloat(s.percentile)} delay={i * 0.15} />
                 </div>
               </Card>
             </a>
