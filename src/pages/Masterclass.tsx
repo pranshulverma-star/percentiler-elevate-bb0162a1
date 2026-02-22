@@ -118,15 +118,17 @@ const RegistrationCard = () => {
     }
   }, [isAuthenticated, signIn, user?.id, navigate]);
 
-  // Auto-resume gate check after Google sign-in redirect
+  // Auto-resume gate check after Google sign-in redirect (run once)
   useEffect(() => {
     const pending = sessionStorage.getItem("pending_gate_redirect");
-    if (pending === "/masterclass" && isAuthenticated && user?.id && !authLoading) {
+    if (pending === "/masterclass" && isAuthenticated && user?.id && !authLoading && !checking) {
       sessionStorage.removeItem("pending_gate_redirect");
       sessionStorage.removeItem("pending_gate_source");
-      handleCTA();
+      // Small delay to ensure auth session is fully ready
+      const t = setTimeout(() => handleCTA(), 300);
+      return () => clearTimeout(t);
     }
-  }, [isAuthenticated, user?.id, authLoading, handleCTA]);
+  }, [isAuthenticated, user?.id, authLoading]); // intentionally exclude handleCTA to avoid re-triggers
 
   const handlePhoneSuccess = () => {
     setShowPhoneModal(false);
