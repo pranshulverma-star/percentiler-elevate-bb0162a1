@@ -3,7 +3,7 @@ import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -176,8 +176,10 @@ const sectionOptions: {key: SectionFilter;label: string;icon: typeof Calculator;
 const SectionSelector = ({
   selected,
   onSelect,
+  targetPercentile,
+  onTargetChange,
   onStartAssessment
-}: {selected: SectionFilter;onSelect: (s: SectionFilter) => void;onStartAssessment: () => void;}) =>
+}: {selected: SectionFilter;onSelect: (s: SectionFilter) => void;targetPercentile: string;onTargetChange: (t: string) => void;onStartAssessment: () => void;}) =>
 <section className="py-12 md:py-20" id="start-assessment">
     <div className="max-w-4xl mx-auto px-4">
       <motion.div {...fadeUp} className="text-center mb-8 md:mb-12">
@@ -222,6 +224,22 @@ const SectionSelector = ({
               </button>
             </motion.div>);
       })}
+      </motion.div>
+
+      {/* Target Percentile */}
+      <motion.div {...fadeUp} className="max-w-xs mx-auto mt-6 md:mt-8">
+        <Label className="text-xs font-semibold text-muted-foreground mb-1.5 block">Target Percentile</Label>
+        <Select value={targetPercentile} onValueChange={onTargetChange}>
+          <SelectTrigger className="rounded-xl h-10">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="90+">90+</SelectItem>
+            <SelectItem value="95+">95+</SelectItem>
+            <SelectItem value="98+">98+</SelectItem>
+            <SelectItem value="99+">99+</SelectItem>
+          </SelectContent>
+        </Select>
       </motion.div>
 
       <motion.div {...fadeUp} className="text-center mt-8 md:mt-10">
@@ -580,22 +598,6 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
         {/* UNLOCK BUTTON — above blurred sections */}
         {!detailsUnlocked && (
           <div className="space-y-3">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="space-y-1.5 flex-1">
-                <Label className="text-xs">Target Percentile</Label>
-                <Select value={target} onValueChange={setTarget}>
-                  <SelectTrigger className="rounded-xl h-10">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="90+">90+</SelectItem>
-                    <SelectItem value="95+">95+</SelectItem>
-                    <SelectItem value="98+">98+</SelectItem>
-                    <SelectItem value="99+">99+</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
             <Button
               size="lg"
               className="w-full rounded-2xl py-5 text-base font-semibold"
@@ -747,6 +749,7 @@ const CATReadinessAssessment = () => {
   const [phase, setPhase] = useState<Phase>("hero");
   const [result, setResult] = useState<AssessmentResult | null>(null);
   const [sectionFilter, setSectionFilter] = useState<SectionFilter>("mix");
+  const [targetPercentile, setTargetPercentile] = useState("90+");
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -814,8 +817,8 @@ const CATReadinessAssessment = () => {
           <HeroSection onStart={() => {
           document.getElementById("start-assessment")?.scrollIntoView({ behavior: "smooth" });
         }} />
-          <SectionSelector selected={sectionFilter} onSelect={setSectionFilter} onStartAssessment={() => {
-            setStored({ section_filter: sectionFilter, assessment_started_at: new Date().toISOString(), answers: {}, completed: false });
+          <SectionSelector selected={sectionFilter} onSelect={setSectionFilter} targetPercentile={targetPercentile} onTargetChange={(t) => { setTargetPercentile(t); setStored({ target_percentile: t }); }} onStartAssessment={() => {
+            setStored({ section_filter: sectionFilter, target_percentile: targetPercentile, assessment_started_at: new Date().toISOString(), answers: {}, completed: false });
             setPhase("test");
           }} />
           <HowItWorks />
