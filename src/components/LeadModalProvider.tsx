@@ -119,10 +119,16 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
       if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
       if (user?.id) {
-        await (supabase.from("leads") as any).upsert(
+        const res = await (supabase.from("leads") as any).upsert(
           { user_id: user.id, email: email, phone_number: phone, name, source },
           { onConflict: "user_id" }
         );
+        // If phone unique constraint fails, update existing phone row
+        if (res.error?.code === "23505" && res.error?.message?.includes("phone_number")) {
+          await (supabase.from("leads") as any)
+            .update({ user_id: user.id, email, name, source })
+            .eq("phone_number", phone);
+        }
       } else {
         await supabase.from("leads").upsert(
           { phone_number: phone, name, source },
