@@ -192,7 +192,7 @@ const Masterclass = () => {
     (supabase.from("leads") as any).upsert(
       { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: "masterclass" },
       { onConflict: "user_id" }
-    ).catch(() => {});
+    ).then(() => {});
   }, [isAuthenticated, user]);
 
   useEffect(() => {
