@@ -32,18 +32,10 @@ const FAQSection = () => (
 
       <Accordion type="single" collapsible className="w-full space-y-3">
         {faqs.map((f, i) => (
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: i * 0.05 }}
-          >
-            <AccordionItem value={`faq-${i}`} className="border-b border-border/50 data-[state=open]:border-l-[3px] data-[state=open]:border-l-primary data-[state=open]:pl-4 transition-all">
-              <AccordionTrigger className="text-left text-foreground hover:text-primary transition-colors py-5">{f.q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed pb-5">{f.a}</AccordionContent>
-            </AccordionItem>
-          </motion.div>
+          <AccordionItem key={i} value={`faq-${i}`} className="border-b border-border/50 data-[state=open]:border-l-[3px] data-[state=open]:border-l-primary data-[state=open]:pl-4 transition-all">
+            <AccordionTrigger className="text-left text-foreground hover:text-primary transition-colors py-5">{f.q}</AccordionTrigger>
+            <AccordionContent className="text-muted-foreground leading-relaxed pb-5">{f.a}</AccordionContent>
+          </AccordionItem>
         ))}
       </Accordion>
     </div>
