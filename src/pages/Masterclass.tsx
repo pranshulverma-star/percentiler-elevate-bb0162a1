@@ -83,9 +83,17 @@ const GoogleSignInButton = ({ className }: { className?: string }) => {
 
 const RegistrationCard = () => {
   const { isAuthenticated, signIn, loading } = useAuth();
-  const { hasPhone } = useLeadPhone();
+  const { hasPhone, loading: phoneLoading } = useLeadPhone();
   const navigate = useNavigate();
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+
+  // Auto-open phone modal if authenticated but no phone
+  useEffect(() => {
+    if (loading || phoneLoading) return;
+    if (isAuthenticated && !hasPhone) {
+      setShowPhoneModal(true);
+    }
+  }, [isAuthenticated, loading, phoneLoading, hasPhone]);
 
   const handleCTA = async () => {
     if (!isAuthenticated) {
