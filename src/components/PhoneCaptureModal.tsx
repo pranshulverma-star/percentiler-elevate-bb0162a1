@@ -36,17 +36,41 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       const email = user?.email || null;
       const name = user?.user_metadata?.full_name || null;
 
-      const { error: upsertError } = await (supabase.from("leads") as any).upsert(
-        {
-          user_id: userId,
-          email,
-          name,
-          phone_number: phone,
-          source,
-          ...(targetYear ? { target_year: targetYear } : {}),
-        },
-        { onConflict: "user_id" }
-      );
+      // Try upsert by user_id first, fallback to update by phone if unique constraint conflicts
+      let upsertError: any = null;
+      if (userId) {
+        const res = await (supabase.from("leads") as any).upsert(
+          {
+            user_id: userId,
+            email,
+            name,
+            phone_number: phone,
+            source,
+            ...(targetYear ? { target_year: targetYear } : {}),
+          },
+          { onConflict: "user_id" }
+        );
+        upsertError = res.error;
+
+        // If phone unique constraint fails, update the existing phone row instead
+        if (upsertError?.code === "23505" && upsertError?.message?.includes("phone_number")) {
+          const res2 = await (supabase.from("leads") as any)
+            .update({ user_id: userId, email, name, source, ...(targetYear ? { target_year: targetYear } : {}) })
+            .eq("phone_number", phone);
+          upsertError = res2.error;
+        }
+      } else {
+        const res = await (supabase.from("leads") as any).upsert(
+          {
+            phone_number: phone,
+            name,
+            source,
+            ...(targetYear ? { target_year: targetYear } : {}),
+          },
+          { onConflict: "phone_number" }
+        );
+        upsertError = res.error;
+      }
 
       if (upsertError) {
         console.error("Lead upsert failed:", upsertError);
