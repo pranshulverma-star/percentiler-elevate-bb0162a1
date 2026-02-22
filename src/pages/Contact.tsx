@@ -5,7 +5,7 @@ import { Mail, Phone, MapPin, Clock } from "lucide-react";
 const Contact = () => (
   <>
     <Navbar />
-    <main className="container mx-auto px-4 md:px-6 py-16 max-w-3xl">
+    <main className="container mx-auto px-4 md:px-6 pt-6 pb-16 max-w-3xl">
       <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Contact Us</h1>
       <p className="text-muted-foreground mb-8">Have questions about our courses, mentorship, or anything else? We'd love to hear from you.</p>
 
