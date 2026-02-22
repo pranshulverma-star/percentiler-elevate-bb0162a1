@@ -118,6 +118,16 @@ const RegistrationCard = () => {
     }
   }, [isAuthenticated, signIn, user?.id, navigate]);
 
+  // Auto-resume gate check after Google sign-in redirect
+  useEffect(() => {
+    const pending = sessionStorage.getItem("pending_gate_redirect");
+    if (pending === "/masterclass" && isAuthenticated && user?.id && !authLoading) {
+      sessionStorage.removeItem("pending_gate_redirect");
+      sessionStorage.removeItem("pending_gate_source");
+      handleCTA();
+    }
+  }, [isAuthenticated, user?.id, authLoading, handleCTA]);
+
   const handlePhoneSuccess = () => {
     setShowPhoneModal(false);
     navigate("/masterclass/watch");
