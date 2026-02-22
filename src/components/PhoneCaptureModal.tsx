@@ -36,7 +36,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       const email = user?.email || null;
       const name = user?.user_metadata?.full_name || null;
 
-      await (supabase.from("leads") as any).upsert(
+      const { error: upsertError } = await (supabase.from("leads") as any).upsert(
         {
           user_id: userId,
           email,
@@ -47,6 +47,13 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
         },
         { onConflict: "user_id" }
       );
+
+      if (upsertError) {
+        console.error("Lead upsert failed:", upsertError);
+        toast({ title: "Something went wrong", description: "Could not save phone number. Please try again.", variant: "destructive" });
+        setSubmitting(false);
+        return;
+      }
 
       localStorage.setItem("percentilers_phone", phone);
       if (name) localStorage.setItem("percentilers_name", name);
