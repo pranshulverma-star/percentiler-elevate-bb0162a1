@@ -7,7 +7,6 @@ import { trackInitiateCheckout } from "@/lib/tracking";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
-import { useLeadPhone } from "@/hooks/useLeadPhone";
 
 const learningBullets = [
   "Eligibility Criteria and When to Start",
@@ -31,9 +30,34 @@ const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
 const MasterclassWatch = () => {
   const navigate = useNavigate();
   const { isAuthenticated, loading: authLoading, user } = useAuth();
-  const { hasPhone, phone: leadPhone, loading: phoneLoading } = useLeadPhone();
 
-  const identifier = leadPhone || user?.email || "";
+  // DB-based phone check
+  const [hasPhone, setHasPhone] = useState(false);
+  const [phoneLoading, setPhoneLoading] = useState(true);
+  const [identifier, setIdentifier] = useState("");
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!isAuthenticated || !user?.id) {
+      setPhoneLoading(false);
+      return;
+    }
+
+    const checkPhone = async () => {
+      const { data } = await (supabase.from("leads") as any)
+        .select("phone_number")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      const phone = data?.phone_number;
+      if (phone && /^\d{10}$/.test(phone)) {
+        setHasPhone(true);
+        setIdentifier(phone);
+      }
+      setPhoneLoading(false);
+    };
+    checkPhone();
+  }, [authLoading, isAuthenticated, user?.id]);
 
   const [watchPct, setWatchPct] = useState(0);
   const [maxWatchPct, setMaxWatchPct] = useState(0);
@@ -68,7 +92,15 @@ const MasterclassWatch = () => {
     return () => { document.head.removeChild(script); };
   }, []);
 
-  // Use auth state listener to handle session changes
+  // Redirect guard: requires auth + phone in DB
+  useEffect(() => {
+    if (authLoading || phoneLoading) return;
+    if (!isAuthenticated || !hasPhone) {
+      navigate("/masterclass", { replace: true });
+    }
+  }, [isAuthenticated, authLoading, phoneLoading, hasPhone, navigate]);
+
+  // Sign-out listener
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
@@ -77,19 +109,6 @@ const MasterclassWatch = () => {
     });
     return () => subscription.unsubscribe();
   }, [navigate]);
-
-  // Redirect if not authenticated or no phone
-  useEffect(() => {
-    if (authLoading || phoneLoading) return;
-    if (!isAuthenticated) {
-      navigate("/masterclass", { replace: true });
-      return;
-    }
-    if (!hasPhone) {
-      navigate("/masterclass", { replace: true });
-      return;
-    }
-  }, [isAuthenticated, authLoading, phoneLoading, hasPhone, navigate]);
 
   // Check existing engagement on load
   useEffect(() => {
@@ -121,7 +140,6 @@ const MasterclassWatch = () => {
 
   const updateEngagement = useCallback(async (pct: number, isCompleted = false) => {
     if (!identifier) return;
-
     if (!engagementCreated.current) {
       await supabase.from("webinar_engagement").insert({
         phone_number: identifier,
@@ -169,7 +187,6 @@ const MasterclassWatch = () => {
     video.currentTime = (video.duration * resumePct) / 100;
   }, [resumePct]);
 
-  // Safari iOS fix: ensure video element is ready before showing controls
   const handleCanPlayThrough = useCallback(() => {
     setVideoLoading(false);
     setVideoReady(true);
@@ -181,13 +198,12 @@ const MasterclassWatch = () => {
     trackInitiateCheckout("masterclass_apply_95");
     setApplyLoading(true);
     try {
-      const p = localStorage.getItem("percentilers_phone") || "";
       await supabase.functions.invoke("mark-lead-hot", {
-        body: { phone_number: p, source: "masterclass_apply_95", name: user?.user_metadata?.full_name || null, email: user?.email || null },
+        body: { phone_number: identifier, source: "masterclass_apply_95", name: user?.user_metadata?.full_name || null, email: user?.email || null },
       });
     } catch { /* silent */ }
     finally { setApplyLoading(false); setShowApplyConfirm(true); }
-  }, [user]);
+  }, [user, identifier]);
 
   if (authLoading || phoneLoading) return (
     <div className="min-h-screen bg-background flex items-center justify-center">
@@ -225,10 +241,8 @@ const MasterclassWatch = () => {
               <button className="absolute inset-0 flex items-center justify-center z-[15] bg-black/40 cursor-pointer" onClick={() => {
                 const v = videoRef.current;
                 if (!v) return;
-                // Safari iOS: ensure currentTime is set before play
                 if (v.currentTime === 0 && resumePct <= 0) v.currentTime = 0.001;
                 v.play().then(() => setShowTapToPlay(false)).catch(() => {
-                  // Retry with muted for autoplay policy
                   v.muted = true;
                   v.play().then(() => { setShowTapToPlay(false); v.muted = false; }).catch(() => {});
                 });

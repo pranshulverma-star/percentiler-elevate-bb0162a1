@@ -1,15 +1,13 @@
-import { useState, useEffect } from "react";
-
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, CheckCircle, Users, Award, Shield, Star, Play } from "lucide-react";
+import { ArrowRight, CheckCircle, Users, Award, Shield, Star, Play, Loader2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import mentorPhoto from "@/assets/founder-pranshul.webp";
 import { useAuth } from "@/hooks/useAuth";
-
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import studentAnanya from "@/assets/student-ananya.jpg";
 import studentKarthik from "@/assets/student-karthik.jpg";
@@ -81,32 +79,51 @@ const GoogleSignInButton = ({ className }: { className?: string }) => {
   );
 };
 
-const hasLocalUser = () => {
-  try {
-    const stored = localStorage.getItem("percentilers_phone");
-    return stored && /^\d{10}$/.test(stored);
-  } catch { return false; }
-};
-
 const RegistrationCard = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, signIn, user, loading: authLoading } = useAuth();
   const [showPhoneModal, setShowPhoneModal] = useState(false);
-  const [redirecting, setRedirecting] = useState(false);
+  const [checking, setChecking] = useState(false);
 
-  const handleCTA = () => {
-    if (hasLocalUser()) {
-      setRedirecting(true);
-      navigate("/masterclass/watch");
+  const handleCTA = useCallback(async () => {
+    // Step 1: If not authenticated, trigger Google sign-in
+    if (!isAuthenticated) {
+      sessionStorage.setItem("pending_gate_redirect", "/masterclass");
+      sessionStorage.setItem("pending_gate_source", "masterclass");
+      await signIn();
       return;
     }
-    setShowPhoneModal(true);
-  };
+
+    // Step 2: Authenticated — check DB for phone
+    if (!user?.id) return;
+    setChecking(true);
+    try {
+      const { data } = await (supabase.from("leads") as any)
+        .select("phone_number")
+        .eq("user_id", user.id)
+        .maybeSingle();
+
+      if (data?.phone_number && /^\d{10}$/.test(data.phone_number)) {
+        // Phone exists in DB → go to watch page
+        navigate("/masterclass/watch");
+      } else {
+        // No phone → show phone capture modal
+        setShowPhoneModal(true);
+      }
+    } catch {
+      // On error, show phone modal as fallback
+      setShowPhoneModal(true);
+    } finally {
+      setChecking(false);
+    }
+  }, [isAuthenticated, signIn, user?.id, navigate]);
 
   const handlePhoneSuccess = () => {
     setShowPhoneModal(false);
-    setRedirecting(true);
     navigate("/masterclass/watch");
   };
+
+  const isLoading = authLoading || checking;
 
   return (
     <>
@@ -122,9 +139,13 @@ const RegistrationCard = () => {
           size="lg"
           className="w-full h-12 text-base animate-pulse-glow"
           onClick={handleCTA}
-          disabled={redirecting}
+          disabled={isLoading}
         >
-          {redirecting ? "Redirecting…" : "Watch Masterclass →"}
+          {isLoading ? (
+            <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Checking…</>
+          ) : (
+            "Watch Masterclass →"
+          )}
         </Button>
         <div className="mt-5 pt-4 border-t border-border space-y-2 text-center">
           <p className="text-xs text-muted-foreground">
@@ -147,14 +168,6 @@ const RegistrationCard = () => {
 
 const Masterclass = () => {
   const { isAuthenticated, user } = useAuth();
-  const navigate = useNavigate();
-
-  // Auto-redirect if user already has phone stored
-  useEffect(() => {
-    if (hasLocalUser()) {
-      navigate("/masterclass/watch", { replace: true });
-    }
-  }, [navigate]);
 
   // Upsert lead on auth (fire-and-forget, no blocking)
   useEffect(() => {
@@ -181,7 +194,6 @@ const Masterclass = () => {
     document.head.appendChild(script);
     return () => { document.head.removeChild(script); };
   }, []);
-
 
   return (
     <div className="min-h-screen bg-background">
