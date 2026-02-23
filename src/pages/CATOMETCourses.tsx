@@ -263,15 +263,18 @@ const CATOMETCourses = () => {
                           {isExpanded ? (
                             <ChevronUp className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
                           ) : (
-                            <motion.div
-                              animate={{ y: [0, 4, 0] }}
-                              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                              className="md:hidden"
-                            >
-                              <ChevronDown className="h-4 w-4 text-primary" />
-                            </motion.div>
+                            <>
+                              <motion.div
+                                animate={{ scale: [1, 1.1, 1], y: [0, -2, 0] }}
+                                transition={{ duration: 0.9, repeat: Infinity, ease: "easeInOut" }}
+                                className="md:hidden flex items-center gap-1 bg-primary text-primary-foreground px-2.5 py-1 rounded-full shadow-md"
+                              >
+                                <span className="text-[9px] font-bold uppercase tracking-wider">Details</span>
+                                <ChevronDown className="h-3 w-3" />
+                              </motion.div>
+                              <ChevronDown className="hidden md:block h-5 w-5 text-muted-foreground" />
+                            </>
                           )}
-                          {!isExpanded && <ChevronDown className="hidden md:block h-5 w-5 text-muted-foreground" />}
                         </div>
                       </div>
 
