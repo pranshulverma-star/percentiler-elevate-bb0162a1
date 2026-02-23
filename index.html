@@ -70,6 +70,7 @@
     <!-- Defer third-party scripts to improve FCP -->
     <script>
       function loadThirdParty() {
+        if(window.__3pLoaded)return;window.__3pLoaded=true;
         // Meta Pixel
         !function(f,b,e,v,n,t,s)
         {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -92,11 +93,11 @@
         gtag('js', new Date());
         gtag('config', 'AW-672956729');
       }
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadThirdParty, {timeout: 3000});
-      } else {
-        setTimeout(loadThirdParty, 1500);
-      }
+      // Load on first user interaction OR after 5s, whichever comes first
+      var events=['scroll','click','touchstart','keydown'];
+      function onInteract(){events.forEach(function(e){window.removeEventListener(e,onInteract)});loadThirdParty();}
+      events.forEach(function(e){window.addEventListener(e,onInteract,{once:true,passive:true})});
+      setTimeout(loadThirdParty, 5000);
     </script>
     <meta property="og:title" content="Percentilers – Online CAT Coaching">
   <meta name="twitter:title" content="Percentilers – Online CAT Coaching">
