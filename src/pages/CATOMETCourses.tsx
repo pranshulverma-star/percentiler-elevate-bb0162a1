@@ -260,7 +260,18 @@ const CATOMETCourses = () => {
                               </Badge>
                             </div>
                           </div>
-                          {isExpanded ? <ChevronUp className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />}
+                          {isExpanded ? (
+                            <ChevronUp className="h-4 w-4 md:h-5 md:w-5 text-muted-foreground" />
+                          ) : (
+                            <motion.div
+                              animate={{ y: [0, 4, 0] }}
+                              transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                              className="md:hidden"
+                            >
+                              <ChevronDown className="h-4 w-4 text-primary" />
+                            </motion.div>
+                          )}
+                          {!isExpanded && <ChevronDown className="hidden md:block h-5 w-5 text-muted-foreground" />}
                         </div>
                       </div>
 
