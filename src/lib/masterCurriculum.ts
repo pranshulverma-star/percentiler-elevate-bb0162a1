@@ -178,6 +178,17 @@ function getVideoInstruction(
   };
 }
 
+function getCalendarWeekLabel(startDate: Date, dayIndex: number): string {
+  const date = new Date(startDate);
+  date.setDate(date.getDate() + dayIndex);
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const month = months[date.getMonth()];
+  // Calculate which week of the month this date falls in
+  const dayOfMonth = date.getDate();
+  const weekOfMonth = Math.ceil(dayOfMonth / 7);
+  return `${month} Week ${weekOfMonth}`;
+}
+
 export function generateFullPlan(config: PlanConfig): DailyTask[] {
   const { targetYear, startDate, prepLevel } = config;
   const catDate = getLastSundayOfNovember(targetYear);
@@ -263,7 +274,7 @@ export function generateFullPlan(config: PlanConfig): DailyTask[] {
 
       dailyTasks.push({
         dayIndex,
-        weekLabel: week.label,
+        weekLabel: getCalendarWeekLabel(start, dayIndex),
         dayOfWeek: d,
         subjectFocus: subject,
         topic,
@@ -302,7 +313,7 @@ export function generateFullPlan(config: PlanConfig): DailyTask[] {
     if (isMockDay) {
       dailyTasks.push({
         dayIndex: i,
-        weekLabel: "Mock Phase",
+        weekLabel: getCalendarWeekLabel(start, i),
         dayOfWeek: mockDayOfWeek,
         subjectFocus: "MOCK",
         topic: "Full Mock CAT + Analysis",
@@ -352,7 +363,7 @@ export function generateFullPlan(config: PlanConfig): DailyTask[] {
 
       dailyTasks.push({
         dayIndex: i,
-        weekLabel: "Mock Phase – Practice",
+        weekLabel: getCalendarWeekLabel(start, i),
         dayOfWeek: mockDayOfWeek,
         subjectFocus: subject === "WEEKLY_TEST" ? "WEEKLY_TEST" : subject,
         topic,
