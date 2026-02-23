@@ -16,9 +16,9 @@ const Footer = () => (
           <h4 className="font-semibold text-foreground text-sm mb-3">Quick Links</h4>
           <ul className="space-y-2">
             {[
-              { label: "Courses", href: "#courses" },
-              { label: "Results", href: "#results" },
-              { label: "Free Tools", href: "#tools" },
+              { label: "Courses", href: "/#courses" },
+              { label: "Results", href: "/#results" },
+              { label: "Free Tools", href: "/#tools" },
               { label: "Free Masterclass", href: "/masterclass", isRoute: true },
             ].map((l) => (
               <li key={l.label}>
