@@ -3,14 +3,15 @@ import { motion } from "framer-motion";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { GraduationCap, Quote } from "lucide-react";
 
-import studentBhavy from "@/assets/student-bhavy.png";
-import studentAditya from "@/assets/student-aditya.png";
+import studentBhavy from "@/assets/student-bhavy.webp";
+import studentAditya from "@/assets/student-aditya.webp";
+import studentRounak from "@/assets/student-rounak.webp";
+import studentShruti from "@/assets/student-shruti.webp";
+import studentRitik from "@/assets/student-ritik.webp";
+import studentPrakhar from "@/assets/student-prakhar.webp";
+import studentSaloni from "@/assets/student-saloni.webp";
+import studentSattaki from "@/assets/student-sattaki.webp";
 import studentRahul from "@/assets/student-rahul.jpeg";
-import studentRounak from "@/assets/student-rounak.png";
-import studentShruti from "@/assets/student-shruti.jpeg";
-import studentRitik from "@/assets/student-ritik.jpeg";
-import studentAdit from "@/assets/student-adit.jpeg";
-import studentBhagyashree from "@/assets/student-bhagyashree-2.jpeg";
 
 const results = [
   { name: "Bhavy Jain", percentile: "99.5", college: "FMS Delhi", initials: "BJ", photo: studentBhavy, quote: "The structured strategy made all the difference in my preparation." },
@@ -19,8 +20,9 @@ const results = [
   { name: "Aditya Kumar", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AK", photo: studentAditya, quote: "The daily planner kept me disciplined throughout my journey." },
   { name: "Shruti Manghani", percentile: "98.3", college: "SP Jain", initials: "SM", photo: studentShruti, quote: "Personalized mentorship gave me clarity when I needed it most." },
   { name: "Ritik Kumar", percentile: "98.1", college: "IIM Udaipur", initials: "RK", photo: studentRitik, quote: "Strategy over hours — that mindset shift changed everything for me." },
-  { name: "Adit Koul", percentile: "98.0", college: "SP Jain", initials: "AK", photo: studentAdit, quote: "The right guidance at the right time made my CAT journey smooth." },
-  { name: "Bhagyashree Pathak", percentile: "98.2", college: "IIM Vizag", initials: "BP", photo: studentBhagyashree, quote: "Consistent practice with expert feedback was the key to my success." },
+  { name: "Prakhar Poddar", percentile: "98.0", college: "IIM Trichy", initials: "PP", photo: studentPrakhar, quote: "The right guidance at the right time made my CAT journey smooth." },
+  { name: "Saloni Hindocha", percentile: "98.4", college: "IIT Mumbai", initials: "SH", photo: studentSaloni, quote: "Consistent practice with expert feedback was the key to my success." },
+  { name: "Sattaki Basu", percentile: "98.2", college: "IIM Ranchi", initials: "SB", photo: studentSattaki, quote: "Structured mock analysis transformed my approach to the exam." },
 ];
 
 const ResultsSection = () => (
