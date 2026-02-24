@@ -118,17 +118,27 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
       const name = nameInput || user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || null;
       if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
+      // Check if phone already belongs to a different user
       if (user?.id) {
-        const res = await (supabase.from("leads") as any).upsert(
+        const { data: existing } = await (supabase.from("leads") as any)
+          .select("user_id")
+          .eq("phone_number", phone)
+          .not("user_id", "is", null)
+          .limit(1)
+          .single();
+
+        if (existing && existing.user_id !== user.id) {
+          toast({ title: "Phone number already registered", description: "This phone number is already registered. Please log in with your registered Gmail ID.", variant: "destructive" });
+          setSubmitting(false);
+          return;
+        }
+      }
+
+      if (user?.id) {
+        await (supabase.from("leads") as any).upsert(
           { user_id: user.id, email: email, phone_number: phone, name, source },
           { onConflict: "user_id" }
         );
-        // If phone unique constraint fails, update existing phone row
-        if (res.error?.code === "23505" && res.error?.message?.includes("phone_number")) {
-          await (supabase.from("leads") as any)
-            .update({ user_id: user.id, email, name, source })
-            .eq("phone_number", phone);
-        }
       } else {
         await supabase.from("leads").upsert(
           { phone_number: phone, name, source },

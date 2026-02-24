@@ -36,7 +36,22 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       const email = user?.email || null;
       const name = user?.user_metadata?.full_name || null;
 
-      // Try upsert by user_id first, fallback to update by phone if unique constraint conflicts
+      // Check if phone already belongs to a different user
+      if (userId) {
+        const { data: existing } = await (supabase.from("leads") as any)
+          .select("user_id")
+          .eq("phone_number", phone)
+          .not("user_id", "is", null)
+          .limit(1)
+          .single();
+
+        if (existing && existing.user_id !== userId) {
+          toast({ title: "Phone number already registered", description: "This phone number is already registered. Please log in with your registered Gmail ID.", variant: "destructive" });
+          setSubmitting(false);
+          return;
+        }
+      }
+
       let upsertError: any = null;
       if (userId) {
         const res = await (supabase.from("leads") as any).upsert(
@@ -51,14 +66,6 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           { onConflict: "user_id" }
         );
         upsertError = res.error;
-
-        // If phone unique constraint fails, update the existing phone row instead
-        if (upsertError?.code === "23505" && upsertError?.message?.includes("phone_number")) {
-          const res2 = await (supabase.from("leads") as any)
-            .update({ user_id: userId, email, name, source, ...(targetYear ? { target_year: targetYear } : {}) })
-            .eq("phone_number", phone);
-          upsertError = res2.error;
-        }
       } else {
         const res = await (supabase.from("leads") as any).upsert(
           {
