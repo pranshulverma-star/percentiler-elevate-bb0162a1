@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
+import { toast } from "sonner";
 import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -144,8 +145,8 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
       }
 
       const today = new Date().toISOString().split("T")[0];
-      // Use phone if available, otherwise use email as identifier for planner_stats
-      const identifier = phone || email || "unknown";
+      // Always use email as the stable identifier (phone can change later)
+      const identifier = email || phone || "unknown";
 
       const { data: existingStats } = await supabase
         .from("planner_stats")
@@ -767,7 +768,7 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
     ? completedDays.has(`${getDateForDay(currentTask.dayIndex)}|${getSubjectKey(currentTask)}`)
     : false;
 
-  const handleComplete = async () => {
+   const handleComplete = async () => {
     if (!currentTask) return;
     setCompletionLoading(true);
 
@@ -790,6 +791,7 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
       }
     } catch (err) {
       console.error("Failed to log activity:", err);
+      toast.error("Failed to save. Please try again.");
     } finally {
       setCompletionLoading(false);
     }
