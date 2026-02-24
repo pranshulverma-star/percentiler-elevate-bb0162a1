@@ -1,37 +1,37 @@
 
 
-## Show error for duplicate phone numbers instead of getting stuck
+## Consolidate Phone Capture: Remove Duplicated Logic
 
 ### Problem
-When a user logs in with a new email and enters a phone number already associated with a different account, the app gets stuck on "Saving..." instead of showing a helpful error message.
+`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
 
-### Solution
-Before attempting to save, check if the phone number already exists in the `leads` table under a different `user_id`. If it does, show an error message: **"This phone number is already registered. Please log in with your registered Gmail ID."**
+### What Changes
 
-This check will be added to both phone capture points:
+**1. `src/components/LeadModalProvider.tsx`**
+- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
+- Replace it with a single `<PhoneCaptureModal>` component usage
+- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
+- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
 
-### Changes
+**2. `src/components/PhoneCaptureModal.tsx`**
+- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
+- The component already supports custom `title` and `description`, so no changes needed there
 
-**1. `src/components/PhoneCaptureModal.tsx`**
-- Before the upsert logic, query `leads` table for any existing row with the entered phone number
-- If a row exists with a different `user_id`, show a toast error and abort submission
-- Remove the old `23505` fallback code since it silently fails
+### Result
+- One single source of truth for phone capture logic
+- Future fixes (like the duplicate phone check) only need to be applied once
+- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
 
-**2. `src/components/LeadModalProvider.tsx`**
-- Same pre-check in `handlePhoneSubmit`: query for existing phone, compare `user_id`
-- Show the same error toast and abort if phone belongs to another account
-- Remove the `23505` fallback code
+### Technical Details
 
-### Logic (both files)
+**`PhoneCaptureModal.tsx` changes:**
+- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
+- Add a name input field that renders when `showNameField` is true and no user name is available
+- Include the name in the upsert payload and persist to localStorage
 
-```text
-1. User submits phone number
-2. Query: SELECT user_id FROM leads WHERE phone_number = ? LIMIT 1
-3. If result exists AND result.user_id != current user's ID:
-     -> Show error: "This phone number is already registered. Please log in with your registered Gmail ID."
-     -> Stop submission
-4. Otherwise, proceed with normal upsert
-```
-
-No database changes needed -- the existing unique constraint on `phone_number` stays in place to enforce this rule at the DB level as well.
+**`LeadModalProvider.tsx` changes:**
+- Remove ~60 lines of form state, validation, and submit logic
+- Remove the inline `<Dialog>` JSX (~30 lines)
+- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
+- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
 
