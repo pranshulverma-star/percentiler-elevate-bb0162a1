@@ -65,7 +65,7 @@ export async function logActivity(
   date: string,
   subject: string
 ): Promise<void> {
-  await supabase.from("planner_activity").upsert(
+  const { error } = await supabase.from("planner_activity").upsert(
     {
       phone_number: phoneNumber,
       date,
@@ -74,6 +74,7 @@ export async function logActivity(
     },
     { onConflict: "phone_number,date,subject" }
   );
+  if (error) throw error;
 }
 
 // ─── Recalculate & Persist Heat Score ───
