@@ -1,0 +1,1 @@
+ALTER TABLE public.planner_activity ADD CONSTRAINT planner_activity_phone_date_subject_unique UNIQUE (phone_number, date, subject);
