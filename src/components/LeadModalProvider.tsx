@@ -1,16 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
+import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 
 interface LeadModalContextType {
   openContentGate: (source: string, onSuccess?: () => void) => void;
@@ -31,10 +22,6 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const [phoneOpen, setPhoneOpen] = useState(false);
   const [source, setSource] = useState("");
   const [onSuccessCb, setOnSuccessCb] = useState<(() => void) | null>(null);
-  const [phone, setPhone] = useState("");
-  const [nameInput, setNameInput] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const { toast } = useToast();
   const { user, isAuthenticated, signIn } = useAuth();
 
   // Content gate: just triggers Google sign-in if not authenticated
@@ -80,9 +67,8 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     }
   }, [isAuthenticated, user]);
 
-  // Phone modal: shows single-field phone form for call/apply CTAs
+  // Phone modal: delegates to PhoneCaptureModal
   const openPhoneModal = (src: string, onSuccess?: () => void) => {
-    // Check if phone already stored
     const storedPhone = localStorage.getItem("percentilers_phone") || "";
     if (/^\d{10}$/.test(storedPhone)) {
       if (user?.id) {
@@ -97,115 +83,24 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
 
     setSource(src);
     setOnSuccessCb(() => onSuccess || null);
-    setPhone("");
-    setNameInput("");
     setPhoneOpen(true);
-  };
-
-  const handlePhoneSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!/^\d{10}$/.test(phone)) {
-      toast({ title: "Invalid phone number", description: "Please enter a valid 10-digit phone number.", variant: "destructive" });
-      return;
-    }
-    if (!/^[6-9]/.test(phone)) {
-      toast({ title: "Invalid phone number", description: "Indian mobile numbers start with 6-9.", variant: "destructive" });
-      return;
-    }
-    setSubmitting(true);
-    try {
-      const email = user?.email || null;
-      const name = nameInput || user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || null;
-      if (nameInput) localStorage.setItem("percentilers_name", nameInput);
-
-      // Check if phone already belongs to a different user
-      if (user?.id) {
-        const { data: existing } = await (supabase.from("leads") as any)
-          .select("user_id")
-          .eq("phone_number", phone)
-          .not("user_id", "is", null)
-          .limit(1)
-          .single();
-
-        if (existing && existing.user_id !== user.id) {
-          toast({ title: "Phone number already registered", description: "This phone number is already registered. Please log in with your registered Gmail ID.", variant: "destructive" });
-          setSubmitting(false);
-          return;
-        }
-      }
-
-      if (user?.id) {
-        await (supabase.from("leads") as any).upsert(
-          { user_id: user.id, email: email, phone_number: phone, name, source },
-          { onConflict: "user_id" }
-        );
-      } else {
-        await supabase.from("leads").upsert(
-          { phone_number: phone, name, source },
-          { onConflict: "phone_number" }
-        );
-      }
-
-      localStorage.setItem("percentilers_phone", phone);
-      // Fire-and-forget: sync to Google Sheet
-      supabase.functions.invoke("sync-lead-to-sheet", {
-        body: { phone_number: phone, email, source },
-      }).catch(() => {});
-      toast({ title: "Phone number saved!", description: "Our team will reach out to you shortly." });
-      setPhoneOpen(false);
-      setPhone("");
-      onSuccessCb?.();
-    } catch {
-      toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   // Backward compat — defaults to content gate behavior
   const openModal = openContentGate;
 
-  const userName = user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || "";
-
   return (
     <LeadModalContext.Provider value={{ openContentGate, openPhoneModal, openModal }}>
       {children}
-      <Dialog open={phoneOpen} onOpenChange={setPhoneOpen}>
-        <DialogContent className="max-w-[calc(100vw-2rem)] sm:max-w-md rounded-2xl p-5 sm:p-6">
-          <DialogHeader>
-            <DialogTitle>One Last Step</DialogTitle>
-            <DialogDescription>Share your phone number so our team can connect with you.</DialogDescription>
-          </DialogHeader>
-          <form onSubmit={handlePhoneSubmit} className="space-y-4 mt-2">
-            {userName && (
-              <div className="text-sm text-muted-foreground">
-                Hi <span className="font-semibold text-foreground">{userName}</span> 👋
-              </div>
-            )}
-            {!userName && (
-              <Input
-                placeholder="Your Name"
-                value={nameInput}
-                onChange={(e) => setNameInput(e.target.value)}
-                required
-                autoFocus
-              />
-            )}
-            <Input
-              placeholder="Phone Number (10 digits)"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-              required
-              pattern="[6-9]\d{9}"
-              title="Enter a valid 10-digit Indian mobile number"
-              autoFocus={!!userName}
-            />
-            <Button type="submit" className="w-full" disabled={submitting}>
-              {submitting ? "Submitting…" : "Continue"}
-            </Button>
-          </form>
-        </DialogContent>
-      </Dialog>
+      <PhoneCaptureModal
+        open={phoneOpen}
+        onOpenChange={setPhoneOpen}
+        source={source}
+        onSuccess={onSuccessCb}
+        showNameField
+        title="One Last Step"
+        description="Share your phone number so our team can connect with you."
+      />
     </LeadModalContext.Provider>
   );
 };

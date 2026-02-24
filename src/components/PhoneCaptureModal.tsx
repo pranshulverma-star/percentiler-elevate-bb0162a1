@@ -12,17 +12,21 @@ interface PhoneCaptureModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   source: string;
-  onSuccess: () => void;
+  onSuccess: (() => void) | null;
   title?: string;
   description?: string;
+  showNameField?: boolean;
 }
 
-export default function PhoneCaptureModal({ open, onOpenChange, source, onSuccess, title, description }: PhoneCaptureModalProps) {
+export default function PhoneCaptureModal({ open, onOpenChange, source, onSuccess, title, description, showNameField }: PhoneCaptureModalProps) {
   const [phone, setPhone] = useState("");
   const [targetYear, setTargetYear] = useState("");
+  const [nameInput, setNameInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const { toast } = useToast();
   const { user } = useAuth();
+
+  const userName = user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || "";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,7 +38,9 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
     try {
       const userId = user?.id || null;
       const email = user?.email || null;
-      const name = user?.user_metadata?.full_name || null;
+      const name = nameInput || user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || null;
+
+      if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
       // Check if phone already belongs to a different user
       if (userId) {
@@ -99,15 +105,14 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       onOpenChange(false);
       setPhone("");
       setTargetYear("");
-      onSuccess();
+      setNameInput("");
+      onSuccess?.();
     } catch {
       toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
     } finally {
       setSubmitting(false);
     }
   };
-
-  const userName = user?.user_metadata?.full_name || "";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -122,6 +127,15 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
               Hi <span className="font-semibold text-foreground">{userName}</span> 👋
             </div>
           )}
+          {showNameField && !userName && (
+            <Input
+              placeholder="Your Name"
+              value={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
+              required
+              autoFocus
+            />
+          )}
           <Input
             placeholder="Phone Number (10 digits)"
             value={phone}
@@ -129,7 +143,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
             required
             pattern="[6-9]\d{9}"
             title="Enter a valid 10-digit Indian mobile number"
-            autoFocus
+            autoFocus={!showNameField || !!userName}
           />
           <Select value={targetYear} onValueChange={setTargetYear}>
             <SelectTrigger>
