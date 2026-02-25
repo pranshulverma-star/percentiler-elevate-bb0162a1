@@ -14,6 +14,66 @@ export type Database = {
   }
   public: {
     Tables: {
+      campaign_state: {
+        Row: {
+          call_booked_at: string | null
+          converted_at: string | null
+          created_at: string | null
+          graphy_enrolled_free: boolean | null
+          graphy_enrolled_paid: boolean | null
+          last_messaged_at: string | null
+          lead_source: string | null
+          mentorship_active: boolean | null
+          money_constraint: boolean | null
+          next_offer_friday: string | null
+          offer_sent_friday: boolean | null
+          offer_sent_saturday: boolean | null
+          phone_number: string
+          ppc_sequence_node: number | null
+          sequence_entry_msg: number | null
+          updated_at: string | null
+          workflow_status: string | null
+        }
+        Insert: {
+          call_booked_at?: string | null
+          converted_at?: string | null
+          created_at?: string | null
+          graphy_enrolled_free?: boolean | null
+          graphy_enrolled_paid?: boolean | null
+          last_messaged_at?: string | null
+          lead_source?: string | null
+          mentorship_active?: boolean | null
+          money_constraint?: boolean | null
+          next_offer_friday?: string | null
+          offer_sent_friday?: boolean | null
+          offer_sent_saturday?: boolean | null
+          phone_number: string
+          ppc_sequence_node?: number | null
+          sequence_entry_msg?: number | null
+          updated_at?: string | null
+          workflow_status?: string | null
+        }
+        Update: {
+          call_booked_at?: string | null
+          converted_at?: string | null
+          created_at?: string | null
+          graphy_enrolled_free?: boolean | null
+          graphy_enrolled_paid?: boolean | null
+          last_messaged_at?: string | null
+          lead_source?: string | null
+          mentorship_active?: boolean | null
+          money_constraint?: boolean | null
+          next_offer_friday?: string | null
+          offer_sent_friday?: boolean | null
+          offer_sent_saturday?: boolean | null
+          phone_number?: string
+          ppc_sequence_node?: number | null
+          sequence_entry_msg?: number | null
+          updated_at?: string | null
+          workflow_status?: string | null
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           created_at: string
