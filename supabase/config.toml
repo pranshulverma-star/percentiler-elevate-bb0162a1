@@ -5,3 +5,15 @@ verify_jwt = false
 
 [functions.sync-lead-to-sheet]
 verify_jwt = false
+
+[functions.upsert-campaign-state]
+verify_jwt = false
+
+[functions.get-leads-for-behaviour-check]
+verify_jwt = false
+
+[functions.update-campaign-state]
+verify_jwt = false
+
+[functions.get-converted-status]
+verify_jwt = false
