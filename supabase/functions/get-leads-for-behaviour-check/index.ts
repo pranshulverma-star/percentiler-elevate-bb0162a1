@@ -83,6 +83,10 @@ Deno.serve(async (req) => {
         graphy_enrolled_free: cs.graphy_enrolled_free,
         graphy_enrolled_paid: cs.graphy_enrolled_paid,
         call_booked_at: cs.call_booked_at,
+        course_pitch_sent: cs.course_pitch_sent,
+        free_call_sent: cs.free_call_sent,
+        webinar_nudge_sent: cs.webinar_nudge_sent,
+        money_constraint_sent: cs.money_constraint_sent,
         campaign_created_at: cs.created_at,
         campaign_updated_at: cs.updated_at,
 
