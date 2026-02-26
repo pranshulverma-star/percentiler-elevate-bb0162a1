@@ -16,6 +16,10 @@ const ALLOWED_FIELDS = new Set([
   "ppc_sequence_node",
   "graphy_enrolled_free",
   "graphy_enrolled_paid",
+  "course_pitch_sent",
+  "free_call_sent",
+  "webinar_nudge_sent",
+  "money_constraint_sent",
 ]);
 
 Deno.serve(async (req) => {
