@@ -17,3 +17,6 @@ verify_jwt = false
 
 [functions.get-converted-status]
 verify_jwt = false
+
+[functions.generate-roadmap]
+verify_jwt = false

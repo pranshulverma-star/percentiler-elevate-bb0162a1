@@ -5,11 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
-import { Target, TrendingUp, Award, Lock, Sparkles, ArrowRight } from "lucide-react";
+import { Target, TrendingUp, Award, Lock, Sparkles, ArrowRight, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
+import ReactMarkdown from "react-markdown";
 
 type Step = "form" | "result";
 
@@ -141,6 +142,8 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
   const [loading, setLoading] = useState(false);
   const [showRoadmap, setShowRoadmap] = useState(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
+  const [roadmapText, setRoadmapText] = useState("");
+  const [roadmapLoading, setRoadmapLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user, signIn } = useAuth();
@@ -215,14 +218,95 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       setShowPhoneModal(true);
     } else {
       setShowRoadmap(true);
-      if (results) saveResults(results);
+      if (results) {
+        saveResults(results);
+        streamRoadmap(results);
+      }
+    }
+  };
+
+  const streamRoadmap = async (scores: Results) => {
+    setRoadmapLoading(true);
+    setRoadmapText("");
+    try {
+      const resp = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-roadmap`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({
+            profile_score: scores.profile_score,
+            strength: scores.strength,
+            target_top10: scores.target_top10,
+            target_top20: scores.target_top20,
+            target_top30: scores.target_top30,
+            tenth_score: Number(form.tenth_score) || 0,
+            twelfth_score: Number(form.twelfth_score) || 0,
+            grad_score: Number(form.grad_score) || 0,
+            grad_stream: form.grad_stream,
+            gender: form.gender,
+            workex_months: Number(form.workex_months) || 0,
+            gap_years: Number(form.gap_years) || 0,
+            internships: Number(form.internships) || 0,
+            certifications: Number(form.certifications) || 0,
+          }),
+        }
+      );
+
+      if (!resp.ok || !resp.body) {
+        throw new Error("Failed to generate roadmap");
+      }
+
+      const reader = resp.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let accumulated = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = buffer.indexOf("\n")) !== -1) {
+          let line = buffer.slice(0, newlineIndex);
+          buffer = buffer.slice(newlineIndex + 1);
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") break;
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content;
+            if (content) {
+              accumulated += content;
+              setRoadmapText(accumulated);
+            }
+          } catch {
+            buffer = line + "\n" + buffer;
+            break;
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Roadmap generation error:", err);
+      toast({ title: "Could not generate roadmap", description: "Please try again.", variant: "destructive" });
+    } finally {
+      setRoadmapLoading(false);
     }
   };
 
   const handlePhoneSuccess = () => {
     refetchPhone();
     setShowRoadmap(true);
-    if (results) saveResults(results);
+    if (results) {
+      saveResults(results);
+      streamRoadmap(results);
+    }
   };
 
   // Restore state after OAuth redirect
@@ -247,10 +331,11 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
 
   // After auth redirect, if phone exists, auto-show roadmap
   useEffect(() => {
-    if (isAuthenticated && step === "result" && results && !showRoadmap) {
+    if (isAuthenticated && step === "result" && results && !showRoadmap && !roadmapLoading) {
       if (hasPhone) {
         setShowRoadmap(true);
         saveResults(results);
+        streamRoadmap(results);
       }
     }
   }, [isAuthenticated, hasPhone, step, results]);
@@ -262,6 +347,8 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       setForm(initialForm);
       setResults(null);
       setShowRoadmap(false);
+      setRoadmapText("");
+      setRoadmapLoading(false);
       setNotEligible(false);
       setSigningIn(false);
     }, 300);
@@ -425,32 +512,24 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
                     <Sparkles className="h-4 w-4 text-primary" /> Your Personalized Roadmap
                   </h3>
                   
-                  {results.strength === "Strong" && (
-                    <div className="space-y-3 text-sm text-muted-foreground">
-                      <p>✅ <strong className="text-foreground">Mock Strategy:</strong> Start full-length mocks immediately. Target 1 mock/week with detailed analysis.</p>
-                      <p>📊 <strong className="text-foreground">Focus Area:</strong> Your profile is strong — focus on converting calls with a 98+ percentile. Practice LRDI sets for speed.</p>
-                      <p>📅 <strong className="text-foreground">Timeline:</strong> With consistent prep, you can achieve your target in 4-5 months.</p>
-                    </div>
-                  )}
-                  {results.strength === "Competitive" && (
-                    <div className="space-y-3 text-sm text-muted-foreground">
-                      <p>📘 <strong className="text-foreground">Foundation First:</strong> Spend 6-8 weeks on concepts before jumping into mocks.</p>
-                      <p>🎯 <strong className="text-foreground">Target Score:</strong> Aim for {results.target_top20}+ to compensate for profile gaps. Focus on your strongest section first.</p>
-                      <p>⏰ <strong className="text-foreground">Daily Plan:</strong> 3-4 hours/day with structured rotation: QA (Mon/Thu), VARC (Tue/Fri), LRDI (Wed/Sat).</p>
-                    </div>
-                  )}
-                  {results.strength === "Moderate" && (
-                    <div className="space-y-3 text-sm text-muted-foreground">
-                      <p>🚀 <strong className="text-foreground">Start Immediately:</strong> Begin with fundamentals — Number Systems, RC passages, and basic DI sets.</p>
-                      <p>📈 <strong className="text-foreground">Score Requirement:</strong> You need {results.target_top10}+ to get top IIM calls. Build accuracy before speed.</p>
-                      <p>📅 <strong className="text-foreground">6-Month Plan:</strong> Months 1-2: Concepts → Months 3-4: Sectionals → Months 5-6: Full Mocks.</p>
-                      <p>💡 <strong className="text-foreground">Profile Building:</strong> Consider certifications or internships to strengthen your profile alongside prep.</p>
+                  {roadmapLoading && !roadmapText && (
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
+                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
+                      Generating your personalized roadmap...
                     </div>
                   )}
 
-                  <Button className="w-full" onClick={() => { handleClose(); setTimeout(() => navigate("/cat-daily-study-planner"), 300); }}>
-                    Start My Daily Study Plan <ArrowRight className="ml-1 h-4 w-4" />
-                  </Button>
+                  {roadmapText && (
+                    <div className="prose prose-sm dark:prose-invert max-w-none text-sm text-muted-foreground [&_strong]:text-foreground [&_h1]:text-base [&_h2]:text-sm [&_h3]:text-sm [&_h1]:font-bold [&_h2]:font-semibold [&_h3]:font-semibold [&_ul]:space-y-1 [&_ol]:space-y-1 [&_p]:leading-relaxed">
+                      <ReactMarkdown>{roadmapText}</ReactMarkdown>
+                    </div>
+                  )}
+
+                  {!roadmapLoading && roadmapText && (
+                    <Button className="w-full" onClick={() => { handleClose(); setTimeout(() => navigate("/cat-daily-study-planner"), 300); }}>
+                      Start My Daily Study Plan <ArrowRight className="ml-1 h-4 w-4" />
+                    </Button>
+                  )}
                 </div>
               )}
             </div>
