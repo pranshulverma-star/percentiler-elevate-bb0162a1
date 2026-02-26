@@ -18,13 +18,16 @@ export type Database = {
         Row: {
           call_booked_at: string | null
           converted_at: string | null
+          course_pitch_sent: boolean | null
           created_at: string | null
+          free_call_sent: boolean | null
           graphy_enrolled_free: boolean | null
           graphy_enrolled_paid: boolean | null
           last_messaged_at: string | null
           lead_source: string | null
           mentorship_active: boolean | null
           money_constraint: boolean | null
+          money_constraint_sent: boolean | null
           next_offer_friday: string | null
           offer_sent_friday: boolean | null
           offer_sent_saturday: boolean | null
@@ -32,18 +35,22 @@ export type Database = {
           ppc_sequence_node: number | null
           sequence_entry_msg: number | null
           updated_at: string | null
+          webinar_nudge_sent: boolean | null
           workflow_status: string | null
         }
         Insert: {
           call_booked_at?: string | null
           converted_at?: string | null
+          course_pitch_sent?: boolean | null
           created_at?: string | null
+          free_call_sent?: boolean | null
           graphy_enrolled_free?: boolean | null
           graphy_enrolled_paid?: boolean | null
           last_messaged_at?: string | null
           lead_source?: string | null
           mentorship_active?: boolean | null
           money_constraint?: boolean | null
+          money_constraint_sent?: boolean | null
           next_offer_friday?: string | null
           offer_sent_friday?: boolean | null
           offer_sent_saturday?: boolean | null
@@ -51,18 +58,22 @@ export type Database = {
           ppc_sequence_node?: number | null
           sequence_entry_msg?: number | null
           updated_at?: string | null
+          webinar_nudge_sent?: boolean | null
           workflow_status?: string | null
         }
         Update: {
           call_booked_at?: string | null
           converted_at?: string | null
+          course_pitch_sent?: boolean | null
           created_at?: string | null
+          free_call_sent?: boolean | null
           graphy_enrolled_free?: boolean | null
           graphy_enrolled_paid?: boolean | null
           last_messaged_at?: string | null
           lead_source?: string | null
           mentorship_active?: boolean | null
           money_constraint?: boolean | null
+          money_constraint_sent?: boolean | null
           next_offer_friday?: string | null
           offer_sent_friday?: boolean | null
           offer_sent_saturday?: boolean | null
@@ -70,6 +81,7 @@ export type Database = {
           ppc_sequence_node?: number | null
           sequence_entry_msg?: number | null
           updated_at?: string | null
+          webinar_nudge_sent?: boolean | null
           workflow_status?: string | null
         }
         Relationships: []
