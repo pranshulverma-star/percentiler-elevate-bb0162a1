@@ -60,13 +60,66 @@ Deno.serve(async (req) => {
     const webinarMap = index(webinarRes.data || []);
     const leadsMap = index(leadsRes.data || []);
 
-    const result = campaignLeads.map((cs) => ({
-      ...cs,
-      heat: heatMap[cs.phone_number] || null,
-      stats: statsMap[cs.phone_number] || null,
-      webinar: webinarMap[cs.phone_number] || null,
-      lead: leadsMap[cs.phone_number] || null,
-    }));
+    const result = campaignLeads.map((cs) => {
+      const heat = heatMap[cs.phone_number] || {};
+      const stats = statsMap[cs.phone_number] || {};
+      const webinar = webinarMap[cs.phone_number] || {};
+      const lead = leadsMap[cs.phone_number] || {};
+
+      return {
+        // campaign_state (base)
+        phone_number: cs.phone_number,
+        workflow_status: cs.workflow_status,
+        last_messaged_at: cs.last_messaged_at,
+        offer_sent_friday: cs.offer_sent_friday,
+        offer_sent_saturday: cs.offer_sent_saturday,
+        money_constraint: cs.money_constraint,
+        converted_at: cs.converted_at,
+        mentorship_active: cs.mentorship_active,
+        ppc_sequence_node: cs.ppc_sequence_node,
+        sequence_entry_msg: cs.sequence_entry_msg,
+        next_offer_friday: cs.next_offer_friday,
+        lead_source: cs.lead_source,
+        graphy_enrolled_free: cs.graphy_enrolled_free,
+        graphy_enrolled_paid: cs.graphy_enrolled_paid,
+        call_booked_at: cs.call_booked_at,
+        campaign_created_at: cs.created_at,
+        campaign_updated_at: cs.updated_at,
+
+        // leads
+        name: lead.name ?? null,
+        email: lead.email ?? null,
+        target_year: lead.target_year ?? null,
+        target_percentile: lead.target_percentile ?? null,
+        current_status: lead.current_status ?? null,
+        prep_level: lead.prep_level ?? null,
+        source: lead.source ?? null,
+        lead_created_at: lead.created_at ?? null,
+
+        // planner_heat_score
+        lead_category: heat.lead_category ?? null,
+        heat_score: heat.heat_score ?? null,
+        total_active_days: heat.total_active_days ?? null,
+        consistency_score: heat.consistency_score ?? null,
+        mock_attempts: heat.mock_attempts ?? null,
+        crash_mode: heat.crash_mode ?? null,
+        days_since_join: heat.days_since_join ?? null,
+        heat_updated_at: heat.updated_at ?? null,
+
+        // planner_stats
+        start_date: stats.start_date ?? null,
+        stats_target_year: stats.target_year ?? null,
+        current_phase: stats.current_phase ?? null,
+        last_generated_index: stats.last_generated_index ?? null,
+        stats_crash_mode: stats.crash_mode ?? null,
+        stats_updated_at: stats.updated_at ?? null,
+
+        // webinar_engagement
+        watch_percentage: webinar.watch_percentage ?? null,
+        webinar_completed: webinar.completed ?? null,
+        webinar_updated_at: webinar.updated_at ?? null,
+      };
+    });
 
     return new Response(JSON.stringify(result), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
