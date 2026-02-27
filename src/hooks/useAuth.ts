@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import type { User } from "@supabase/supabase-js";
@@ -7,11 +7,13 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
-  signIn: () => Promise<void>;
+  signIn: (redirectPath?: string) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
-export function useAuth(): AuthState {
+const AuthContext = createContext<AuthState | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -26,13 +28,6 @@ export function useAuth(): AuthState {
       setLoading(false);
     };
 
-    const fallbackTimer = window.setTimeout(() => {
-      if (!resolved && isMounted) {
-        console.warn("Auth initialization timed out; continuing without blocking UI");
-        setLoading(false);
-      }
-    }, 6000);
-
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         const currentUser = session?.user ?? null;
@@ -43,11 +38,9 @@ export function useAuth(): AuthState {
           const email = currentUser.email;
           const name = currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || null;
 
-          // Store in localStorage for backward compat
           localStorage.setItem("percentilers_email", email);
           if (name) localStorage.setItem("percentilers_name", name);
 
-          // Upsert lead by user_id
           await (supabase.from("leads") as any).upsert(
             { user_id: currentUser.id, email, name, source: "google_signin" },
             { onConflict: "user_id" }
@@ -56,7 +49,7 @@ export function useAuth(): AuthState {
       }
     );
 
-    // Check existing session
+    // Initial session bootstrap
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
         resolveAuth(session?.user ?? null);
@@ -66,6 +59,18 @@ export function useAuth(): AuthState {
         if (isMounted) setLoading(false);
       });
 
+    // Safety timeout: retry one more getSession before unblocking UI
+    const fallbackTimer = window.setTimeout(async () => {
+      if (resolved || !isMounted) return;
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        resolveAuth(session?.user ?? null);
+      } catch (err) {
+        console.error("Auth retry error:", err);
+        if (isMounted) setLoading(false);
+      }
+    }, 6000);
+
     return () => {
       isMounted = false;
       window.clearTimeout(fallbackTimer);
@@ -73,8 +78,7 @@ export function useAuth(): AuthState {
     };
   }, []);
 
-  const signIn = useCallback(async () => {
-    // Detect in-app browsers (Instagram, Facebook, etc.) that break OAuth state
+  const signIn = useCallback(async (redirectPath?: string) => {
     const ua = navigator.userAgent || "";
     const isInAppBrowser = /FBAN|FBAV|Instagram|Line\/|Snapchat|Twitter|BytedanceWebview/i.test(ua);
 
@@ -84,9 +88,13 @@ export function useAuth(): AuthState {
       return;
     }
 
+    const redirectUri = redirectPath
+      ? (redirectPath.startsWith("http") ? redirectPath : `${window.location.origin}${redirectPath}`)
+      : `${window.location.origin}${window.location.pathname}${window.location.search}`;
+
     try {
       await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + window.location.pathname,
+        redirect_uri: redirectUri,
       });
     } catch (err) {
       console.error("Sign-in error:", err);
@@ -99,11 +107,24 @@ export function useAuth(): AuthState {
     localStorage.removeItem("percentilers_email");
   }, []);
 
-  return {
-    user,
-    isAuthenticated: !!user,
-    loading,
-    signIn,
-    signOut,
-  };
+  const value = useMemo(
+    () => ({
+      user,
+      isAuthenticated: !!user,
+      loading,
+      signIn,
+      signOut,
+    }),
+    [user, loading, signIn, signOut]
+  );
+
+  return createElement(AuthContext.Provider, { value }, children);
+}
+
+export function useAuth(): AuthState {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+  return context;
 }

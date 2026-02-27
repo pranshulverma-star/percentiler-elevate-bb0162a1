@@ -1,12 +1,12 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect, useCallback, useRef, type ReactNode } from "react";
+import { useLocation } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children: ReactNode;
   /** Whether a phone number is required to access this route */
   requirePhone?: boolean;
   /** Source label for lead tracking */
@@ -21,32 +21,42 @@ interface ProtectedRouteProps {
  * State C — Logged in + phone present → render children
  */
 export default function ProtectedRoute({ children, requirePhone = false, source = "protected" }: ProtectedRouteProps) {
-  const navigate = useNavigate();
   const location = useLocation();
   const { isAuthenticated, user, loading: authLoading, signIn } = useAuth();
 
   const [phoneChecked, setPhoneChecked] = useState(false);
   const [hasPhone, setHasPhone] = useState(false);
-  const [showPhoneModal, setShowPhoneModal] = useState(false);
   const signInTriggered = useRef(false);
 
-  // ── Step 1: Wait for auth to resolve ──
-  // While authLoading is true, show spinner. No routing decisions yet.
-
-  // ── Step 2: If not authenticated, trigger sign-in ──
+  // Trigger auth only after auth state resolves
   useEffect(() => {
     if (authLoading) return;
     if (isAuthenticated) return;
     if (signInTriggered.current) return;
 
     signInTriggered.current = true;
-    // Store the current path so we return here after OAuth redirect
-    sessionStorage.setItem("pending_gate_redirect", location.pathname + location.search);
+
+    const returnUrl = location.pathname + location.search;
+    sessionStorage.setItem("pending_gate_redirect", returnUrl);
     sessionStorage.setItem("pending_gate_source", source);
-    signIn();
+
+    void signIn(returnUrl);
   }, [authLoading, isAuthenticated, signIn, location.pathname, location.search, source]);
 
-  // ── Step 3: If authenticated, check phone in DB ──
+  // Clear stale return URL markers once user is already at destination
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const pending = sessionStorage.getItem("pending_gate_redirect");
+    if (!pending) return;
+
+    const current = location.pathname + location.search;
+    if (pending === current || pending === location.pathname) {
+      sessionStorage.removeItem("pending_gate_redirect");
+      sessionStorage.removeItem("pending_gate_source");
+    }
+  }, [isAuthenticated, location.pathname, location.search]);
+
+  // Phone check (only for guarded routes requiring phone)
   useEffect(() => {
     if (authLoading || !isAuthenticated || !user?.id) return;
 
@@ -59,11 +69,9 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     let cancelled = false;
 
     const timeout = setTimeout(() => {
-      // Fallback: if DB takes too long, assume phone missing and show modal
       if (!cancelled) {
         setPhoneChecked(true);
         setHasPhone(false);
-        setShowPhoneModal(true);
       }
     }, 4000);
 
@@ -78,17 +86,11 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
         clearTimeout(timeout);
 
         const phone = data?.phone_number;
-        if (phone && /^\d{10}$/.test(phone)) {
-          setHasPhone(true);
-        } else {
-          setHasPhone(false);
-          setShowPhoneModal(true);
-        }
+        setHasPhone(!!(phone && /^\d{10}$/.test(phone)));
       } catch {
         if (!cancelled) {
           clearTimeout(timeout);
           setHasPhone(false);
-          setShowPhoneModal(true);
         }
       } finally {
         if (!cancelled) setPhoneChecked(true);
@@ -101,15 +103,10 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     };
   }, [authLoading, isAuthenticated, user?.id, requirePhone]);
 
-  // ── Phone capture success handler ──
   const handlePhoneSuccess = useCallback(() => {
-    setShowPhoneModal(false);
     setHasPhone(true);
   }, []);
 
-  // ── Render states ──
-
-  // Still loading auth
   if (authLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -118,7 +115,6 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // Not authenticated — sign-in was triggered, show spinner while redirect happens
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -127,7 +123,6 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // Phone check in progress
   if (requirePhone && !phoneChecked) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -136,16 +131,12 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // Phone required but missing — modal is blocking
   if (requirePhone && !hasPhone) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <PhoneCaptureModal
-          open={showPhoneModal}
-          onOpenChange={(open) => {
-            // Don't allow closing — phone is required
-            if (!open) setShowPhoneModal(true);
-          }}
+          open
+          onOpenChange={() => {}}
           source={source}
           onSuccess={handlePhoneSuccess}
         />
@@ -153,6 +144,5 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // ── State C: All clear ──
   return <>{children}</>;
 }

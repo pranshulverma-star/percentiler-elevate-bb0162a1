@@ -46,9 +46,7 @@ const GoogleSignInButton = ({ className }: { className?: string }) => {
   const { signIn, loading, isAuthenticated, user } = useAuth();
 
   const handleGoogleSignIn = async () => {
-    sessionStorage.setItem("pending_gate_redirect", "/masterclass");
-    sessionStorage.setItem("pending_gate_source", "masterclass");
-    await signIn();
+    await signIn("/masterclass");
   };
 
   if (isAuthenticated) {
@@ -88,10 +86,7 @@ const RegistrationCard = () => {
   const handleCTA = useCallback(async () => {
     // Step 1: If not authenticated, trigger Google sign-in
     if (!isAuthenticated) {
-      // Store redirect so after OAuth we land on /masterclass/watch via ProtectedRoute
-      sessionStorage.setItem("pending_gate_redirect", "/masterclass/watch");
-      sessionStorage.setItem("pending_gate_source", "masterclass");
-      await signIn();
+      await signIn("/masterclass/watch");
       return;
     }
 
@@ -124,17 +119,6 @@ const RegistrationCard = () => {
     }
   }, [isAuthenticated, signIn, user?.id, navigate]);
 
-  // After OAuth redirect, if we land back on /masterclass with a pending redirect to /masterclass/watch,
-  // just navigate there — ProtectedRoute on /masterclass/watch will handle the rest
-  useEffect(() => {
-    if (authLoading || !isAuthenticated) return;
-    const pending = sessionStorage.getItem("pending_gate_redirect");
-    if (pending === "/masterclass/watch") {
-      sessionStorage.removeItem("pending_gate_redirect");
-      sessionStorage.removeItem("pending_gate_source");
-      navigate("/masterclass/watch");
-    }
-  }, [authLoading, isAuthenticated, navigate]);
 
   const handlePhoneSuccess = () => {
     setShowPhoneModal(false);

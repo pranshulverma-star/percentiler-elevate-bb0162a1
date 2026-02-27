@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LeadModalProvider } from "@/components/LeadModalProvider";
 import { HelmetProvider } from "react-helmet-async";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { AuthProvider } from "@/hooks/useAuth";
 
 function ScrollToHash() {
   const { hash, pathname } = useLocation();
@@ -50,35 +51,37 @@ const PageLoader = () => (
 
 const App = () => (
   <HelmetProvider>
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <LeadModalProvider>
-        <BrowserRouter>
-          <ScrollToHash />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/masterclass" element={<Masterclass />} />
-              <Route path="/mentorship" element={<MentorshipPage />} />
-              <Route path="/masterclass/watch" element={<ProtectedRoute requirePhone source="masterclass"><MasterclassWatch /></ProtectedRoute>} />
-              <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
-              <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
-              <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
-              <Route path="/free-courses" element={<FreeCourses />} />
-              <Route path="/test-series" element={<TestSeries />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-              <Route path="/refund-policy" element={<RefundPolicy />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </LeadModalProvider>
-    </TooltipProvider>
-  </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <LeadModalProvider>
+            <BrowserRouter>
+              <ScrollToHash />
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/masterclass" element={<Masterclass />} />
+                  <Route path="/mentorship" element={<MentorshipPage />} />
+                  <Route path="/masterclass/watch" element={<ProtectedRoute requirePhone source="masterclass"><MasterclassWatch /></ProtectedRoute>} />
+                  <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
+                  <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
+                  <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
+                  <Route path="/free-courses" element={<FreeCourses />} />
+                  <Route path="/test-series" element={<TestSeries />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/refund-policy" element={<RefundPolicy />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </LeadModalProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   </HelmetProvider>
 );
 
