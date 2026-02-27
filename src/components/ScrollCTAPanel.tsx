@@ -76,23 +76,12 @@ const ScrollCTAPanel = () => {
             }}>
               Generate Free Study Plan
             </Button>
-            {hasPhone ? (
-              <Button size="sm" variant="outline" onClick={() => {
-                dismiss();
-                window.location.href = "/courses/cat-omet";
-              }}>
-                Apply for 95%ile Batch <ArrowRight className="ml-1 h-3.5 w-3.5" />
-              </Button>
-            ) : (
-              <Button size="sm" variant="outline" onClick={() => {
-                openContentGate("scroll_cta_masterclass", () => {
-                  dismiss();
-                  window.location.href = "/masterclass";
-                });
-              }}>
-                Watch Free Masterclass <ArrowRight className="ml-1 h-3.5 w-3.5" />
-              </Button>
-            )}
+            <Button size="sm" variant="outline" onClick={() => {
+              dismiss();
+              window.location.href = "/courses/cat-omet";
+            }}>
+              Apply for 95%ile Batch <ArrowRight className="ml-1 h-3.5 w-3.5" />
+            </Button>
           </div>
         </motion.div>
       )}

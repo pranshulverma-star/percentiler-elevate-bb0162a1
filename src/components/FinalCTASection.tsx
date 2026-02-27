@@ -73,20 +73,8 @@ const FinalCTASection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-3 pt-4 w-full max-w-md mx-auto">
-            <Button size="lg" className="text-sm md:text-base px-6 py-5 md:px-8 md:py-6 rounded-xl animate-pulse-glow w-full sm:w-auto" onClick={() => {
-              openContentGate("final_cta_masterclass", () => {
-                window.location.href = "/masterclass";
-              });
-            }}>
-              Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-background/30 text-background bg-background/10 hover:bg-background hover:text-foreground text-sm md:text-base px-6 py-5 md:px-8 md:py-6 rounded-xl transition-all duration-300 w-full sm:w-auto"
-              onClick={handleStrategyCall}
-            >
-              Book Free Strategy Call
+            <Button size="lg" className="text-sm md:text-base px-6 py-5 md:px-8 md:py-6 rounded-xl animate-pulse-glow w-full sm:w-auto" onClick={handleStrategyCall}>
+              Book Free Strategy Call <ArrowRight className="ml-1 h-4 w-4" />
             </Button>
           </div>
         </motion.div>
