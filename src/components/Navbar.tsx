@@ -67,9 +67,9 @@ const Navbar = () => {
                   {l.label}
                 </a>
               ) : (
-                <Link key={l.label} to={l.href} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+              <a key={l.label} href={l.href} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
                   {l.label}
-                </Link>
+                </a>
               )
             )}
             <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20">Book Free Strategy Call</Button>
@@ -96,9 +96,9 @@ const Navbar = () => {
                   {l.label}
                 </a>
               ) : (
-                <Link key={l.label} to={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
+                <a key={l.label} href={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
                   {l.label}
-                </Link>
+                </a>
               )
             )}
             <div className="flex justify-center pt-1"><ThemeToggle /></div>
