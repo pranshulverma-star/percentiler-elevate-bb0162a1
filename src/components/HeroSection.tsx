@@ -10,6 +10,14 @@ import studentAayushiJha from "@/assets/student-aayushi-jha.jpeg";
 import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
 import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
 import studentSaloni from "@/assets/student-saloni.jpeg";
+import collegeIIMA from "@/assets/college-iima.png";
+import collegeIIMB from "@/assets/college-iimb.png";
+import collegeIIMC from "@/assets/college-iimc.png";
+import collegeFMS from "@/assets/college-fms.png";
+import collegeXLRI from "@/assets/college-xlri.png";
+import collegeSPJain from "@/assets/college-spjain.png";
+import collegeIITB from "@/assets/college-iitb.png";
+import collegeJBIMS from "@/assets/college-jbims.png";
 
 const PercentilePlannerModal = lazy(() => import("@/components/PercentilePlannerModal"));
 
@@ -83,7 +91,17 @@ const AnimatedProgressBar = ({ percentile, delay }: { percentile: number; delay:
   );
 };
 
-const collegeNames = ["IIM A", "IIM B", "IIM C", "FMS Delhi", "XLRI", "SP Jain", "IIT Bombay", "JBIMS"];
+
+const colleges = [
+  { name: "IIM A", logo: collegeIIMA },
+  { name: "IIM B", logo: collegeIIMB },
+  { name: "IIM C", logo: collegeIIMC },
+  { name: "FMS Delhi", logo: collegeFMS },
+  { name: "XLRI", logo: collegeXLRI },
+  { name: "SP Jain", logo: collegeSPJain },
+  { name: "IIT Bombay", logo: collegeIITB },
+  { name: "JBIMS", logo: collegeJBIMS },
+];
 
 const HeroCollegeMarquee = () => (
   <div className="md:hidden relative overflow-hidden rounded-lg border border-border/50 bg-secondary/30 py-2">
@@ -93,14 +111,12 @@ const HeroCollegeMarquee = () => (
     <div className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-y-0 left-0 w-8 z-10 bg-gradient-to-r from-secondary/30 to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l from-secondary/30 to-transparent" />
-      <div className="flex animate-scroll-x items-center gap-5 w-max">
-        {[...collegeNames, ...collegeNames].map((name, i) => (
-          <span
-            key={`${name}-${i}`}
-            className="shrink-0 text-xs font-bold tracking-wide text-foreground/80 whitespace-nowrap px-2.5 py-1 rounded-full bg-primary/8 border border-primary/15"
-          >
-            {name}
-          </span>
+      <div className="flex animate-scroll-x items-center gap-6 w-max">
+        {[...colleges, ...colleges].map((c, i) => (
+          <div key={`${c.name}-${i}`} className="shrink-0 flex items-center gap-1.5">
+            <img src={c.logo} alt={c.name} width={24} height={24} className="h-6 w-6 object-contain rounded-sm" />
+            <span className="text-xs font-bold tracking-wide text-foreground/80 whitespace-nowrap">{c.name}</span>
+          </div>
         ))}
       </div>
     </div>
