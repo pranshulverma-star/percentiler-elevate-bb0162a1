@@ -1,4 +1,5 @@
-# Allowed SPA routes — rewrite to index.html (200 = serve without redirect)
+# SPA rewrites for allowed routes only.
+# Unknown routes are NOT caught here — Cloudflare Worker handles them.
 /                                   /index.html  200
 /terms                              /index.html  200
 /privacy-policy                     /index.html  200
@@ -12,6 +13,3 @@
 /courses/cat-omet                   /index.html  200
 /free-courses                       /index.html  200
 /test-series                        /index.html  200
-
-# Everything else → 301 to legacy site
-/*  https://old.percentilers.in/:splat  301
