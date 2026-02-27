@@ -1027,8 +1027,8 @@ export default function CATDailyStudyPlanner() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Free CAT Daily Study Planner | Structured CAT Preparation Tool"
-        description="Create a structured daily CAT preparation plan with our free CAT study planner. Designed by mentors from one of the best online CAT coaching platforms."
+        title="Free CAT Daily Study Planner for CAT 2026 | Percentilers"
+        description="Plan your CAT 2026 preparation day by day with a free AI-powered study planner. Get a structured roadmap for QA, VARC, and LRDI. Start planning today."
         canonical="https://percentilers.in/cat-daily-study-planner"
       />
       <Navbar />

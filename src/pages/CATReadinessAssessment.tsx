@@ -806,8 +806,8 @@ const CATReadinessAssessment = () => {
   return (
     <main className="min-h-screen bg-background">
       <SEO
-        title="Free CAT Readiness Test | CAT Exam Self-Assessment Tool"
-        description="Take the free CAT readiness test to evaluate your CAT exam preparation level. Get performance insights used inside our best CAT coaching program."
+        title="Free CAT Readiness Assessment for CAT 2026 | Percentilers"
+        description="Evaluate your CAT 2026 readiness in 15 minutes. Get a scored report with strengths, weaknesses, and a personalised improvement plan. 100% free."
         canonical="https://percentilers.in/free-cat-readiness-assessment"
       />
       <Navbar />
