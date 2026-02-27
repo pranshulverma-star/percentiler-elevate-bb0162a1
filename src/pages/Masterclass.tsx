@@ -95,24 +95,30 @@ const RegistrationCard = () => {
       return;
     }
 
-    // Step 2: Authenticated — check DB for phone
+    // Step 2: Authenticated — check DB for phone with timeout
     if (!user?.id) return;
     setChecking(true);
+    const timeout = setTimeout(() => {
+      // Fallback: if DB check takes too long, show phone modal
+      setChecking(false);
+      setShowPhoneModal(true);
+    }, 4000);
+
     try {
       const { data } = await (supabase.from("leads") as any)
         .select("phone_number")
         .eq("user_id", user.id)
         .maybeSingle();
 
+      clearTimeout(timeout);
+
       if (data?.phone_number && /^\d{10}$/.test(data.phone_number)) {
-        // Phone exists in DB → go to watch page
         navigate("/masterclass/watch");
       } else {
-        // No phone → show phone capture modal
         setShowPhoneModal(true);
       }
     } catch {
-      // On error, show phone modal as fallback
+      clearTimeout(timeout);
       setShowPhoneModal(true);
     } finally {
       setChecking(false);
