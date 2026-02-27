@@ -55,17 +55,38 @@ export function useAuth(): AuthState {
     const isInAppBrowser = /FBAN|FBAV|Instagram|Line\/|Snapchat|Twitter|BytedanceWebview/i.test(ua);
 
     if (isInAppBrowser) {
-      // Prompt user to open in default browser
-      const url = window.location.href;
-      // Try to force-open in external browser
-      window.open(url, "_system");
+      window.open(window.location.href, "_system");
       alert("Please open this link in Safari or Chrome to sign in with Google. In-app browsers don't support Google Sign-In.");
       return;
     }
 
-    await lovable.auth.signInWithOAuth("google", {
-      redirect_uri: window.location.href,
-    });
+    // On custom domain, bypass Lovable's auth-bridge to avoid showing lovable.app
+    const isCustomDomain =
+      !window.location.hostname.includes("lovable.app") &&
+      !window.location.hostname.includes("lovableproject.com") &&
+      !window.location.hostname.includes("localhost");
+
+    if (isCustomDomain) {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: window.location.href,
+          skipBrowserRedirect: true,
+        },
+      });
+      if (error) {
+        console.error("OAuth error:", error);
+        return;
+      }
+      if (data?.url) {
+        window.location.href = data.url;
+      }
+    } else {
+      // On lovable.app preview domains, use managed flow
+      await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.href,
+      });
+    }
   }, []);
 
   const signOut = useCallback(async () => {
