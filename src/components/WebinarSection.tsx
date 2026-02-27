@@ -62,11 +62,11 @@ const WebinarSection = () => {
         transition={{ delay: 0.3 }}
       >
         <Button size="lg" className="animate-pulse-glow text-base px-8 py-6 rounded-xl" onClick={() => {
-          openContentGate("webinar_section_masterclass", () => {
-            window.location.href = "/masterclass";
+          openContentGate("webinar_section_strategy_call", () => {
+            window.open("tel:+919911928071");
           });
         }}>
-          Watch Free Masterclass <ArrowRight className="ml-1 h-4 w-4" />
+          Book Free Strategy Call <ArrowRight className="ml-1 h-4 w-4" />
         </Button>
       </motion.div>
     </div>
