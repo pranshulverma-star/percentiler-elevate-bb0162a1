@@ -13,3 +13,6 @@
 /courses/cat-omet                   /index.html  200
 /free-courses                       /index.html  200
 /test-series                        /index.html  200
+
+# Everything else → 301 to legacy site (server-side, before page loads)
+/*  https://old.percentilers.in/:splat  301
