@@ -487,6 +487,13 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
                 </div>
               </div>
 
+              {/* Improve Profile CTA */}
+              <Button variant="outline" className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground" asChild>
+                <a href="https://online.percentilers.in/courses/Foundation-Building-Course" target="_blank" rel="noopener noreferrer">
+                  Improve Your Profile <ArrowRight className="ml-1 h-4 w-4" />
+                </a>
+              </Button>
+
               {/* 1 Short Insight — always visible */}
               <div className="bg-primary/5 border border-primary/15 rounded-xl p-4 space-y-1">
                 <p className="text-xs font-semibold text-foreground">💡 Quick Insight</p>
