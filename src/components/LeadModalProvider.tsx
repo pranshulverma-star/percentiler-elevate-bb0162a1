@@ -24,7 +24,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const [onSuccessCb, setOnSuccessCb] = useState<(() => void) | null>(null);
   const { user, isAuthenticated, signIn } = useAuth();
 
-  // Content gate: just triggers Google sign-in if not authenticated
+  // Content gate: if unauthenticated, start Google sign-in; if authenticated, run callback.
   const openContentGate = (src: string, onSuccess?: () => void) => {
     if (isAuthenticated) {
       if (user?.id) {
@@ -37,17 +37,11 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
       return;
     }
 
-    // Store callback info for after redirect
     sessionStorage.setItem("pending_gate_source", src);
-    if (onSuccess) {
-      const destination = extractDestination(onSuccess);
-      if (destination) sessionStorage.setItem("pending_gate_redirect", destination);
-    }
-
-    signIn();
+    void signIn();
   };
 
-  // Handle post-auth lead upsert (no redirect — ProtectedRoute handles that)
+  // Handle post-auth source attribution only (redirect decisions are centralized elsewhere)
   useEffect(() => {
     if (!isAuthenticated) return;
     const pendingSource = sessionStorage.getItem("pending_gate_source");
@@ -59,7 +53,6 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
           { onConflict: "user_id" }
         );
       }
-      // Do NOT handle pending_gate_redirect here — ProtectedRoute does it
     }
   }, [isAuthenticated, user]);
 
@@ -100,10 +93,3 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     </LeadModalContext.Provider>
   );
 };
-
-// Helper to extract destination URL from onSuccess callback
-function extractDestination(fn: () => void): string | null {
-  const str = fn.toString();
-  const match = str.match(/location\.href\s*=\s*["']([^"']+)["']/);
-  return match?.[1] || null;
-}
