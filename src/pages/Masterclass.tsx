@@ -126,9 +126,8 @@ const RegistrationCard = () => {
       resumeTriggered.current = true;
       sessionStorage.removeItem("pending_gate_redirect");
       sessionStorage.removeItem("pending_gate_source");
-      // Delay to ensure auth session is fully ready
-      const t = setTimeout(() => handleCTA(), 500);
-      return () => clearTimeout(t);
+      // Fire immediately — session is already ready at this point
+      handleCTA();
     }
   }, [isAuthenticated, user?.id, authLoading, checking, handleCTA]);
 

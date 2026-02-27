@@ -97,7 +97,8 @@ const MasterclassWatch = () => {
   const [guardReady, setGuardReady] = useState(false);
   useEffect(() => {
     if (authLoading || phoneLoading) return;
-    const t = setTimeout(() => setGuardReady(true), 600);
+    // Minimal grace period — auth state is already resolved at this point
+    const t = setTimeout(() => setGuardReady(true), 100);
     return () => clearTimeout(t);
   }, [authLoading, phoneLoading]);
 
