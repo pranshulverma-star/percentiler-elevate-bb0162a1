@@ -1,18 +1,8 @@
-# Cache static assets aggressively (Vite adds content hashes)
+# Cache Vite-hashed assets aggressively (JS, CSS, images in /assets/)
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Cache images
-*.webp
-  Cache-Control: public, max-age=31536000, immutable
-*.png
-  Cache-Control: public, max-age=2592000
-*.jpg
-  Cache-Control: public, max-age=2592000
-*.jpeg
-  Cache-Control: public, max-age=2592000
-
-# HTML - short cache for updates
+# HTML - no cache, always revalidate
 /*.html
   Cache-Control: public, max-age=0, must-revalidate
 
