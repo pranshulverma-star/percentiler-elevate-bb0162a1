@@ -1,0 +1,17 @@
+# Allowed SPA routes — rewrite to index.html (200 = serve without redirect)
+/                                   /index.html  200
+/terms                              /index.html  200
+/privacy-policy                     /index.html  200
+/refund-policy                      /index.html  200
+/contact                            /index.html  200
+/masterclass                        /index.html  200
+/masterclass/watch                  /index.html  200
+/mentorship                         /index.html  200
+/free-cat-readiness-assessment      /index.html  200
+/cat-daily-study-planner            /index.html  200
+/courses/cat-omet                   /index.html  200
+/free-courses                       /index.html  200
+/test-series                        /index.html  200
+
+# Everything else → 301 to legacy site
+/*  https://old.percentilers.in/:splat  301
