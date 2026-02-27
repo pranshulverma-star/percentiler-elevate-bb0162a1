@@ -75,9 +75,14 @@ const Navbar = () => {
             <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20">Book Free Strategy Call</Button>
             <ThemeToggle />
           </nav>
-          <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">
-            {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-          </button>
+          <div className="flex md:hidden items-center gap-2">
+            <Button size="sm" onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20 text-xs px-3 h-8">
+              Book Strategy Call
+            </Button>
+            <button onClick={() => setOpen(!open)} aria-label="Toggle menu">
+              {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
         <div
           className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary origin-left transition-transform duration-150 ease-out"
@@ -96,7 +101,6 @@ const Navbar = () => {
                 </Link>
               )
             )}
-            <Button className="w-full" onClick={() => { setOpen(false); handleStrategyCall(); }}>Book Free Strategy Call</Button>
             <div className="flex justify-center pt-1"><ThemeToggle /></div>
           </nav>
         )}
