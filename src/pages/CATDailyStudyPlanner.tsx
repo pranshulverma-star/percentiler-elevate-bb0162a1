@@ -188,7 +188,14 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
   const handleSignIn = async () => {
     setSigningIn(true);
     sessionStorage.setItem("pending_gate_source", "planner");
-    await signIn();
+    try {
+      await signIn();
+    } catch (err) {
+      console.error("Sign-in failed:", err);
+      setSigningIn(false);
+    }
+    // Reset after a timeout in case redirect doesn't happen (e.g. popup blocked)
+    setTimeout(() => setSigningIn(false), 5000);
   };
 
   return (
