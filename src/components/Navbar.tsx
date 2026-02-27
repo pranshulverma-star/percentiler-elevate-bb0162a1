@@ -21,13 +21,10 @@ const Navbar = () => {
   const [showCallDialog, setShowCallDialog] = useState(false);
   const { openPhoneModal } = useLeadModal();
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [showCTA, setShowCTA] = useState(false);
-
   const onScroll = useCallback(() => {
     requestAnimationFrame(() => {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       setScrollProgress(docHeight > 0 ? window.scrollY / docHeight : 0);
-      setShowCTA(window.scrollY > 300);
     });
   }, []);
 
@@ -75,9 +72,7 @@ const Navbar = () => {
                 </Link>
               )
             )}
-            <div className={`transition-all duration-300 ${showCTA ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1 pointer-events-none'}`}>
-              <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20">Book Free Strategy Call</Button>
-            </div>
+            <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20">Book Free Strategy Call</Button>
             <ThemeToggle />
           </nav>
           <button className="md:hidden" onClick={() => setOpen(!open)} aria-label="Toggle menu">
