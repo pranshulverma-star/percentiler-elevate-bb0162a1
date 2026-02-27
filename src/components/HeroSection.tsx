@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, TrendingUp, GraduationCap, Target, Phone } from "lucide-react";
+import { ArrowRight, TrendingUp, GraduationCap, Target, Phone, Award } from "lucide-react";
 import { useEffect, useRef, lazy, Suspense } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLeadModal } from "@/components/LeadModalProvider";
@@ -83,6 +83,30 @@ const AnimatedProgressBar = ({ percentile, delay }: { percentile: number; delay:
   );
 };
 
+const collegeNames = ["IIM A", "IIM B", "IIM C", "FMS Delhi", "XLRI", "SP Jain", "IIT Bombay", "JBIMS"];
+
+const HeroCollegeMarquee = () => (
+  <div className="md:hidden relative overflow-hidden rounded-lg border border-border/50 bg-secondary/30 py-2">
+    <p className="text-center text-[9px] font-semibold tracking-[0.2em] uppercase text-muted-foreground mb-1.5">
+      <Award className="inline h-3 w-3 mr-1 -mt-0.5" />Students in
+    </p>
+    <div className="relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-8 z-10 bg-gradient-to-r from-secondary/30 to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-8 z-10 bg-gradient-to-l from-secondary/30 to-transparent" />
+      <div className="flex animate-scroll-x items-center gap-5 w-max">
+        {[...collegeNames, ...collegeNames].map((name, i) => (
+          <span
+            key={`${name}-${i}`}
+            className="shrink-0 text-xs font-bold tracking-wide text-foreground/80 whitespace-nowrap px-2.5 py-1 rounded-full bg-primary/8 border border-primary/15"
+          >
+            {name}
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
 const HeroSection = () => {
   const { openContentGate, openPhoneModal } = useLeadModal();
   const [plannerOpen, setPlannerOpen] = useState(false);
@@ -118,9 +142,11 @@ const HeroSection = () => {
           <h1 className="text-3xl md:text-5xl lg:text-7xl font-bold leading-tight tracking-[-0.02em] text-foreground">
             From CAT Preparation to 95+ Percentile : <span className="text-primary">With Structure.</span>
           </h1>
-          <p className="text-lg text-muted-foreground max-w-lg">
+          {/* Desktop: paragraph | Mobile: college marquee */}
+          <p className="hidden md:block text-lg text-muted-foreground max-w-lg">
             Proven CAT coaching + strategic planning tools to help you prepare smarter for CAT 2026 and beyond.
           </p>
+          <HeroCollegeMarquee />
           <div className="flex flex-col sm:flex-row gap-3 pt-4">
             <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => setPlannerOpen(true)}>
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
