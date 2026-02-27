@@ -125,7 +125,7 @@ const HeroCollegeMarquee = () => (
 
 const HeroSection = () => {
   const { openContentGate, openPhoneModal } = useLeadModal();
-  const [plannerOpen, setPlannerOpen] = useState(false);
+  const [plannerOpen, setPlannerOpen] = useState(() => !!sessionStorage.getItem("planner_pending"));
 
   const handleStrategyCall = () => {
     const phone = localStorage.getItem("percentilers_phone") || "";
