@@ -79,15 +79,8 @@ const MasterclassWatch = () => {
     return () => { document.head.removeChild(script); };
   }, []);
 
-  // Sign-out listener
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
-        navigate("/masterclass", { replace: true });
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [navigate]);
+  // No duplicate auth listener here — AuthProvider handles global auth state.
+  // If sign-out happens, ProtectedRoute will redirect automatically.
 
   // Check existing engagement on load
   useEffect(() => {
