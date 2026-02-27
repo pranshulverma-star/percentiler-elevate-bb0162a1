@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -82,6 +82,7 @@ const GoogleSignInButton = ({ className }: { className?: string }) => {
 const RegistrationCard = () => {
   const navigate = useNavigate();
   const { isAuthenticated, signIn, user, loading: authLoading } = useAuth();
+  const resumeTriggered = useRef(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [checking, setChecking] = useState(false);
 
@@ -118,17 +119,18 @@ const RegistrationCard = () => {
     }
   }, [isAuthenticated, signIn, user?.id, navigate]);
 
-  // Auto-resume gate check after Google sign-in redirect (run once)
+  // Auto-resume gate check after Google sign-in redirect
   useEffect(() => {
     const pending = sessionStorage.getItem("pending_gate_redirect");
-    if (pending === "/masterclass" && isAuthenticated && user?.id && !authLoading && !checking) {
+    if (pending === "/masterclass" && isAuthenticated && user?.id && !authLoading && !checking && !resumeTriggered.current) {
+      resumeTriggered.current = true;
       sessionStorage.removeItem("pending_gate_redirect");
       sessionStorage.removeItem("pending_gate_source");
-      // Small delay to ensure auth session is fully ready
-      const t = setTimeout(() => handleCTA(), 300);
+      // Delay to ensure auth session is fully ready
+      const t = setTimeout(() => handleCTA(), 500);
       return () => clearTimeout(t);
     }
-  }, [isAuthenticated, user?.id, authLoading]); // intentionally exclude handleCTA to avoid re-triggers
+  }, [isAuthenticated, user?.id, authLoading, checking, handleCTA]);
 
   const handlePhoneSuccess = () => {
     setShowPhoneModal(false);
