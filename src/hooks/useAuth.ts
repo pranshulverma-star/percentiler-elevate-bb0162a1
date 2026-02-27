@@ -50,6 +50,19 @@ export function useAuth(): AuthState {
   }, []);
 
   const signIn = useCallback(async () => {
+    // Detect in-app browsers (Instagram, Facebook, etc.) that break OAuth state
+    const ua = navigator.userAgent || "";
+    const isInAppBrowser = /FBAN|FBAV|Instagram|Line\/|Snapchat|Twitter|BytedanceWebview/i.test(ua);
+
+    if (isInAppBrowser) {
+      // Prompt user to open in default browser
+      const url = window.location.href;
+      // Try to force-open in external browser
+      window.open(url, "_system");
+      alert("Please open this link in Safari or Chrome to sign in with Google. In-app browsers don't support Google Sign-In.");
+      return;
+    }
+
     await lovable.auth.signInWithOAuth("google", {
       redirect_uri: window.location.href,
     });
