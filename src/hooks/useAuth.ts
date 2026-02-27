@@ -60,10 +60,31 @@ export function useAuth(): AuthState {
       return;
     }
 
+    // On custom domain, use direct Supabase OAuth to keep branding clean
+    const isCustomDomain =
+      !window.location.hostname.includes("lovable.app") &&
+      !window.location.hostname.includes("lovableproject.com") &&
+      !window.location.hostname.includes("localhost");
+
     try {
-      await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin + window.location.pathname,
-      });
+      if (isCustomDomain) {
+        // Use direct redirect (no skipBrowserRedirect) — faster, single hop
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: window.location.origin + window.location.pathname,
+          },
+        });
+        if (error) {
+          console.error("OAuth error:", error);
+          throw error;
+        }
+      } else {
+        // On lovable.app preview domains, use managed flow
+        await lovable.auth.signInWithOAuth("google", {
+          redirect_uri: window.location.origin + window.location.pathname,
+        });
+      }
     } catch (err) {
       console.error("Sign-in error:", err);
       throw err;
