@@ -43,20 +43,33 @@ const MasterclassWatch = () => {
       return;
     }
 
-    const checkPhone = async () => {
-      const { data } = await (supabase.from("leads") as any)
-        .select("phone_number")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-      const phone = data?.phone_number;
-      if (phone && /^\d{10}$/.test(phone)) {
-        setHasPhone(true);
-        setIdentifier(phone);
-      }
+    const timeout = setTimeout(() => {
+      // Fallback: if DB check hangs, stop loading and let guard redirect
       setPhoneLoading(false);
+    }, 4000);
+
+    const checkPhone = async () => {
+      try {
+        const { data } = await (supabase.from("leads") as any)
+          .select("phone_number")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        const phone = data?.phone_number;
+        if (phone && /^\d{10}$/.test(phone)) {
+          setHasPhone(true);
+          setIdentifier(phone);
+        }
+      } catch {
+        // silent
+      } finally {
+        clearTimeout(timeout);
+        setPhoneLoading(false);
+      }
     };
     checkPhone();
+
+    return () => clearTimeout(timeout);
   }, [authLoading, isAuthenticated, user?.id]);
 
   const [watchPct, setWatchPct] = useState(0);
