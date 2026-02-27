@@ -1,21 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw, Flame, Sparkles } from "lucide-react";
+import { ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw, Flame, Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { trackInitiateCheckout } from "@/lib/tracking";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 
-const learningBullets = [
-  "Eligibility Criteria and When to Start",
-  "How to make your Foundation Strong",
-  "How to build your profile",
-  "MBA exams apart from CAT",
-  "Best B-Schools in India",
-  "How to choose the Best Coaching for you",
-];
 
 const resources = [
   { icon: FileText, label: "Ebook — Top Secrets to Crack CAT", action: "download", unlockAt: 20 },
@@ -29,26 +21,15 @@ const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
 
 const MasterclassWatch = () => {
   const navigate = useNavigate();
-  const { isAuthenticated, loading: authLoading, user } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
-  // DB-based phone check
-  const [hasPhone, setHasPhone] = useState(false);
-  const [phoneLoading, setPhoneLoading] = useState(true);
+  // Identifier is fetched once — ProtectedRoute already guarantees auth + phone
   const [identifier, setIdentifier] = useState("");
 
   useEffect(() => {
-    if (authLoading) return;
-    if (!isAuthenticated || !user?.id) {
-      setPhoneLoading(false);
-      return;
-    }
+    if (!isAuthenticated || !user?.id) return;
 
-    const timeout = setTimeout(() => {
-      // Fallback: if DB check hangs, stop loading and let guard redirect
-      setPhoneLoading(false);
-    }, 4000);
-
-    const checkPhone = async () => {
+    (async () => {
       try {
         const { data } = await (supabase.from("leads") as any)
           .select("phone_number")
@@ -57,20 +38,13 @@ const MasterclassWatch = () => {
 
         const phone = data?.phone_number;
         if (phone && /^\d{10}$/.test(phone)) {
-          setHasPhone(true);
           setIdentifier(phone);
         }
       } catch {
         // silent
-      } finally {
-        clearTimeout(timeout);
-        setPhoneLoading(false);
       }
-    };
-    checkPhone();
-
-    return () => clearTimeout(timeout);
-  }, [authLoading, isAuthenticated, user?.id]);
+    })();
+  }, [isAuthenticated, user?.id]);
 
   const [watchPct, setWatchPct] = useState(0);
   const [maxWatchPct, setMaxWatchPct] = useState(0);
@@ -104,23 +78,6 @@ const MasterclassWatch = () => {
     document.head.appendChild(script);
     return () => { document.head.removeChild(script); };
   }, []);
-
-  // Redirect guard: requires auth + phone in DB
-  // Grace period allows Supabase session to initialize after OAuth redirect
-  const [guardReady, setGuardReady] = useState(false);
-  useEffect(() => {
-    if (authLoading || phoneLoading) return;
-    // Minimal grace period — auth state is already resolved at this point
-    const t = setTimeout(() => setGuardReady(true), 100);
-    return () => clearTimeout(t);
-  }, [authLoading, phoneLoading]);
-
-  useEffect(() => {
-    if (!guardReady) return;
-    if (!isAuthenticated || !hasPhone) {
-      navigate("/masterclass", { replace: true });
-    }
-  }, [guardReady, isAuthenticated, hasPhone, navigate]);
 
   // Sign-out listener
   useEffect(() => {
@@ -227,12 +184,7 @@ const MasterclassWatch = () => {
     finally { setApplyLoading(false); setShowApplyConfirm(true); }
   }, [user, identifier]);
 
-  if (authLoading || phoneLoading) return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
-      <Loader2 className="h-8 w-8 text-primary animate-spin" />
-    </div>
-  );
-  if (!isAuthenticated || !hasPhone) return null;
+  // ProtectedRoute handles auth + phone gating — no need for loading/guard checks here
 
   return (
     <div className="min-h-screen bg-background">

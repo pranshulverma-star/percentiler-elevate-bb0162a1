@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { LeadModalProvider } from "@/components/LeadModalProvider";
 import { HelmetProvider } from "react-helmet-async";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 function ScrollToHash() {
   const { hash, pathname } = useLocation();
@@ -61,7 +62,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/masterclass" element={<Masterclass />} />
               <Route path="/mentorship" element={<MentorshipPage />} />
-              <Route path="/masterclass/watch" element={<MasterclassWatch />} />
+              <Route path="/masterclass/watch" element={<ProtectedRoute requirePhone source="masterclass"><MasterclassWatch /></ProtectedRoute>} />
               <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
               <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
               <Route path="/courses/cat-omet" element={<CATOMETCourses />} />

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
@@ -82,24 +82,23 @@ const GoogleSignInButton = ({ className }: { className?: string }) => {
 const RegistrationCard = () => {
   const navigate = useNavigate();
   const { isAuthenticated, signIn, user, loading: authLoading } = useAuth();
-  const resumeTriggered = useRef(false);
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [checking, setChecking] = useState(false);
 
   const handleCTA = useCallback(async () => {
     // Step 1: If not authenticated, trigger Google sign-in
     if (!isAuthenticated) {
-      sessionStorage.setItem("pending_gate_redirect", "/masterclass");
+      // Store redirect so after OAuth we land on /masterclass/watch via ProtectedRoute
+      sessionStorage.setItem("pending_gate_redirect", "/masterclass/watch");
       sessionStorage.setItem("pending_gate_source", "masterclass");
       await signIn();
       return;
     }
 
-    // Step 2: Authenticated — check DB for phone with timeout
+    // Step 2: Authenticated — check DB for phone
     if (!user?.id) return;
     setChecking(true);
     const timeout = setTimeout(() => {
-      // Fallback: if DB check takes too long, show phone modal
       setChecking(false);
       setShowPhoneModal(true);
     }, 4000);
@@ -125,17 +124,17 @@ const RegistrationCard = () => {
     }
   }, [isAuthenticated, signIn, user?.id, navigate]);
 
-  // Auto-resume gate check after Google sign-in redirect
+  // After OAuth redirect, if we land back on /masterclass with a pending redirect to /masterclass/watch,
+  // just navigate there — ProtectedRoute on /masterclass/watch will handle the rest
   useEffect(() => {
+    if (authLoading || !isAuthenticated) return;
     const pending = sessionStorage.getItem("pending_gate_redirect");
-    if (pending === "/masterclass" && isAuthenticated && user?.id && !authLoading && !checking && !resumeTriggered.current) {
-      resumeTriggered.current = true;
+    if (pending === "/masterclass/watch") {
       sessionStorage.removeItem("pending_gate_redirect");
       sessionStorage.removeItem("pending_gate_source");
-      // Fire immediately — session is already ready at this point
-      handleCTA();
+      navigate("/masterclass/watch");
     }
-  }, [isAuthenticated, user?.id, authLoading, checking, handleCTA]);
+  }, [authLoading, isAuthenticated, navigate]);
 
   const handlePhoneSuccess = () => {
     setShowPhoneModal(false);
