@@ -29,7 +29,7 @@ const FounderSection = () => (
             <div className="absolute -inset-3 rounded-2xl bg-primary/10 blur-xl group-hover:bg-primary/15 transition-colors duration-500" />
             <img
               src={mentorImg}
-              alt="Pranshul Verma - 7x CAT 100%iler"
+              alt="Pranshul Verma – 7x CAT 100 percentiler and founder of Percentilers online CAT coaching"
               width={256}
               height={256}
               className="relative w-56 h-56 md:w-64 md:h-64 object-cover object-top rounded-2xl shadow-xl transition-all duration-700 ring-4 ring-primary/20 ring-offset-4 ring-offset-background"
