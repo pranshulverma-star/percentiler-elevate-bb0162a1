@@ -114,7 +114,7 @@ interface LeadData {
 }
 
 function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
-  const { isAuthenticated, user, signIn } = useAuth();
+  const { isAuthenticated, user, signIn, loading: authLoading } = useAuth();
   const [targetYear, setTargetYear] = useState("");
   const [currentStatus, setCurrentStatus] = useState("");
   const [prepLevel, setPrepLevel] = useState("");
@@ -214,7 +214,16 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
           </p>
         </div>
 
-        {!isAuthenticated ? (
+        {authLoading ? (
+          <Card className="rounded-2xl shadow-xl border-0 bg-card/80 backdrop-blur-sm">
+            <CardContent className="p-6 md:p-8 text-center space-y-5">
+              <div className="flex items-center justify-center gap-3">
+                <RefreshCw className="h-5 w-5 animate-spin text-primary" />
+                <p className="text-sm text-muted-foreground">Loading your session...</p>
+              </div>
+            </CardContent>
+          </Card>
+        ) : !isAuthenticated ? (
           <Card className="rounded-2xl shadow-xl border-0 bg-card/80 backdrop-blur-sm">
             <CardContent className="p-6 md:p-8 text-center space-y-5">
               <p className="text-sm text-muted-foreground">Sign in with Google to create your personalized study plan.</p>
