@@ -30,10 +30,11 @@ const FeaturedStrip = () => (
           >
             <img
               src={logo.src}
-              alt={logo.name}
+              alt={`${logo.name} logo – Percentilers featured in ${logo.name}`}
               width={36}
               height={36}
               className="h-7 w-7 md:h-9 md:w-9 object-contain rounded-sm"
+              loading="lazy"
             />
             <span className="text-sm md:text-base font-semibold tracking-wide text-muted-foreground whitespace-nowrap">
               {logo.name}

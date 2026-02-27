@@ -27,8 +27,8 @@ const LazyFallback = () => <div className="min-h-[200px]" />;
 const Index = () => (
   <>
     <SEO
-      title="Best CAT Coaching for 95+ Percentile | Online CAT Coaching – Percentilers"
-      description="Percentilers offers structured CAT preparation and online CAT coaching to help you crack the CAT exam with 95+ percentile. Join one of the best CAT coaching programs focused on execution, mentorship, and performance tracking."
+      title="Best CAT Coaching for 95+ Percentile | Percentilers"
+      description="Join Percentilers for structured CAT 2026 preparation with expert mentorship, mock analysis, and a proven 95+ percentile strategy. Start your free masterclass today."
       canonical="https://percentilers.in/"
     />
     <Navbar />

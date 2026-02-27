@@ -70,7 +70,7 @@ const FacultySection = () => (
             <div className="relative mx-auto w-fit">
               <Avatar className="h-20 w-20 md:h-24 md:w-24 ring-4 ring-transparent group-hover:ring-primary/50 transition-all duration-300">
                 {f.photo ? (
-                  <AvatarImage src={f.photo} alt={f.name} className="object-cover object-[center_20%]" />
+                  <AvatarImage src={f.photo} alt={`${f.name} – ${f.role} at Percentilers CAT coaching`} className="object-cover object-[center_20%]" loading="lazy" />
                 ) : null}
                 <AvatarFallback className="text-lg font-bold bg-secondary text-foreground group-hover:bg-primary/10 group-hover:text-primary transition-colors duration-300">
                   {f.initials}

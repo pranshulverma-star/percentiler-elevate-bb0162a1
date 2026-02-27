@@ -114,7 +114,7 @@ const HeroCollegeMarquee = () => (
       <div className="flex animate-scroll-x items-center gap-6 w-max">
         {[...colleges, ...colleges].map((c, i) => (
           <div key={`${c.name}-${i}`} className="shrink-0 flex items-center gap-1.5">
-            <img src={c.logo} alt={c.name} width={24} height={24} className="h-6 w-6 object-contain rounded-sm" />
+            <img src={c.logo} alt={`${c.name} college logo – students placed from Percentilers`} width={24} height={24} className="h-6 w-6 object-contain rounded-sm" />
             <span className="text-xs font-bold tracking-wide text-foreground/80 whitespace-nowrap">{c.name}</span>
           </div>
         ))}
@@ -180,7 +180,7 @@ const HeroSection = () => {
                 <div className="absolute top-0 right-0 w-16 h-16 bg-primary/5 rounded-bl-full" />
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10 md:h-14 md:w-14 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
-                    <AvatarImage src={s.photo} alt={s.name} width={56} height={56} className="object-cover object-top scale-[1.6] translate-y-[10%]" />
+                    <AvatarImage src={s.photo} alt={`${s.name} – ${s.percentile} percentile in CAT, placed at ${s.college}`} width={56} height={56} className="object-cover object-top scale-[1.6] translate-y-[10%]" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{s.initials}</AvatarFallback>
                   </Avatar>
                   <div>

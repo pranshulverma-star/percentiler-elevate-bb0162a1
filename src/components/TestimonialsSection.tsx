@@ -105,7 +105,7 @@ const TestimonialsSection = () => (
             <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card">
               <img
                 src={src}
-                alt={`Student testimonial ${i + 1}`}
+                alt={`WhatsApp testimonial from a CAT student sharing their experience with Percentilers coaching – screenshot ${i + 1}`}
                 width={400}
                 height={600}
                 className="w-full h-auto object-contain"
