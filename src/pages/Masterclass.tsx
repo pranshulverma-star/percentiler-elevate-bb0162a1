@@ -145,8 +145,8 @@ const Masterclass = () => {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Free CAT Masterclass | CAT Preparation Strategy for 95+ Percentile"
-        description="Watch the free CAT masterclass and learn a proven CAT exam strategy used in our best CAT coaching program. Discover how to structure your CAT preparation for 95+ percentile."
+        title="Free CAT Masterclass – Strategy for 95+ Percentile | Percentilers"
+        description="Watch a free CAT masterclass by a 7x 100 percentiler. Learn the exact preparation strategy, profile building tips, and coaching roadmap for CAT 2026. Start now."
         canonical="https://percentilers.in/masterclass"
       />
       <header className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
@@ -197,7 +197,7 @@ const Masterclass = () => {
           <div className="grid lg:grid-cols-[1fr_380px] gap-10 md:gap-14 items-start mb-20">
             <motion.div className="space-y-8" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
               <div className="flex items-start gap-5">
-                <img src={mentorPhoto} alt="Pranshul Verma — 7x CAT 100%iler" className="w-20 h-20 md:w-24 md:h-24 rounded-2xl object-cover shadow-md shrink-0" />
+                <img src={mentorPhoto} alt="Pranshul Verma – 7x CAT 100 percentiler and founder of Percentilers CAT coaching" className="w-20 h-20 md:w-24 md:h-24 rounded-2xl object-cover shadow-md shrink-0" loading="lazy" />
                 <div>
                   <p className="text-sm font-semibold text-primary mb-1">Your Mentor</p>
                   <p className="text-lg font-bold text-foreground">Pranshul Verma</p>
@@ -239,7 +239,7 @@ const Masterclass = () => {
                 <motion.div key={t.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.4, delay: i * 0.1 }}>
                   <Card className="p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 h-full">
                     <div className="flex items-center gap-3 mb-3">
-                      <img src={t.photo} alt={t.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20" />
+                      <img src={t.photo} alt={`${t.name} – CAT ${t.score} scorer, Percentilers student`} className="w-10 h-10 rounded-full object-cover ring-2 ring-primary/20" loading="lazy" />
                       <div>
                         <p className="text-sm font-semibold text-foreground">{t.name}</p>
                         <span className="text-xs font-bold text-primary">{t.score}</span>

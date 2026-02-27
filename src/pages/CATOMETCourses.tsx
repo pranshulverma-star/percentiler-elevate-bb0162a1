@@ -149,8 +149,8 @@ const CATOMETCourses = () => {
   return (
     <>
       <SEO
-        title="Online CAT Coaching Programs | Best CAT Preparation Courses"
-        description="Explore structured online CAT coaching programs designed for serious CAT exam aspirants aiming for 95+ percentile with proven preparation systems."
+        title="CAT + OMET Courses – 95%ile Guarantee Batch | Percentilers"
+        description="Explore CAT and OMET preparation courses with live classes, mock tests, and mentorship. Choose from Guarantee, Live, or Recorded programs. Enroll now."
         canonical="https://percentilers.in/courses/cat-omet"
       />
       <Navbar />
@@ -197,8 +197,9 @@ const CATOMETCourses = () => {
                 <div className="absolute -inset-1 rounded-full bg-primary/20 blur-sm" />
               <img
                   src={mentorImg}
-                  alt="Pranshul Verma – 7x CAT 100%iler"
+                  alt="Pranshul Verma – 7x CAT 100 percentiler and founder of Percentilers CAT coaching"
                   className="relative w-12 h-12 md:w-16 md:h-16 rounded-full object-cover object-[center_15%] scale-[1.3] ring-2 ring-primary/30"
+                  loading="lazy"
                 />
               </div>
               <div>
@@ -350,7 +351,7 @@ const CATOMETCourses = () => {
                 >
                   <Card className="p-3 md:p-4 h-full border border-border">
                     <div className="flex items-center gap-2 mb-1.5 md:mb-2">
-                      <img src={t.photo} alt={t.name} className="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-1 ring-primary/20" />
+                      <img src={t.photo} alt={`${t.name} – CAT ${t.percentile} scorer, admitted to ${t.college}`} className="w-7 h-7 md:w-8 md:h-8 rounded-full object-cover ring-1 ring-primary/20" loading="lazy" />
                       <div>
                         <p className="text-[10px] md:text-xs font-semibold text-foreground">{t.name}</p>
                         <p className="text-[9px] md:text-[10px] text-muted-foreground">{t.college}</p>
@@ -495,7 +496,7 @@ const CATOMETCourses = () => {
               viewport={{ once: true }}
               className="space-y-3 md:space-y-4"
             >
-              <h3 className="text-xl md:text-2xl font-bold text-foreground">Not sure which course is right for you?</h3>
+              <h2 className="text-xl md:text-2xl font-bold text-foreground">Not sure which course is right for you?</h2>
               <p className="text-sm md:text-base text-muted-foreground">
                 Our academic counselors can help you pick the perfect program based on your goals, schedule, and budget.
               </p>
