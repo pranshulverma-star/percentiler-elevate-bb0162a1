@@ -93,12 +93,20 @@ const MasterclassWatch = () => {
   }, []);
 
   // Redirect guard: requires auth + phone in DB
+  // Grace period allows Supabase session to initialize after OAuth redirect
+  const [guardReady, setGuardReady] = useState(false);
   useEffect(() => {
     if (authLoading || phoneLoading) return;
+    const t = setTimeout(() => setGuardReady(true), 600);
+    return () => clearTimeout(t);
+  }, [authLoading, phoneLoading]);
+
+  useEffect(() => {
+    if (!guardReady) return;
     if (!isAuthenticated || !hasPhone) {
       navigate("/masterclass", { replace: true });
     }
-  }, [isAuthenticated, authLoading, phoneLoading, hasPhone, navigate]);
+  }, [guardReady, isAuthenticated, hasPhone, navigate]);
 
   // Sign-out listener
   useEffect(() => {
