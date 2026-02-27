@@ -60,36 +60,10 @@ export function useAuth(): AuthState {
       return;
     }
 
-    // On custom domain, bypass Lovable's auth-bridge to avoid showing lovable.app
-    const isCustomDomain =
-      !window.location.hostname.includes("lovable.app") &&
-      !window.location.hostname.includes("lovableproject.com") &&
-      !window.location.hostname.includes("localhost");
-
     try {
-      if (isCustomDomain) {
-        const { data, error } = await supabase.auth.signInWithOAuth({
-          provider: "google",
-          options: {
-            redirectTo: window.location.origin + window.location.pathname,
-            skipBrowserRedirect: true,
-          },
-        });
-        if (error) {
-          console.error("OAuth error:", error);
-          throw error;
-        }
-        if (data?.url) {
-          window.location.href = data.url;
-        } else {
-          throw new Error("No OAuth URL returned");
-        }
-      } else {
-        // On lovable.app preview domains, use managed flow
-        await lovable.auth.signInWithOAuth("google", {
-          redirect_uri: window.location.origin + window.location.pathname,
-        });
-      }
+      await lovable.auth.signInWithOAuth("google", {
+        redirect_uri: window.location.origin + window.location.pathname,
+      });
     } catch (err) {
       console.error("Sign-in error:", err);
       throw err;
