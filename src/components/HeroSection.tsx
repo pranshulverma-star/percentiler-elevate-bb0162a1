@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { ArrowRight, TrendingUp, GraduationCap, Target } from "lucide-react";
+import { ArrowRight, TrendingUp, GraduationCap, Target, Phone } from "lucide-react";
 import { useEffect, useRef, lazy, Suspense } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useLeadModal } from "@/components/LeadModalProvider";
+import { supabase } from "@/integrations/supabase/client";
 import studentAayushiJha from "@/assets/student-aayushi-jha.jpeg";
 import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
 import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
@@ -83,9 +84,28 @@ const AnimatedProgressBar = ({ percentile, delay }: { percentile: number; delay:
 };
 
 const HeroSection = () => {
-  const { openContentGate } = useLeadModal();
+  const { openContentGate, openPhoneModal } = useLeadModal();
   const [plannerOpen, setPlannerOpen] = useState(false);
 
+  const handleStrategyCall = () => {
+    const phone = localStorage.getItem("percentilers_phone") || "";
+    if (phone) {
+      supabase.functions.invoke("mark-lead-hot", {
+        body: { phone_number: phone, source: "hero_strategy_call", name: localStorage.getItem("percentilers_name") || null },
+      }).catch(() => {});
+      window.location.href = "tel:+919911928071";
+    } else {
+      openPhoneModal("hero_strategy_call", () => {
+        const newPhone = localStorage.getItem("percentilers_phone") || "";
+        if (newPhone) {
+          supabase.functions.invoke("mark-lead-hot", {
+            body: { phone_number: newPhone, source: "hero_strategy_call", name: localStorage.getItem("percentilers_name") || null },
+          }).catch(() => {});
+        }
+        window.location.href = "tel:+919911928071";
+      });
+    }
+  };
   return (
     <section className="pt-6 pb-10 md:pt-10 md:pb-16 bg-background overflow-hidden relative">
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-primary/[0.04] blur-[100px] pointer-events-none" />
@@ -105,8 +125,8 @@ const HeroSection = () => {
             <Button size="lg" className="animate-pulse-glow text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl shadow-lg w-full sm:w-auto" onClick={() => setPlannerOpen(true)}>
               <Target className="mr-1 h-5 w-5" /> Evaluate My Profile <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
-            <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" asChild>
-              <a href="/masterclass">Watch Free Masterclass</a>
+            <Button size="lg" variant="outline" className="text-sm md:text-base font-bold px-6 py-5 md:px-8 md:py-6 rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all w-full sm:w-auto" onClick={handleStrategyCall}>
+              <Phone className="mr-1 h-5 w-5" /> Book Free Strategy Call
             </Button>
           </div>
         </div>
