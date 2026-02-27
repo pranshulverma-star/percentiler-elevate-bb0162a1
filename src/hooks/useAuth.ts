@@ -16,11 +16,27 @@ export function useAuth(): AuthState {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+    let resolved = false;
+
+    const resolveAuth = (nextUser: User | null) => {
+      if (!isMounted) return;
+      setUser(nextUser);
+      resolved = true;
+      setLoading(false);
+    };
+
+    const fallbackTimer = window.setTimeout(() => {
+      if (!resolved && isMounted) {
+        console.warn("Auth initialization timed out; continuing without blocking UI");
+        setLoading(false);
+      }
+    }, 6000);
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         const currentUser = session?.user ?? null;
-        setUser(currentUser);
-        setLoading(false);
+        resolveAuth(currentUser);
 
         // On sign-in, upsert lead with user_id, email + name
         if (event === "SIGNED_IN" && currentUser?.email) {
@@ -41,12 +57,20 @@ export function useAuth(): AuthState {
     );
 
     // Check existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        resolveAuth(session?.user ?? null);
+      })
+      .catch((err) => {
+        console.error("Session bootstrap error:", err);
+        if (isMounted) setLoading(false);
+      });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      isMounted = false;
+      window.clearTimeout(fallbackTimer);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signIn = useCallback(async () => {
