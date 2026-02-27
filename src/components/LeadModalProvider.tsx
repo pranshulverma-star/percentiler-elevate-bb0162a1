@@ -47,7 +47,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     signIn();
   };
 
-  // Handle post-auth redirect for content gate
+  // Handle post-auth lead upsert (no redirect — ProtectedRoute handles that)
   useEffect(() => {
     if (!isAuthenticated) return;
     const pendingSource = sessionStorage.getItem("pending_gate_source");
@@ -59,11 +59,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
           { onConflict: "user_id" }
         );
       }
-      const redirect = sessionStorage.getItem("pending_gate_redirect");
-      if (redirect) {
-        sessionStorage.removeItem("pending_gate_redirect");
-        window.location.href = redirect;
-      }
+      // Do NOT handle pending_gate_redirect here — ProtectedRoute does it
     }
   }, [isAuthenticated, user]);
 
