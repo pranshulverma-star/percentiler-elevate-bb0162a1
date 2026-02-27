@@ -507,11 +507,13 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
 
               {/* Detailed Roadmap — only after sign-in + phone */}
               {showRoadmap && (
-                <div className="space-y-4 border-t border-border pt-4">
-                  <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-primary" /> Your Personalized Roadmap
-                  </h3>
-                  
+                <div className="space-y-4">
+                  <div className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-2xl p-5 text-center space-y-2">
+                    <Sparkles className="w-6 h-6 text-primary mx-auto" />
+                    <h3 className="text-base font-bold text-foreground">Want a Personalized CAT Execution Roadmap?</h3>
+                    <p className="text-xs text-muted-foreground">Get a structured improvement plan based on your profile.</p>
+                  </div>
+
                   {roadmapLoading && !roadmapText && (
                     <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
                       <Loader2 className="h-4 w-4 animate-spin text-primary" />
