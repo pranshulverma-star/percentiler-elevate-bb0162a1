@@ -168,19 +168,24 @@ export default function CATCoachingComparison() {
   ];
 
   const results = [
-    { name: "Aditya Sharma", score: "99.2%ile", college: "IIM Ahmedabad" },
-    { name: "Priya Gupta", score: "98.7%ile", college: "IIM Bangalore" },
-    { name: "Rohan Mehra", score: "99.5%ile", college: "IIM Calcutta" },
-    { name: "Ananya Singh", score: "97.8%ile", college: "XLRI Jamshedpur" },
-    { name: "Karthik Nair", score: "98.1%ile", college: "FMS Delhi" },
-    { name: "Divya Joshi", score: "99.0%ile", college: "IIM Lucknow" },
+    { name: "Bhavy Jain", percentile: "99.5", college: "FMS Delhi", initials: "BJ", photo: studentBhavy, quote: "The structured strategy made all the difference in my preparation." },
+    { name: "Rounak", percentile: "99.2", college: "IIM Bangalore", initials: "RK", photo: studentRounak, quote: "Mock analysis sessions helped me identify and fix weak areas fast." },
+    { name: "Golla Rahul", percentile: "98.9", college: "IIT Bombay", initials: "GR", photo: studentRahul, quote: "Went from 90 to 98+ percentile in just 3 months of focused prep." },
+    { name: "Aditya Kumar", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AK", photo: studentAditya, quote: "The daily planner kept me disciplined throughout my journey." },
+    { name: "Shruti Manghani", percentile: "98.3", college: "SP Jain", initials: "SM", photo: studentShruti, quote: "Personalized mentorship gave me clarity when I needed it most." },
+    { name: "Ritik Kumar", percentile: "98.1", college: "IIM Udaipur", initials: "RK", photo: studentRitik, quote: "Strategy over hours — that mindset shift changed everything for me." },
+    { name: "Prakhar Poddar", percentile: "98.0", college: "IIM Trichy", initials: "PP", photo: studentPrakhar, quote: "The right guidance at the right time made my CAT journey smooth." },
+    { name: "Saloni Hindocha", percentile: "98.4", college: "IIT Mumbai", initials: "SH", photo: studentSaloni, quote: "Consistent practice with expert feedback was the key to my success." },
+    { name: "Sattaki Basu", percentile: "98.2", college: "IIM Ranchi", initials: "SB", photo: studentSattaki, quote: "Structured mock analysis transformed my approach to the exam." },
   ];
 
   const testimonials = [
-    { name: "Rounak", text: "Switched from a big coaching brand mid-prep. Percentilers' mentorship was a game-changer — I went from 85%ile to 99.1%ile in 4 months.", rating: 5 },
-    { name: "Saloni", text: "The daily study plan kept me on track. No other coaching gives you this level of personalization. Converted IIM Bangalore!", rating: 5 },
-    { name: "Bhagyashree", text: "My mentor (IIM-A alum) literally reviewed my every mock. That kind of attention is impossible in big batches.", rating: 5 },
+    { name: "Meera T.", highlight: "The structured approach changed everything for me.", text: "I was struggling with time management until I joined Percentilers. Their study planner and mock analysis helped me jump from 85 to 98 percentile in 4 months.", rating: 5 },
+    { name: "Karthik N.", highlight: "Best investment I made for my CAT prep.", text: "The faculty didn't just teach — they mentored. Every doubt session felt personal. I got into IIM Bangalore, and I owe a lot to the Percentilers team.", rating: 5 },
+    { name: "Divya S.", highlight: "Finally, coaching that focuses on strategy, not just content.", text: "Most coaching centers overload you with material. Percentilers gave me a clear plan, weekly targets, and honest feedback. That's what made the difference.", rating: 5 },
   ];
+
+  const whatsappScreenshots = [whatsapp1, whatsapp2, whatsapp3, whatsapp4, whatsapp5, whatsapp6];
 
   const faqs = [
     { q: "How is Percentilers different from big coaching institutes?", a: "We keep batch sizes under 30, assign IIM alumni mentors 1-on-1, and build AI-personalized study plans. Big institutes treat you as one of thousands — we treat you as the priority." },
