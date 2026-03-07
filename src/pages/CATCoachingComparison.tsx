@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,7 +6,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
-import { CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp, ChevronDown, ChevronUp, GraduationCap, Quote, MessageCircle } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
+import studentBhavy from "@/assets/student-bhavy.webp";
+import studentAditya from "@/assets/student-aditya.webp";
+import studentRounak from "@/assets/student-rounak.webp";
+import studentShruti from "@/assets/student-shruti.webp";
+import studentRitik from "@/assets/student-ritik.webp";
+import studentPrakhar from "@/assets/student-prakhar.webp";
+import studentSaloni from "@/assets/student-saloni.webp";
+import studentSattaki from "@/assets/student-sattaki.webp";
+import studentRahul from "@/assets/student-rahul.jpeg";
+
+import whatsapp1 from "@/assets/whatsapp-1.jpg";
+import whatsapp2 from "@/assets/whatsapp-2.jpg";
+import whatsapp3 from "@/assets/whatsapp-3.jpg";
+import whatsapp4 from "@/assets/whatsapp-4.jpg";
+import whatsapp5 from "@/assets/whatsapp-5.jpg";
+import whatsapp6 from "@/assets/whatsapp-6.jpg";
 
 const COMPETITOR_MAP: Record<string, { name: string; headline: string }> = {
   unacademy: { name: "Unacademy", headline: "Tired of Unacademy's One-Size-Fits-All CAT Coaching?" },
@@ -150,19 +168,24 @@ export default function CATCoachingComparison() {
   ];
 
   const results = [
-    { name: "Aditya Sharma", score: "99.2%ile", college: "IIM Ahmedabad" },
-    { name: "Priya Gupta", score: "98.7%ile", college: "IIM Bangalore" },
-    { name: "Rohan Mehra", score: "99.5%ile", college: "IIM Calcutta" },
-    { name: "Ananya Singh", score: "97.8%ile", college: "XLRI Jamshedpur" },
-    { name: "Karthik Nair", score: "98.1%ile", college: "FMS Delhi" },
-    { name: "Divya Joshi", score: "99.0%ile", college: "IIM Lucknow" },
+    { name: "Bhavy Jain", percentile: "99.5", college: "FMS Delhi", initials: "BJ", photo: studentBhavy, quote: "The structured strategy made all the difference in my preparation." },
+    { name: "Rounak", percentile: "99.2", college: "IIM Bangalore", initials: "RK", photo: studentRounak, quote: "Mock analysis sessions helped me identify and fix weak areas fast." },
+    { name: "Golla Rahul", percentile: "98.9", college: "IIT Bombay", initials: "GR", photo: studentRahul, quote: "Went from 90 to 98+ percentile in just 3 months of focused prep." },
+    { name: "Aditya Kumar", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AK", photo: studentAditya, quote: "The daily planner kept me disciplined throughout my journey." },
+    { name: "Shruti Manghani", percentile: "98.3", college: "SP Jain", initials: "SM", photo: studentShruti, quote: "Personalized mentorship gave me clarity when I needed it most." },
+    { name: "Ritik Kumar", percentile: "98.1", college: "IIM Udaipur", initials: "RK", photo: studentRitik, quote: "Strategy over hours — that mindset shift changed everything for me." },
+    { name: "Prakhar Poddar", percentile: "98.0", college: "IIM Trichy", initials: "PP", photo: studentPrakhar, quote: "The right guidance at the right time made my CAT journey smooth." },
+    { name: "Saloni Hindocha", percentile: "98.4", college: "IIT Mumbai", initials: "SH", photo: studentSaloni, quote: "Consistent practice with expert feedback was the key to my success." },
+    { name: "Sattaki Basu", percentile: "98.2", college: "IIM Ranchi", initials: "SB", photo: studentSattaki, quote: "Structured mock analysis transformed my approach to the exam." },
   ];
 
   const testimonials = [
-    { name: "Rounak", text: "Switched from a big coaching brand mid-prep. Percentilers' mentorship was a game-changer — I went from 85%ile to 99.1%ile in 4 months.", rating: 5 },
-    { name: "Saloni", text: "The daily study plan kept me on track. No other coaching gives you this level of personalization. Converted IIM Bangalore!", rating: 5 },
-    { name: "Bhagyashree", text: "My mentor (IIM-A alum) literally reviewed my every mock. That kind of attention is impossible in big batches.", rating: 5 },
+    { name: "Meera T.", highlight: "The structured approach changed everything for me.", text: "I was struggling with time management until I joined Percentilers. Their study planner and mock analysis helped me jump from 85 to 98 percentile in 4 months.", rating: 5 },
+    { name: "Karthik N.", highlight: "Best investment I made for my CAT prep.", text: "The faculty didn't just teach — they mentored. Every doubt session felt personal. I got into IIM Bangalore, and I owe a lot to the Percentilers team.", rating: 5 },
+    { name: "Divya S.", highlight: "Finally, coaching that focuses on strategy, not just content.", text: "Most coaching centers overload you with material. Percentilers gave me a clear plan, weekly targets, and honest feedback. That's what made the difference.", rating: 5 },
   ];
+
+  const whatsappScreenshots = [whatsapp1, whatsapp2, whatsapp3, whatsapp4, whatsapp5, whatsapp6];
 
   const faqs = [
     { q: "How is Percentilers different from big coaching institutes?", a: "We keep batch sizes under 30, assign IIM alumni mentors 1-on-1, and build AI-personalized study plans. Big institutes treat you as one of thousands — we treat you as the priority." },
@@ -199,7 +222,7 @@ export default function CATCoachingComparison() {
             <Button size="lg" className="h-14 px-8 text-lg font-bold" onClick={() => scrollTo("masterclass-section")}>
               Watch Free Masterclass <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" onClick={() => scrollTo("call-section")}>
+            <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => scrollTo("call-section")}>
               Book Free Counseling Call
             </Button>
           </div>
@@ -314,15 +337,33 @@ export default function CATCoachingComparison() {
 
       {/* ─── RESULTS ─── */}
       <section className="py-14 md:py-20 bg-background">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl md:text-4xl font-bold text-foreground text-center mb-3">Real Results, Real Students</h2>
           <p className="text-muted-foreground text-center mb-10">Verified converts — not vague testimonials</p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {results.map((r) => (
-              <div key={r.name} className="p-6 rounded-2xl border border-border bg-card text-center hover:border-primary/50 transition-colors">
-                <div className="text-3xl font-extrabold text-primary mb-1">{r.score}</div>
-                <div className="font-semibold text-foreground">{r.name}</div>
-                <div className="text-sm text-muted-foreground">{r.college}</div>
+              <div key={r.name} className="p-6 rounded-2xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all group">
+                <div className="flex items-center gap-3 mb-4">
+                  <Avatar className="h-12 w-12 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
+                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile`} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" />
+                    <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{r.initials}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-semibold text-foreground">{r.name}</p>
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <GraduationCap className="h-3 w-3" />
+                      {r.college}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-baseline gap-1.5 mb-3">
+                  <span className="text-3xl font-extrabold text-primary">{r.percentile}</span>
+                  <span className="text-sm font-medium text-muted-foreground">%ile</span>
+                </div>
+                <div className="flex gap-2 items-start">
+                  <Quote className="h-4 w-4 text-primary/40 shrink-0 mt-0.5" />
+                  <p className="text-sm text-muted-foreground italic leading-relaxed">{r.quote}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -331,20 +372,41 @@ export default function CATCoachingComparison() {
 
       {/* ─── TESTIMONIALS ─── */}
       <section className="py-14 md:py-20 bg-muted/30">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground text-center mb-10">What Switchers Say</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground text-center mb-10">What Students Say</h2>
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
             {testimonials.map((t) => (
-              <div key={t.name} className="p-6 rounded-2xl border border-border bg-card">
+              <div key={t.name} className="p-6 rounded-2xl border border-border bg-card relative overflow-hidden group">
+                <Quote className="absolute top-4 right-4 h-10 w-10 text-primary/10 group-hover:text-primary/20 transition-colors" />
                 <div className="flex gap-0.5 mb-3">
                   {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-primary text-primary" />
+                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                   ))}
                 </div>
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">"{t.text}"</p>
-                <p className="font-semibold text-foreground">— {t.name}</p>
+                <p className="font-bold text-foreground text-lg mb-3">"{t.highlight}"</p>
+                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{t.text}</p>
+                <p className="text-sm font-semibold text-primary">— {t.name}</p>
               </div>
             ))}
+          </div>
+
+          {/* WhatsApp Screenshots */}
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 dark:text-green-400 px-4 py-1.5 rounded-full text-sm font-semibold">
+              <MessageCircle className="h-4 w-4" />
+              Real Student Messages
+            </div>
+          </div>
+          <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-4 md:p-6 border border-border/30 max-w-4xl mx-auto">
+            <div className="columns-2 md:columns-3 gap-4">
+              {whatsappScreenshots.map((src, i) => (
+                <div key={i} className="break-inside-avoid mb-4">
+                  <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card">
+                    <img src={src} alt={`WhatsApp testimonial from a CAT student – screenshot ${i + 1}`} className="w-full h-auto object-contain" loading="lazy" />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -394,7 +456,7 @@ export default function CATCoachingComparison() {
         <Button className="flex-1 h-11 font-bold text-sm" onClick={() => scrollTo("masterclass-section")}>
           Free Masterclass
         </Button>
-        <Button variant="outline" className="flex-1 h-11 font-bold text-sm" onClick={() => scrollTo("call-section")}>
+        <Button variant="secondary" className="flex-1 h-11 font-bold text-sm border border-primary text-primary" onClick={() => scrollTo("call-section")}>
           Free Call
         </Button>
       </div>
