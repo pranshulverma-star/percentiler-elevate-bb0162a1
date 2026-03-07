@@ -456,7 +456,7 @@ export default function CATCoachingComparison() {
         <Button className="flex-1 h-11 font-bold text-sm" onClick={() => scrollTo("masterclass-section")}>
           Free Masterclass
         </Button>
-        <Button variant="outline" className="flex-1 h-11 font-bold text-sm" onClick={() => scrollTo("call-section")}>
+        <Button variant="secondary" className="flex-1 h-11 font-bold text-sm border border-primary text-primary" onClick={() => scrollTo("call-section")}>
           Free Call
         </Button>
       </div>
