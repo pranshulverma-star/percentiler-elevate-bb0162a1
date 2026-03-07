@@ -6,7 +6,25 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
-import { CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp, ChevronDown, ChevronUp } from "lucide-react";
+import { CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp, ChevronDown, ChevronUp, GraduationCap, Quote, MessageCircle } from "lucide-react";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+
+import studentBhavy from "@/assets/student-bhavy.webp";
+import studentAditya from "@/assets/student-aditya.webp";
+import studentRounak from "@/assets/student-rounak.webp";
+import studentShruti from "@/assets/student-shruti.webp";
+import studentRitik from "@/assets/student-ritik.webp";
+import studentPrakhar from "@/assets/student-prakhar.webp";
+import studentSaloni from "@/assets/student-saloni.webp";
+import studentSattaki from "@/assets/student-sattaki.webp";
+import studentRahul from "@/assets/student-rahul.jpeg";
+
+import whatsapp1 from "@/assets/whatsapp-1.jpg";
+import whatsapp2 from "@/assets/whatsapp-2.jpg";
+import whatsapp3 from "@/assets/whatsapp-3.jpg";
+import whatsapp4 from "@/assets/whatsapp-4.jpg";
+import whatsapp5 from "@/assets/whatsapp-5.jpg";
+import whatsapp6 from "@/assets/whatsapp-6.jpg";
 
 const COMPETITOR_MAP: Record<string, { name: string; headline: string }> = {
   unacademy: { name: "Unacademy", headline: "Tired of Unacademy's One-Size-Fits-All CAT Coaching?" },
