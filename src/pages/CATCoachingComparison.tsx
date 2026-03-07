@@ -222,7 +222,7 @@ export default function CATCoachingComparison() {
             <Button size="lg" className="h-14 px-8 text-lg font-bold" onClick={() => scrollTo("masterclass-section")}>
               Watch Free Masterclass <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10" onClick={() => scrollTo("call-section")}>
+            <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => scrollTo("call-section")}>
               Book Free Counseling Call
             </Button>
           </div>
