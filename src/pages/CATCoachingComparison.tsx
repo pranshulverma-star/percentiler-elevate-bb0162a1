@@ -554,52 +554,8 @@ export default function CATCoachingComparison() {
         </motion.div>
       </section>
 
-      {/* ═══ CHAPTER 3: THE COMPARISON ═══ */}
-      <section className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative">
-        <div className="max-w-4xl mx-auto px-6">
-          <ChapterHeading number="Chapter 03" title={`${competitorName} vs\nPercentilers`} subtitle="An honest, side-by-side look at what you actually get." />
-
-          <div className="space-y-3">
-            {comparisonRows.map((row, i) => (
-              <motion.div
-                key={row.feature}
-                className="grid grid-cols-[1fr_1fr_1fr] md:grid-cols-[1.5fr_1fr_1fr] items-center gap-2 py-5 px-4 md:px-6 rounded-xl border border-border bg-background shadow-sm hover:shadow-md transition-all"
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05, duration: 0.4 }}
-              >
-                <div className="flex items-center gap-3">
-                  <row.icon className="w-4 h-4 text-primary/60 hidden sm:block shrink-0" />
-                  <span className="font-semibold text-foreground text-sm md:text-base">{row.feature}</span>
-                </div>
-                <div className="text-center">
-                  <span className="text-muted-foreground text-xs md:text-sm flex items-center justify-center gap-1.5">
-                    <XCircle className="w-3.5 h-3.5 text-destructive/60 shrink-0" />
-                    {row.them}
-                  </span>
-                </div>
-                <div className="text-center">
-                  <span className="text-primary text-xs md:text-sm font-semibold flex items-center justify-center gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-primary shrink-0" />
-                    {row.us}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <motion.div className="mt-12 text-center" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
-            <Button
-              size="lg"
-              className="h-14 px-10 text-base font-black tracking-wide rounded-full shadow-lg shadow-primary/20"
-              onClick={() => scrollTo("masterclass-section")}
-            >
-              See the Percentilers Difference <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </motion.div>
-        </div>
-      </section>
+      {/* ═══ CHAPTER 3: INTERACTIVE COMPARISON ═══ */}
+      <IdealCoachingPicker scrollTo={scrollTo} />
 
       {/* ═══ CHAPTER 4: THE SYSTEM ═══ */}
       <section className="py-20 md:py-28 bg-background relative">
