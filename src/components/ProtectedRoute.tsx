@@ -75,10 +75,16 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // State B: phone required but missing → blocking modal
+  // State B: phone required but missing → blocking modal with context
   if (requirePhone && !hasPhone) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center">
+        <div className="mb-4 max-w-sm">
+          <h2 className="text-lg font-semibold text-foreground mb-1">Almost there!</h2>
+          <p className="text-sm text-muted-foreground">
+            Enter your phone number to access the {source === "masterclass" ? "free masterclass" : "content"}.
+          </p>
+        </div>
         <PhoneCaptureModal
           open
           onOpenChange={() => {}}
