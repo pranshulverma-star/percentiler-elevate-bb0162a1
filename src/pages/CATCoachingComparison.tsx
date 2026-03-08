@@ -783,6 +783,9 @@ export default function CATCoachingComparison() {
         </div>
       </section>
 
+      {/* ═══ CHAPTER 3: INTERACTIVE COMPARISON (moved below hero) ═══ */}
+      <IdealCoachingPicker scrollTo={scrollTo} />
+
       {/* ═══ JOURNEY TIMELINE ═══ */}
       <JourneyTimeline />
 
@@ -854,8 +857,7 @@ export default function CATCoachingComparison() {
         </motion.div>
       </section>
 
-      {/* ═══ CHAPTER 3: INTERACTIVE COMPARISON ═══ */}
-      <IdealCoachingPicker scrollTo={scrollTo} />
+      {/* IdealCoachingPicker moved to just below hero */}
 
       {/* ═══ CHAPTER 4: THE SYSTEM ═══ */}
       <section className="py-20 md:py-28 bg-background relative">
@@ -900,10 +902,10 @@ export default function CATCoachingComparison() {
               <motion.div
                 key={r.name}
                 className="p-6 rounded-2xl border border-border bg-background shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 group"
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.05, duration: 0.5 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4 }}
               >
                 <div className="flex items-center gap-3 mb-5">
                   <Avatar className="h-11 w-11 ring-2 ring-border group-hover:ring-primary/30 transition-all overflow-hidden">
@@ -944,10 +946,10 @@ export default function CATCoachingComparison() {
               <motion.div
                 key={i}
                 className="break-inside-avoid mb-4"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4 }}
               >
                 <div className="rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                   <img src={src} alt={`Student WhatsApp testimonial ${i + 1}`} className="w-full h-auto" loading="lazy" decoding="async" />
