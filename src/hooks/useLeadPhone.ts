@@ -16,8 +16,11 @@ function getStoredPhone(): string | null {
  */
 export function useLeadPhone() {
   const { user, isAuthenticated, loading: authLoading } = useAuth();
-  const [phone, setPhone] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const userId = user?.id;
+  // Resolve from cache synchronously to avoid flash
+  const cachedPhone = userId ? (phoneCacheByUser.get(userId) ?? null) : getStoredPhone();
+  const [phone, setPhone] = useState<string | null>(cachedPhone);
+  const [loading, setLoading] = useState(!cachedPhone && (authLoading || (isAuthenticated && !!userId && !phoneCacheByUser.has(userId))));
 
   const fetchPhone = useCallback(async (force = false) => {
     if (authLoading) {
