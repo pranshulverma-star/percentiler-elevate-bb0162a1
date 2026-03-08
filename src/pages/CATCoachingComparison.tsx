@@ -783,6 +783,9 @@ export default function CATCoachingComparison() {
         </div>
       </section>
 
+      {/* ═══ CHAPTER 3: INTERACTIVE COMPARISON (moved below hero) ═══ */}
+      <IdealCoachingPicker scrollTo={scrollTo} />
+
       {/* ═══ JOURNEY TIMELINE ═══ */}
       <JourneyTimeline />
 
