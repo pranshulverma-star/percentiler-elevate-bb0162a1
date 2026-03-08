@@ -231,113 +231,55 @@ const journeyCards = [
   },
 ];
 
-const CARD_WIDTH = 380;
-const CARD_GAP = 24;
-
 function JourneyTimeline() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [viewportHeight, setViewportHeight] = useState(900);
-  const [containerWidth, setContainerWidth] = useState(0);
-
-  useEffect(() => {
-    const onResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      setViewportHeight(window.innerHeight);
-      if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth);
-      }
-    };
-
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
-
-  const totalStripWidth = journeyCards.length * CARD_WIDTH + (journeyCards.length - 1) * CARD_GAP;
-  const maxTranslate = Math.max(0, totalStripWidth - containerWidth);
-  const sectionHeight = Math.max(viewportHeight + maxTranslate, viewportHeight * 2);
-  const translateX = useTransform(scrollYProgress, [0, 1], [0, -maxTranslate]);
-
-  if (isMobile) {
-    return (
-      <section className="py-16 bg-secondary/20">
-        <div className="max-w-lg mx-auto px-6">
-          <div className="text-center mb-10">
-            <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
-            <h2 className="text-3xl font-black text-foreground tracking-tight">From Zero to IIM</h2>
-          </div>
-          <div className="space-y-5">
-            {journeyCards.map((card, i) => (
-              <motion.div
-                key={card.title}
-                className="p-6 rounded-2xl border border-border bg-background shadow-sm"
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: i * 0.06, duration: 0.45 }}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1 rounded-full ${card.badgeColor}`}>{card.badge}</span>
-                  <span className="text-2xl">{card.emoji}</span>
-                </div>
-                <span className={`text-4xl font-black ${card.numberColor} leading-none`}>{card.number}</span>
-                <h3 className="text-lg font-bold text-foreground mt-2 mb-1">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-                <span className={`inline-block mt-3 text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full ${card.tagColor}`}>{card.tag}</span>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
-    <section ref={sectionRef} className="relative bg-secondary/20" style={{ height: `${sectionHeight}px` }}>
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-        <div className="max-w-7xl mx-auto px-8 w-full mb-10">
+    <section className="py-16 md:py-24 bg-secondary/20">
+      <div className="max-w-7xl mx-auto px-6 md:px-8">
+        <div className="mb-10">
           <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
           <div className="flex items-end justify-between gap-6">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
-            <div className="flex items-center gap-2 text-sm text-muted-foreground shrink-0">
-              <span>Scroll to explore</span>
-              <motion.span animate={{ x: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}>→</motion.span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
+            <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground shrink-0">
+              <span>Swipe to explore</span>
+              <span className="inline-block animate-[slide-in-right_1.5s_ease-in-out_infinite]">→</span>
             </div>
           </div>
-          <div className="mt-4 h-[2px] bg-border rounded-full overflow-hidden">
-            <motion.div className="h-full bg-primary origin-left" style={{ scaleX: scrollYProgress }} />
-          </div>
         </div>
+      </div>
 
-        <div ref={containerRef} className="w-full overflow-hidden px-8">
-          <motion.div className="flex will-change-transform" style={{ x: translateX, gap: `${CARD_GAP}px` }}>
-            {journeyCards.map((card) => (
-              <div
-                key={card.title}
-                className="shrink-0 p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-lg transition-shadow duration-300"
-                style={{ width: `${CARD_WIDTH}px`, minHeight: "340px" }}
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.badgeColor}`}>{card.badge}</span>
-                </div>
-                <div className="text-[56px] leading-none mb-3">{card.emoji}</div>
-                <div className={`text-[72px] font-black leading-none ${card.numberColor} mb-2`}>{card.number}</div>
-                <h3 className="text-xl font-bold text-foreground mb-2">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-                <div className="mt-5">
-                  <span className={`inline-block text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.tagColor}`}>{card.tag}</span>
-                </div>
+      {/* Horizontally scrollable card strip */}
+      <div
+        ref={scrollRef}
+        className="flex gap-5 md:gap-6 overflow-x-auto pb-6 px-6 md:px-8 snap-x snap-mandatory"
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
+      >
+        <style>{`.journey-scroll::-webkit-scrollbar { display: none; }`}</style>
+        <div className="shrink-0 w-0 md:w-[calc((100vw-1280px)/2)]" />
+
+        {journeyCards.map((card) => (
+          <div
+            key={card.title}
+            className="shrink-0 w-[320px] md:w-[380px] snap-center p-7 md:p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col justify-between"
+            style={{ minHeight: "360px" }}
+          >
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.badgeColor}`}>{card.badge}</span>
               </div>
-            ))}
-          </motion.div>
-        </div>
+              <div className="text-[52px] md:text-[56px] leading-none mb-3">{card.emoji}</div>
+              <div className={`text-[60px] md:text-[72px] font-black leading-none ${card.numberColor} mb-2`}>{card.number}</div>
+              <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">{card.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
+            </div>
+            <div className="mt-5">
+              <span className={`inline-block text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.tagColor}`}>{card.tag}</span>
+            </div>
+          </div>
+        ))}
+
+        <div className="shrink-0 w-6 md:w-[calc((100vw-1280px)/2)]" />
       </div>
     </section>
   );
