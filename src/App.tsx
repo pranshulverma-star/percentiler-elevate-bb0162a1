@@ -26,6 +26,9 @@ function ScrollToHash() {
 // Eagerly load homepage
 import Index from "./pages/Index";
 
+// Eagerly load high-traffic landing pages to prevent flash
+import CATCoachingComparison from "./pages/CATCoachingComparison";
+
 // Lazy load all other routes
 const Masterclass = lazy(() => import("./pages/Masterclass"));
 const MentorshipPage = lazy(() => import("./pages/Mentorship"));
@@ -39,7 +42,6 @@ const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const Contact = lazy(() => import("./pages/Contact"));
-const CATCoachingComparison = lazy(() => import("./pages/CATCoachingComparison"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
