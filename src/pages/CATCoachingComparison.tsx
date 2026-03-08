@@ -187,12 +187,48 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 /* ─── Journey cards data ─── */
 const journeyCards = [
-  { badge: "Day 0", badgeColor: "bg-muted text-muted-foreground", emoji: "😕", title: "You Today", desc: "Confused aspirant, unsure where to start. Information overload, no clear direction." },
-  { badge: "Week 1", badgeColor: "bg-primary/15 text-primary", emoji: "📋", title: "Profile Evaluation", desc: "Free strategy call. We map your strengths & weak areas with a 99%ile mentor.", cta: "Evaluate My Profile →" },
-  { badge: "Week 2", badgeColor: "bg-primary/15 text-primary", emoji: "🗓️", title: "Structured Plan", desc: "AI builds your personalized daily study schedule — topic-wise, hour-wise.", cta: "Get Your AI Study Plan →" },
-  { badge: "Month 2–5", badgeColor: "bg-primary/15 text-primary", emoji: "🎯", title: "Live Classes + Mocks", desc: "Daily live sessions, weekly mocks with deep section-wise analytics & mentor reviews.", cta: "See Mock Analysis Demo →" },
-  { badge: "Month 6", badgeColor: "bg-primary/15 text-primary", emoji: "🧠", title: "Final Push & WAT-PI", desc: "Intensive revision sprints, full WAT-PI prep with IIM panelist mock interviews.", cta: "Start My Final Push →" },
-  { badge: "Result Day", badgeColor: "bg-green-100 text-green-700", emoji: "🎓", title: "IIM Convert", desc: "You join 300+ Percentilers alumni who cracked top B-schools with 95+ percentile." },
+  {
+    badge: "Day 0", badgeColor: "bg-muted text-muted-foreground",
+    emoji: "😕", number: "01", numberColor: "text-primary",
+    title: "Lost & Overwhelmed",
+    desc: "3.3L CAT aspirants. No clear plan. Picking coaching based on ads.",
+    tag: "Where most start", tagColor: "bg-muted text-muted-foreground",
+  },
+  {
+    badge: "Week 1", badgeColor: "bg-primary text-primary-foreground",
+    emoji: "📋", number: "02", numberColor: "text-primary",
+    title: "Free Profile Evaluation",
+    desc: "30-min strategy call. We map your strengths, target colleges & build your personal roadmap.",
+    tag: "← Percentilers begin here", tagColor: "bg-primary/15 text-primary",
+  },
+  {
+    badge: "Week 2", badgeColor: "bg-primary text-primary-foreground",
+    emoji: "🗓️", number: "03", numberColor: "text-primary",
+    title: "AI Study Plan Activated",
+    desc: "Personalised daily schedule. Section targets. Adjust weekly. Zero guesswork.",
+    tag: "Smart prep starts", tagColor: "bg-primary/15 text-primary",
+  },
+  {
+    badge: "Months 2–5", badgeColor: "bg-primary text-primary-foreground",
+    emoji: "🎯", number: "04", numberColor: "text-primary",
+    title: "Live Classes + 32 Mocks",
+    desc: "Expert IIM alumni faculty. Deep post-mock analytics. Weak area targeting.",
+    tag: "Peak training zone", tagColor: "bg-primary/15 text-primary",
+  },
+  {
+    badge: "Month 6", badgeColor: "bg-primary text-primary-foreground",
+    emoji: "🧠", number: "05", numberColor: "text-primary",
+    title: "1-on-1 IIM Mentor",
+    desc: "Weekly check-ins. WAT-PI prep. Strategy pivots. You are never alone in this.",
+    tag: "Final push", tagColor: "bg-primary/15 text-primary",
+  },
+  {
+    badge: "Result Day", badgeColor: "bg-green-100 text-green-700",
+    emoji: "🎓", number: "06", numberColor: "text-green-600",
+    title: "IIM Offer Letter 🎉",
+    desc: "300+ Percentilers students got IIM calls. Your name could be next.",
+    tag: "Join 300+ IIM converts", tagColor: "bg-green-100 text-green-700",
+  },
 ];
 
 const CARD_WIDTH = 380;
@@ -204,21 +240,17 @@ function JourneyTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [winH, setWinH] = useState(800);
 
   useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  useEffect(() => {
-    const measure = () => {
+    const onResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setWinH(window.innerHeight);
       if (containerRef.current) setContainerWidth(containerRef.current.offsetWidth);
     };
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
+    onResize();
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -229,7 +261,7 @@ function JourneyTimeline() {
   const maxTranslate = Math.max(0, TOTAL_STRIP_WIDTH - containerWidth);
   const translateX = useTransform(scrollYProgress, [0, 1], [0, -maxTranslate]);
 
-  // Mobile: simple vertical list with fade-in
+  /* ── Mobile: vertical list with fade-in ── */
   if (isMobile) {
     return (
       <section className="py-16 bg-[hsl(25,100%,97%)]">
@@ -237,7 +269,7 @@ function JourneyTimeline() {
           <div className="text-center mb-10">
             <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
             <h2 className="text-3xl font-black text-foreground tracking-tight">From Zero to IIM</h2>
-            <p className="mt-2 text-muted-foreground text-base">Scroll through your transformation story.</p>
+            <p className="mt-2 text-muted-foreground text-base">Your 6-month transformation story.</p>
           </div>
           <div className="space-y-5">
             {journeyCards.map((card, i) => (
@@ -253,11 +285,10 @@ function JourneyTimeline() {
                   <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1 rounded-full ${card.badgeColor}`}>{card.badge}</span>
                   <span className="text-2xl">{card.emoji}</span>
                 </div>
-                <h3 className="text-lg font-bold text-foreground mb-1">{card.title}</h3>
+                <span className={`text-4xl font-black ${card.numberColor} leading-none`}>{card.number}</span>
+                <h3 className="text-lg font-bold text-foreground mt-2 mb-1">{card.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-                {card.cta && (
-                  <button className="mt-3 text-sm font-semibold text-primary hover:underline">{card.cta}</button>
-                )}
+                <span className={`inline-block mt-3 text-[10px] font-bold tracking-wider uppercase px-3 py-1 rounded-full ${card.tagColor}`}>{card.tag}</span>
               </motion.div>
             ))}
           </div>
@@ -266,26 +297,28 @@ function JourneyTimeline() {
     );
   }
 
-  // Desktop: pinned horizontal scroll
+  /* ── Desktop: pinned horizontal scroll ── */
   return (
     <section
       ref={sectionRef}
       className="relative bg-[hsl(25,100%,97%)]"
-      style={{ height: `${Math.max(200, maxTranslate + (typeof window !== "undefined" ? window.innerHeight : 800))}px` }}
+      style={{ height: `${maxTranslate + winH}px` }}
     >
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6 w-full mb-8">
+        {/* Heading */}
+        <div className="max-w-7xl mx-auto px-8 w-full mb-10">
           <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
           <div className="flex items-end justify-between">
-            <h2 className="text-4xl md:text-5xl font-black text-foreground tracking-tight">From Zero to IIM</h2>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
             <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
               <span>Scroll to explore</span>
-              <motion.span animate={{ x: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>→</motion.span>
+              <motion.span animate={{ x: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}>→</motion.span>
             </div>
           </div>
         </div>
 
-        <div ref={containerRef} className="w-full overflow-hidden px-6">
+        {/* Horizontal strip */}
+        <div ref={containerRef} className="w-full overflow-hidden px-8">
           <motion.div
             className="flex"
             style={{ x: translateX, gap: `${CARD_GAP}px` }}
@@ -293,27 +326,31 @@ function JourneyTimeline() {
             {journeyCards.map((card, i) => (
               <motion.div
                 key={card.title}
-                className="shrink-0 p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col"
-                style={{ width: `${CARD_WIDTH}px`, minHeight: "280px" }}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
+                className="shrink-0 p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 flex flex-col justify-between group"
+                style={{ width: `${CARD_WIDTH}px`, minHeight: "320px" }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-10%" }}
+                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="flex items-center gap-3 mb-5">
-                  <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.badgeColor}`}>{card.badge}</span>
-                  <span className="text-3xl">{card.emoji}</span>
+                <div>
+                  {/* Badge + Emoji */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.badgeColor}`}>{card.badge}</span>
+                  </div>
+                  {/* Emoji large */}
+                  <div className="text-[56px] leading-none mb-3">{card.emoji}</div>
+                  {/* Number */}
+                  <div className={`text-[72px] font-black leading-none ${card.numberColor} mb-2`}>{card.number}</div>
+                  {/* Title */}
+                  <h3 className="text-xl font-bold text-foreground mb-2">{card.title}</h3>
+                  {/* Body */}
+                  <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">{card.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{card.desc}</p>
-                {card.cta && (
-                  <button
-                    className="mt-5 text-sm font-semibold text-primary hover:underline text-left"
-                    onClick={() => document.getElementById("masterclass-section")?.scrollIntoView({ behavior: "smooth" })}
-                  >
-                    {card.cta}
-                  </button>
-                )}
+                {/* Tag at bottom */}
+                <div className="mt-5">
+                  <span className={`inline-block text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.tagColor}`}>{card.tag}</span>
+                </div>
               </motion.div>
             ))}
           </motion.div>
@@ -322,7 +359,6 @@ function JourneyTimeline() {
     </section>
   );
 }
-
 /* ═══════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════ */
