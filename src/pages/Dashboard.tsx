@@ -92,12 +92,25 @@ export default function Dashboard() {
     setLoadingCampaign(false);
   };
 
+  const fetchPractice = async () => {
+    if (!userId) { setLoadingPractice(false); return; }
+    setLoadingPractice(true);
+    const { data } = await (supabase.from("practice_lab_attempts") as any)
+      .select("section_id, chapter_slug, score_pct, total_questions, correct, time_used_seconds, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(20);
+    setPracticeAttempts(data || []);
+    setLoadingPractice(false);
+  };
+
   useEffect(() => {
     if (userId && email) {
       fetchLead();
       fetchPlanner();
       fetchMasterclass();
       fetchCampaign();
+      fetchPractice();
     }
   }, [userId, email]);
 
