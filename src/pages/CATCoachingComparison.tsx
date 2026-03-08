@@ -255,12 +255,18 @@ function JourneyTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
   const totalStages = journeyStages.length;
+  const [activeStage, setActiveStage] = useState(0);
 
-  const pathLength = useTransform(scrollYProgress, [0, 0.95], [0, 1]);
+  const pathLength = useTransform(scrollYProgress, [0, 1], [0.04, 1]);
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const nextStage = Math.min(totalStages - 1, Math.max(0, Math.floor(latest * totalStages)));
+    setActiveStage((prev) => (prev === nextStage ? prev : nextStage));
+  });
 
   return (
-    <div ref={containerRef} style={{ height: `${(totalStages + 1) * 100}vh` }} className="relative">
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
+    <div ref={containerRef} className="relative" style={{ height: `${(totalStages + 1) * 100}vh` }}>
+      <section className="sticky top-0 h-screen w-full overflow-hidden flex flex-col bg-background">
         <div className="pt-12 md:pt-16 pb-4 md:pb-6 text-center relative z-20 shrink-0">
           <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-2">Your Journey</span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
@@ -285,71 +291,66 @@ function JourneyTimeline() {
             />
           </svg>
 
-          {journeyStages.map((stage, i) => (
+          {journeyStages.map((stage, index) => (
             <JourneyStageCard
               key={stage.number}
               stage={stage}
-              index={i}
-              scrollProgress={scrollYProgress}
-              totalStages={totalStages}
+              index={index}
+              isActive={index === activeStage}
             />
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 }
 
 function JourneyStageCard({
-  stage, index, scrollProgress, totalStages,
+  stage,
+  index,
+  isActive,
 }: {
-  stage: typeof journeyStages[0]; index: number; scrollProgress: MotionValue<number>; totalStages: number;
+  stage: typeof journeyStages[0];
+  index: number;
+  isActive: boolean;
 }) {
   const isEven = index % 2 === 0;
-  const segStart = index / totalStages;
-  const segEnd = (index + 1) / totalStages;
-  const fadeIn = segStart + 0.02;
-  const fadeOut = segEnd - 0.01;
-
-  // First card visible at start; last card stays visible at end
-  const opacityInput = index === 0
-    ? [0, fadeIn, fadeOut, segEnd]
-    : index === totalStages - 1
-    ? [segStart, fadeIn, 1]
-    : [segStart, fadeIn, fadeOut, segEnd];
-
-  const opacityOutput = index === 0
-    ? [1, 1, 1, 0]
-    : index === totalStages - 1
-    ? [0, 1, 1]
-    : [0, 1, 1, 0];
-
-  const opacity = useTransform(scrollProgress, opacityInput, opacityOutput);
-  const y = useTransform(scrollProgress,
-    index === 0 ? [0, fadeOut, segEnd] : [segStart, fadeIn, fadeOut, segEnd],
-    index === 0 ? [0, 0, -50] : [50, 0, 0, -50]
-  );
-  const imgX = useTransform(scrollProgress, [segStart, fadeIn], [isEven ? -60 : 60, 0]);
 
   return (
     <motion.div
       className="absolute inset-0 flex items-center justify-center px-6 md:px-8 z-20"
-      style={{ opacity, y }}
+      initial={false}
+      animate={{
+        opacity: isActive ? 1 : 0,
+        y: isActive ? 0 : 32,
+        pointerEvents: isActive ? "auto" : "none",
+      }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className={`w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center ${isEven ? "" : "md:[direction:rtl]"}`}>
-        <motion.div className={`flex justify-center ${isEven ? "md:justify-end" : "md:justify-start"} ${isEven ? "" : "md:[direction:ltr]"}`} style={{ x: imgX }}>
+        <motion.div
+          className={`flex justify-center ${isEven ? "md:justify-end" : "md:justify-start"} ${isEven ? "" : "md:[direction:ltr]"}`}
+          initial={false}
+          animate={{ x: isActive ? 0 : isEven ? -80 : 80, scale: isActive ? 1 : 0.92 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+        >
           <div className={`relative w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 rounded-3xl bg-gradient-to-br ${stage.accent} p-4 md:p-6 flex items-center justify-center`}>
             <img src={stage.image} alt={stage.title} className="w-full h-full object-contain drop-shadow-xl" loading="lazy" />
             <span className="absolute -top-4 -right-4 text-6xl md:text-8xl font-black text-primary/10 select-none leading-none">{stage.number}</span>
           </div>
         </motion.div>
 
-        <div className={`space-y-3 text-center md:text-left ${isEven ? "" : "md:[direction:ltr]"}`}>
+        <motion.div
+          className={`space-y-3 text-center md:text-left ${isEven ? "" : "md:[direction:ltr]"}`}
+          initial={false}
+          animate={{ x: isActive ? 0 : isEven ? 40 : -40, opacity: isActive ? 1 : 0.6 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        >
           <span className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase px-3 py-1.5 rounded-full bg-primary/10 text-primary">{stage.badge}</span>
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight leading-tight">{stage.title}</h3>
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-md mx-auto md:mx-0">{stage.desc}</p>
           <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full bg-secondary text-muted-foreground">{stage.tag}</span>
-        </div>
+        </motion.div>
       </div>
     </motion.div>
   );
