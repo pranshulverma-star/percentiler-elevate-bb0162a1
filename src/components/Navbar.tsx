@@ -22,6 +22,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showCallDialog, setShowCallDialog] = useState(false);
   const { openPhoneModal } = useLeadModal();
+  const { isAuthenticated } = useAuth();
   const [scrollProgress, setScrollProgress] = useState(0);
   const onScroll = useCallback(() => {
     requestAnimationFrame(() => {
