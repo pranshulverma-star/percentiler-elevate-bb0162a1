@@ -390,11 +390,21 @@ function QuizView({
 
 // ─── Results Phase ───────────────────────────────────────────────────────────
 
+interface AttemptRecord {
+  score_pct: number;
+  correct: number;
+  total_questions: number;
+  time_used_seconds: number;
+  created_at: string;
+}
+
 function ResultsView({
   questions,
   answers,
   timeUsed,
   chapterName,
+  sectionId,
+  chapterSlug,
   onRetry,
   onBack,
 }: {
@@ -402,9 +412,16 @@ function ResultsView({
   answers: Record<number, number | null>;
   timeUsed: number;
   chapterName: string;
+  sectionId: string;
+  chapterSlug: string;
   onRetry: () => void;
   onBack: () => void;
 }) {
+  const { user } = useAuth();
+  const [pastAttempts, setPastAttempts] = useState<AttemptRecord[]>([]);
+  const [loadingHistory, setLoadingHistory] = useState(true);
+  const savedRef = useRef(false);
+
   const { correct, incorrect, unanswered } = useMemo(() => {
     let correct = 0, incorrect = 0, unanswered = 0;
     questions.forEach((q) => {
@@ -418,6 +435,48 @@ function ResultsView({
 
   const pct = Math.round((correct / questions.length) * 100);
   const [showReview, setShowReview] = useState(false);
+
+  // Save attempt + fetch history
+  useEffect(() => {
+    if (!user?.id) { setLoadingHistory(false); return; }
+
+    const saveAndFetch = async () => {
+      // Save current attempt (once)
+      if (!savedRef.current) {
+        savedRef.current = true;
+        await (supabase.from("practice_lab_attempts") as any).insert({
+          user_id: user.id,
+          section_id: sectionId,
+          chapter_slug: chapterSlug,
+          total_questions: questions.length,
+          correct,
+          incorrect,
+          unanswered,
+          score_pct: pct,
+          time_used_seconds: timeUsed,
+          answers_json: answers,
+        });
+      }
+
+      // Fetch past attempts for this chapter
+      const { data } = await (supabase.from("practice_lab_attempts") as any)
+        .select("score_pct, correct, total_questions, time_used_seconds, created_at")
+        .eq("user_id", user.id)
+        .eq("section_id", sectionId)
+        .eq("chapter_slug", chapterSlug)
+        .order("created_at", { ascending: false })
+        .limit(10);
+
+      setPastAttempts(data || []);
+      setLoadingHistory(false);
+    };
+
+    saveAndFetch();
+  }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const bestScore = pastAttempts.length > 0 ? Math.max(...pastAttempts.map(a => a.score_pct)) : pct;
+  const avgScore = pastAttempts.length > 0 ? Math.round(pastAttempts.reduce((s, a) => s + a.score_pct, 0) / pastAttempts.length) : pct;
+  const improvement = pastAttempts.length >= 2 ? pastAttempts[0].score_pct - pastAttempts[pastAttempts.length - 1].score_pct : 0;
 
   return (
     <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-8">
@@ -453,6 +512,49 @@ function ResultsView({
           </div>
         </div>
       </Card>
+
+      {/* Analytics Card */}
+      {pastAttempts.length > 1 && (
+        <Card className="p-5 border space-y-4">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-primary" />
+            <h3 className="font-semibold text-foreground">Your Performance History</h3>
+          </div>
+          <div className="grid grid-cols-3 gap-3 text-center">
+            <div className="rounded-lg bg-secondary p-3">
+              <div className="text-xl font-bold text-primary">{bestScore}%</div>
+              <p className="text-xs text-muted-foreground mt-1">Best Score</p>
+            </div>
+            <div className="rounded-lg bg-secondary p-3">
+              <div className="text-xl font-bold text-foreground">{avgScore}%</div>
+              <p className="text-xs text-muted-foreground mt-1">Average</p>
+            </div>
+            <div className="rounded-lg bg-secondary p-3">
+              <div className={`text-xl font-bold flex items-center justify-center gap-1 ${improvement > 0 ? "text-emerald-500" : improvement < 0 ? "text-destructive" : "text-muted-foreground"}`}>
+                {improvement > 0 && <TrendingUp className="w-4 h-4" />}
+                {improvement > 0 ? "+" : ""}{improvement}%
+              </div>
+              <p className="text-xs text-muted-foreground mt-1">Trend</p>
+            </div>
+          </div>
+
+          {/* Mini attempt timeline */}
+          <div className="space-y-1.5">
+            <p className="text-xs text-muted-foreground font-medium">Recent Attempts</p>
+            {pastAttempts.slice(0, 5).map((a, i) => (
+              <div key={i} className="flex items-center justify-between text-xs py-1.5 border-b border-border last:border-0">
+                <span className="text-muted-foreground">{new Date(a.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>
+                <div className="flex items-center gap-3">
+                  <span className="text-muted-foreground">{formatTime(a.time_used_seconds)}</span>
+                  <span className={`font-semibold ${a.score_pct >= 70 ? "text-emerald-500" : a.score_pct >= 40 ? "text-primary" : "text-destructive"}`}>
+                    {a.score_pct}%
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
