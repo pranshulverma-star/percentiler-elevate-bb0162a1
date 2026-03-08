@@ -371,16 +371,6 @@ export default function CATCoachingComparison() {
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 80]);
 
-  const comparisonRows = [
-    { feature: "Batch Size", them: "500–2000+", us: "≤30 students", icon: Users },
-    { feature: "Mentorship", them: "Generic doubt-clearing", us: "1-on-1 IIM Alumni", icon: Target },
-    { feature: "Study Plan", them: "One-size-fits-all", us: "AI-Personalized Daily", icon: Brain },
-    { feature: "Mock Analysis", them: "Score only", us: "Deep section-wise analytics", icon: TrendingUp },
-    { feature: "Doubt Resolution", them: "24–48 hr wait", us: "Same-day WhatsApp", icon: Zap },
-    { feature: "Faculty", them: "Mixed experience", us: "99%ile+ IIM Alumni only", icon: Award },
-    { feature: "Cost", them: "₹30K–₹1.2L", us: "Starts ₹4,999", icon: Star },
-    { feature: "Results", them: "Undisclosed", us: "300+ IIM converts", icon: CheckCircle },
-  ];
 
   const results = [
     { name: "Bhavy Jain", percentile: "99.5", college: "FMS Delhi", initials: "BJ", photo: studentBhavy, quote: "The structured strategy made all the difference." },
