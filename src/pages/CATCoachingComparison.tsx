@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useScroll, useTransform, useInView, type MotionValue } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -250,97 +250,112 @@ const journeyStages = [
   },
 ];
 
-/* ─── Single cinematic stage ─── */
-function JourneyStage({ stage, index }: { stage: typeof journeyStages[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const opacity = useTransform(scrollYProgress, [0, 0.25, 0.5, 0.85, 1], [0, 1, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [80, 0, 0, -40]);
-  const imgScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.8, 1, 1, 0.9]);
-  const imgX = useTransform(scrollYProgress, [0, 0.3], [index % 2 === 0 ? -60 : 60, 0]);
-  const isEven = index % 2 === 0;
+/* ─── Cinematic sticky journey ─── */
+function JourneyTimeline() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
+  const totalStages = journeyStages.length;
+
+  // Road draw progress
+  const roadDraw = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
   return (
-    <div ref={ref} className="min-h-[80vh] md:min-h-screen flex items-center relative">
-      {/* Progress line dot */}
-      <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-1/2 -translate-y-1/2 z-20">
-        <motion.div
-          className={`w-4 h-4 md:w-5 md:h-5 rounded-full ${stage.dotColor} ring-4 ring-background shadow-lg`}
-          style={{ scale: imgScale }}
-        />
-      </div>
-
-      <motion.div
-        className={`w-full max-w-6xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center ${isEven ? "" : "md:[direction:rtl]"}`}
-        style={{ opacity, y }}
-      >
-        {/* Image side */}
-        <motion.div className={`flex justify-center md:justify-end ${isEven ? "" : "md:[direction:ltr]"}`} style={{ scale: imgScale, x: imgX }}>
-          <div className={`relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-3xl bg-gradient-to-br ${stage.accent} p-4 md:p-6 flex items-center justify-center`}>
-            <img src={stage.image} alt={stage.title} className="w-full h-full object-contain drop-shadow-xl" loading="lazy" />
-            {/* Floating number */}
-            <span className="absolute -top-4 -right-4 text-6xl md:text-8xl font-black text-primary/10 select-none leading-none">{stage.number}</span>
-          </div>
-        </motion.div>
-
-        {/* Text side */}
-        <div className={`space-y-4 ${isEven ? "" : "md:[direction:ltr]"}`}>
-          <span className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase px-3 py-1.5 rounded-full bg-primary/10 text-primary">{stage.badge}</span>
-          <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight leading-tight">{stage.title}</h3>
-          <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-md">{stage.desc}</p>
-          <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full bg-secondary text-muted-foreground">{stage.tag}</span>
+    // Outer container: tall enough for scroll-driving (stages × 100vh)
+    <div ref={containerRef} style={{ height: `${(totalStages + 1) * 100}vh` }} className="relative">
+      {/* Sticky viewport */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
+        {/* Header */}
+        <div className="pt-12 md:pt-16 pb-4 md:pb-6 text-center relative z-20 shrink-0">
+          <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-2">Your Journey</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
         </div>
-      </motion.div>
+
+        {/* Stage area */}
+        <div className="flex-1 relative w-full">
+          {/* Curvy road SVG */}
+          <svg className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-24 md:w-32 z-10 pointer-events-none" viewBox="0 0 100 600" fill="none" preserveAspectRatio="xMidYMid meet">
+            {/* Background road */}
+            <path
+              d="M50 0 C20 50,80 100,50 150 S20 250,50 300 S80 350,50 400 S20 450,50 500 S80 550,50 600"
+              stroke="hsl(var(--border))"
+              strokeWidth="3"
+              strokeDasharray="8 6"
+              fill="none"
+              opacity="0.4"
+            />
+            {/* Animated progress road */}
+            <motion.path
+              d="M50 0 C20 50,80 100,50 150 S20 250,50 300 S80 350,50 400 S20 450,50 500 S80 550,50 600"
+              stroke="hsl(var(--primary))"
+              strokeWidth="3.5"
+              fill="none"
+              strokeDasharray="1"
+              strokeDashoffset="0"
+              style={{ pathLength: useTransform(scrollYProgress, [0, 0.95], [0, 1]), strokeDashoffset: roadDraw }}
+              pathLength="1"
+            />
+          </svg>
+
+          {/* Stage cards animate in/out */}
+          {journeyStages.map((stage, i) => {
+            const segStart = i / totalStages;
+            const segMid = (i + 0.5) / totalStages;
+            const segEnd = (i + 1) / totalStages;
+            return (
+              <JourneyStageCard
+                key={stage.number}
+                stage={stage}
+                index={i}
+                scrollProgress={scrollYProgress}
+                segStart={segStart}
+                segMid={segMid}
+                segEnd={segEnd}
+              />
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }
 
-function JourneyTimeline() {
+function JourneyStageCard({
+  stage, index, scrollProgress, segStart, segMid, segEnd
+}: {
+  stage: typeof journeyStages[0]; index: number; scrollProgress: MotionValue<number>;
+  segStart: number; segMid: number; segEnd: number;
+}) {
+  const isEven = index % 2 === 0;
+
+  // Fade in, hold, fade out
+  const opacity = useTransform(scrollProgress, [segStart, segStart + 0.04, segMid, segEnd - 0.02, segEnd], [0, 1, 1, 1, 0]);
+  const y = useTransform(scrollProgress, [segStart, segStart + 0.06, segMid, segEnd - 0.02, segEnd], [60, 0, 0, 0, -40]);
+  const scale = useTransform(scrollProgress, [segStart, segStart + 0.05, segMid, segEnd], [0.9, 1, 1, 0.95]);
+  const imgX = useTransform(scrollProgress, [segStart, segStart + 0.06], [isEven ? -80 : 80, 0]);
+
   return (
-    <section className="relative py-16 md:py-0 overflow-hidden">
-      {/* Curvy road SVG path */}
-      <svg
-        className="absolute inset-0 w-full h-full z-10 pointer-events-none hidden md:block"
-        preserveAspectRatio="none"
-        viewBox="0 0 100 100"
-        fill="none"
-      >
-        <path
-          d="M50 0 C 20 8, 80 18, 50 25 S 20 33, 50 40 S 80 48, 50 55 S 20 63, 50 70 S 80 78, 50 85 S 20 93, 50 100"
-          stroke="hsl(var(--border))"
-          strokeWidth="0.4"
-          strokeDasharray="1.2 0.8"
-          fill="none"
-        />
-      </svg>
-      {/* Mobile: left-side curvy line */}
-      <svg
-        className="absolute inset-0 w-full h-full z-10 pointer-events-none md:hidden"
-        preserveAspectRatio="none"
-        viewBox="0 0 100 100"
-        fill="none"
-      >
-        <path
-          d="M6 0 C 15 8, 2 18, 6 25 S 15 33, 6 40 S 2 48, 6 55 S 15 63, 6 70 S 2 78, 6 85 S 15 93, 6 100"
-          stroke="hsl(var(--border))"
-          strokeWidth="0.6"
-          strokeDasharray="1.5 1"
-          fill="none"
-        />
-      </svg>
+    <motion.div
+      className="absolute inset-0 flex items-center justify-center px-6 md:px-8 z-20"
+      style={{ opacity, y }}
+    >
+      <div className={`w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center ${isEven ? "" : "md:[direction:rtl]"}`}>
+        {/* Image */}
+        <motion.div className={`flex justify-center ${isEven ? "md:justify-end" : "md:justify-start"} ${isEven ? "" : "md:[direction:ltr]"}`} style={{ scale, x: imgX }}>
+          <div className={`relative w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 rounded-3xl bg-gradient-to-br ${stage.accent} p-4 md:p-6 flex items-center justify-center`}>
+            <img src={stage.image} alt={stage.title} className="w-full h-full object-contain drop-shadow-xl" loading="lazy" />
+            <span className="absolute -top-4 -right-4 text-6xl md:text-8xl font-black text-primary/10 select-none leading-none">{stage.number}</span>
+          </div>
+        </motion.div>
 
-      {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 md:px-8 pt-16 md:pt-24 pb-8 relative z-20">
-        <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
-        <p className="mt-3 text-muted-foreground text-lg">Scroll down to see the transformation</p>
+        {/* Text */}
+        <motion.div className={`space-y-3 text-center md:text-left ${isEven ? "" : "md:[direction:ltr]"}`} style={{ scale }}>
+          <span className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase px-3 py-1.5 rounded-full bg-primary/10 text-primary">{stage.badge}</span>
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight leading-tight">{stage.title}</h3>
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-md mx-auto md:mx-0">{stage.desc}</p>
+          <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full bg-secondary text-muted-foreground">{stage.tag}</span>
+        </motion.div>
       </div>
-
-      {/* Stages */}
-      {journeyStages.map((stage, i) => (
-        <JourneyStage key={stage.number} stage={stage} index={i} />
-      ))}
-    </section>
+    </motion.div>
   );
 }
 /* ═══════════════════════════════════════
