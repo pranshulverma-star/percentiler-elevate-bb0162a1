@@ -1,37 +1,60 @@
 
 
-## Consolidate Phone Capture: Remove Duplicated Logic
+## Auth Flow Audit — Practice Lab (ProtectedRoute + requirePhone)
 
-### Problem
-`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
+### Four Scenarios Traced
 
-### What Changes
+**Scenario 1: No email, no phone (fresh user)**
+- ProtectedRoute detects unauthenticated → triggers Google OAuth redirect
+- After sign-in: AuthProvider upserts lead with user_id + email + name
+- `useLeadPhone` queries DB → no phone → no localStorage → `hasPhone=false`
+- PhoneCaptureModal shown (non-dismissable) → user enters phone → upserts with `onConflict: "user_id"`
+- Result: **Works correctly**
 
-**1. `src/components/LeadModalProvider.tsx`**
-- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
-- Replace it with a single `<PhoneCaptureModal>` component usage
-- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
-- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
+**Scenario 2: Has localStorage phone, no email (returning anonymous user)**
+- ProtectedRoute detects unauthenticated → triggers Google OAuth redirect
+- After sign-in: AuthProvider upserts lead with user_id + email (no phone)
+- `useLeadPhone` queries DB → no phone in DB → falls back to localStorage → finds phone → `hasPhone=true`
+- User passes through the gate
+- Result: **Bug — phone exists only in localStorage, never synced to DB lead record**. Marketing automation (n8n, campaign_state) won't have the phone for this user.
 
-**2. `src/components/PhoneCaptureModal.tsx`**
-- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
-- The component already supports custom `title` and `description`, so no changes needed there
+**Scenario 3: Authenticated (email), no phone**
+- ProtectedRoute passes auth check → `requirePhone` triggers phone check
+- `useLeadPhone` queries DB → no phone → no localStorage → `hasPhone=false`
+- PhoneCaptureModal shown → user submits → upserts phone with `onConflict: "user_id"`
+- Result: **Works correctly**
 
-### Result
-- One single source of truth for phone capture logic
-- Future fixes (like the duplicate phone check) only need to be applied once
-- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
+**Scenario 4: Both email and phone exist**
+- ProtectedRoute passes auth → `useLeadPhone` finds phone in DB (or falls back to localStorage)
+- `hasPhone=true` → renders children
+- Result: **Works correctly**
 
-### Technical Details
+---
 
-**`PhoneCaptureModal.tsx` changes:**
-- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
-- Add a name input field that renders when `showNameField` is true and no user name is available
-- Include the name in the upsert payload and persist to localStorage
+### Bug: localStorage Phone Not Synced to DB (Scenario 2)
 
-**`LeadModalProvider.tsx` changes:**
-- Remove ~60 lines of form state, validation, and submit logic
-- Remove the inline `<Dialog>` JSX (~30 lines)
-- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
-- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
+When `useLeadPhone` resolves a phone from localStorage because the DB record lacks one, it should update the DB. Currently it only caches locally.
+
+**Fix in `src/hooks/useLeadPhone.ts`**: After resolving from localStorage when DB has no phone, fire a background upsert to sync the phone to the leads table:
+
+```typescript
+// Inside the fetch logic, after resolving phone from localStorage
+if (!dbPhone && storedPhone && userId) {
+  // Sync localStorage phone to DB (fire-and-forget)
+  (supabase.from("leads") as any).upsert(
+    { user_id: userId, phone_number: storedPhone },
+    { onConflict: "user_id" }
+  ).catch(() => {});
+}
+```
+
+### Additional Note: PhoneCaptureModal Non-Auth Branch
+
+The `else` branch in PhoneCaptureModal (line 76) uses `onConflict: "phone_number"`, but the unique constraint on `phone_number` was dropped in a later migration. This branch only runs when `user_id` is null (unauthenticated). With ProtectedRoute enforcing auth first, this branch is unreachable for the Practice Lab flow — but it would silently fail (insert duplicate) if ever hit from other entry points.
+
+### Files to Edit
+
+| File | Change |
+|------|--------|
+| `src/hooks/useLeadPhone.ts` | Add background DB sync when resolving phone from localStorage for authenticated users |
 
