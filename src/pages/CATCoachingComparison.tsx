@@ -341,30 +341,26 @@ function JourneyTimeline() {
 function JourneyStageCard({
   stage,
   index,
-  isActive,
 }: {
   stage: typeof journeyStages[0];
   index: number;
-  isActive: boolean;
 }) {
   const isEven = index % 2 === 0;
 
   return (
     <motion.div
       className="absolute inset-0 flex items-center justify-center px-6 md:px-8 z-20"
-      initial={false}
-      animate={{
-        opacity: isActive ? 1 : 0,
-        y: isActive ? 0 : 32,
-        pointerEvents: isActive ? "auto" : "none",
-      }}
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -30 }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
     >
       <div className={`w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center ${isEven ? "" : "md:[direction:rtl]"}`}>
         <motion.div
           className={`flex justify-center ${isEven ? "md:justify-end" : "md:justify-start"} ${isEven ? "" : "md:[direction:ltr]"}`}
-          initial={false}
-          animate={{ x: isActive ? 0 : isEven ? -80 : 80, scale: isActive ? 1 : 0.92 }}
+          initial={{ x: isEven ? -80 : 80, scale: 0.92, opacity: 0.8 }}
+          animate={{ x: 0, scale: 1, opacity: 1 }}
+          exit={{ x: isEven ? 60 : -60, scale: 0.95, opacity: 0.5 }}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         >
           <div className={`relative w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 rounded-3xl bg-gradient-to-br ${stage.accent} p-4 md:p-6 flex items-center justify-center`}>
@@ -375,8 +371,9 @@ function JourneyStageCard({
 
         <motion.div
           className={`space-y-3 text-center md:text-left ${isEven ? "" : "md:[direction:ltr]"}`}
-          initial={false}
-          animate={{ x: isActive ? 0 : isEven ? 40 : -40, opacity: isActive ? 1 : 0.6 }}
+          initial={{ x: isEven ? 40 : -40, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: isEven ? -30 : 30, opacity: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase px-3 py-1.5 rounded-full bg-primary/10 text-primary">{stage.badge}</span>
