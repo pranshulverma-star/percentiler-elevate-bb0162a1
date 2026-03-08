@@ -260,9 +260,15 @@ function JourneyTimeline() {
   const pathLength = useTransform(scrollYProgress, [0, 1], [0.04, 1]);
 
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    const nextStage = Math.min(totalStages - 1, Math.max(0, Math.floor(latest * totalStages)));
+    if (!Number.isFinite(latest)) return;
+    const normalized = Math.min(0.9999, Math.max(0, latest));
+    const nextStage = Math.floor(normalized * totalStages);
     setActiveStage((prev) => (prev === nextStage ? prev : nextStage));
   });
+
+  const safeActiveStage = Number.isFinite(activeStage)
+    ? Math.min(totalStages - 1, Math.max(0, activeStage))
+    : 0;
 
   return (
     <div ref={containerRef} className="relative" style={{ height: `${(totalStages + 1) * 100}vh` }}>
@@ -296,7 +302,7 @@ function JourneyTimeline() {
               key={stage.number}
               stage={stage}
               index={index}
-              isActive={index === activeStage}
+              isActive={index === safeActiveStage}
             />
           ))}
         </div>
