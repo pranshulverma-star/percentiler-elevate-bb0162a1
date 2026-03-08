@@ -290,8 +290,11 @@ function JourneyTimeline() {
     };
   }, [totalStages]);
 
-  const safeActiveStage = Math.min(totalStages - 1, Math.max(0, activeStage));
+  const safeActiveStage = Number.isFinite(activeStage)
+    ? Math.min(totalStages - 1, Math.max(0, activeStage))
+    : 0;
   const roadProgress = 0.04 + journeyProgress * 0.96;
+  const currentStage = journeyStages[safeActiveStage] ?? journeyStages[0];
 
   return (
     <div ref={containerRef} className="relative" style={{ height: `${(totalStages + 1) * 100}vh` }}>
@@ -322,14 +325,13 @@ function JourneyTimeline() {
             />
           </svg>
 
-          {journeyStages.map((stage, index) => (
+          <AnimatePresence mode="wait">
             <JourneyStageCard
-              key={stage.number}
-              stage={stage}
-              index={index}
-              isActive={index === safeActiveStage}
+              key={currentStage.number}
+              stage={currentStage}
+              index={safeActiveStage}
             />
-          ))}
+          </AnimatePresence>
         </div>
       </section>
     </div>
