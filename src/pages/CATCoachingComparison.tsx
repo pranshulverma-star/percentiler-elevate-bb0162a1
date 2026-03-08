@@ -734,7 +734,7 @@ export default function CATCoachingComparison() {
             <div className="flex -space-x-2.5">
               {topResults.map((s) => (
                 <Avatar key={s.name} className="h-8 w-8 ring-2 ring-background overflow-hidden">
-                  <AvatarImage src={s.photo} alt={s.name} className="object-cover object-top scale-[1.4] translate-y-[8%]" width={32} height={32} />
+                  <AvatarImage src={s.photo} alt={s.name} className="object-cover object-top scale-[1.4] translate-y-[8%]" width={32} height={32} fetchPriority="high" />
                   <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-bold">{s.name[0]}</AvatarFallback>
                 </Avatar>
               ))}
