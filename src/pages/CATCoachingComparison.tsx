@@ -10,7 +10,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
-  CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp,
+  CheckCircle, ArrowRight, Phone, BookOpen, Users, TrendingUp,
   ChevronDown, GraduationCap, MessageCircle, Zap, Target, Brain, Award,
   ChevronUp
 } from "lucide-react";
