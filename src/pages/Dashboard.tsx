@@ -139,6 +139,7 @@ export default function Dashboard() {
             <DashboardCallCTA campaign={campaign} loading={loadingCampaign} />
             <DashboardPlanner data={plannerData} loading={loadingPlanner} />
             <DashboardMasterclass engagement={engagement} loading={loadingMasterclass} />
+            <DashboardPracticeLab attempts={practiceAttempts} loading={loadingPractice} />
           </div>
         </div>
       </main>
