@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { trackComparisonFormSubmit } from "@/lib/tracking";
 import {
   CheckCircle, ArrowRight, Phone, BookOpen, Users, TrendingUp,
   ChevronDown, GraduationCap, MessageCircle, Target, Brain, Award,
@@ -128,6 +129,8 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
       localStorage.setItem("percentilers_phone", phone);
       localStorage.setItem("percentilers_name", name.trim());
       supabase.functions.invoke("sync-lead-to-sheet", { body: { phone_number: phone, source, name: name.trim() } }).catch(() => {});
+      // Google Ads "UT | Form submit" conversion — once per session
+      trackComparisonFormSubmit();
       setSubmitted(true);
       toast({ title: "You're in! 🎉", description: ctaType === "masterclass" ? "Redirecting to masterclass..." : "Our team will call you shortly." });
       if (ctaType === "masterclass") setTimeout(() => { window.location.href = "/masterclass"; }, 1500);
