@@ -83,7 +83,7 @@ const App = () => (
                   <Route path="/refund-policy" element={<RefundPolicy />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/cat-coaching-comparison" element={<CATCoachingComparison />} />
-                  <Route path="/admin" element={<ProtectedRoute source="admin"><AdminDashboard /></ProtectedRoute>} />
+                  <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>
