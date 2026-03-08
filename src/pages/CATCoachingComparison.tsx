@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -663,10 +663,13 @@ export default function CATCoachingComparison() {
 
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
-  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 80]);
+  /* ─── Social proof mini-strip for above-fold ─── */
+  const topResults = [
+    { name: "Bhavy", pct: "99.5", photo: studentBhavy },
+    { name: "Rounak", pct: "99.2", photo: studentRounak },
+    { name: "Rahul", pct: "98.9", photo: studentRahul },
+    { name: "Shruti", pct: "98.3", photo: studentShruti },
+  ];
 
 
   const results = [
@@ -705,69 +708,64 @@ export default function CATCoachingComparison() {
 
       <Navbar />
 
-      {/* ═══ HERO ═══ */}
-      <section ref={heroRef} className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-background">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-primary/[0.06] rounded-full blur-[120px]" />
+      {/* ═══ HERO — Mobile-first, social proof + CTA above fold ═══ */}
+      <section className="relative pt-6 pb-10 md:pt-12 md:pb-20 bg-background overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] bg-primary/[0.05] rounded-full blur-[100px] pointer-events-none" />
 
-        <motion.div className="relative z-10 max-w-4xl mx-auto px-6 text-center" style={{ opacity: heroOpacity, y: heroY }}>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-6">
+          {/* Competitor badge */}
           {competitor && (
-            <motion.span
-              className="inline-block mb-6 px-5 py-2 rounded-full text-xs tracking-[0.2em] uppercase font-bold border border-primary/30 text-primary bg-primary/10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
+            <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-[10px] tracking-[0.2em] uppercase font-bold border border-primary/30 text-primary bg-primary/10">
               vs {competitorName}
-            </motion.span>
+            </span>
           )}
 
-          <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground leading-[1.08] tracking-tight whitespace-pre-line"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
+          {/* Headline — no animation delay for fast LCP */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black text-foreground leading-[1.08] tracking-tight whitespace-pre-line">
             {headline}
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            className="mt-6 md:mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-          >
+          <p className="mt-4 md:mt-6 text-base md:text-lg text-muted-foreground max-w-xl leading-relaxed">
             300+ students switched to Percentilers and scored <span className="text-primary font-semibold">99%ile+</span>. See the difference an IIM-alumni mentor makes.
-          </motion.p>
+          </p>
 
-          <motion.div
-            className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
+          {/* Social proof strip — visible above fold on mobile */}
+          <div className="mt-5 flex items-center gap-3">
+            <div className="flex -space-x-2.5">
+              {topResults.map((s) => (
+                <Avatar key={s.name} className="h-8 w-8 ring-2 ring-background overflow-hidden">
+                  <AvatarImage src={s.photo} alt={s.name} className="object-cover object-top scale-[1.4] translate-y-[8%]" width={32} height={32} />
+                  <AvatarFallback className="bg-primary/10 text-primary text-[10px] font-bold">{s.name[0]}</AvatarFallback>
+                </Avatar>
+              ))}
+            </div>
+            <div>
+              <p className="text-xs font-bold text-foreground">99%ile+ scorers</p>
+              <p className="text-[10px] text-muted-foreground">300+ IIM converts from Percentilers</p>
+            </div>
+          </div>
+
+          {/* Dual CTAs — immediately visible */}
+          <div className="mt-6 md:mt-8 flex flex-col sm:flex-row gap-3">
             <Button
               size="lg"
-              className="h-14 px-10 text-base font-black tracking-wide rounded-full shadow-lg shadow-primary/20"
+              className="h-12 md:h-14 px-6 md:px-10 text-sm md:text-base font-black tracking-wide rounded-xl shadow-lg shadow-primary/20"
               onClick={() => scrollTo("masterclass-section")}
             >
-              Watch Free Masterclass <ArrowRight className="ml-2 w-5 h-5" />
+              Watch Free Masterclass <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
             <Button
               size="lg"
               variant="outline"
-              className="h-14 px-10 text-base font-bold tracking-wide rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+              className="h-12 md:h-14 px-6 md:px-10 text-sm md:text-base font-bold tracking-wide rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
               asChild
             >
               <a href="tel:+919911928071">
                 <Phone className="mr-2 w-4 h-4" /> Book Free Strategy Call
               </a>
             </Button>
-          </motion.div>
-
-          <motion.div className="mt-16" animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
-            <ChevronDown className="w-6 h-6 text-muted-foreground/40 mx-auto" />
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </section>
 
       {/* ═══ JOURNEY TIMELINE ═══ */}
@@ -921,7 +919,7 @@ export default function CATCoachingComparison() {
         <div className="max-w-5xl mx-auto px-6">
           <ChapterHeading number="Chapter 06" title="Straight From WhatsApp" subtitle="Unedited messages from real students." />
 
-          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
             <MessageCircle className="h-3.5 w-3.5" />
             Actual Screenshots
           </div>
@@ -945,15 +943,28 @@ export default function CATCoachingComparison() {
         </div>
       </section>
 
-      {/* ═══ CTA: MASTERCLASS ═══ */}
-      <section id="masterclass-section" className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative">
+      {/* ═══ CTA: MASTERCLASS + STRATEGY CALL ═══ */}
+      <section id="masterclass-section" className="py-16 md:py-28 bg-secondary relative">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.04] via-transparent to-transparent" />
-        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-2xl mx-auto px-4 md:px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-4">Free Access</span>
             <h2 className="text-3xl md:text-5xl font-black text-foreground leading-tight mb-4">Watch the CAT Strategy Masterclass</h2>
-            <p className="text-muted-foreground mb-10 text-lg">90-minute session by IIM alumni. The exact strategy used by 99%ile scorers. No pitch.</p>
+            <p className="text-muted-foreground mb-8 text-base md:text-lg">90-minute session by IIM alumni. The exact strategy used by 99%ile scorers. No pitch.</p>
             <LeadForm ctaType="masterclass" competitor={competitorKey} label="Watch Free Masterclass →" />
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <span className="text-xs text-muted-foreground">or</span>
+            </div>
+            <Button
+              size="lg"
+              variant="outline"
+              className="mt-3 h-12 md:h-14 px-8 text-sm md:text-base font-bold rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+              asChild
+            >
+              <a href="tel:+919911928071">
+                <Phone className="mr-2 w-4 h-4" /> Book Free Strategy Call
+              </a>
+            </Button>
           </motion.div>
         </div>
       </section>
