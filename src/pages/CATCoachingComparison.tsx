@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
-import { motion, useScroll, useTransform, useInView, useMotionValueEvent } from "framer-motion";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -253,22 +253,45 @@ const journeyStages = [
 /* ─── Cinematic sticky journey ─── */
 function JourneyTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
   const totalStages = journeyStages.length;
   const [activeStage, setActiveStage] = useState(0);
+  const [journeyProgress, setJourneyProgress] = useState(0);
 
-  const pathLength = useTransform(scrollYProgress, [0, 1], [0.04, 1]);
+  useEffect(() => {
+    let rafId = 0;
 
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (!Number.isFinite(latest)) return;
-    const normalized = Math.min(0.9999, Math.max(0, latest));
-    const nextStage = Math.floor(normalized * totalStages);
-    setActiveStage((prev) => (prev === nextStage ? prev : nextStage));
-  });
+    const updateProgress = () => {
+      const el = containerRef.current;
+      if (!el) return;
 
-  const safeActiveStage = Number.isFinite(activeStage)
-    ? Math.min(totalStages - 1, Math.max(0, activeStage))
-    : 0;
+      const rect = el.getBoundingClientRect();
+      const scrollable = Math.max(1, rect.height - window.innerHeight);
+      const rawProgress = -rect.top / scrollable;
+      const normalized = Math.min(0.9999, Math.max(0, rawProgress));
+      const nextStage = Math.floor(normalized * totalStages);
+
+      setJourneyProgress(normalized);
+      setActiveStage((prev) => (prev === nextStage ? prev : nextStage));
+    };
+
+    const onScrollOrResize = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(updateProgress);
+    };
+
+    updateProgress();
+    window.addEventListener("scroll", onScrollOrResize, { passive: true });
+    window.addEventListener("resize", onScrollOrResize);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", onScrollOrResize);
+      window.removeEventListener("resize", onScrollOrResize);
+    };
+  }, [totalStages]);
+
+  const safeActiveStage = Math.min(totalStages - 1, Math.max(0, activeStage));
+  const roadProgress = 0.04 + journeyProgress * 0.96;
 
   return (
     <div ref={containerRef} className="relative" style={{ height: `${(totalStages + 1) * 100}vh` }}>
@@ -288,12 +311,14 @@ function JourneyTimeline() {
               fill="none"
               opacity="0.4"
             />
-            <motion.path
+            <path
               d="M50 0 C20 50,80 100,50 150 S20 250,50 300 S80 350,50 400 S20 450,50 500 S80 550,50 600"
               stroke="hsl(var(--primary))"
               strokeWidth="3.5"
               fill="none"
-              style={{ pathLength }}
+              pathLength={1}
+              strokeDasharray="1"
+              strokeDashoffset={1 - roadProgress}
             />
           </svg>
 
