@@ -41,6 +41,8 @@ const testimonialSnippets = [
   { name: "Divya S.", text: "Clear plan, weekly targets, honest feedback.", score: "97.9%ile", photo: studentDivya },
 ];
 
+// CTA Type: Gmail-only (sign-in button on masterclass landing)
+// Handles: Scenario 1 (not signed in → trigger OAuth), 2 (already signed in → show avatar)
 const GoogleSignInButton = ({ className }: { className?: string }) => {
   const { signIn, loading, isAuthenticated, user } = useAuth();
 
@@ -79,8 +81,8 @@ const GoogleSignInButton = ({ className }: { className?: string }) => {
 const RegistrationCard = () => {
   const navigate = useNavigate();
 
-  // Simple: just navigate to the protected route.
-  // ProtectedRoute handles auth + phone gating entirely.
+  // CTA Type: Both (Gmail + Phone) — delegated to ProtectedRoute on /masterclass/watch
+  // Handles: Scenario 1 (no auth → ProtectedRoute triggers sign-in), 2 (auth, no phone → phone modal), 3/4 (same flow)
   const handleCTA = useCallback(() => {
     navigate("/masterclass/watch");
   }, [navigate]);

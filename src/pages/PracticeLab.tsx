@@ -562,6 +562,8 @@ export default function PracticeLab() {
     setPhase("quiz");
   }, [authLoading, phoneLoading, isAuthenticated, hasPhone]);
 
+  // CTA Type: Both (Gmail + Phone)
+  // Handles: Scenario 1 (no auth → Google sign-in), 2 (auth, no phone → phone modal), 3 (N/A — Gmail first), 4 (cleared → re-gate)
   const handleSelectChapter = useCallback((ch: Chapter) => {
     // Gate: require sign-in first
     if (!isAuthenticated) {
