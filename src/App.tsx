@@ -37,6 +37,7 @@ const CATReadinessAssessment = lazy(() => import("./pages/CATReadinessAssessment
 const CATDailyStudyPlanner = lazy(() => import("./pages/CATDailyStudyPlanner"));
 const CATOMETCourses = lazy(() => import("./pages/CATOMETCourses"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const FreeCourses = lazy(() => import("./pages/FreeCourses"));
 const TestSeries = lazy(() => import("./pages/TestSeries"));
 const PracticeLab = lazy(() => import("./pages/PracticeLab"));
