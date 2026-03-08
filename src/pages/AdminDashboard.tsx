@@ -99,6 +99,15 @@ export default function AdminDashboard() {
     );
   }
 
+  // Data still loading or null
+  if (loading || !data) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
