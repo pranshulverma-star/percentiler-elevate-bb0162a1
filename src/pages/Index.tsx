@@ -4,6 +4,7 @@ import HeroSection from "@/components/HeroSection";
 import FeaturedStrip from "@/components/FeaturedStrip";
 import Footer from "@/components/Footer";
 import SEO from "@/components/SEO";
+import SectionErrorBoundary from "@/components/SectionErrorBoundary";
 
 // Lazy load below-the-fold sections
 const TrustStrip = lazy(() => import("@/components/TrustStrip"));
@@ -37,34 +38,48 @@ const Index = () => (
       <HeroSection />
       <FeaturedStrip />
 
-      {/* Everything below is lazy loaded */}
-      <Suspense fallback={<LazyFallback />}>
-        <PreparationPathSection />
-      </Suspense>
-      <Suspense fallback={<LazyFallback />}>
-        <TrustStrip />
-        <ResultsSection />
-      </Suspense>
-      <Suspense fallback={<LazyFallback />}>
-        <FreeToolsSection />
-        <PercentilePlannerSection />
-      </Suspense>
-      <Suspense fallback={<LazyFallback />}>
-        <TestimonialsSection />
-      </Suspense>
-      <Suspense fallback={<LazyFallback />}>
-        <WebinarSection />
-        <CoursesSection />
-        <FacultySection />
-      </Suspense>
-      <Suspense fallback={<LazyFallback />}>
-        <FounderSection />
-      </Suspense>
-      <Suspense fallback={<LazyFallback />}>
-        <WhyDifferentSection />
-        <FAQSection />
-        <FinalCTASection />
-      </Suspense>
+      {/* Everything below is lazy loaded + error-bounded */}
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <PreparationPathSection />
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <TrustStrip />
+          <ResultsSection />
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <FreeToolsSection />
+          <PercentilePlannerSection />
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <TestimonialsSection />
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <WebinarSection />
+          <CoursesSection />
+          <FacultySection />
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <FounderSection />
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <WhyDifferentSection />
+          <FAQSection />
+          <FinalCTASection />
+        </Suspense>
+      </SectionErrorBoundary>
     </main>
     <Footer />
     <Suspense fallback={null}>
@@ -75,4 +90,3 @@ const Index = () => (
 );
 
 export default Index;
-
