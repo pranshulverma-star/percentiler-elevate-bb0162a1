@@ -37,6 +37,7 @@ const CATReadinessAssessment = lazy(() => import("./pages/CATReadinessAssessment
 const CATDailyStudyPlanner = lazy(() => import("./pages/CATDailyStudyPlanner"));
 const CATOMETCourses = lazy(() => import("./pages/CATOMETCourses"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const FreeCourses = lazy(() => import("./pages/FreeCourses"));
 const TestSeries = lazy(() => import("./pages/TestSeries"));
 const PracticeLab = lazy(() => import("./pages/PracticeLab"));
@@ -82,6 +83,7 @@ const App = () => (
                   <Route path="/refund-policy" element={<RefundPolicy />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/cat-coaching-comparison" element={<CATCoachingComparison />} />
+                  <Route path="/admin" element={<ProtectedRoute source="admin"><AdminDashboard /></ProtectedRoute>} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </Suspense>

@@ -1,58 +1,37 @@
 
 
-# Admin Master Dashboard Plan
+## Consolidate Phone Capture: Remove Duplicated Logic
 
-## What We're Building
+### Problem
+`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
 
-A protected `/admin` page that shows aggregated and per-user data across all tables — leads, planner activity, practice lab attempts, campaign states, and webinar engagement. Access restricted to your specific email address (hardcoded allowlist, validated server-side).
+### What Changes
 
-## Architecture
+**1. `src/components/LeadModalProvider.tsx`**
+- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
+- Replace it with a single `<PhoneCaptureModal>` component usage
+- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
+- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
 
-```text
-/admin (ProtectedRoute + admin email check)
-  ├── Summary Stats Bar — total leads, active planners, hot leads, conversions
-  ├── Leads Table — all leads with search/filter, sortable columns
-  ├── Planner Leaderboard — heat scores, active days, consistency
-  ├── Practice Lab Analytics — aggregate scores, attempts per chapter
-  └── Campaign Pipeline — workflow status breakdown, conversion funnel
-```
+**2. `src/components/PhoneCaptureModal.tsx`**
+- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
+- The component already supports custom `title` and `description`, so no changes needed there
 
-## Access Control
+### Result
+- One single source of truth for phone capture logic
+- Future fixes (like the duplicate phone check) only need to be applied once
+- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
 
-Since RLS on most tables already allows anonymous/public reads, the admin page can query directly. However, `practice_lab_attempts` has user-scoped RLS. To read all attempts:
+### Technical Details
 
-- **New DB migration**: Add an RLS policy on `practice_lab_attempts` allowing SELECT for a specific admin user ID, OR create a database function (`security definer`) that returns aggregate stats without exposing raw user data.
-- Simpler approach: Create an edge function `get-admin-analytics` that uses the service role key to query all tables and returns aggregated data. The function checks the caller's JWT email against an admin allowlist.
+**`PhoneCaptureModal.tsx` changes:**
+- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
+- Add a name input field that renders when `showNameField` is true and no user name is available
+- Include the name in the upsert payload and persist to localStorage
 
-**Recommended**: Edge function approach — keeps admin logic server-side, no RLS changes needed.
-
-## New Files
-
-- `src/pages/AdminDashboard.tsx` — Main admin page with tabs: Overview, Leads, Planner, Practice, Campaign
-- `src/components/admin/AdminSummaryBar.tsx` — KPI cards (total leads, hot leads, conversions, active users)
-- `src/components/admin/AdminLeadsTable.tsx` — Searchable, sortable table of all leads
-- `src/components/admin/AdminPlannerStats.tsx` — Heat score distribution, top active users
-- `src/components/admin/AdminPracticeStats.tsx` — Aggregate quiz performance, chapter-wise breakdown
-- `src/components/admin/AdminCampaignPipeline.tsx` — Workflow status counts, conversion funnel
-- `supabase/functions/get-admin-analytics/index.ts` — Edge function returning all admin data (service role, JWT email check)
-
-## Modified Files
-
-- `src/App.tsx` — Add `/admin` route with ProtectedRoute
-- `public/_redirects` — Add `/admin` redirect to `index.html`
-
-## Edge Function: `get-admin-analytics`
-
-- Validates JWT, checks email against allowlist (your email)
-- Queries all tables using service role client
-- Returns: lead count, leads list, heat scores, practice aggregates, campaign status breakdown
-- Single fetch from the frontend reduces complexity
-
-## UI
-
-- Tabs layout: Overview | Leads | Planner | Practice | Campaign
-- Uses existing shadcn Table, Card, Badge, Tabs, Progress components
-- Search/filter on leads table by name, email, phone, source
-- Summary cards with counts and trends
-- Responsive grid layout
+**`LeadModalProvider.tsx` changes:**
+- Remove ~60 lines of form state, validation, and submit logic
+- Remove the inline `<Dialog>` JSX (~30 lines)
+- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
+- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
 

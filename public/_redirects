@@ -16,6 +16,7 @@
 /practice-lab                       /index.html  200
 /dashboard                          /index.html  200
 /cat-coaching-comparison            /index.html  200
+/admin                              /index.html  200
 
 # Everything else → 301 to legacy site (server-side, before page loads)
 /*  https://old.percentilers.in/:splat  301
