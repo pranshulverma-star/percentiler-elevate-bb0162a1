@@ -11,15 +11,15 @@ const FinalCTASection = () => {
   const { openContentGate, openPhoneModal } = useLeadModal();
   const [showCallDialog, setShowCallDialog] = useState(false);
 
-  const markLeadHot = async (phone: string, source: string) => {
-    try {
-      await supabase.functions.invoke("mark-lead-hot", {
-        body: { phone_number: phone, source, name: localStorage.getItem("percentilers_name") || null },
-      });
-    } catch (e) {
-      console.error("Failed to mark lead hot", e);
-    }
+  const markLeadHot = (phone: string, source: string) => {
+    // Fire-and-forget — don't block UI
+    supabase.functions.invoke("mark-lead-hot", {
+      body: { phone_number: phone, source, name: localStorage.getItem("percentilers_name") || null },
+    }).catch(() => {});
   };
+
+  // CTA Type: Phone-only
+  // Handles: Scenario 1 (no phone → modal), 2 (N/A), 3 (phone exists → proceed), 4 (cleared → modal)
 
   const handleStrategyCall = () => {
     trackInitiateCheckout("final_cta_strategy_call");

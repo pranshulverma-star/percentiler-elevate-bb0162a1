@@ -40,6 +40,8 @@ const Navbar = () => {
     }).catch(() => {});
   };
 
+  // CTA Type: Phone-only
+  // Handles: Scenario 1 (no phone → modal), 2 (N/A), 3 (phone exists → proceed), 4 (cleared → modal)
   const handleStrategyCall = () => {
     const phone = localStorage.getItem("percentilers_phone") || "";
     if (phone) {
