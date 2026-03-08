@@ -24,6 +24,8 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const [source, setSource] = useState("");
   const [onSuccessCb, setOnSuccessCb] = useState<(() => void) | null>(null);
   const { user, isAuthenticated, signIn } = useAuth();
+  // Pre-fetch phone globally so ProtectedRoute resolves from cache instantly
+  useLeadPhone();
 
   // Content gate: if unauthenticated, start Google sign-in; if authenticated, run callback.
   const openContentGate = (src: string, onSuccess?: () => void) => {
