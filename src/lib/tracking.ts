@@ -21,3 +21,13 @@ export const trackInitiateCheckout = (source: string) => {
   window.fbq?.("track", "InitiateCheckout", { content_name: source });
   window.gtag?.("event", "begin_checkout", { event_label: source });
 };
+
+// Google Ads "UT | Form submit" conversion — fires once per session
+let comparisonConversionFired = false;
+export const trackComparisonFormSubmit = () => {
+  if (comparisonConversionFired) return;
+  comparisonConversionFired = true;
+  window.gtag?.("event", "conversion", {
+    send_to: "AW-672956729/oUskCLKy_aUaELmC8sAC",
+  });
+};
