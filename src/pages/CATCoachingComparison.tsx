@@ -237,43 +237,32 @@ function JourneyTimeline() {
   return (
     <section className="py-16 md:py-24 bg-secondary/20">
       <div className="max-w-7xl mx-auto px-6 md:px-8">
-        {/* Heading */}
-        <motion.div
-          className="mb-10"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-60px" }}
-          transition={{ duration: 0.6 }}
-        >
+        <div className="mb-10">
           <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
           <div className="flex items-end justify-between gap-6">
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
             <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground shrink-0">
               <span>Swipe to explore</span>
-              <motion.span animate={{ x: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}>→</motion.span>
+              <span className="inline-block animate-[slide-in-right_1.5s_ease-in-out_infinite]">→</span>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Horizontally scrollable card strip */}
       <div
         ref={scrollRef}
-        className="flex gap-5 md:gap-6 overflow-x-auto pb-6 px-6 md:px-8 snap-x snap-mandatory scrollbar-hide"
+        className="flex gap-5 md:gap-6 overflow-x-auto pb-6 px-6 md:px-8 snap-x snap-mandatory"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
       >
-        {/* Left spacer for centering on large screens */}
+        <style>{`.journey-scroll::-webkit-scrollbar { display: none; }`}</style>
         <div className="shrink-0 w-0 md:w-[calc((100vw-1280px)/2)]" />
 
-        {journeyCards.map((card, i) => (
-          <motion.div
+        {journeyCards.map((card) => (
+          <div
             key={card.title}
             className="shrink-0 w-[320px] md:w-[380px] snap-center p-7 md:p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col justify-between"
             style={{ minHeight: "360px" }}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-30px" }}
-            transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <div>
               <div className="flex items-center gap-3 mb-4">
@@ -287,10 +276,9 @@ function JourneyTimeline() {
             <div className="mt-5">
               <span className={`inline-block text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.tagColor}`}>{card.tag}</span>
             </div>
-          </motion.div>
+          </div>
         ))}
 
-        {/* Right spacer */}
         <div className="shrink-0 w-6 md:w-[calc((100vw-1280px)/2)]" />
       </div>
     </section>
