@@ -29,7 +29,6 @@ export default defineConfig(({ mode }) => ({
           if (id.includes('framer-motion')) return 'vendor-motion';
           if (id.includes('@supabase')) return 'vendor-supabase';
           if (id.includes('@tanstack/react-query')) return 'vendor-query';
-          if (id.includes('@radix-ui')) return 'vendor-radix';
         },
       },
     },
