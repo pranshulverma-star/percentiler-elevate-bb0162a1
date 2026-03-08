@@ -739,13 +739,15 @@ export default function PracticeLab() {
                 onBack={handleBackToChapters}
               />
             )}
-            {phase === "results" && selectedChapter && (
+            {phase === "results" && selectedChapter && selectedSection && (
               <ResultsView
                 key="results"
                 questions={selectedChapter.questions}
                 answers={quizAnswers}
                 timeUsed={quizTimeUsed}
                 chapterName={selectedChapter.name}
+                sectionId={selectedSection.id}
+                chapterSlug={selectedChapter.slug}
                 onRetry={handleRetry}
                 onBack={handleBackToChapters}
               />
