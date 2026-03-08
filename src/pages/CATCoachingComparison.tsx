@@ -11,7 +11,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import {
   CheckCircle, ArrowRight, Phone, BookOpen, Users, TrendingUp,
-  ChevronDown, GraduationCap, MessageCircle, Zap, Target, Brain, Award,
+  ChevronDown, GraduationCap, MessageCircle, Target, Brain, Award,
   ChevronUp
 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
