@@ -857,8 +857,7 @@ export default function CATCoachingComparison() {
         </motion.div>
       </section>
 
-      {/* ═══ CHAPTER 3: INTERACTIVE COMPARISON ═══ */}
-      <IdealCoachingPicker scrollTo={scrollTo} />
+      {/* IdealCoachingPicker moved to just below hero */}
 
       {/* ═══ CHAPTER 4: THE SYSTEM ═══ */}
       <section className="py-20 md:py-28 bg-background relative">
