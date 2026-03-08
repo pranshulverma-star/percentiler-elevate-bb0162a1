@@ -355,7 +355,7 @@ export default function CATCoachingComparison() {
               <div key={r.name} className="p-6 rounded-2xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all group">
                 <div className="flex items-center gap-3 mb-4">
                   <Avatar className="h-12 w-12 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
-                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile CAT scorer`} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" decoding="async" />
+                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile CAT scorer`} width={48} height={48} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" decoding="async" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{r.initials}</AvatarFallback>
                   </Avatar>
                   <div>
