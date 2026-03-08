@@ -250,7 +250,220 @@ const journeyStages = [
   },
 ];
 
-/* ─── Stable premium journey timeline ─── */
+/* ─── Interactive "Build Your Ideal Coaching" Picker ─── */
+const coachingChoices = [
+  {
+    question: "What batch size do you want?",
+    icon: Users,
+    options: [
+      { label: "500–2000 students", isRight: false, detail: "That's what big coaching offers" },
+      { label: "≤30 students per batch", isRight: true, detail: "Percentilers keeps it intimate" },
+    ],
+  },
+  {
+    question: "What kind of mentorship?",
+    icon: Target,
+    options: [
+      { label: "Generic doubt-clearing", isRight: false, detail: "Typical at most institutes" },
+      { label: "1-on-1 IIM Alumni mentor", isRight: true, detail: "That's exactly what we assign" },
+    ],
+  },
+  {
+    question: "How should your study plan work?",
+    icon: Brain,
+    options: [
+      { label: "One-size-fits-all schedule", isRight: false, detail: "Same plan for 50%ile and 90%ile?" },
+      { label: "AI-personalized daily plan", isRight: true, detail: "Adapts to your level weekly" },
+    ],
+  },
+  {
+    question: "How fast should doubts get resolved?",
+    icon: Phone,
+    options: [
+      { label: "24–48 hour ticket system", isRight: false, detail: "That's the industry norm" },
+      { label: "Same-day WhatsApp resolution", isRight: true, detail: "Direct access to mentors" },
+    ],
+  },
+  {
+    question: "What faculty quality?",
+    icon: Award,
+    options: [
+      { label: "Mixed experience teachers", isRight: false, detail: "Common in large institutes" },
+      { label: "99%ile+ IIM Alumni only", isRight: true, detail: "Every Percentilers faculty member" },
+    ],
+  },
+  {
+    question: "What mock test analysis?",
+    icon: TrendingUp,
+    options: [
+      { label: "Just a score report", isRight: false, detail: "No actionable insights" },
+      { label: "Deep section-wise analytics", isRight: true, detail: "With weekly strategy pivots" },
+    ],
+  },
+];
+
+function IdealCoachingPicker({ scrollTo }: { scrollTo: (id: string) => void }) {
+  const [selections, setSelections] = useState<Record<number, boolean | null>>({});
+  const answered = Object.keys(selections).length;
+  const allAnswered = answered === coachingChoices.length;
+  const rightCount = Object.values(selections).filter((v) => v === true).length;
+
+  const handleSelect = (qIndex: number, isRight: boolean) => {
+    setSelections((prev) => ({ ...prev, [qIndex]: isRight }));
+  };
+
+  return (
+    <section className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative overflow-hidden">
+      <div className="absolute -top-32 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="max-w-4xl mx-auto px-6 relative z-10">
+        <motion.div
+          className="mb-12 md:mb-16"
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-4">Chapter 03</span>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground leading-[1.05] tracking-tight">
+            Build Your Ideal Coaching
+          </h2>
+          <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl">
+            Pick what matters most to you. Let's see if your dream coaching already exists.
+          </p>
+        </motion.div>
+
+        {/* Progress bar */}
+        <div className="mb-10">
+          <div className="flex justify-between text-xs font-semibold text-muted-foreground mb-2">
+            <span>{answered}/{coachingChoices.length} answered</span>
+            {allAnswered && <span className="text-primary">{rightCount}/{coachingChoices.length} match Percentilers ✓</span>}
+          </div>
+          <div className="h-2 rounded-full bg-border overflow-hidden">
+            <motion.div
+              className="h-full rounded-full bg-primary"
+              initial={{ width: 0 }}
+              animate={{ width: `${(answered / coachingChoices.length) * 100}%` }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            />
+          </div>
+        </div>
+
+        {/* Questions */}
+        <div className="space-y-5">
+          {coachingChoices.map((q, qIndex) => {
+            const selected = selections[qIndex];
+            const hasSelected = selected !== undefined && selected !== null;
+
+            return (
+              <motion.div
+                key={qIndex}
+                className="rounded-2xl border border-border bg-background p-5 md:p-7 shadow-sm"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ delay: qIndex * 0.06, duration: 0.5 }}
+              >
+                <div className="flex items-center gap-3 mb-5">
+                  <div className="w-9 h-9 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                    <q.icon className="w-4 h-4 text-primary" />
+                  </div>
+                  <h3 className="font-bold text-foreground text-base md:text-lg">{q.question}</h3>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {q.options.map((opt, oIndex) => {
+                    const isThisSelected = hasSelected && selected === opt.isRight;
+                    const isWrong = hasSelected && !opt.isRight && isThisSelected;
+                    const isRight = hasSelected && opt.isRight;
+
+                    return (
+                      <button
+                        key={oIndex}
+                        onClick={() => handleSelect(qIndex, opt.isRight)}
+                        disabled={hasSelected}
+                        className={`group relative text-left p-4 rounded-xl border-2 transition-all duration-300 ${
+                          hasSelected
+                            ? isRight
+                              ? "border-primary bg-primary/5"
+                              : isWrong
+                              ? "border-destructive/40 bg-destructive/5"
+                              : "border-border bg-background opacity-60"
+                            : "border-border bg-background hover:border-primary/40 hover:bg-primary/[0.03] hover:shadow-md cursor-pointer"
+                        }`}
+                      >
+                        <span className={`font-semibold text-sm md:text-base block mb-1 ${
+                          hasSelected && isRight ? "text-primary" : isWrong ? "text-destructive" : "text-foreground"
+                        }`}>
+                          {opt.label}
+                        </span>
+                        {hasSelected && (
+                          <motion.span
+                            className={`text-xs ${isRight ? "text-primary/80" : "text-muted-foreground"}`}
+                            initial={{ opacity: 0, y: 4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                          >
+                            {isRight ? `✓ ${opt.detail}` : opt.detail}
+                          </motion.span>
+                        )}
+                        {hasSelected && isRight && (
+                          <motion.div
+                            className="absolute top-3 right-3"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 15 }}
+                          >
+                            <CheckCircle className="w-5 h-5 text-primary" />
+                          </motion.div>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* CTA after all answered */}
+        {allAnswered && (
+          <motion.div
+            className="mt-12 text-center"
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="rounded-2xl border border-primary/20 bg-primary/5 p-8 md:p-10 backdrop-blur-xl">
+              <motion.div
+                initial={{ scale: 0.8 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              >
+                <CheckCircle className="w-12 h-12 text-primary mx-auto mb-4" />
+              </motion.div>
+              <h3 className="text-2xl md:text-3xl font-black text-foreground mb-2">
+                {rightCount === coachingChoices.length
+                  ? "You just described Percentilers."
+                  : `${rightCount} out of ${coachingChoices.length} — Percentilers delivers all of them.`}
+              </h3>
+              <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
+                Everything you picked as "ideal" is exactly what 300+ IIM converts experienced with us.
+              </p>
+              <Button
+                size="lg"
+                className="h-14 px-10 text-base font-black tracking-wide rounded-full shadow-lg shadow-primary/20"
+                onClick={() => scrollTo("masterclass-section")}
+              >
+                Watch Free Masterclass <ArrowRight className="ml-2 w-5 h-5" />
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+
 function JourneyTimeline() {
   return (
     <section className="relative py-20 md:py-28 bg-background overflow-hidden">
