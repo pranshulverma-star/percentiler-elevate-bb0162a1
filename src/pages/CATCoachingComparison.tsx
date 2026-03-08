@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams } from "react-router-dom";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
-import { CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp, ChevronDown, ChevronUp, GraduationCap, Quote, MessageCircle } from "lucide-react";
+import { CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp, ChevronDown, ChevronUp, GraduationCap, Quote, MessageCircle, Zap, Target, Brain, Award } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import studentBhavy from "@/assets/student-bhavy.webp";
@@ -26,19 +27,72 @@ import whatsapp4 from "@/assets/whatsapp-4.webp";
 import whatsapp5 from "@/assets/whatsapp-5.webp";
 import whatsapp6 from "@/assets/whatsapp-6.webp";
 
+/* ─── Competitor map ─── */
 const COMPETITOR_MAP: Record<string, { name: string; headline: string }> = {
-  unacademy: { name: "Unacademy", headline: "Tired of Unacademy's One-Size-Fits-All CAT Coaching?" },
-  byjus: { name: "BYJU's", headline: "Looking Beyond BYJU's for CAT Preparation?" },
-  career_launcher: { name: "Career Launcher", headline: "Considering Career Launcher for CAT? Read This First" },
-  ims: { name: "IMS", headline: "Is IMS the Best Choice for Your CAT Prep?" },
-  time: { name: "T.I.M.E.", headline: "Is T.I.M.E. Really Worth It for CAT Coaching?" },
-  testbook: { name: "Testbook", headline: "Exploring Testbook for CAT? Here's What You're Missing" },
-  oliveboard: { name: "Oliveboard", headline: "Comparing Oliveboard for CAT? Read This First" },
+  unacademy: { name: "Unacademy", headline: "Tired of Unacademy's\nOne-Size-Fits-All Approach?" },
+  byjus: { name: "BYJU's", headline: "Looking Beyond BYJU's\nfor CAT Preparation?" },
+  career_launcher: { name: "Career Launcher", headline: "Considering Career Launcher?\nRead This First." },
+  ims: { name: "IMS", headline: "Is IMS Really the Best Choice\nfor Your CAT Prep?" },
+  time: { name: "T.I.M.E.", headline: "Is T.I.M.E. Really Worth It\nfor CAT Coaching?" },
+  cracku: { name: "Cracku", headline: "Comparing Cracku for CAT?\nHere's What You're Missing." },
+  "2iim": { name: "2IIM", headline: "Is 2IIM Enough for\nYour CAT Ambitions?" },
+  testbook: { name: "Testbook", headline: "Exploring Testbook for CAT?\nHere's What You're Missing." },
+  oliveboard: { name: "Oliveboard", headline: "Comparing Oliveboard for CAT?\nRead This First." },
 };
 
-const DEFAULT_HEADLINE = "Still Searching for the Right CAT Coaching?";
+const DEFAULT_HEADLINE = "Still Searching for\nthe Right CAT Coaching?";
 
-// ─── Lead Form Component ───
+/* ─── Animated counter ─── */
+function AnimatedStat({ value, suffix = "", prefix = "", label, delay = 0 }: { value: number; suffix?: string; prefix?: string; label: string; delay?: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isInView) return;
+    const timeout = setTimeout(() => {
+      const duration = 1800;
+      const start = Date.now();
+      const tick = () => {
+        const elapsed = Date.now() - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        setCount(Math.floor(eased * value));
+        if (progress < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }, delay);
+    return () => clearTimeout(timeout);
+  }, [isInView, value, delay]);
+
+  return (
+    <div ref={ref} className="text-center">
+      <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-none">
+        {prefix}{isInView ? count : 0}{suffix}
+      </div>
+      <p className="mt-3 text-sm sm:text-base text-white/50 tracking-widest uppercase font-medium">{label}</p>
+    </div>
+  );
+}
+
+/* ─── Chapter heading ─── */
+function ChapterHeading({ number, title, subtitle }: { number: string; title: string; subtitle?: string }) {
+  return (
+    <motion.div
+      className="mb-12 md:mb-16"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <span className="text-[11px] tracking-[0.4em] uppercase text-orange-500/70 font-semibold block mb-4">{number}</span>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.05] tracking-tight">{title}</h2>
+      {subtitle && <p className="mt-4 text-lg md:text-xl text-white/40 max-w-2xl">{subtitle}</p>}
+    </motion.div>
+  );
+}
+
+/* ─── Lead Form ─── */
 function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "call"; competitor: string; label: string }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -60,33 +114,17 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
     setSubmitting(true);
     try {
       const source = `competitor_ads${competitor ? `_${competitor}` : ""}`;
-      // Store in leads table — trigger auto-populates campaign_state
       const { error } = await (supabase.from("leads") as any).upsert(
-        {
-          phone_number: phone,
-          name: name.trim(),
-          source,
-          current_status: ctaType,
-          ...(targetYear ? { target_year: targetYear } : {}),
-        },
+        { phone_number: phone, name: name.trim(), source, current_status: ctaType, ...(targetYear ? { target_year: targetYear } : {}) },
         { onConflict: "phone_number" }
       );
       if (error) throw error;
-
       localStorage.setItem("percentilers_phone", phone);
       localStorage.setItem("percentilers_name", name.trim());
-
-      // Sync to sheet (fire-and-forget)
-      supabase.functions.invoke("sync-lead-to-sheet", {
-        body: { phone_number: phone, source, name: name.trim() },
-      }).catch(() => {});
-
+      supabase.functions.invoke("sync-lead-to-sheet", { body: { phone_number: phone, source, name: name.trim() } }).catch(() => {});
       setSubmitted(true);
       toast({ title: "You're in! 🎉", description: ctaType === "masterclass" ? "Redirecting to masterclass..." : "Our team will call you shortly." });
-
-      if (ctaType === "masterclass") {
-        setTimeout(() => { window.location.href = "/masterclass"; }, 1500);
-      }
+      if (ctaType === "masterclass") setTimeout(() => { window.location.href = "/masterclass"; }, 1500);
     } catch {
       toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
     } finally {
@@ -96,49 +134,54 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
 
   if (submitted) {
     return (
-      <div className="text-center py-8">
-        <CheckCircle className="w-12 h-12 text-primary mx-auto mb-3" />
-        <p className="text-lg font-semibold text-foreground">
-          {ctaType === "masterclass" ? "Redirecting to your free masterclass..." : "Our counselor will reach out within 2 hours!"}
-        </p>
-      </div>
+      <motion.div className="text-center py-8" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
+        <CheckCircle className="w-14 h-14 text-orange-500 mx-auto mb-4" />
+        <p className="text-xl font-bold text-white">{ctaType === "masterclass" ? "Redirecting to your free masterclass..." : "Our counselor will reach out within 2 hours!"}</p>
+      </motion.div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3 w-full max-w-md mx-auto">
-      <Input placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required className="h-12 text-base" />
-      <Input placeholder="Phone Number (10 digits)" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} required pattern="[6-9]\d{9}" className="h-12 text-base" />
+      <Input placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required className="h-13 text-base bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-orange-500/50 focus:ring-orange-500/20" />
+      <Input placeholder="Phone Number (10 digits)" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} required pattern="[6-9]\d{9}" className="h-13 text-base bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-orange-500/50 focus:ring-orange-500/20" />
       <Select value={targetYear} onValueChange={setTargetYear}>
-        <SelectTrigger className="h-12 text-base"><SelectValue placeholder="Target Year" /></SelectTrigger>
-        <SelectContent>
+        <SelectTrigger className="h-13 text-base bg-white/5 border-white/10 text-white"><SelectValue placeholder="Target Year" /></SelectTrigger>
+        <SelectContent className="bg-[#1a1a1a] border-white/10">
           <SelectItem value="2025">CAT 2025</SelectItem>
           <SelectItem value="2026">CAT 2026</SelectItem>
           <SelectItem value="2027">CAT 2027</SelectItem>
         </SelectContent>
       </Select>
-      <Button type="submit" size="lg" className="w-full h-12 text-base font-bold" disabled={submitting}>
+      <Button type="submit" size="lg" className="w-full h-13 text-base font-black tracking-wide bg-orange-500 hover:bg-orange-600 text-white border-0" disabled={submitting}>
         {submitting ? "Submitting..." : label}
       </Button>
     </form>
   );
 }
 
-// ─── FAQ Item ───
+/* ─── FAQ Item ─── */
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-border rounded-xl overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between p-5 text-left hover:bg-muted/50 transition-colors">
-        <span className="font-semibold text-foreground pr-4">{q}</span>
-        {open ? <ChevronUp className="w-5 h-5 text-muted-foreground shrink-0" /> : <ChevronDown className="w-5 h-5 text-muted-foreground shrink-0" />}
+    <motion.div
+      className="border-b border-white/10"
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+    >
+      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between py-6 text-left group">
+        <span className="font-semibold text-white/90 pr-4 text-lg group-hover:text-orange-400 transition-colors">{q}</span>
+        {open ? <ChevronUp className="w-5 h-5 text-orange-500 shrink-0" /> : <ChevronDown className="w-5 h-5 text-white/30 shrink-0" />}
       </button>
-      {open && <div className="px-5 pb-5 text-muted-foreground leading-relaxed">{a}</div>}
-    </div>
+      {open && <div className="pb-6 text-white/50 leading-relaxed -mt-2">{a}</div>}
+    </motion.div>
   );
 }
 
-// ─── Main Page ───
+/* ═══════════════════════════════════════
+   MAIN PAGE
+   ═══════════════════════════════════════ */
 export default function CATCoachingComparison() {
   const [searchParams] = useSearchParams();
   const competitorKey = searchParams.get("competitor")?.toLowerCase() || "";
@@ -146,43 +189,34 @@ export default function CATCoachingComparison() {
   const headline = competitor?.headline || DEFAULT_HEADLINE;
   const competitorName = competitor?.name || "Other Coaching";
 
-  // Scroll to section helper
   const scrollTo = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
-  const comparisonRows = [
-    { feature: "Batch Size", them: "500–2000+ students", us: "Small batches (≤30)", advantage: true },
-    { feature: "Personal Mentorship", them: "No / Generic doubt-clearing", us: "1-on-1 IIM Alumni Mentors", advantage: true },
-    { feature: "Study Plan", them: "One-size-fits-all", us: "AI-Personalized Daily Plan", advantage: true },
-    { feature: "Mock Analysis", them: "Score only", us: "Deep section-wise analytics", advantage: true },
-    { feature: "Doubt Resolution", them: "24–48 hour wait", us: "Same-day WhatsApp support", advantage: true },
-    { feature: "Faculty", them: "Mix of experienced + new", us: "99%ile+ IIM Alumni only", advantage: true },
-    { feature: "Cost", them: "₹30,000–₹1,20,000", us: "Starts at ₹4,999", advantage: true },
-    { feature: "Results", them: "Undisclosed / vague", us: "300+ IIM converts, verified", advantage: true },
-  ];
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
+  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
 
-  const struggles = [
-    { icon: Users, title: "Lost in the crowd", desc: "Large batch sizes mean your doubts go unanswered and you're just a number." },
-    { icon: BookOpen, title: "Generic study material", desc: "Same plan for everyone — whether you're at 50%ile or 90%ile." },
-    { icon: TrendingUp, title: "No accountability", desc: "Nobody tracks your progress or pushes you when motivation drops." },
-    { icon: Phone, title: "Zero personal support", desc: "Automated replies and ticket systems instead of real human guidance." },
+  const comparisonRows = [
+    { feature: "Batch Size", them: "500–2000+", us: "≤30 students", icon: Users },
+    { feature: "Mentorship", them: "Generic doubt-clearing", us: "1-on-1 IIM Alumni", icon: Target },
+    { feature: "Study Plan", them: "One-size-fits-all", us: "AI-Personalized Daily", icon: Brain },
+    { feature: "Mock Analysis", them: "Score only", us: "Deep section-wise analytics", icon: TrendingUp },
+    { feature: "Doubt Resolution", them: "24–48 hr wait", us: "Same-day WhatsApp", icon: Zap },
+    { feature: "Faculty", them: "Mixed experience", us: "99%ile+ IIM Alumni only", icon: Award },
+    { feature: "Cost", them: "₹30K–₹1.2L", us: "Starts ₹4,999", icon: Star },
+    { feature: "Results", them: "Undisclosed", us: "300+ IIM converts", icon: CheckCircle },
   ];
 
   const results = [
-    { name: "Bhavy Jain", percentile: "99.5", college: "FMS Delhi", initials: "BJ", photo: studentBhavy, quote: "The structured strategy made all the difference in my preparation." },
-    { name: "Rounak", percentile: "99.2", college: "IIM Bangalore", initials: "RK", photo: studentRounak, quote: "Mock analysis sessions helped me identify and fix weak areas fast." },
-    { name: "Golla Rahul", percentile: "98.9", college: "IIT Bombay", initials: "GR", photo: studentRahul, quote: "Went from 90 to 98+ percentile in just 3 months of focused prep." },
-    { name: "Aditya Kumar", percentile: "98.6", college: "XLRI Jamshedpur", initials: "AK", photo: studentAditya, quote: "The daily planner kept me disciplined throughout my journey." },
-    { name: "Shruti Manghani", percentile: "98.3", college: "SP Jain", initials: "SM", photo: studentShruti, quote: "Personalized mentorship gave me clarity when I needed it most." },
-    { name: "Ritik Kumar", percentile: "98.1", college: "IIM Udaipur", initials: "RK", photo: studentRitik, quote: "Strategy over hours — that mindset shift changed everything for me." },
-    { name: "Prakhar Poddar", percentile: "98.0", college: "IIM Trichy", initials: "PP", photo: studentPrakhar, quote: "The right guidance at the right time made my CAT journey smooth." },
-    { name: "Saloni Hindocha", percentile: "98.4", college: "IIT Mumbai", initials: "SH", photo: studentSaloni, quote: "Consistent practice with expert feedback was the key to my success." },
-    { name: "Sattaki Basu", percentile: "98.2", college: "IIM Ranchi", initials: "SB", photo: studentSattaki, quote: "Structured mock analysis transformed my approach to the exam." },
-  ];
-
-  const testimonials = [
-    { name: "Meera T.", highlight: "The structured approach changed everything for me.", text: "I was struggling with time management until I joined Percentilers. Their study planner and mock analysis helped me jump from 85 to 98 percentile in 4 months.", rating: 5 },
-    { name: "Karthik N.", highlight: "Best investment I made for my CAT prep.", text: "The faculty didn't just teach — they mentored. Every doubt session felt personal. I got into IIM Bangalore, and I owe a lot to the Percentilers team.", rating: 5 },
-    { name: "Divya S.", highlight: "Finally, coaching that focuses on strategy, not just content.", text: "Most coaching centers overload you with material. Percentilers gave me a clear plan, weekly targets, and honest feedback. That's what made the difference.", rating: 5 },
+    { name: "Bhavy Jain", percentile: "99.5", college: "FMS Delhi", initials: "BJ", photo: studentBhavy, quote: "The structured strategy made all the difference." },
+    { name: "Rounak", percentile: "99.2", college: "IIM Bangalore", initials: "RK", photo: studentRounak, quote: "Mock analysis helped me fix weak areas fast." },
+    { name: "Golla Rahul", percentile: "98.9", college: "IIT Bombay", initials: "GR", photo: studentRahul, quote: "90 → 98+ percentile in 3 months." },
+    { name: "Aditya Kumar", percentile: "98.6", college: "XLRI", initials: "AK", photo: studentAditya, quote: "Daily planner kept me disciplined throughout." },
+    { name: "Shruti Manghani", percentile: "98.3", college: "SP Jain", initials: "SM", photo: studentShruti, quote: "Mentorship gave me clarity when I needed it." },
+    { name: "Ritik Kumar", percentile: "98.1", college: "IIM Udaipur", initials: "RK", photo: studentRitik, quote: "Strategy over hours changed everything." },
+    { name: "Prakhar Poddar", percentile: "98.0", college: "IIM Trichy", initials: "PP", photo: studentPrakhar, quote: "Right guidance at the right time." },
+    { name: "Saloni Hindocha", percentile: "98.4", college: "IIT Mumbai", initials: "SH", photo: studentSaloni, quote: "Expert feedback was key to my success." },
+    { name: "Sattaki Basu", percentile: "98.2", college: "IIM Ranchi", initials: "SB", photo: studentSattaki, quote: "Mock analysis transformed my approach." },
   ];
 
   const whatsappScreenshots = [whatsapp1, whatsapp2, whatsapp3, whatsapp4, whatsapp5, whatsapp6];
@@ -196,283 +230,382 @@ export default function CATCoachingComparison() {
   ];
 
   return (
-    <>
+    <div className="bg-[#0A0A0A] min-h-screen">
       <SEO
         title="CAT Coaching Comparison 2026 – Best Institute | Percentilers"
         description="Compare CAT coaching institutes side-by-side. See why 300+ students chose Percentilers' IIM-alumni mentorship over big coaching brands. Free masterclass inside."
         canonical="https://percentilers.in/cat-coaching-comparison"
       />
-      {/* FAQ structured data for rich snippets */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": faqs.map(f => ({
-          "@type": "Question",
-          "name": f.q,
-          "acceptedAnswer": { "@type": "Answer", "text": f.a }
-        }))
+        "@context": "https://schema.org", "@type": "FAQPage",
+        "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
       })}} />
 
-      {/* ─── HERO ─── */}
-      <section className="relative bg-foreground text-primary-foreground overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,hsl(25_100%_50%/0.15),transparent_60%)]" />
-        <div className="relative max-w-5xl mx-auto px-4 py-16 md:py-24 text-center">
+      {/* ═══ CHAPTER 0: HERO ═══ */}
+      <section ref={heroRef} className="relative min-h-[100vh] flex items-center justify-center overflow-hidden">
+        {/* Grain overlay */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E\")" }} />
+        {/* Radial glow */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-orange-500/[0.07] rounded-full blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-orange-600/[0.04] rounded-full blur-[100px]" />
+
+        <motion.div className="relative z-10 max-w-5xl mx-auto px-6 text-center" style={{ opacity: heroOpacity, y: heroY }}>
           {competitor && (
-            <span className="inline-block mb-4 px-4 py-1.5 rounded-full text-sm font-medium bg-primary/20 text-primary border border-primary/30">
-              Comparing {competitorName}?
-            </span>
+            <motion.span
+              className="inline-block mb-6 px-5 py-2 rounded-full text-xs tracking-[0.2em] uppercase font-bold border border-orange-500/30 text-orange-400 bg-orange-500/10"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              vs {competitorName}
+            </motion.span>
           )}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight mb-6">
+
+          <motion.h1
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.05] tracking-tight whitespace-pre-line"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          >
             {headline}
-          </h1>
-          <p className="text-lg md:text-xl text-primary-foreground/70 max-w-2xl mx-auto mb-10">
-            300+ students switched to Percentilers and scored 99%ile+. See the difference an IIM-alumni mentor makes.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="h-14 px-8 text-lg font-bold" onClick={() => scrollTo("masterclass-section")}>
+          </motion.h1>
+
+          <motion.p
+            className="mt-6 md:mt-8 text-lg md:text-xl text-white/40 max-w-2xl mx-auto leading-relaxed"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            300+ students switched to Percentilers and scored <span className="text-orange-400 font-semibold">99%ile+</span>. See the difference an IIM-alumni mentor makes.
+          </motion.p>
+
+          <motion.div
+            className="mt-10 flex flex-col sm:flex-row gap-4 justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <Button
+              size="lg"
+              className="h-14 px-10 text-base font-black tracking-wide bg-orange-500 hover:bg-orange-600 text-white border-0 rounded-full"
+              onClick={() => scrollTo("masterclass-section")}
+            >
               Watch Free Masterclass <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button size="lg" variant="outline" className="h-14 px-8 text-lg font-bold border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => scrollTo("call-section")}>
-              Book Free Counseling Call
+            <Button
+              size="lg"
+              variant="outline"
+              className="h-14 px-10 text-base font-bold tracking-wide border-white/20 text-white/80 hover:bg-white/5 hover:border-white/40 rounded-full bg-transparent"
+              onClick={() => scrollTo("call-section")}
+            >
+              Book Free Call
             </Button>
-          </div>
-          <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm text-primary-foreground/60">
-            <span>✓ 300+ IIM Converts</span>
-            <span>✓ 99%ile Faculty</span>
-            <span>✓ Starts ₹4,999</span>
-            <span>✓ 1-on-1 Mentorship</span>
+          </motion.div>
+
+          {/* Scroll hint */}
+          <motion.div
+            className="mt-16 md:mt-24"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ repeat: Infinity, duration: 2 }}
+          >
+            <ChevronDown className="w-6 h-6 text-white/20 mx-auto" />
+          </motion.div>
+        </motion.div>
+      </section>
+
+      {/* ═══ CHAPTER 1: THE NUMBERS ═══ */}
+      <section className="py-24 md:py-32 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0f0f0f] to-[#0A0A0A]" />
+        <div className="relative z-10 max-w-6xl mx-auto px-6">
+          <ChapterHeading number="Chapter 01" title="The Numbers Don't Lie" subtitle="Data from 10,000+ students trained over 8 years." />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+            <AnimatedStat value={300} suffix="+" label="IIM Converts" delay={0} />
+            <AnimatedStat value={10000} suffix="+" label="Students Trained" delay={200} />
+            <AnimatedStat value={99} suffix="%" prefix="" label="Faculty Percentile" delay={400} />
+            <AnimatedStat value={8} suffix=" yrs" label="Coaching Experience" delay={600} />
           </div>
         </div>
       </section>
 
-      {/* ─── DECISION SECTION ─── */}
-      <section className="py-14 md:py-20 bg-background">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4">Making a ₹50,000+ Decision?</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto mb-8">
-            Choosing CAT coaching isn't just about content — it's about the system, mentorship, and accountability that actually gets you to your dream B-school.
-          </p>
-          <div className="grid md:grid-cols-3 gap-6">
+      {/* ═══ CHAPTER 2: THE PROBLEM ═══ */}
+      <section className="py-24 md:py-32 relative">
+        <div className="absolute inset-0">
+          <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-red-500/[0.03] rounded-full blur-[100px]" />
+        </div>
+        <div className="relative z-10 max-w-5xl mx-auto px-6">
+          <ChapterHeading number="Chapter 02" title="Why Most CAT Aspirants Fail" subtitle="It's not about intelligence. It's about the system you choose." />
+
+          <div className="grid md:grid-cols-2 gap-6">
             {[
-              { num: "72%", label: "of CAT aspirants regret their coaching choice" },
-              { num: "3x", label: "higher conversion rate with personalized mentorship" },
-              { num: "89%", label: "of our students say mentorship was the #1 factor" },
-            ].map((s) => (
-              <div key={s.label} className="p-6 rounded-2xl bg-muted/50 border border-border">
-                <div className="text-3xl md:text-4xl font-extrabold text-primary mb-2">{s.num}</div>
-                <div className="text-sm text-muted-foreground">{s.label}</div>
-              </div>
+              { icon: Users, title: "Lost in the Crowd", desc: "Large batch sizes (500–2000) mean your doubts go unanswered. You're just a number.", stat: "72%" , statLabel: "regret their coaching choice" },
+              { icon: BookOpen, title: "Generic Study Material", desc: "Same plan whether you're at 50%ile or 90%ile. No personalization whatsoever.", stat: "85%", statLabel: "get wrong-level material" },
+              { icon: TrendingUp, title: "Zero Accountability", desc: "Nobody tracks your progress. When motivation drops, you're on your own.", stat: "60%", statLabel: "drop out mid-prep" },
+              { icon: Phone, title: "No Real Support", desc: "Automated ticket systems. 48-hour wait for doubt resolution. No human touch.", stat: "3x", statLabel: "slower doubt resolution" },
+            ].map((item, i) => (
+              <motion.div
+                key={item.title}
+                className="p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm group hover:border-red-500/20 transition-all duration-500"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+              >
+                <div className="flex items-start justify-between mb-6">
+                  <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+                    <item.icon className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div className="text-right">
+                    <div className="text-2xl font-black text-red-400">{item.stat}</div>
+                    <div className="text-[10px] uppercase tracking-wider text-white/30">{item.statLabel}</div>
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
+                <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── COMPARISON TABLE ─── */}
-      <section className="py-14 md:py-20 bg-muted/30">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground text-center mb-3">
-            {competitorName} vs Percentilers
-          </h2>
-          <p className="text-muted-foreground text-center mb-10">An honest, side-by-side comparison</p>
-          <div className="rounded-2xl border border-border overflow-hidden bg-card">
-            <div className="grid grid-cols-3 bg-foreground text-primary-foreground text-sm font-bold">
-              <div className="p-4">Feature</div>
-              <div className="p-4 text-center">{competitorName}</div>
-              <div className="p-4 text-center text-primary">Percentilers</div>
-            </div>
+      {/* ═══ DRAMATIC DIVIDER STAT ═══ */}
+      <section className="py-20 md:py-28 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/[0.05] via-transparent to-orange-500/[0.05]" />
+        <motion.div
+          className="relative z-10 text-center px-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <div className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black text-white/[0.07] leading-none">
+            ₹50,000+
+          </div>
+          <p className="text-white/50 text-lg md:text-xl mt-4 max-w-lg mx-auto">
+            That's what you'll spend on coaching. <span className="text-orange-400 font-semibold">Choose wisely.</span>
+          </p>
+        </motion.div>
+      </section>
+
+      {/* ═══ CHAPTER 3: THE COMPARISON ═══ */}
+      <section className="py-24 md:py-32 relative">
+        <div className="relative z-10 max-w-4xl mx-auto px-6">
+          <ChapterHeading number="Chapter 03" title={`${competitorName} vs\nPercentilers`} subtitle="An honest, side-by-side look at what you actually get." />
+
+          <div className="space-y-3">
             {comparisonRows.map((row, i) => (
-              <div key={row.feature} className={`grid grid-cols-3 text-sm ${i % 2 === 0 ? "bg-card" : "bg-muted/30"} border-t border-border`}>
-                <div className="p-4 font-medium text-foreground">{row.feature}</div>
-                <div className="p-4 text-center text-muted-foreground flex items-center justify-center gap-1">
-                  <XCircle className="w-4 h-4 text-destructive shrink-0 hidden sm:block" />
-                  <span>{row.them}</span>
+              <motion.div
+                key={row.feature}
+                className="grid grid-cols-[1fr_1fr_1fr] md:grid-cols-[1.5fr_1fr_1fr] items-center gap-2 py-5 px-4 md:px-6 rounded-xl border border-white/[0.04] bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05, duration: 0.4 }}
+              >
+                <div className="flex items-center gap-3">
+                  <row.icon className="w-4 h-4 text-orange-500/60 hidden sm:block shrink-0" />
+                  <span className="font-semibold text-white text-sm md:text-base">{row.feature}</span>
                 </div>
-                <div className="p-4 text-center text-foreground font-medium flex items-center justify-center gap-1">
-                  <CheckCircle className="w-4 h-4 text-primary shrink-0 hidden sm:block" />
-                  <span>{row.us}</span>
+                <div className="text-center">
+                  <span className="text-white/30 text-xs md:text-sm flex items-center justify-center gap-1.5">
+                    <XCircle className="w-3.5 h-3.5 text-red-400/60 shrink-0" />
+                    {row.them}
+                  </span>
                 </div>
-              </div>
+                <div className="text-center">
+                  <span className="text-orange-400 text-xs md:text-sm font-semibold flex items-center justify-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                    {row.us}
+                  </span>
+                </div>
+              </motion.div>
             ))}
           </div>
-          <div className="text-center mt-8">
-            <Button size="lg" className="h-12 px-8 font-bold" onClick={() => scrollTo("masterclass-section")}>
+
+          <motion.div
+            className="mt-12 text-center"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+          >
+            <Button
+              size="lg"
+              className="h-14 px-10 text-base font-black tracking-wide bg-orange-500 hover:bg-orange-600 text-white border-0 rounded-full"
+              onClick={() => scrollTo("masterclass-section")}
+            >
               See the Percentilers Difference <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* ─── WHY STUDENTS STRUGGLE ─── */}
-      <section className="py-14 md:py-20 bg-background">
-        <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground text-center mb-3">Why Most CAT Aspirants Struggle</h2>
-          <p className="text-muted-foreground text-center mb-10">It's not about intelligence — it's about the system</p>
-          <div className="grid sm:grid-cols-2 gap-6">
-            {struggles.map((s) => (
-              <div key={s.title} className="flex gap-4 p-6 rounded-2xl border border-border bg-card hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 rounded-xl bg-destructive/10 flex items-center justify-center shrink-0">
-                  <s.icon className="w-6 h-6 text-destructive" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-foreground mb-1">{s.title}</h3>
-                  <p className="text-sm text-muted-foreground">{s.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* ═══ CHAPTER 4: THE SYSTEM ═══ */}
+      <section className="py-24 md:py-32 relative">
+        <div className="absolute inset-0">
+          <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-orange-500/[0.04] rounded-full blur-[120px]" />
         </div>
-      </section>
+        <div className="relative z-10 max-w-5xl mx-auto px-6">
+          <ChapterHeading number="Chapter 04" title="The Percentilers System" subtitle="A battle-tested framework used by 300+ IIM converts." />
 
-      {/* ─── PERCENTILERS SYSTEM ─── */}
-      <section className="py-14 md:py-20 bg-primary text-primary-foreground">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-4xl font-bold mb-3">The Percentilers Preparation System</h2>
-          <p className="text-primary-foreground/80 mb-10 max-w-2xl mx-auto">A battle-tested framework used by 300+ IIM converts</p>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { step: "01", title: "AI Study Plan", desc: "Personalized daily schedule based on your strengths, weaknesses, and available hours" },
-              { step: "02", title: "IIM Mentor", desc: "Dedicated 99%ile+ IIM alumni mentor who tracks your progress weekly" },
-              { step: "03", title: "Mock Mastery", desc: "Section-wise deep analysis with improvement strategies after every mock" },
-              { step: "04", title: "Interview Prep", desc: "Full WAT-PI preparation with IIM panelist mock interviews" },
-            ].map((s) => (
-              <div key={s.step} className="p-6 rounded-2xl bg-primary-foreground/10 border border-primary-foreground/20">
-                <div className="text-3xl font-extrabold text-primary-foreground/30 mb-2">{s.step}</div>
-                <h3 className="font-bold text-lg mb-2">{s.title}</h3>
-                <p className="text-sm text-primary-foreground/70">{s.desc}</p>
-              </div>
+              { step: "01", title: "AI Study Plan", desc: "Personalized daily schedule based on your strengths, weaknesses, and available hours.", icon: Brain },
+              { step: "02", title: "IIM Mentor", desc: "Dedicated 99%ile+ IIM alumni mentor tracking your progress weekly.", icon: Target },
+              { step: "03", title: "Mock Mastery", desc: "Section-wise deep analysis with improvement strategies after every mock.", icon: TrendingUp },
+              { step: "04", title: "Interview Prep", desc: "Full WAT-PI preparation with IIM panelist mock interviews.", icon: Award },
+            ].map((s, i) => (
+              <motion.div
+                key={s.step}
+                className="relative p-8 rounded-2xl border border-white/[0.06] bg-gradient-to-b from-white/[0.03] to-transparent group hover:border-orange-500/20 transition-all duration-500"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12, duration: 0.6 }}
+              >
+                <div className="text-[64px] font-black text-white/[0.04] absolute top-4 right-4 leading-none">{s.step}</div>
+                <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center mb-5">
+                  <s.icon className="w-5 h-5 text-orange-400" />
+                </div>
+                <h3 className="font-bold text-white text-lg mb-2">{s.title}</h3>
+                <p className="text-sm text-white/40 leading-relaxed">{s.desc}</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── RESULTS ─── */}
-      <section className="py-14 md:py-20 bg-background">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground text-center mb-3">Real Results, Real Students</h2>
-          <p className="text-muted-foreground text-center mb-10">Verified converts — not vague testimonials</p>
+      {/* ═══ CHAPTER 5: RESULTS ═══ */}
+      <section className="py-24 md:py-32 relative">
+        <div className="relative z-10 max-w-6xl mx-auto px-6">
+          <ChapterHeading number="Chapter 05" title="Real Results. Real Students." subtitle="Verified converts — not vague testimonials." />
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {results.map((r) => (
-              <div key={r.name} className="p-6 rounded-2xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all group">
-                <div className="flex items-center gap-3 mb-4">
-                  <Avatar className="h-12 w-12 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
-                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile CAT scorer`} width={48} height={48} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" decoding="async" />
-                    <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{r.initials}</AvatarFallback>
+            {results.map((r, i) => (
+              <motion.div
+                key={r.name}
+                className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-orange-500/20 transition-all duration-500 group"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05, duration: 0.5 }}
+              >
+                <div className="flex items-center gap-3 mb-5">
+                  <Avatar className="h-11 w-11 ring-2 ring-white/10 group-hover:ring-orange-500/30 transition-all bg-white/5 overflow-hidden">
+                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile`} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" />
+                    <AvatarFallback className="bg-orange-500/10 text-orange-400 font-bold text-xs">{r.initials}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-semibold text-foreground">{r.name}</p>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <p className="font-semibold text-white text-sm">{r.name}</p>
+                    <div className="flex items-center gap-1 text-[11px] text-white/30">
                       <GraduationCap className="h-3 w-3" />
                       {r.college}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-3">
-                  <span className="text-3xl font-extrabold text-primary">{r.percentile}</span>
-                  <span className="text-sm font-medium text-muted-foreground">%ile</span>
+                  <span className="text-4xl font-black text-orange-400">{r.percentile}</span>
+                  <span className="text-sm font-medium text-white/30">%ile</span>
                 </div>
-                <div className="flex gap-2 items-start">
-                  <Quote className="h-4 w-4 text-primary/40 shrink-0 mt-0.5" />
-                  <p className="text-sm text-muted-foreground italic leading-relaxed">{r.quote}</p>
-                </div>
-              </div>
+                <p className="text-sm text-white/35 italic leading-relaxed">"{r.quote}"</p>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
-      <section className="py-14 md:py-20 bg-muted/30">
-        <div className="max-w-5xl mx-auto px-4">
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground text-center mb-10">What Students Say</h2>
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {testimonials.map((t) => (
-              <div key={t.name} className="p-6 rounded-2xl border border-border bg-card relative overflow-hidden group">
-                <Quote className="absolute top-4 right-4 h-10 w-10 text-primary/10 group-hover:text-primary/20 transition-colors" />
-                <div className="flex gap-0.5 mb-3">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                  ))}
+      {/* ═══ CHAPTER 6: SOCIAL PROOF ═══ */}
+      <section className="py-24 md:py-32 relative">
+        <div className="relative z-10 max-w-5xl mx-auto px-6">
+          <ChapterHeading number="Chapter 06" title="Straight From WhatsApp" subtitle="Unedited messages from real students." />
+
+          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-400 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
+            <MessageCircle className="h-3.5 w-3.5" />
+            Actual Screenshots
+          </div>
+
+          <div className="columns-2 md:columns-3 gap-4">
+            {whatsappScreenshots.map((src, i) => (
+              <motion.div
+                key={i}
+                className="break-inside-avoid mb-4"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+              >
+                <div className="rounded-xl overflow-hidden border border-white/[0.06] hover:border-white/10 transition-all duration-300 hover:-translate-y-1">
+                  <img src={src} alt={`Student WhatsApp testimonial ${i + 1}`} className="w-full h-auto" loading="lazy" decoding="async" />
                 </div>
-                <p className="font-bold text-foreground text-lg mb-3">"{t.highlight}"</p>
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{t.text}</p>
-                <p className="text-sm font-semibold text-primary">— {t.name}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-
-          {/* WhatsApp Screenshots */}
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 dark:text-green-400 px-4 py-1.5 rounded-full text-sm font-semibold">
-              <MessageCircle className="h-4 w-4" />
-              Real Student Messages
-            </div>
-          </div>
-          <div className="bg-card/50 backdrop-blur-sm rounded-3xl p-4 md:p-6 border border-border/30 max-w-4xl mx-auto">
-            <div className="columns-2 md:columns-3 gap-4">
-              {whatsappScreenshots.map((src, i) => (
-                <div key={i} className="break-inside-avoid mb-4">
-                  <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card">
-                    <img src={src} alt={`WhatsApp testimonial from a CAT student – screenshot ${i + 1}`} width={400} height={600} className="w-full h-auto object-contain" loading="lazy" decoding="async" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
-      {/* ─── MASTERCLASS CTA ─── */}
-      <section id="masterclass-section" className="py-14 md:py-20 bg-foreground text-primary-foreground">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-4xl font-bold mb-3">Watch the Free CAT Strategy Masterclass</h2>
-          <p className="text-primary-foreground/70 mb-8">90-minute session by IIM alumni. Learn the exact strategy used by 99%ile scorers. No pitch, pure value.</p>
-          <LeadForm ctaType="masterclass" competitor={competitorKey} label="Watch Free Masterclass →" />
+      {/* ═══ CTA: MASTERCLASS ═══ */}
+      <section id="masterclass-section" className="py-24 md:py-32 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-orange-500/[0.06] via-transparent to-transparent" />
+        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="text-[11px] tracking-[0.4em] uppercase text-orange-500/70 font-semibold block mb-4">Free Access</span>
+            <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-4">Watch the CAT Strategy Masterclass</h2>
+            <p className="text-white/40 mb-10 text-lg">90-minute session by IIM alumni. The exact strategy used by 99%ile scorers. No pitch.</p>
+            <LeadForm ctaType="masterclass" competitor={competitorKey} label="Watch Free Masterclass →" />
+          </motion.div>
         </div>
       </section>
 
-      {/* ─── COUNSELING CALL CTA ─── */}
-      <section id="call-section" className="py-14 md:py-20 bg-background">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-3">Not Sure Which Path Is Right?</h2>
-          <p className="text-muted-foreground mb-8">Book a free 15-minute counseling call with our IIM-alumni team. Get a personalized prep roadmap — zero pressure, zero sales pitch.</p>
-          <LeadForm ctaType="call" competitor={competitorKey} label="Book Free Counseling Call →" />
+      {/* ═══ CTA: COUNSELING CALL ═══ */}
+      <section id="call-section" className="py-24 md:py-32 relative border-t border-white/[0.04]">
+        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <span className="text-[11px] tracking-[0.4em] uppercase text-orange-500/70 font-semibold block mb-4">Personalized Guidance</span>
+            <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-4">Not Sure Which Path Is Right?</h2>
+            <p className="text-white/40 mb-10 text-lg">Free 15-minute counseling call with our IIM-alumni team. Personalized roadmap, zero pressure.</p>
+            <LeadForm ctaType="call" competitor={competitorKey} label="Book Free Counseling Call →" />
+          </motion.div>
         </div>
       </section>
 
-      {/* ─── FAQ ─── */}
-      <section className="py-14 md:py-20 bg-muted/30">
-        <div className="max-w-3xl mx-auto px-4">
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground text-center mb-10">Frequently Asked Questions</h2>
-          <div className="space-y-3">
+      {/* ═══ FAQ ═══ */}
+      <section className="py-24 md:py-32 relative border-t border-white/[0.04]">
+        <div className="max-w-3xl mx-auto px-6">
+          <ChapterHeading number="FAQ" title="Questions & Answers" />
+          <div>
             {faqs.map((f) => <FAQItem key={f.q} q={f.q} a={f.a} />)}
           </div>
         </div>
       </section>
 
-      {/* ─── FOOTER STRIP ─── */}
-      <section className="py-8 bg-foreground text-primary-foreground text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <p className="text-sm text-primary-foreground/60">
+      {/* ═══ FOOTER ═══ */}
+      <footer className="py-10 border-t border-white/[0.04]">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <p className="text-xs text-white/20">
             © {new Date().getFullYear()} Percentilers. All rights reserved. |{" "}
-            <a href="/terms" className="underline hover:text-primary">Terms</a> |{" "}
-            <a href="/privacy-policy" className="underline hover:text-primary">Privacy</a> |{" "}
-            <a href="/refund-policy" className="underline hover:text-primary">Refund Policy</a>
+            <a href="/terms" className="underline hover:text-orange-400 transition-colors">Terms</a> |{" "}
+            <a href="/privacy-policy" className="underline hover:text-orange-400 transition-colors">Privacy</a> |{" "}
+            <a href="/refund-policy" className="underline hover:text-orange-400 transition-colors">Refund Policy</a>
           </p>
         </div>
-      </section>
+      </footer>
 
-      {/* ─── STICKY MOBILE CTA ─── */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-card/95 backdrop-blur-sm border-t border-border p-3 flex gap-2">
-        <Button className="flex-1 h-11 font-bold text-sm" onClick={() => scrollTo("masterclass-section")}>
+      {/* ═══ STICKY MOBILE CTA ═══ */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#0A0A0A]/95 backdrop-blur-md border-t border-white/[0.06] p-3 flex gap-2">
+        <Button className="flex-1 h-11 font-black text-sm bg-orange-500 hover:bg-orange-600 text-white border-0 rounded-full" onClick={() => scrollTo("masterclass-section")}>
           Free Masterclass
         </Button>
-        <Button variant="secondary" className="flex-1 h-11 font-bold text-sm border border-primary text-primary" onClick={() => scrollTo("call-section")}>
+        <Button variant="outline" className="flex-1 h-11 font-bold text-sm border-white/20 text-white/80 hover:bg-white/5 rounded-full bg-transparent" onClick={() => scrollTo("call-section")}>
           Free Call
         </Button>
       </div>
-
-      {/* Bottom padding for sticky CTA on mobile */}
       <div className="h-16 md:hidden" />
-    </>
+    </div>
   );
 }
