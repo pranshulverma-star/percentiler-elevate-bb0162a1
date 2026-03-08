@@ -325,13 +325,11 @@ function JourneyTimeline() {
             />
           </svg>
 
-          <AnimatePresence mode="wait">
-            <JourneyStageCard
-              key={currentStage.number}
-              stage={currentStage}
-              index={safeActiveStage}
-            />
-          </AnimatePresence>
+          <JourneyStageCard
+            key={currentStage.number}
+            stage={currentStage}
+            index={safeActiveStage}
+          />
         </div>
       </section>
     </div>
