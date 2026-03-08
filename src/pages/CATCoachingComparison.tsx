@@ -943,15 +943,28 @@ export default function CATCoachingComparison() {
         </div>
       </section>
 
-      {/* ═══ CTA: MASTERCLASS ═══ */}
-      <section id="masterclass-section" className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative">
+      {/* ═══ CTA: MASTERCLASS + STRATEGY CALL ═══ */}
+      <section id="masterclass-section" className="py-16 md:py-28 bg-secondary relative">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.04] via-transparent to-transparent" />
-        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
+        <div className="relative z-10 max-w-2xl mx-auto px-4 md:px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-4">Free Access</span>
             <h2 className="text-3xl md:text-5xl font-black text-foreground leading-tight mb-4">Watch the CAT Strategy Masterclass</h2>
-            <p className="text-muted-foreground mb-10 text-lg">90-minute session by IIM alumni. The exact strategy used by 99%ile scorers. No pitch.</p>
+            <p className="text-muted-foreground mb-8 text-base md:text-lg">90-minute session by IIM alumni. The exact strategy used by 99%ile scorers. No pitch.</p>
             <LeadForm ctaType="masterclass" competitor={competitorKey} label="Watch Free Masterclass →" />
+            <div className="mt-6 flex items-center justify-center gap-3">
+              <span className="text-xs text-muted-foreground">or</span>
+            </div>
+            <Button
+              size="lg"
+              variant="outline"
+              className="mt-3 h-12 md:h-14 px-8 text-sm md:text-base font-bold rounded-xl border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+              asChild
+            >
+              <a href="tel:+919911928071">
+                <Phone className="mr-2 w-4 h-4" /> Book Free Strategy Call
+              </a>
+            </Button>
           </motion.div>
         </div>
       </section>
