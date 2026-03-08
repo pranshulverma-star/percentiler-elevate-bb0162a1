@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 import {
   CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp,
   ChevronDown, GraduationCap, MessageCircle, Zap, Target, Brain, Award,
-  ChevronUp, Rocket, FileText, Headphones
+  ChevronUp
 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
@@ -185,113 +185,138 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-/* ─── Timeline section ─── */
-const timelineSteps = [
-  { icon: Rocket, title: "Sign Up", desc: "Free masterclass + AI study plan in 5 minutes", color: "text-primary" },
-  { icon: Brain, title: "Get Your Roadmap", desc: "Personalized daily schedule based on your level", color: "text-primary" },
-  { icon: Target, title: "IIM Mentor Assigned", desc: "1-on-1 guidance from a 99%ile+ IIM alumni", color: "text-primary" },
-  { icon: FileText, title: "Mock Mastery", desc: "Deep section-wise analysis after every mock", color: "text-primary" },
-  { icon: Headphones, title: "Daily Support", desc: "Same-day WhatsApp doubt resolution", color: "text-primary" },
-  { icon: Award, title: "95+ Percentile", desc: "Join 300+ students who cracked IIMs", color: "text-primary" },
+/* ─── Journey cards data ─── */
+const journeyCards = [
+  { badge: "Day 0", badgeColor: "bg-muted text-muted-foreground", emoji: "😕", title: "You Today", desc: "Confused aspirant, unsure where to start. Information overload, no clear direction." },
+  { badge: "Week 1", badgeColor: "bg-primary/15 text-primary", emoji: "📋", title: "Profile Evaluation", desc: "Free strategy call. We map your strengths & weak areas with a 99%ile mentor.", cta: "Evaluate My Profile →" },
+  { badge: "Week 2", badgeColor: "bg-primary/15 text-primary", emoji: "🗓️", title: "Structured Plan", desc: "AI builds your personalized daily study schedule — topic-wise, hour-wise.", cta: "Get Your AI Study Plan →" },
+  { badge: "Month 2–5", badgeColor: "bg-primary/15 text-primary", emoji: "🎯", title: "Live Classes + Mocks", desc: "Daily live sessions, weekly mocks with deep section-wise analytics & mentor reviews.", cta: "See Mock Analysis Demo →" },
+  { badge: "Month 6", badgeColor: "bg-primary/15 text-primary", emoji: "🧠", title: "Final Push & WAT-PI", desc: "Intensive revision sprints, full WAT-PI prep with IIM panelist mock interviews.", cta: "Start My Final Push →" },
+  { badge: "Result Day", badgeColor: "bg-green-100 text-green-700", emoji: "🎓", title: "IIM Convert", desc: "You join 300+ Percentilers alumni who cracked top B-schools with 95+ percentile." },
 ];
 
+const CARD_WIDTH = 380;
+const CARD_GAP = 24;
+const TOTAL_STRIP_WIDTH = journeyCards.length * CARD_WIDTH + (journeyCards.length - 1) * CARD_GAP;
+
 function JourneyTimeline() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  useEffect(() => {
+    const measure = () => {
+      if (containerRef.current) setContainerWidth(containerRef.current.offsetWidth);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  const maxTranslate = Math.max(0, TOTAL_STRIP_WIDTH - containerWidth);
+  const translateX = useTransform(scrollYProgress, [0, 1], [0, -maxTranslate]);
+
+  // Mobile: simple vertical list with fade-in
+  if (isMobile) {
+    return (
+      <section className="py-16 bg-[hsl(25,100%,97%)]">
+        <div className="max-w-lg mx-auto px-6">
+          <div className="text-center mb-10">
+            <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
+            <h2 className="text-3xl font-black text-foreground tracking-tight">From Zero to IIM</h2>
+            <p className="mt-2 text-muted-foreground text-base">Scroll through your transformation story.</p>
+          </div>
+          <div className="space-y-5">
+            {journeyCards.map((card, i) => (
+              <motion.div
+                key={card.title}
+                className="p-6 rounded-2xl border border-border bg-background shadow-sm"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ delay: i * 0.08, duration: 0.5 }}
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1 rounded-full ${card.badgeColor}`}>{card.badge}</span>
+                  <span className="text-2xl">{card.emoji}</span>
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-1">{card.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
+                {card.cta && (
+                  <button className="mt-3 text-sm font-semibold text-primary hover:underline">{card.cta}</button>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // Desktop: pinned horizontal scroll
   return (
-    <section className="py-16 md:py-24 bg-[hsl(25,100%,97%)]">
-      <div className="max-w-5xl mx-auto px-6">
-        <motion.div
-          className="text-center mb-14"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
+    <section
+      ref={sectionRef}
+      className="relative bg-[hsl(25,100%,97%)]"
+      style={{ height: `${Math.max(200, maxTranslate + (typeof window !== "undefined" ? window.innerHeight : 800))}px` }}
+    >
+      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+        <div className="max-w-6xl mx-auto px-6 w-full mb-8">
           <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
-          <h2 className="text-3xl md:text-5xl font-black text-foreground tracking-tight">From Zero to 95+ Percentile</h2>
-          <p className="mt-3 text-muted-foreground text-lg max-w-xl mx-auto">A battle-tested 6-step system used by 300+ IIM converts.</p>
-        </motion.div>
-
-        {/* Desktop horizontal timeline */}
-        <div className="hidden md:block relative">
-          {/* SVG connector line */}
-          <svg className="absolute top-[52px] left-0 w-full h-4 z-0" preserveAspectRatio="none">
-            <motion.line
-              x1="8%" y1="50%" x2="92%" y2="50%"
-              stroke="hsl(25, 100%, 50%)"
-              strokeWidth="3"
-              strokeLinecap="round"
-              strokeDasharray="8 6"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 0.3 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-            />
-          </svg>
-
-          <div className="grid grid-cols-6 gap-4 relative z-10">
-            {timelineSteps.map((step, i) => {
-              const Icon = step.icon;
-              return (
-                <motion.div
-                  key={step.title}
-                  className="flex flex-col items-center text-center"
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.12, duration: 0.5 }}
-                >
-                  <div className="w-[72px] h-[72px] rounded-2xl bg-background border border-border shadow-md flex items-center justify-center mb-4 group hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
-                    <Icon className="w-7 h-7 text-primary" />
-                  </div>
-                  <span className="text-[10px] font-bold text-primary/50 tracking-widest uppercase mb-1">Step {i + 1}</span>
-                  <h4 className="font-bold text-foreground text-sm mb-1">{step.title}</h4>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
-                </motion.div>
-              );
-            })}
+          <div className="flex items-end justify-between">
+            <h2 className="text-4xl md:text-5xl font-black text-foreground tracking-tight">From Zero to IIM</h2>
+            <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
+              <span>Scroll to explore</span>
+              <motion.span animate={{ x: [0, 6, 0] }} transition={{ repeat: Infinity, duration: 1.5 }}>→</motion.span>
+            </div>
           </div>
         </div>
 
-        {/* Mobile vertical timeline */}
-        <div className="md:hidden relative pl-10">
-          {/* Vertical SVG line */}
-          <svg className="absolute left-[19px] top-0 w-2 h-full z-0">
-            <motion.line
-              x1="50%" y1="0" x2="50%" y2="100%"
-              stroke="hsl(25, 100%, 50%)"
-              strokeWidth="2"
-              strokeDasharray="6 5"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 0.3 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeInOut" }}
-            />
-          </svg>
-
-          <div className="space-y-8 relative z-10">
-            {timelineSteps.map((step, i) => {
-              const Icon = step.icon;
-              return (
-                <motion.div
-                  key={step.title}
-                  className="flex gap-4 items-start"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1, duration: 0.4 }}
-                >
-                  <div className="w-10 h-10 rounded-xl bg-background border border-border shadow-sm flex items-center justify-center shrink-0 -ml-10">
-                    <Icon className="w-5 h-5 text-primary" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] font-bold text-primary/50 tracking-widest uppercase">Step {i + 1}</span>
-                    <h4 className="font-bold text-foreground text-sm">{step.title}</h4>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </div>
+        <div ref={containerRef} className="w-full overflow-hidden px-6">
+          <motion.div
+            className="flex"
+            style={{ x: translateX, gap: `${CARD_GAP}px` }}
+          >
+            {journeyCards.map((card, i) => (
+              <motion.div
+                key={card.title}
+                className="shrink-0 p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col"
+                style={{ width: `${CARD_WIDTH}px`, minHeight: "280px" }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1, duration: 0.5 }}
+              >
+                <div className="flex items-center gap-3 mb-5">
+                  <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.badgeColor}`}>{card.badge}</span>
+                  <span className="text-3xl">{card.emoji}</span>
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">{card.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{card.desc}</p>
+                {card.cta && (
+                  <button
+                    className="mt-5 text-sm font-semibold text-primary hover:underline text-left"
+                    onClick={() => document.getElementById("masterclass-section")?.scrollIntoView({ behavior: "smooth" })}
+                  >
+                    {card.cta}
+                  </button>
+                )}
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
