@@ -81,8 +81,8 @@ const GoogleSignInButton = ({ className }: { className?: string }) => {
 const RegistrationCard = () => {
   const navigate = useNavigate();
 
-  // Simple: just navigate to the protected route.
-  // ProtectedRoute handles auth + phone gating entirely.
+  // CTA Type: Both (Gmail + Phone) — delegated to ProtectedRoute on /masterclass/watch
+  // Handles: Scenario 1 (no auth → ProtectedRoute triggers sign-in), 2 (auth, no phone → phone modal), 3/4 (same flow)
   const handleCTA = useCallback(() => {
     navigate("/masterclass/watch");
   }, [navigate]);
