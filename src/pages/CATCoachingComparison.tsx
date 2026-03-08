@@ -256,25 +256,18 @@ function JourneyTimeline() {
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
   const totalStages = journeyStages.length;
 
-  // Road draw progress
-  const roadDraw = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const pathLength = useTransform(scrollYProgress, [0, 0.95], [0, 1]);
 
   return (
-    // Outer container: tall enough for scroll-driving (stages × 100vh)
     <div ref={containerRef} style={{ height: `${(totalStages + 1) * 100}vh` }} className="relative">
-      {/* Sticky viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
-        {/* Header */}
         <div className="pt-12 md:pt-16 pb-4 md:pb-6 text-center relative z-20 shrink-0">
           <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-2">Your Journey</span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
         </div>
 
-        {/* Stage area */}
         <div className="flex-1 relative w-full">
-          {/* Curvy road SVG */}
           <svg className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-24 md:w-32 z-10 pointer-events-none" viewBox="0 0 100 600" fill="none" preserveAspectRatio="xMidYMid meet">
-            {/* Background road */}
             <path
               d="M50 0 C20 50,80 100,50 150 S20 250,50 300 S80 350,50 400 S20 450,50 500 S80 550,50 600"
               stroke="hsl(var(--border))"
@@ -283,36 +276,24 @@ function JourneyTimeline() {
               fill="none"
               opacity="0.4"
             />
-            {/* Animated progress road */}
             <motion.path
               d="M50 0 C20 50,80 100,50 150 S20 250,50 300 S80 350,50 400 S20 450,50 500 S80 550,50 600"
               stroke="hsl(var(--primary))"
               strokeWidth="3.5"
               fill="none"
-              strokeDasharray="1"
-              strokeDashoffset="0"
-              style={{ pathLength: useTransform(scrollYProgress, [0, 0.95], [0, 1]), strokeDashoffset: roadDraw }}
-              pathLength="1"
+              style={{ pathLength }}
             />
           </svg>
 
-          {/* Stage cards animate in/out */}
-          {journeyStages.map((stage, i) => {
-            const segStart = i / totalStages;
-            const segMid = (i + 0.5) / totalStages;
-            const segEnd = (i + 1) / totalStages;
-            return (
-              <JourneyStageCard
-                key={stage.number}
-                stage={stage}
-                index={i}
-                scrollProgress={scrollYProgress}
-                segStart={segStart}
-                segMid={segMid}
-                segEnd={segEnd}
-              />
-            );
-          })}
+          {journeyStages.map((stage, i) => (
+            <JourneyStageCard
+              key={stage.number}
+              stage={stage}
+              index={i}
+              scrollProgress={scrollYProgress}
+              totalStages={totalStages}
+            />
+          ))}
         </div>
       </div>
     </div>
@@ -320,18 +301,35 @@ function JourneyTimeline() {
 }
 
 function JourneyStageCard({
-  stage, index, scrollProgress, segStart, segMid, segEnd
+  stage, index, scrollProgress, totalStages,
 }: {
-  stage: typeof journeyStages[0]; index: number; scrollProgress: MotionValue<number>;
-  segStart: number; segMid: number; segEnd: number;
+  stage: typeof journeyStages[0]; index: number; scrollProgress: MotionValue<number>; totalStages: number;
 }) {
   const isEven = index % 2 === 0;
+  const segStart = index / totalStages;
+  const segEnd = (index + 1) / totalStages;
+  const fadeIn = segStart + 0.02;
+  const fadeOut = segEnd - 0.01;
 
-  // Fade in, hold, fade out
-  const opacity = useTransform(scrollProgress, [segStart, segStart + 0.04, segMid, segEnd - 0.02, segEnd], [0, 1, 1, 1, 0]);
-  const y = useTransform(scrollProgress, [segStart, segStart + 0.06, segMid, segEnd - 0.02, segEnd], [60, 0, 0, 0, -40]);
-  const scale = useTransform(scrollProgress, [segStart, segStart + 0.05, segMid, segEnd], [0.9, 1, 1, 0.95]);
-  const imgX = useTransform(scrollProgress, [segStart, segStart + 0.06], [isEven ? -80 : 80, 0]);
+  // First card visible at start; last card stays visible at end
+  const opacityInput = index === 0
+    ? [0, fadeIn, fadeOut, segEnd]
+    : index === totalStages - 1
+    ? [segStart, fadeIn, 1]
+    : [segStart, fadeIn, fadeOut, segEnd];
+
+  const opacityOutput = index === 0
+    ? [1, 1, 1, 0]
+    : index === totalStages - 1
+    ? [0, 1, 1]
+    : [0, 1, 1, 0];
+
+  const opacity = useTransform(scrollProgress, opacityInput, opacityOutput);
+  const y = useTransform(scrollProgress,
+    index === 0 ? [0, fadeOut, segEnd] : [segStart, fadeIn, fadeOut, segEnd],
+    index === 0 ? [0, 0, -50] : [50, 0, 0, -50]
+  );
+  const imgX = useTransform(scrollProgress, [segStart, fadeIn], [isEven ? -60 : 60, 0]);
 
   return (
     <motion.div
@@ -339,21 +337,19 @@ function JourneyStageCard({
       style={{ opacity, y }}
     >
       <div className={`w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-12 items-center ${isEven ? "" : "md:[direction:rtl]"}`}>
-        {/* Image */}
-        <motion.div className={`flex justify-center ${isEven ? "md:justify-end" : "md:justify-start"} ${isEven ? "" : "md:[direction:ltr]"}`} style={{ scale, x: imgX }}>
+        <motion.div className={`flex justify-center ${isEven ? "md:justify-end" : "md:justify-start"} ${isEven ? "" : "md:[direction:ltr]"}`} style={{ x: imgX }}>
           <div className={`relative w-48 h-48 sm:w-56 sm:h-56 md:w-72 md:h-72 rounded-3xl bg-gradient-to-br ${stage.accent} p-4 md:p-6 flex items-center justify-center`}>
             <img src={stage.image} alt={stage.title} className="w-full h-full object-contain drop-shadow-xl" loading="lazy" />
             <span className="absolute -top-4 -right-4 text-6xl md:text-8xl font-black text-primary/10 select-none leading-none">{stage.number}</span>
           </div>
         </motion.div>
 
-        {/* Text */}
-        <motion.div className={`space-y-3 text-center md:text-left ${isEven ? "" : "md:[direction:ltr]"}`} style={{ scale }}>
+        <div className={`space-y-3 text-center md:text-left ${isEven ? "" : "md:[direction:ltr]"}`}>
           <span className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase px-3 py-1.5 rounded-full bg-primary/10 text-primary">{stage.badge}</span>
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight leading-tight">{stage.title}</h3>
           <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-md mx-auto md:mx-0">{stage.desc}</p>
           <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full bg-secondary text-muted-foreground">{stage.tag}</span>
-        </motion.div>
+        </div>
       </div>
     </motion.div>
   );
