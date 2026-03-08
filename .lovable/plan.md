@@ -1,51 +1,37 @@
 
 
-# User Dashboard Plan
+## Consolidate Phone Capture: Remove Duplicated Logic
 
-## What We're Building
+### Problem
+`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
 
-A `/dashboard` page accessible after Google sign-in that centralizes the user's journey in one place. It includes four modules:
+### What Changes
 
-1. **Profile Card** — Name, email, phone (from `leads` table), editable phone
-2. **Study Planner Progress** — Current streak, heat score, daily plan completion (from `planner_stats`, `planner_activity`, `planner_heat_score`)
-3. **Masterclass & Courses** — Watch progress %, quick links to masterclass, free courses, enrolled courses (from `webinar_engagement`)
-4. **Strategy Call** — Book/view call status, CTA to trigger phone modal + mark-lead-hot (from `campaign_state`)
+**1. `src/components/LeadModalProvider.tsx`**
+- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
+- Replace it with a single `<PhoneCaptureModal>` component usage
+- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
+- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
 
-## Architecture
+**2. `src/components/PhoneCaptureModal.tsx`**
+- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
+- The component already supports custom `title` and `description`, so no changes needed there
 
-```text
-/dashboard (ProtectedRoute, Gmail-only, no phone required)
-  ├── DashboardProfile     — leads table (name, email, phone)
-  ├── DashboardPlanner     — planner_stats + planner_heat_score + planner_activity
-  ├── DashboardMasterclass — webinar_engagement
-  └── DashboardCallCTA     — campaign_state + mark-lead-hot
-```
+### Result
+- One single source of truth for phone capture logic
+- Future fixes (like the duplicate phone check) only need to be applied once
+- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
 
-## New Files
+### Technical Details
 
-- `src/pages/Dashboard.tsx` — Main dashboard page with grid layout, fetches all data via user email/id
-- `src/components/dashboard/DashboardProfile.tsx` — Profile card with edit phone
-- `src/components/dashboard/DashboardPlanner.tsx` — Streak, heat score, phase progress
-- `src/components/dashboard/DashboardMasterclass.tsx` — Watch %, resource unlock progress
-- `src/components/dashboard/DashboardCallCTA.tsx` — Strategy call booking status + CTA
+**`PhoneCaptureModal.tsx` changes:**
+- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
+- Add a name input field that renders when `showNameField` is true and no user name is available
+- Include the name in the upsert payload and persist to localStorage
 
-## Modified Files
-
-- `src/App.tsx` — Add `/dashboard` route wrapped in `ProtectedRoute` (Gmail-only, no phone required)
-- `src/components/Navbar.tsx` — Add "Dashboard" link visible when authenticated
-
-## Data Fetching Strategy
-
-All data is fetched on mount using the authenticated user's `user_id` (for leads) and email (for planner tables, which use email as `phone_number` identifier per existing convention). Each section handles its own loading/empty state with skeleton placeholders.
-
-## UI Design
-
-- Clean card-based grid: 2 columns on desktop, single column on mobile
-- Uses existing shadcn Card, Progress, Badge components
-- Consistent with site's dark theme and orange primary accent
-- Each card shows a meaningful empty state if user hasn't engaged with that feature yet (e.g., "Start the Daily Planner" CTA)
-
-## Route Protection
-
-`/dashboard` uses `ProtectedRoute` with `requirePhone={false}` — only Gmail sign-in is needed. Phone capture is optional and can be done from the profile card.
+**`LeadModalProvider.tsx` changes:**
+- Remove ~60 lines of form state, validation, and submit logic
+- Remove the inline `<Dialog>` JSX (~30 lines)
+- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
+- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
 

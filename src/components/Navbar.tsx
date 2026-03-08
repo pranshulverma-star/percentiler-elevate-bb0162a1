@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone } from "lucide-react";
+import { Menu, X, Phone, LayoutDashboard } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import ThemeToggle from "@/components/ThemeToggle";
 import { Link } from "react-router-dom";
 import logoImg from "@/assets/logo-percentilers.png";
@@ -21,6 +22,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showCallDialog, setShowCallDialog] = useState(false);
   const { openPhoneModal } = useLeadModal();
+  const { isAuthenticated } = useAuth();
   const [scrollProgress, setScrollProgress] = useState(0);
   const onScroll = useCallback(() => {
     requestAnimationFrame(() => {
@@ -75,6 +77,11 @@ const Navbar = () => {
                 </a>
               )
             )}
+            {isAuthenticated && (
+              <Link to="/dashboard" className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                <LayoutDashboard className="h-4 w-4" /> Dashboard
+              </Link>
+            )}
             <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20">Book Free Strategy Call</Button>
             <ThemeToggle />
           </nav>
@@ -103,6 +110,11 @@ const Navbar = () => {
                   {l.label}
                 </a>
               )
+            )}
+            {isAuthenticated && (
+              <Link to="/dashboard" className="block text-sm font-medium text-primary py-2 flex items-center gap-1" onClick={() => setOpen(false)}>
+                <LayoutDashboard className="h-4 w-4" /> Dashboard
+              </Link>
             )}
             <div className="flex justify-center pt-1"><ThemeToggle /></div>
           </nav>
