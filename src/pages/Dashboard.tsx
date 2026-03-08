@@ -22,11 +22,13 @@ export default function Dashboard() {
   const [plannerData, setPlannerData] = useState<any>(null);
   const [engagement, setEngagement] = useState<any>(null);
   const [campaign, setCampaign] = useState<any>(null);
+  const [practiceAttempts, setPracticeAttempts] = useState<any[]>([]);
 
   const [loadingLead, setLoadingLead] = useState(true);
   const [loadingPlanner, setLoadingPlanner] = useState(true);
   const [loadingMasterclass, setLoadingMasterclass] = useState(true);
   const [loadingCampaign, setLoadingCampaign] = useState(true);
+  const [loadingPractice, setLoadingPractice] = useState(true);
 
   const fetchLead = async () => {
     if (!userId) return;
