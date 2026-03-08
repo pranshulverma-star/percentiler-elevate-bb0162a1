@@ -166,9 +166,6 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
     </motion.div>
   );
 }
-    </motion.div>
-  );
-}
 
 // ─── Chapter Grid ────────────────────────────────────────────────────────────
 
