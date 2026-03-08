@@ -41,6 +41,8 @@ const testimonialSnippets = [
   { name: "Divya S.", text: "Clear plan, weekly targets, honest feedback.", score: "97.9%ile", photo: studentDivya },
 ];
 
+// CTA Type: Gmail-only (sign-in button on masterclass landing)
+// Handles: Scenario 1 (not signed in → trigger OAuth), 2 (already signed in → show avatar)
 const GoogleSignInButton = ({ className }: { className?: string }) => {
   const { signIn, loading, isAuthenticated, user } = useAuth();
 
