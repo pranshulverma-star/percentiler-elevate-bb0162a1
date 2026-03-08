@@ -298,8 +298,36 @@ function JourneyStage({ stage, index }: { stage: typeof journeyStages[0]; index:
 function JourneyTimeline() {
   return (
     <section className="relative py-16 md:py-0 overflow-hidden">
-      {/* Vertical progress line */}
-      <div className="absolute left-6 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-border z-10" />
+      {/* Curvy road SVG path */}
+      <svg
+        className="absolute inset-0 w-full h-full z-10 pointer-events-none hidden md:block"
+        preserveAspectRatio="none"
+        viewBox="0 0 100 100"
+        fill="none"
+      >
+        <path
+          d="M50 0 C 20 8, 80 18, 50 25 S 20 33, 50 40 S 80 48, 50 55 S 20 63, 50 70 S 80 78, 50 85 S 20 93, 50 100"
+          stroke="hsl(var(--border))"
+          strokeWidth="0.4"
+          strokeDasharray="1.2 0.8"
+          fill="none"
+        />
+      </svg>
+      {/* Mobile: left-side curvy line */}
+      <svg
+        className="absolute inset-0 w-full h-full z-10 pointer-events-none md:hidden"
+        preserveAspectRatio="none"
+        viewBox="0 0 100 100"
+        fill="none"
+      >
+        <path
+          d="M6 0 C 15 8, 2 18, 6 25 S 15 33, 6 40 S 2 48, 6 55 S 15 63, 6 70 S 2 78, 6 85 S 15 93, 6 100"
+          stroke="hsl(var(--border))"
+          strokeWidth="0.6"
+          strokeDasharray="1.5 1"
+          fill="none"
+        />
+      </svg>
 
       {/* Header */}
       <div className="max-w-6xl mx-auto px-6 md:px-8 pt-16 md:pt-24 pb-8 relative z-20">
