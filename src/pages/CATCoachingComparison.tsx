@@ -198,10 +198,20 @@ export default function CATCoachingComparison() {
   return (
     <>
       <SEO
-        title={`Best CAT Coaching – Compare & Choose | Percentilers`}
+        title="CAT Coaching Comparison 2026 – Best Institute | Percentilers"
         description="Compare CAT coaching institutes side-by-side. See why 300+ students chose Percentilers' IIM-alumni mentorship over big coaching brands. Free masterclass inside."
-        canonical={`https://percentilers.in/cat-coaching-comparison`}
+        canonical="https://percentilers.in/cat-coaching-comparison"
       />
+      {/* FAQ structured data for rich snippets */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(f => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      })}} />
 
       {/* ─── HERO ─── */}
       <section className="relative bg-foreground text-primary-foreground overflow-hidden">
