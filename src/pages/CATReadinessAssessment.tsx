@@ -483,6 +483,8 @@ const ResultsSection = ({ result, onRetake, onRecalculate }: {
   const rank = Math.max(1, Math.min(10000, baseRank + jitter));
   const topPercent = Math.max(0.1, Math.round(rank / 10000 * 1000) / 10);
 
+  // CTA Type: Both (Gmail + Phone)
+  // Handles: Scenario 1 (no auth → Google sign-in), 2 (auth, no phone → phone modal), 3 (N/A — Gmail required first), 4 (cleared → re-gate)
   const handleUnlockDetails = async () => {
     if (!isAuthenticated) {
       setSigningIn(true);
