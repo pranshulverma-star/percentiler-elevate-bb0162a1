@@ -231,26 +231,15 @@ const journeyCards = [
   },
 ];
 
-const CARD_WIDTH = 380;
-const CARD_GAP = 24;
-const TOTAL_STRIP_WIDTH = journeyCards.length * CARD_WIDTH + (journeyCards.length - 1) * CARD_GAP;
-
 function JourneyTimeline() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [winH, setWinH] = useState(800);
 
   useEffect(() => {
-    const onResize = () => {
-      setIsMobile(window.innerWidth < 768);
-      setWinH(window.innerHeight);
-      if (containerRef.current) setContainerWidth(containerRef.current.offsetWidth);
-    };
-    onResize();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -258,10 +247,10 @@ function JourneyTimeline() {
     offset: ["start start", "end end"],
   });
 
-  const maxTranslate = Math.max(0, TOTAL_STRIP_WIDTH - containerWidth);
-  const translateX = useTransform(scrollYProgress, [0, 1], [0, -maxTranslate]);
+  // Each card gets a segment of scroll progress
+  const totalCards = journeyCards.length;
 
-  /* ── Mobile: vertical list with fade-in ── */
+  /* ── Mobile: vertical list ── */
   if (isMobile) {
     return (
       <section className="py-16 bg-[hsl(25,100%,97%)]">
@@ -269,7 +258,6 @@ function JourneyTimeline() {
           <div className="text-center mb-10">
             <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
             <h2 className="text-3xl font-black text-foreground tracking-tight">From Zero to IIM</h2>
-            <p className="mt-2 text-muted-foreground text-base">Your 6-month transformation story.</p>
           </div>
           <div className="space-y-5">
             {journeyCards.map((card, i) => (
@@ -279,7 +267,7 @@ function JourneyTimeline() {
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: i * 0.08, duration: 0.5 }}
+                transition={{ delay: i * 0.06, duration: 0.5 }}
               >
                 <div className="flex items-center gap-3 mb-3">
                   <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1 rounded-full ${card.badgeColor}`}>{card.badge}</span>
@@ -297,66 +285,91 @@ function JourneyTimeline() {
     );
   }
 
-  /* ── Desktop: pinned horizontal scroll ── */
+  /* ── Desktop: 600vh scroll-hijacked, one card at a time ── */
   return (
-    <section
-      ref={sectionRef}
-      className="relative bg-[hsl(25,100%,97%)]"
-      style={{ height: `${maxTranslate + winH}px` }}
-    >
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+    <section ref={sectionRef} className="relative" style={{ height: "600vh" }}>
+      <div className="sticky top-0 h-screen bg-[hsl(25,100%,97%)] flex flex-col justify-center overflow-hidden">
         {/* Heading */}
-        <div className="max-w-7xl mx-auto px-8 w-full mb-10">
+        <div className="max-w-7xl mx-auto px-8 w-full mb-8">
           <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
           <div className="flex items-end justify-between">
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
-            <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <span>Scroll to explore</span>
               <motion.span animate={{ x: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}>→</motion.span>
             </div>
           </div>
+          {/* Progress bar */}
+          <motion.div className="mt-4 h-[2px] bg-border rounded-full overflow-hidden">
+            <motion.div className="h-full bg-primary origin-left" style={{ scaleX: scrollYProgress }} />
+          </motion.div>
         </div>
 
-        {/* Horizontal strip */}
-        <div ref={containerRef} className="w-full overflow-hidden px-8">
-          <motion.div
-            className="flex"
-            style={{ x: translateX, gap: `${CARD_GAP}px` }}
-          >
-            {journeyCards.map((card, i) => (
-              <motion.div
-                key={card.title}
-                className="shrink-0 p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 flex flex-col justify-between group"
-                style={{ width: `${CARD_WIDTH}px`, minHeight: "320px" }}
-                initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true, margin: "-10%" }}
-                transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div>
-                  {/* Badge + Emoji */}
-                  <div className="flex items-center gap-3 mb-4">
-                    <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.badgeColor}`}>{card.badge}</span>
-                  </div>
-                  {/* Emoji large */}
-                  <div className="text-[56px] leading-none mb-3">{card.emoji}</div>
-                  {/* Number */}
-                  <div className={`text-[72px] font-black leading-none ${card.numberColor} mb-2`}>{card.number}</div>
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-foreground mb-2">{card.title}</h3>
-                  {/* Body */}
-                  <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-                </div>
-                {/* Tag at bottom */}
-                <div className="mt-5">
-                  <span className={`inline-block text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.tagColor}`}>{card.tag}</span>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
+        {/* Card stage — one card visible at a time */}
+        <div className="flex-1 flex items-center justify-center px-8 pb-12 max-w-5xl mx-auto w-full relative" style={{ minHeight: 0 }}>
+          {journeyCards.map((card, i) => (
+            <JourneyCard key={card.title} card={card} index={i} total={totalCards} scrollYProgress={scrollYProgress} />
+          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+/* Single card that fades/slides based on scroll segment */
+function JourneyCard({
+  card,
+  index,
+  total,
+  scrollYProgress,
+}: {
+  card: typeof journeyCards[number];
+  index: number;
+  total: number;
+  scrollYProgress: ReturnType<typeof useScroll>["scrollYProgress"];
+}) {
+  const segmentSize = 1 / total;
+  const start = index * segmentSize;
+  const mid = start + segmentSize * 0.15;
+  const hold = start + segmentSize * 0.85;
+  const end = start + segmentSize;
+
+  // Enter: slide from right + fade in. Exit: slide to left + fade out.
+  const x = useTransform(
+    scrollYProgress,
+    [start, mid, hold, Math.min(end, 1)],
+    [120, 0, 0, index === total - 1 ? 0 : -120]
+  );
+  const opacity = useTransform(
+    scrollYProgress,
+    [start, mid, hold, Math.min(end, 1)],
+    [0, 1, 1, index === total - 1 ? 1 : 0]
+  );
+  const scale = useTransform(
+    scrollYProgress,
+    [start, mid, hold, Math.min(end, 1)],
+    [0.92, 1, 1, index === total - 1 ? 1 : 0.92]
+  );
+
+  return (
+    <motion.div
+      className="absolute inset-0 flex items-center justify-center"
+      style={{ x, opacity, scale }}
+    >
+      <div className="w-full max-w-2xl p-10 md:p-14 rounded-3xl border border-border bg-background shadow-lg">
+        <div className="flex items-center gap-3 mb-6">
+          <span className={`text-[11px] font-bold tracking-wider uppercase px-4 py-1.5 rounded-full ${card.badgeColor}`}>{card.badge}</span>
+          <span className="text-xs text-muted-foreground font-medium">{`${index + 1} of ${total}`}</span>
+        </div>
+        <div className="text-[64px] leading-none mb-4">{card.emoji}</div>
+        <div className={`text-[80px] font-black leading-none ${card.numberColor} mb-3 tracking-tighter`}>{card.number}</div>
+        <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-3">{card.title}</h3>
+        <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">{card.desc}</p>
+        <div className="mt-6">
+          <span className={`inline-block text-[11px] font-bold tracking-wider uppercase px-4 py-1.5 rounded-full ${card.tagColor}`}>{card.tag}</span>
+        </div>
+      </div>
+    </motion.div>
   );
 }
 /* ═══════════════════════════════════════
