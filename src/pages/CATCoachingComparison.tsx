@@ -306,7 +306,7 @@ function JourneyTimeline() {
         </div>
 
         {/* Card stage — one card visible at a time */}
-        <div className="flex-1 flex items-center justify-center px-8 pb-12 max-w-5xl mx-auto w-full relative" style={{ minHeight: 0 }}>
+        <div className="flex-1 flex items-center justify-center px-8 pb-12 max-w-5xl mx-auto w-full relative overflow-hidden" style={{ minHeight: 0 }}>
           {journeyCards.map((card, i) => (
             <JourneyCard key={card.title} card={card} index={i} total={totalCards} scrollYProgress={scrollYProgress} />
           ))}
