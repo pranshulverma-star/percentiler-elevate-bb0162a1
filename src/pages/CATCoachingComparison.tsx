@@ -453,7 +453,7 @@ export default function CATCoachingComparison() {
       <section className="py-8 bg-foreground text-primary-foreground text-center">
         <div className="max-w-4xl mx-auto px-4">
           <p className="text-sm text-primary-foreground/60">
-            © {new Date().getFullYear()} Percentilers. All rights reserved. |{" "}
+            © 2025 Percentilers. All rights reserved. |{" "}
             <a href="/terms" className="underline hover:text-primary">Terms</a> |{" "}
             <a href="/privacy-policy" className="underline hover:text-primary">Privacy</a> |{" "}
             <a href="/refund-policy" className="underline hover:text-primary">Refund Policy</a>
