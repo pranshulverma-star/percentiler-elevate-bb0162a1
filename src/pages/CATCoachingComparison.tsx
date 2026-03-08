@@ -271,7 +271,7 @@ function JourneyTimeline() {
     <section
       ref={sectionRef}
       className="relative bg-[hsl(25,100%,97%)]"
-      style={{ height: `${Math.max(200, maxTranslate + window.innerHeight)}px` }}
+      style={{ height: `${Math.max(200, maxTranslate + (typeof window !== "undefined" ? window.innerHeight : 800))}px` }}
     >
       <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 w-full mb-8">
