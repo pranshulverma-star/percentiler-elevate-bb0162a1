@@ -133,7 +133,7 @@ const MasterclassWatch = () => {
     const pct = Math.round((video.currentTime / video.duration) * 100);
     setWatchPct(pct);
     setMaxWatchPct(prev => Math.max(prev, pct));
-    if (isFirstWatch && video.currentTime > (video.duration * maxWatchPct / 100) + 2) {
+    if (isFirstWatch && maxWatchPct > 0 && video.currentTime > (video.duration * maxWatchPct / 100) + 2) {
       video.currentTime = video.duration * maxWatchPct / 100;
       return;
     }
