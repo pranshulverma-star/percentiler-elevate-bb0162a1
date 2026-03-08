@@ -419,7 +419,7 @@ function ResultsView({
 }) {
   const { user } = useAuth();
   const [pastAttempts, setPastAttempts] = useState<AttemptRecord[]>([]);
-  const [loadingHistory, setLoadingHistory] = useState(true);
+  const [_loadingHistory, setLoadingHistory] = useState(true);
   const savedRef = useRef(false);
 
   const { correct, incorrect, unanswered } = useMemo(() => {
