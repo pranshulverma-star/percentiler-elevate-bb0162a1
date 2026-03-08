@@ -112,7 +112,7 @@ const Navbar = () => {
               )
             )}
             {isAuthenticated && (
-              <Link to="/dashboard" className="block text-sm font-medium text-primary py-2 flex items-center gap-1" onClick={() => setOpen(false)}>
+              <Link to="/dashboard" className="flex items-center gap-1 text-sm font-medium text-primary py-2" onClick={() => setOpen(false)}>
                 <LayoutDashboard className="h-4 w-4" /> Dashboard
               </Link>
             )}
