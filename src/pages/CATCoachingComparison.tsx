@@ -654,6 +654,21 @@ function JourneyStageCard({
 /* ═══════════════════════════════════════
    MAIN PAGE
    ═══════════════════════════════════════ */
+/* Preload above-fold hero images at module level for earliest fetch */
+const heroImages = [studentBhavy, studentRounak, studentRahul, studentShruti];
+if (typeof document !== "undefined") {
+  heroImages.forEach((src) => {
+    const existing = document.head.querySelector(`link[href="${src}"]`);
+    if (!existing) {
+      const link = document.createElement("link");
+      link.rel = "preload";
+      link.as = "image";
+      link.href = src;
+      document.head.appendChild(link);
+    }
+  });
+}
+
 export default function CATCoachingComparison() {
   const [searchParams] = useSearchParams();
   const competitorKey = searchParams.get("competitor")?.toLowerCase() || "";
