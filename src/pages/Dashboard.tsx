@@ -7,6 +7,7 @@ import DashboardProfile from "@/components/dashboard/DashboardProfile";
 import DashboardPlanner from "@/components/dashboard/DashboardPlanner";
 import DashboardMasterclass from "@/components/dashboard/DashboardMasterclass";
 import DashboardCallCTA from "@/components/dashboard/DashboardCallCTA";
+import DashboardPracticeLab from "@/components/dashboard/DashboardPracticeLab";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import SEO from "@/components/SEO";
