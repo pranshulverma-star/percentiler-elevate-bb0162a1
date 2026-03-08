@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 import {
   CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp,
   ChevronDown, GraduationCap, MessageCircle, Zap, Target, Brain, Award,
-  ChevronUp, Rocket, FileText, Headphones
+  ChevronUp
 } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
