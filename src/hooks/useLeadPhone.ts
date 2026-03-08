@@ -59,6 +59,14 @@ export function useLeadPhone() {
             ? dbPhone
             : storedPhone;
 
+          // Sync localStorage phone to DB if DB record is missing it
+          if (!dbPhone && storedPhone && userId) {
+            (supabase.from("leads") as any).upsert(
+              { user_id: userId, phone_number: storedPhone },
+              { onConflict: "user_id" }
+            ).catch(() => {});
+          }
+
           phoneCacheByUser.set(userId, resolved);
           if (resolved) localStorage.setItem("percentilers_phone", resolved);
           return resolved;
