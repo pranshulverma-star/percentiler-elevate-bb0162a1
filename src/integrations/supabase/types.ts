@@ -272,6 +272,51 @@ export type Database = {
         }
         Relationships: []
       }
+      practice_lab_attempts: {
+        Row: {
+          answers_json: Json | null
+          chapter_slug: string
+          correct: number
+          created_at: string
+          id: string
+          incorrect: number
+          score_pct: number
+          section_id: string
+          time_used_seconds: number
+          total_questions: number
+          unanswered: number
+          user_id: string
+        }
+        Insert: {
+          answers_json?: Json | null
+          chapter_slug: string
+          correct?: number
+          created_at?: string
+          id?: string
+          incorrect?: number
+          score_pct?: number
+          section_id: string
+          time_used_seconds?: number
+          total_questions: number
+          unanswered?: number
+          user_id: string
+        }
+        Update: {
+          answers_json?: Json | null
+          chapter_slug?: string
+          correct?: number
+          created_at?: string
+          id?: string
+          incorrect?: number
+          score_pct?: number
+          section_id?: string
+          time_used_seconds?: number
+          total_questions?: number
+          unanswered?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       profile_percentile_planner: {
         Row: {
           certifications: number | null
