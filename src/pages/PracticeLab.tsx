@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen, Zap, ChevronRight, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,9 @@ import { practiceLabSections, type SectionData, type Chapter, type PracticeQuest
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { useAuth } from "@/hooks/useAuth";
+import { useLeadPhone } from "@/hooks/useLeadPhone";
+import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
@@ -459,18 +462,56 @@ export default function PracticeLab() {
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number | null>>({});
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
+  const [phoneModalOpen, setPhoneModalOpen] = useState(false);
+
+  const { isAuthenticated, loading: authLoading, signIn } = useAuth();
+  const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
+
+  // Store pending chapter selection while auth/phone gate resolves
+  const pendingChapter = useRef<Chapter | null>(null);
 
   const handleSelectSection = useCallback((s: SectionData) => {
     setSelectedSection(s);
     setPhase("chapters");
   }, []);
 
-  const handleSelectChapter = useCallback((ch: Chapter) => {
+  // After auth or phone resolves, check if we have a pending chapter to start
+  useEffect(() => {
+    if (!pendingChapter.current) return;
+    if (authLoading || phoneLoading) return;
+    if (!isAuthenticated) return; // still waiting for OAuth return
+    if (!hasPhone) {
+      setPhoneModalOpen(true);
+      return;
+    }
+    // All gates passed — start quiz
+    const ch = pendingChapter.current;
+    pendingChapter.current = null;
     setSelectedChapter(ch);
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
-  }, []);
+  }, [authLoading, phoneLoading, isAuthenticated, hasPhone]);
+
+  const handleSelectChapter = useCallback((ch: Chapter) => {
+    // Gate: require sign-in first
+    if (!isAuthenticated) {
+      pendingChapter.current = ch;
+      signIn(window.location.pathname);
+      return;
+    }
+    // Gate: require phone number
+    if (!hasPhone) {
+      pendingChapter.current = ch;
+      setPhoneModalOpen(true);
+      return;
+    }
+    // All clear — start quiz
+    setSelectedChapter(ch);
+    setQuizAnswers({});
+    setQuizTimeUsed(0);
+    setPhase("quiz");
+  }, [isAuthenticated, hasPhone, signIn]);
 
   const handleFinishQuiz = useCallback((answers: Record<number, number | null>, timeUsed: number) => {
     setQuizAnswers(answers);
@@ -539,6 +580,17 @@ export default function PracticeLab() {
         </div>
       </main>
       <Footer />
+      <PhoneCaptureModal
+        open={phoneModalOpen}
+        onOpenChange={setPhoneModalOpen}
+        source="practice-lab"
+        onSuccess={() => {
+          refetchPhone();
+          setPhoneModalOpen(false);
+        }}
+        title="One Last Step Before Your Quiz"
+        description="Share your phone number so we can track your progress."
+      />
     </>
   );
 }
