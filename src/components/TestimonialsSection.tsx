@@ -2,12 +2,12 @@ import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Quote, Star, MessageCircle } from "lucide-react";
 
-import whatsapp1 from "@/assets/whatsapp-1.jpg";
-import whatsapp2 from "@/assets/whatsapp-2.jpg";
-import whatsapp3 from "@/assets/whatsapp-3.jpg";
-import whatsapp4 from "@/assets/whatsapp-4.jpg";
-import whatsapp5 from "@/assets/whatsapp-5.jpg";
-import whatsapp6 from "@/assets/whatsapp-6.jpg";
+import whatsapp1 from "@/assets/whatsapp-1.webp";
+import whatsapp2 from "@/assets/whatsapp-2.webp";
+import whatsapp3 from "@/assets/whatsapp-3.webp";
+import whatsapp4 from "@/assets/whatsapp-4.webp";
+import whatsapp5 from "@/assets/whatsapp-5.webp";
+import whatsapp6 from "@/assets/whatsapp-6.webp";
 
 const testimonials = [
   {
