@@ -462,18 +462,56 @@ export default function PracticeLab() {
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number | null>>({});
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
+  const [phoneModalOpen, setPhoneModalOpen] = useState(false);
+
+  const { isAuthenticated, loading: authLoading, signIn } = useAuth();
+  const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
+
+  // Store pending chapter selection while auth/phone gate resolves
+  const pendingChapter = useRef<Chapter | null>(null);
 
   const handleSelectSection = useCallback((s: SectionData) => {
     setSelectedSection(s);
     setPhase("chapters");
   }, []);
 
-  const handleSelectChapter = useCallback((ch: Chapter) => {
+  // After auth or phone resolves, check if we have a pending chapter to start
+  useEffect(() => {
+    if (!pendingChapter.current) return;
+    if (authLoading || phoneLoading) return;
+    if (!isAuthenticated) return; // still waiting for OAuth return
+    if (!hasPhone) {
+      setPhoneModalOpen(true);
+      return;
+    }
+    // All gates passed — start quiz
+    const ch = pendingChapter.current;
+    pendingChapter.current = null;
     setSelectedChapter(ch);
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
-  }, []);
+  }, [authLoading, phoneLoading, isAuthenticated, hasPhone]);
+
+  const handleSelectChapter = useCallback((ch: Chapter) => {
+    // Gate: require sign-in first
+    if (!isAuthenticated) {
+      pendingChapter.current = ch;
+      signIn(window.location.pathname);
+      return;
+    }
+    // Gate: require phone number
+    if (!hasPhone) {
+      pendingChapter.current = ch;
+      setPhoneModalOpen(true);
+      return;
+    }
+    // All clear — start quiz
+    setSelectedChapter(ch);
+    setQuizAnswers({});
+    setQuizTimeUsed(0);
+    setPhase("quiz");
+  }, [isAuthenticated, hasPhone, signIn]);
 
   const handleFinishQuiz = useCallback((answers: Record<number, number | null>, timeUsed: number) => {
     setQuizAnswers(answers);
