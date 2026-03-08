@@ -185,102 +185,133 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   );
 }
 
-/* ─── Journey cards data ─── */
-const journeyCards = [
+/* ─── Journey stage images ─── */
+import journeyStage1 from "@/assets/journey-stage-1.png";
+import journeyStage2 from "@/assets/journey-stage-2.png";
+import journeyStage3 from "@/assets/journey-stage-3.png";
+import journeyStage4 from "@/assets/journey-stage-4.png";
+import journeyStage5 from "@/assets/journey-stage-5.png";
+import journeyStage6 from "@/assets/journey-stage-6.png";
+
+const journeyStages = [
   {
-    badge: "Day 0", badgeColor: "bg-muted text-muted-foreground",
-    emoji: "😕", number: "01", numberColor: "text-primary",
+    badge: "Day 0", number: "01",
     title: "Lost & Overwhelmed",
-    desc: "3.3L CAT aspirants. No clear plan. Picking coaching based on ads.",
-    tag: "Where most start", tagColor: "bg-muted text-muted-foreground",
+    desc: "3.3 lakh CAT aspirants. No clear plan. Picking coaching based on ads, not results.",
+    tag: "Where most start",
+    image: journeyStage1,
+    accent: "from-muted to-muted/50",
+    dotColor: "bg-muted-foreground",
   },
   {
-    badge: "Week 1", badgeColor: "bg-primary text-primary-foreground",
-    emoji: "📋", number: "02", numberColor: "text-primary",
+    badge: "Week 1", number: "02",
     title: "Free Profile Evaluation",
     desc: "30-min strategy call. We map your strengths, target colleges & build your personal roadmap.",
-    tag: "← Percentilers begin here", tagColor: "bg-primary/15 text-primary",
+    tag: "Percentilers begin here",
+    image: journeyStage2,
+    accent: "from-primary/20 to-primary/5",
+    dotColor: "bg-primary",
   },
   {
-    badge: "Week 2", badgeColor: "bg-primary text-primary-foreground",
-    emoji: "🗓️", number: "03", numberColor: "text-primary",
+    badge: "Week 2", number: "03",
     title: "AI Study Plan Activated",
     desc: "Personalised daily schedule. Section targets. Adjust weekly. Zero guesswork.",
-    tag: "Smart prep starts", tagColor: "bg-primary/15 text-primary",
+    tag: "Smart prep starts",
+    image: journeyStage3,
+    accent: "from-primary/20 to-primary/5",
+    dotColor: "bg-primary",
   },
   {
-    badge: "Months 2–5", badgeColor: "bg-primary text-primary-foreground",
-    emoji: "🎯", number: "04", numberColor: "text-primary",
+    badge: "Months 2–5", number: "04",
     title: "Live Classes + 32 Mocks",
     desc: "Expert IIM alumni faculty. Deep post-mock analytics. Weak area targeting.",
-    tag: "Peak training zone", tagColor: "bg-primary/15 text-primary",
+    tag: "Peak training zone",
+    image: journeyStage4,
+    accent: "from-primary/20 to-primary/5",
+    dotColor: "bg-primary",
   },
   {
-    badge: "Month 6", badgeColor: "bg-primary text-primary-foreground",
-    emoji: "🧠", number: "05", numberColor: "text-primary",
+    badge: "Month 6", number: "05",
     title: "1-on-1 IIM Mentor",
     desc: "Weekly check-ins. WAT-PI prep. Strategy pivots. You are never alone in this.",
-    tag: "Final push", tagColor: "bg-primary/15 text-primary",
+    tag: "Final push",
+    image: journeyStage5,
+    accent: "from-primary/20 to-primary/5",
+    dotColor: "bg-primary",
   },
   {
-    badge: "Result Day", badgeColor: "bg-green-100 text-green-700",
-    emoji: "🎓", number: "06", numberColor: "text-green-600",
-    title: "IIM Offer Letter 🎉",
+    badge: "Result Day", number: "06",
+    title: "IIM Offer Letter",
     desc: "300+ Percentilers students got IIM calls. Your name could be next.",
-    tag: "Join 300+ IIM converts", tagColor: "bg-green-100 text-green-700",
+    tag: "Join 300+ IIM converts",
+    image: journeyStage6,
+    accent: "from-green-100 to-green-50",
+    dotColor: "bg-green-500",
   },
 ];
 
-function JourneyTimeline() {
-  const scrollRef = useRef<HTMLDivElement>(null);
+/* ─── Single cinematic stage ─── */
+function JourneyStage({ stage, index }: { stage: typeof journeyStages[0]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const opacity = useTransform(scrollYProgress, [0, 0.25, 0.5, 0.85, 1], [0, 1, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [80, 0, 0, -40]);
+  const imgScale = useTransform(scrollYProgress, [0, 0.35, 0.65, 1], [0.8, 1, 1, 0.9]);
+  const imgX = useTransform(scrollYProgress, [0, 0.3], [index % 2 === 0 ? -60 : 60, 0]);
+  const isEven = index % 2 === 0;
 
   return (
-    <section className="py-16 md:py-24 bg-secondary/20">
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
-        <div className="mb-10">
-          <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
-          <div className="flex items-end justify-between gap-6">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
-            <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground shrink-0">
-              <span>Swipe to explore</span>
-              <span className="inline-block animate-[slide-in-right_1.5s_ease-in-out_infinite]">→</span>
-            </div>
-          </div>
-        </div>
+    <div ref={ref} className="min-h-[80vh] md:min-h-screen flex items-center relative">
+      {/* Progress line dot */}
+      <div className="absolute left-6 md:left-1/2 md:-translate-x-1/2 top-1/2 -translate-y-1/2 z-20">
+        <motion.div
+          className={`w-4 h-4 md:w-5 md:h-5 rounded-full ${stage.dotColor} ring-4 ring-background shadow-lg`}
+          style={{ scale: imgScale }}
+        />
       </div>
 
-      {/* Horizontally scrollable card strip */}
-      <div
-        ref={scrollRef}
-        className="flex gap-5 md:gap-6 overflow-x-auto pb-6 px-6 md:px-8 snap-x snap-mandatory"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none", WebkitOverflowScrolling: "touch" }}
+      <motion.div
+        className={`w-full max-w-6xl mx-auto px-6 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center ${isEven ? "" : "md:[direction:rtl]"}`}
+        style={{ opacity, y }}
       >
-        <style>{`.journey-scroll::-webkit-scrollbar { display: none; }`}</style>
-        <div className="shrink-0 w-0 md:w-[calc((100vw-1280px)/2)]" />
-
-        {journeyCards.map((card) => (
-          <div
-            key={card.title}
-            className="shrink-0 w-[320px] md:w-[380px] snap-center p-7 md:p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-lg hover:border-primary/30 transition-all duration-300 flex flex-col justify-between"
-            style={{ minHeight: "360px" }}
-          >
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <span className={`text-[11px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.badgeColor}`}>{card.badge}</span>
-              </div>
-              <div className="text-[52px] md:text-[56px] leading-none mb-3">{card.emoji}</div>
-              <div className={`text-[60px] md:text-[72px] font-black leading-none ${card.numberColor} mb-2`}>{card.number}</div>
-              <h3 className="text-lg md:text-xl font-bold text-foreground mb-2">{card.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{card.desc}</p>
-            </div>
-            <div className="mt-5">
-              <span className={`inline-block text-[10px] font-bold tracking-wider uppercase px-3 py-1.5 rounded-full ${card.tagColor}`}>{card.tag}</span>
-            </div>
+        {/* Image side */}
+        <motion.div className={`flex justify-center md:justify-end ${isEven ? "" : "md:[direction:ltr]"}`} style={{ scale: imgScale, x: imgX }}>
+          <div className={`relative w-56 h-56 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-3xl bg-gradient-to-br ${stage.accent} p-4 md:p-6 flex items-center justify-center`}>
+            <img src={stage.image} alt={stage.title} className="w-full h-full object-contain drop-shadow-xl" loading="lazy" />
+            {/* Floating number */}
+            <span className="absolute -top-4 -right-4 text-6xl md:text-8xl font-black text-primary/10 select-none leading-none">{stage.number}</span>
           </div>
-        ))}
+        </motion.div>
 
-        <div className="shrink-0 w-6 md:w-[calc((100vw-1280px)/2)]" />
+        {/* Text side */}
+        <div className={`space-y-4 ${isEven ? "" : "md:[direction:ltr]"}`}>
+          <span className="inline-block text-[11px] font-bold tracking-[0.3em] uppercase px-3 py-1.5 rounded-full bg-primary/10 text-primary">{stage.badge}</span>
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-foreground tracking-tight leading-tight">{stage.title}</h3>
+          <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-md">{stage.desc}</p>
+          <span className="inline-block text-[10px] font-bold tracking-[0.2em] uppercase px-3 py-1.5 rounded-full bg-secondary text-muted-foreground">{stage.tag}</span>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+function JourneyTimeline() {
+  return (
+    <section className="relative py-16 md:py-0 overflow-hidden">
+      {/* Vertical progress line */}
+      <div className="absolute left-6 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-border z-10" />
+
+      {/* Header */}
+      <div className="max-w-6xl mx-auto px-6 md:px-8 pt-16 md:pt-24 pb-8 relative z-20">
+        <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground tracking-tight leading-[1.05]">From Zero to IIM</h2>
+        <p className="mt-3 text-muted-foreground text-lg">Scroll down to see the transformation</p>
       </div>
+
+      {/* Stages */}
+      {journeyStages.map((stage, i) => (
+        <JourneyStage key={stage.number} stage={stage} index={i} />
+      ))}
     </section>
   );
 }
