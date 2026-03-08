@@ -70,6 +70,7 @@ const App = () => (
                   <Route path="/masterclass" element={<Masterclass />} />
                   <Route path="/mentorship" element={<MentorshipPage />} />
                   <Route path="/masterclass/watch" element={<ProtectedRoute requirePhone source="masterclass"><MasterclassWatch /></ProtectedRoute>} />
+                  <Route path="/dashboard" element={<ProtectedRoute source="dashboard"><Dashboard /></ProtectedRoute>} />
                   <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
                   <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
                   <Route path="/courses/cat-omet" element={<CATOMETCourses />} />

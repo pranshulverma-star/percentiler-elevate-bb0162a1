@@ -111,6 +111,11 @@ const Navbar = () => {
                 </a>
               )
             )}
+            {isAuthenticated && (
+              <Link to="/dashboard" className="block text-sm font-medium text-primary py-2 flex items-center gap-1" onClick={() => setOpen(false)}>
+                <LayoutDashboard className="h-4 w-4" /> Dashboard
+              </Link>
+            )}
             <div className="flex justify-center pt-1"><ThemeToggle /></div>
           </nav>
         )}
