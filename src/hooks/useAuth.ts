@@ -56,20 +56,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       .catch((err) => {
         console.error("Session bootstrap error:", err);
-        if (isMounted) setLoading(false);
+        // On AbortError or any failure, unblock UI immediately
+        if (isMounted) {
+          setLoading(false);
+        }
       });
 
-    // Safety timeout: retry one more getSession before unblocking UI
-    const fallbackTimer = window.setTimeout(async () => {
+    // Safety timeout: unblock UI after 3s no matter what
+    const fallbackTimer = window.setTimeout(() => {
       if (resolved || !isMounted) return;
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        resolveAuth(session?.user ?? null);
-      } catch (err) {
-        console.error("Auth retry error:", err);
-        if (isMounted) setLoading(false);
-      }
-    }, 6000);
+      console.warn("Auth timed out, unblocking UI");
+      setLoading(false);
+    }, 3000);
 
     return () => {
       isMounted = false;
