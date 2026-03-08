@@ -7,7 +7,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
-import { CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp, ChevronDown, ChevronUp, GraduationCap, MessageCircle, Zap, Target, Brain, Award } from "lucide-react";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import {
+  CheckCircle, XCircle, ArrowRight, Star, Phone, BookOpen, Users, TrendingUp,
+  ChevronDown, GraduationCap, MessageCircle, Zap, Target, Brain, Award,
+  ChevronUp, Rocket, FileText, Headphones
+} from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 import studentBhavy from "@/assets/student-bhavy.webp";
@@ -67,10 +73,10 @@ function AnimatedStat({ value, suffix = "", prefix = "", label, delay = 0 }: { v
 
   return (
     <div ref={ref} className="text-center">
-      <div className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-none">
+      <div className="text-5xl sm:text-6xl md:text-7xl font-black tracking-tighter text-foreground leading-none">
         {prefix}{isInView ? count : 0}{suffix}
       </div>
-      <p className="mt-3 text-sm sm:text-base text-white/50 tracking-widest uppercase font-medium">{label}</p>
+      <p className="mt-3 text-sm sm:text-base text-muted-foreground tracking-widest uppercase font-medium">{label}</p>
     </div>
   );
 }
@@ -85,14 +91,14 @@ function ChapterHeading({ number, title, subtitle }: { number: string; title: st
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
     >
-      <span className="text-[11px] tracking-[0.4em] uppercase text-orange-500/70 font-semibold block mb-4">{number}</span>
-      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.05] tracking-tight">{title}</h2>
-      {subtitle && <p className="mt-4 text-lg md:text-xl text-white/40 max-w-2xl">{subtitle}</p>}
+      <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-4">{number}</span>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-foreground leading-[1.05] tracking-tight">{title}</h2>
+      {subtitle && <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-2xl">{subtitle}</p>}
     </motion.div>
   );
 }
 
-/* ─── Lead Form ─── */
+/* ─── Lead Form (light themed) ─── */
 function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "call"; competitor: string; label: string }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -135,25 +141,25 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
   if (submitted) {
     return (
       <motion.div className="text-center py-8" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}>
-        <CheckCircle className="w-14 h-14 text-orange-500 mx-auto mb-4" />
-        <p className="text-xl font-bold text-white">{ctaType === "masterclass" ? "Redirecting to your free masterclass..." : "Our counselor will reach out within 2 hours!"}</p>
+        <CheckCircle className="w-14 h-14 text-primary mx-auto mb-4" />
+        <p className="text-xl font-bold text-foreground">{ctaType === "masterclass" ? "Redirecting to your free masterclass..." : "Our counselor will reach out within 2 hours!"}</p>
       </motion.div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-3 w-full max-w-md mx-auto">
-      <Input placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required className="h-13 text-base bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-orange-500/50 focus:ring-orange-500/20" />
-      <Input placeholder="Phone Number (10 digits)" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} required pattern="[6-9]\d{9}" className="h-13 text-base bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-orange-500/50 focus:ring-orange-500/20" />
+      <Input placeholder="Your Name" value={name} onChange={(e) => setName(e.target.value)} required className="h-13 text-base" />
+      <Input placeholder="Phone Number (10 digits)" value={phone} onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))} required pattern="[6-9]\d{9}" className="h-13 text-base" />
       <Select value={targetYear} onValueChange={setTargetYear}>
-        <SelectTrigger className="h-13 text-base bg-white/5 border-white/10 text-white"><SelectValue placeholder="Target Year" /></SelectTrigger>
-        <SelectContent className="bg-[#1a1a1a] border-white/10">
+        <SelectTrigger className="h-13 text-base"><SelectValue placeholder="Target Year" /></SelectTrigger>
+        <SelectContent>
           <SelectItem value="2025">CAT 2025</SelectItem>
           <SelectItem value="2026">CAT 2026</SelectItem>
           <SelectItem value="2027">CAT 2027</SelectItem>
         </SelectContent>
       </Select>
-      <Button type="submit" size="lg" className="w-full h-13 text-base font-black tracking-wide bg-orange-500 hover:bg-orange-600 text-white border-0" disabled={submitting}>
+      <Button type="submit" size="lg" className="w-full h-13 text-base font-black tracking-wide" disabled={submitting}>
         {submitting ? "Submitting..." : label}
       </Button>
     </form>
@@ -165,17 +171,130 @@ function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
   return (
     <motion.div
-      className="border-b border-white/10"
+      className="border-b border-border"
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
     >
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between py-6 text-left group">
-        <span className="font-semibold text-white/90 pr-4 text-lg group-hover:text-orange-400 transition-colors">{q}</span>
-        {open ? <ChevronUp className="w-5 h-5 text-orange-500 shrink-0" /> : <ChevronDown className="w-5 h-5 text-white/30 shrink-0" />}
+        <span className="font-semibold text-foreground pr-4 text-lg group-hover:text-primary transition-colors">{q}</span>
+        {open ? <ChevronUp className="w-5 h-5 text-primary shrink-0" /> : <ChevronDown className="w-5 h-5 text-muted-foreground shrink-0" />}
       </button>
-      {open && <div className="pb-6 text-white/50 leading-relaxed -mt-2">{a}</div>}
+      {open && <div className="pb-6 text-muted-foreground leading-relaxed -mt-2">{a}</div>}
     </motion.div>
+  );
+}
+
+/* ─── Timeline section ─── */
+const timelineSteps = [
+  { icon: Rocket, title: "Sign Up", desc: "Free masterclass + AI study plan in 5 minutes", color: "text-primary" },
+  { icon: Brain, title: "Get Your Roadmap", desc: "Personalized daily schedule based on your level", color: "text-primary" },
+  { icon: Target, title: "IIM Mentor Assigned", desc: "1-on-1 guidance from a 99%ile+ IIM alumni", color: "text-primary" },
+  { icon: FileText, title: "Mock Mastery", desc: "Deep section-wise analysis after every mock", color: "text-primary" },
+  { icon: Headphones, title: "Daily Support", desc: "Same-day WhatsApp doubt resolution", color: "text-primary" },
+  { icon: Award, title: "95+ Percentile", desc: "Join 300+ students who cracked IIMs", color: "text-primary" },
+];
+
+function JourneyTimeline() {
+  return (
+    <section className="py-16 md:py-24 bg-[hsl(25,100%,97%)]">
+      <div className="max-w-5xl mx-auto px-6">
+        <motion.div
+          className="text-center mb-14"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-3">Your Journey</span>
+          <h2 className="text-3xl md:text-5xl font-black text-foreground tracking-tight">From Zero to 95+ Percentile</h2>
+          <p className="mt-3 text-muted-foreground text-lg max-w-xl mx-auto">A battle-tested 6-step system used by 300+ IIM converts.</p>
+        </motion.div>
+
+        {/* Desktop horizontal timeline */}
+        <div className="hidden md:block relative">
+          {/* SVG connector line */}
+          <svg className="absolute top-[52px] left-0 w-full h-4 z-0" preserveAspectRatio="none">
+            <motion.line
+              x1="8%" y1="50%" x2="92%" y2="50%"
+              stroke="hsl(25, 100%, 50%)"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeDasharray="8 6"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 0.3 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+            />
+          </svg>
+
+          <div className="grid grid-cols-6 gap-4 relative z-10">
+            {timelineSteps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <motion.div
+                  key={step.title}
+                  className="flex flex-col items-center text-center"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.12, duration: 0.5 }}
+                >
+                  <div className="w-[72px] h-[72px] rounded-2xl bg-background border border-border shadow-md flex items-center justify-center mb-4 group hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300">
+                    <Icon className="w-7 h-7 text-primary" />
+                  </div>
+                  <span className="text-[10px] font-bold text-primary/50 tracking-widest uppercase mb-1">Step {i + 1}</span>
+                  <h4 className="font-bold text-foreground text-sm mb-1">{step.title}</h4>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Mobile vertical timeline */}
+        <div className="md:hidden relative pl-10">
+          {/* Vertical SVG line */}
+          <svg className="absolute left-[19px] top-0 w-2 h-full z-0">
+            <motion.line
+              x1="50%" y1="0" x2="50%" y2="100%"
+              stroke="hsl(25, 100%, 50%)"
+              strokeWidth="2"
+              strokeDasharray="6 5"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 0.3 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1.5, ease: "easeInOut" }}
+            />
+          </svg>
+
+          <div className="space-y-8 relative z-10">
+            {timelineSteps.map((step, i) => {
+              const Icon = step.icon;
+              return (
+                <motion.div
+                  key={step.title}
+                  className="flex gap-4 items-start"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                >
+                  <div className="w-10 h-10 rounded-xl bg-background border border-border shadow-sm flex items-center justify-center shrink-0 -ml-10">
+                    <Icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <div>
+                    <span className="text-[10px] font-bold text-primary/50 tracking-widest uppercase">Step {i + 1}</span>
+                    <h4 className="font-bold text-foreground text-sm">{step.title}</h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{step.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -194,7 +313,7 @@ export default function CATCoachingComparison() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const heroY = useTransform(scrollYProgress, [0, 1], [0, 80]);
 
   const comparisonRows = [
     { feature: "Batch Size", them: "500–2000+", us: "≤30 students", icon: Users },
@@ -230,7 +349,7 @@ export default function CATCoachingComparison() {
   ];
 
   return (
-    <div className="bg-[#0A0A0A] min-h-screen">
+    <div className="bg-background min-h-screen">
       <SEO
         title="CAT Coaching Comparison 2026 – Best Institute | Percentilers"
         description="Compare CAT coaching institutes side-by-side. See why 300+ students chose Percentilers' IIM-alumni mentorship over big coaching brands. Free masterclass inside."
@@ -241,18 +360,16 @@ export default function CATCoachingComparison() {
         "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } }))
       })}} />
 
-      {/* ═══ CHAPTER 0: HERO ═══ */}
-      <section ref={heroRef} className="relative min-h-[100vh] flex items-center justify-center overflow-hidden">
-        {/* Grain overlay */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E\")" }} />
-        {/* Radial glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-orange-500/[0.07] rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-orange-600/[0.04] rounded-full blur-[100px]" />
+      <Navbar />
 
-        <motion.div className="relative z-10 max-w-5xl mx-auto px-6 text-center" style={{ opacity: heroOpacity, y: heroY }}>
+      {/* ═══ HERO ═══ */}
+      <section ref={heroRef} className="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-background">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-primary/[0.06] rounded-full blur-[120px]" />
+
+        <motion.div className="relative z-10 max-w-4xl mx-auto px-6 text-center" style={{ opacity: heroOpacity, y: heroY }}>
           {competitor && (
             <motion.span
-              className="inline-block mb-6 px-5 py-2 rounded-full text-xs tracking-[0.2em] uppercase font-bold border border-orange-500/30 text-orange-400 bg-orange-500/10"
+              className="inline-block mb-6 px-5 py-2 rounded-full text-xs tracking-[0.2em] uppercase font-bold border border-primary/30 text-primary bg-primary/10"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
@@ -262,7 +379,7 @@ export default function CATCoachingComparison() {
           )}
 
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white leading-[1.05] tracking-tight whitespace-pre-line"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-foreground leading-[1.08] tracking-tight whitespace-pre-line"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
@@ -271,12 +388,12 @@ export default function CATCoachingComparison() {
           </motion.h1>
 
           <motion.p
-            className="mt-6 md:mt-8 text-lg md:text-xl text-white/40 max-w-2xl mx-auto leading-relaxed"
+            className="mt-6 md:mt-8 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           >
-            300+ students switched to Percentilers and scored <span className="text-orange-400 font-semibold">99%ile+</span>. See the difference an IIM-alumni mentor makes.
+            300+ students switched to Percentilers and scored <span className="text-primary font-semibold">99%ile+</span>. See the difference an IIM-alumni mentor makes.
           </motion.p>
 
           <motion.div
@@ -287,7 +404,7 @@ export default function CATCoachingComparison() {
           >
             <Button
               size="lg"
-              className="h-14 px-10 text-base font-black tracking-wide bg-orange-500 hover:bg-orange-600 text-white border-0 rounded-full"
+              className="h-14 px-10 text-base font-black tracking-wide rounded-full shadow-lg shadow-primary/20"
               onClick={() => scrollTo("masterclass-section")}
             >
               Watch Free Masterclass <ArrowRight className="ml-2 w-5 h-5" />
@@ -295,72 +412,68 @@ export default function CATCoachingComparison() {
             <Button
               size="lg"
               variant="outline"
-              className="h-14 px-10 text-base font-bold tracking-wide border-white/20 text-white/80 hover:bg-white/5 hover:border-white/40 rounded-full bg-transparent"
-              onClick={() => scrollTo("call-section")}
+              className="h-14 px-10 text-base font-bold tracking-wide rounded-full border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all"
+              asChild
             >
-              Book Free Call
+              <a href="tel:+919911928071">
+                <Phone className="mr-2 w-4 h-4" /> Book Free Strategy Call
+              </a>
             </Button>
           </motion.div>
 
-          {/* Scroll hint */}
-          <motion.div
-            className="mt-16 md:mt-24"
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-          >
-            <ChevronDown className="w-6 h-6 text-white/20 mx-auto" />
+          <motion.div className="mt-16" animate={{ y: [0, 8, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
+            <ChevronDown className="w-6 h-6 text-muted-foreground/40 mx-auto" />
           </motion.div>
         </motion.div>
       </section>
 
+      {/* ═══ JOURNEY TIMELINE ═══ */}
+      <JourneyTimeline />
+
       {/* ═══ CHAPTER 1: THE NUMBERS ═══ */}
-      <section className="py-24 md:py-32 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-[#0f0f0f] to-[#0A0A0A]" />
-        <div className="relative z-10 max-w-6xl mx-auto px-6">
+      <section className="py-20 md:py-28 bg-background relative">
+        <div className="max-w-6xl mx-auto px-6">
           <ChapterHeading number="Chapter 01" title="The Numbers Don't Lie" subtitle="Data from 10,000+ students trained over 8 years." />
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
             <AnimatedStat value={300} suffix="+" label="IIM Converts" delay={0} />
             <AnimatedStat value={10000} suffix="+" label="Students Trained" delay={200} />
-            <AnimatedStat value={99} suffix="%" prefix="" label="Faculty Percentile" delay={400} />
+            <AnimatedStat value={99} suffix="%" label="Faculty Percentile" delay={400} />
             <AnimatedStat value={8} suffix=" yrs" label="Coaching Experience" delay={600} />
           </div>
         </div>
       </section>
 
       {/* ═══ CHAPTER 2: THE PROBLEM ═══ */}
-      <section className="py-24 md:py-32 relative">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-0 w-[500px] h-[500px] bg-red-500/[0.03] rounded-full blur-[100px]" />
-        </div>
-        <div className="relative z-10 max-w-5xl mx-auto px-6">
+      <section className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative">
+        <div className="max-w-5xl mx-auto px-6">
           <ChapterHeading number="Chapter 02" title="Why Most CAT Aspirants Fail" subtitle="It's not about intelligence. It's about the system you choose." />
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              { icon: Users, title: "Lost in the Crowd", desc: "Large batch sizes (500–2000) mean your doubts go unanswered. You're just a number.", stat: "72%" , statLabel: "regret their coaching choice" },
+              { icon: Users, title: "Lost in the Crowd", desc: "Large batch sizes (500–2000) mean your doubts go unanswered. You're just a number.", stat: "72%", statLabel: "regret their coaching choice" },
               { icon: BookOpen, title: "Generic Study Material", desc: "Same plan whether you're at 50%ile or 90%ile. No personalization whatsoever.", stat: "85%", statLabel: "get wrong-level material" },
               { icon: TrendingUp, title: "Zero Accountability", desc: "Nobody tracks your progress. When motivation drops, you're on your own.", stat: "60%", statLabel: "drop out mid-prep" },
               { icon: Phone, title: "No Real Support", desc: "Automated ticket systems. 48-hour wait for doubt resolution. No human touch.", stat: "3x", statLabel: "slower doubt resolution" },
             ].map((item, i) => (
               <motion.div
                 key={item.title}
-                className="p-8 rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm group hover:border-red-500/20 transition-all duration-500"
+                className="p-8 rounded-2xl border border-border bg-background shadow-sm hover:shadow-md hover:border-destructive/30 transition-all duration-300"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-50px" }}
                 transition={{ delay: i * 0.1, duration: 0.6 }}
               >
                 <div className="flex items-start justify-between mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
-                    <item.icon className="w-5 h-5 text-red-400" />
+                  <div className="w-12 h-12 rounded-xl bg-destructive/10 flex items-center justify-center">
+                    <item.icon className="w-5 h-5 text-destructive" />
                   </div>
                   <div className="text-right">
-                    <div className="text-2xl font-black text-red-400">{item.stat}</div>
-                    <div className="text-[10px] uppercase tracking-wider text-white/30">{item.statLabel}</div>
+                    <div className="text-2xl font-black text-destructive">{item.stat}</div>
+                    <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{item.statLabel}</div>
                   </div>
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">{item.title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed">{item.desc}</p>
+                <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -368,8 +481,7 @@ export default function CATCoachingComparison() {
       </section>
 
       {/* ═══ DRAMATIC DIVIDER STAT ═══ */}
-      <section className="py-20 md:py-28 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-orange-500/[0.05] via-transparent to-orange-500/[0.05]" />
+      <section className="py-16 md:py-24 bg-background relative overflow-hidden">
         <motion.div
           className="relative z-10 text-center px-6"
           initial={{ opacity: 0, scale: 0.9 }}
@@ -377,43 +489,43 @@ export default function CATCoachingComparison() {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <div className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black text-white/[0.07] leading-none">
+          <div className="text-6xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black text-foreground/[0.06] leading-none select-none">
             ₹50,000+
           </div>
-          <p className="text-white/50 text-lg md:text-xl mt-4 max-w-lg mx-auto">
-            That's what you'll spend on coaching. <span className="text-orange-400 font-semibold">Choose wisely.</span>
+          <p className="text-muted-foreground text-lg md:text-xl mt-4 max-w-lg mx-auto">
+            That's what you'll spend on coaching. <span className="text-primary font-semibold">Choose wisely.</span>
           </p>
         </motion.div>
       </section>
 
       {/* ═══ CHAPTER 3: THE COMPARISON ═══ */}
-      <section className="py-24 md:py-32 relative">
-        <div className="relative z-10 max-w-4xl mx-auto px-6">
+      <section className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative">
+        <div className="max-w-4xl mx-auto px-6">
           <ChapterHeading number="Chapter 03" title={`${competitorName} vs\nPercentilers`} subtitle="An honest, side-by-side look at what you actually get." />
 
           <div className="space-y-3">
             {comparisonRows.map((row, i) => (
               <motion.div
                 key={row.feature}
-                className="grid grid-cols-[1fr_1fr_1fr] md:grid-cols-[1.5fr_1fr_1fr] items-center gap-2 py-5 px-4 md:px-6 rounded-xl border border-white/[0.04] bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                className="grid grid-cols-[1fr_1fr_1fr] md:grid-cols-[1.5fr_1fr_1fr] items-center gap-2 py-5 px-4 md:px-6 rounded-xl border border-border bg-background shadow-sm hover:shadow-md transition-all"
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05, duration: 0.4 }}
               >
                 <div className="flex items-center gap-3">
-                  <row.icon className="w-4 h-4 text-orange-500/60 hidden sm:block shrink-0" />
-                  <span className="font-semibold text-white text-sm md:text-base">{row.feature}</span>
+                  <row.icon className="w-4 h-4 text-primary/60 hidden sm:block shrink-0" />
+                  <span className="font-semibold text-foreground text-sm md:text-base">{row.feature}</span>
                 </div>
                 <div className="text-center">
-                  <span className="text-white/30 text-xs md:text-sm flex items-center justify-center gap-1.5">
-                    <XCircle className="w-3.5 h-3.5 text-red-400/60 shrink-0" />
+                  <span className="text-muted-foreground text-xs md:text-sm flex items-center justify-center gap-1.5">
+                    <XCircle className="w-3.5 h-3.5 text-destructive/60 shrink-0" />
                     {row.them}
                   </span>
                 </div>
                 <div className="text-center">
-                  <span className="text-orange-400 text-xs md:text-sm font-semibold flex items-center justify-center gap-1.5">
-                    <CheckCircle className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                  <span className="text-primary text-xs md:text-sm font-semibold flex items-center justify-center gap-1.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-primary shrink-0" />
                     {row.us}
                   </span>
                 </div>
@@ -421,15 +533,10 @@ export default function CATCoachingComparison() {
             ))}
           </div>
 
-          <motion.div
-            className="mt-12 text-center"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-          >
+          <motion.div className="mt-12 text-center" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}>
             <Button
               size="lg"
-              className="h-14 px-10 text-base font-black tracking-wide bg-orange-500 hover:bg-orange-600 text-white border-0 rounded-full"
+              className="h-14 px-10 text-base font-black tracking-wide rounded-full shadow-lg shadow-primary/20"
               onClick={() => scrollTo("masterclass-section")}
             >
               See the Percentilers Difference <ArrowRight className="ml-2 w-5 h-5" />
@@ -439,10 +546,8 @@ export default function CATCoachingComparison() {
       </section>
 
       {/* ═══ CHAPTER 4: THE SYSTEM ═══ */}
-      <section className="py-24 md:py-32 relative">
-        <div className="absolute inset-0">
-          <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-orange-500/[0.04] rounded-full blur-[120px]" />
-        </div>
+      <section className="py-20 md:py-28 bg-background relative">
+        <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-primary/[0.04] rounded-full blur-[120px]" />
         <div className="relative z-10 max-w-5xl mx-auto px-6">
           <ChapterHeading number="Chapter 04" title="The Percentilers System" subtitle="A battle-tested framework used by 300+ IIM converts." />
 
@@ -455,18 +560,18 @@ export default function CATCoachingComparison() {
             ].map((s, i) => (
               <motion.div
                 key={s.step}
-                className="relative p-8 rounded-2xl border border-white/[0.06] bg-gradient-to-b from-white/[0.03] to-transparent group hover:border-orange-500/20 transition-all duration-500"
+                className="relative p-8 rounded-2xl border border-border bg-background shadow-sm group hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.12, duration: 0.6 }}
               >
-                <div className="text-[64px] font-black text-white/[0.04] absolute top-4 right-4 leading-none">{s.step}</div>
-                <div className="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center mb-5">
-                  <s.icon className="w-5 h-5 text-orange-400" />
+                <div className="text-[64px] font-black text-foreground/[0.04] absolute top-4 right-4 leading-none select-none">{s.step}</div>
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-5">
+                  <s.icon className="w-5 h-5 text-primary" />
                 </div>
-                <h3 className="font-bold text-white text-lg mb-2">{s.title}</h3>
-                <p className="text-sm text-white/40 leading-relaxed">{s.desc}</p>
+                <h3 className="font-bold text-foreground text-lg mb-2">{s.title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -474,38 +579,38 @@ export default function CATCoachingComparison() {
       </section>
 
       {/* ═══ CHAPTER 5: RESULTS ═══ */}
-      <section className="py-24 md:py-32 relative">
-        <div className="relative z-10 max-w-6xl mx-auto px-6">
+      <section className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative">
+        <div className="max-w-6xl mx-auto px-6">
           <ChapterHeading number="Chapter 05" title="Real Results. Real Students." subtitle="Verified converts — not vague testimonials." />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {results.map((r, i) => (
               <motion.div
                 key={r.name}
-                className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:border-orange-500/20 transition-all duration-500 group"
+                className="p-6 rounded-2xl border border-border bg-background shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 group"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.05, duration: 0.5 }}
               >
                 <div className="flex items-center gap-3 mb-5">
-                  <Avatar className="h-11 w-11 ring-2 ring-white/10 group-hover:ring-orange-500/30 transition-all bg-white/5 overflow-hidden">
+                  <Avatar className="h-11 w-11 ring-2 ring-border group-hover:ring-primary/30 transition-all overflow-hidden">
                     <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile`} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" />
-                    <AvatarFallback className="bg-orange-500/10 text-orange-400 font-bold text-xs">{r.initials}</AvatarFallback>
+                    <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">{r.initials}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-semibold text-white text-sm">{r.name}</p>
-                    <div className="flex items-center gap-1 text-[11px] text-white/30">
+                    <p className="font-semibold text-foreground text-sm">{r.name}</p>
+                    <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
                       <GraduationCap className="h-3 w-3" />
                       {r.college}
                     </div>
                   </div>
                 </div>
                 <div className="flex items-baseline gap-1.5 mb-3">
-                  <span className="text-4xl font-black text-orange-400">{r.percentile}</span>
-                  <span className="text-sm font-medium text-white/30">%ile</span>
+                  <span className="text-4xl font-black text-primary">{r.percentile}</span>
+                  <span className="text-sm font-medium text-muted-foreground">%ile</span>
                 </div>
-                <p className="text-sm text-white/35 italic leading-relaxed">"{r.quote}"</p>
+                <p className="text-sm text-muted-foreground italic leading-relaxed">"{r.quote}"</p>
               </motion.div>
             ))}
           </div>
@@ -513,11 +618,11 @@ export default function CATCoachingComparison() {
       </section>
 
       {/* ═══ CHAPTER 6: SOCIAL PROOF ═══ */}
-      <section className="py-24 md:py-32 relative">
-        <div className="relative z-10 max-w-5xl mx-auto px-6">
+      <section className="py-20 md:py-28 bg-background relative">
+        <div className="max-w-5xl mx-auto px-6">
           <ChapterHeading number="Chapter 06" title="Straight From WhatsApp" subtitle="Unedited messages from real students." />
 
-          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-400 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
+          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
             <MessageCircle className="h-3.5 w-3.5" />
             Actual Screenshots
           </div>
@@ -532,7 +637,7 @@ export default function CATCoachingComparison() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.08 }}
               >
-                <div className="rounded-xl overflow-hidden border border-white/[0.06] hover:border-white/10 transition-all duration-300 hover:-translate-y-1">
+                <div className="rounded-xl overflow-hidden border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
                   <img src={src} alt={`Student WhatsApp testimonial ${i + 1}`} className="w-full h-auto" loading="lazy" decoding="async" />
                 </div>
               </motion.div>
@@ -542,70 +647,50 @@ export default function CATCoachingComparison() {
       </section>
 
       {/* ═══ CTA: MASTERCLASS ═══ */}
-      <section id="masterclass-section" className="py-24 md:py-32 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-orange-500/[0.06] via-transparent to-transparent" />
+      <section id="masterclass-section" className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.04] via-transparent to-transparent" />
         <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <span className="text-[11px] tracking-[0.4em] uppercase text-orange-500/70 font-semibold block mb-4">Free Access</span>
-            <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-4">Watch the CAT Strategy Masterclass</h2>
-            <p className="text-white/40 mb-10 text-lg">90-minute session by IIM alumni. The exact strategy used by 99%ile scorers. No pitch.</p>
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-4">Free Access</span>
+            <h2 className="text-3xl md:text-5xl font-black text-foreground leading-tight mb-4">Watch the CAT Strategy Masterclass</h2>
+            <p className="text-muted-foreground mb-10 text-lg">90-minute session by IIM alumni. The exact strategy used by 99%ile scorers. No pitch.</p>
             <LeadForm ctaType="masterclass" competitor={competitorKey} label="Watch Free Masterclass →" />
           </motion.div>
         </div>
       </section>
 
       {/* ═══ CTA: COUNSELING CALL ═══ */}
-      <section id="call-section" className="py-24 md:py-32 relative border-t border-white/[0.04]">
-        <div className="relative z-10 max-w-2xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <span className="text-[11px] tracking-[0.4em] uppercase text-orange-500/70 font-semibold block mb-4">Personalized Guidance</span>
-            <h2 className="text-3xl md:text-5xl font-black text-white leading-tight mb-4">Not Sure Which Path Is Right?</h2>
-            <p className="text-white/40 mb-10 text-lg">Free 15-minute counseling call with our IIM-alumni team. Personalized roadmap, zero pressure.</p>
+      <section id="call-section" className="py-20 md:py-28 bg-background relative border-t border-border">
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <span className="text-[11px] tracking-[0.4em] uppercase text-primary/70 font-semibold block mb-4">Personalized Guidance</span>
+            <h2 className="text-3xl md:text-5xl font-black text-foreground leading-tight mb-4">Not Sure Which Path Is Right?</h2>
+            <p className="text-muted-foreground mb-10 text-lg">Free 15-minute counseling call with our IIM-alumni team. Personalized roadmap, zero pressure.</p>
             <LeadForm ctaType="call" competitor={competitorKey} label="Book Free Counseling Call →" />
           </motion.div>
         </div>
       </section>
 
       {/* ═══ FAQ ═══ */}
-      <section className="py-24 md:py-32 relative border-t border-white/[0.04]">
+      <section className="py-20 md:py-28 bg-[hsl(25,100%,97%)] relative">
         <div className="max-w-3xl mx-auto px-6">
           <ChapterHeading number="FAQ" title="Questions & Answers" />
-          <div>
-            {faqs.map((f) => <FAQItem key={f.q} q={f.q} a={f.a} />)}
-          </div>
+          <div>{faqs.map((f) => <FAQItem key={f.q} q={f.q} a={f.a} />)}</div>
         </div>
       </section>
 
-      {/* ═══ FOOTER ═══ */}
-      <footer className="py-10 border-t border-white/[0.04]">
-        <div className="max-w-4xl mx-auto px-6 text-center">
-          <p className="text-xs text-white/20">
-            © {new Date().getFullYear()} Percentilers. All rights reserved. |{" "}
-            <a href="/terms" className="underline hover:text-orange-400 transition-colors">Terms</a> |{" "}
-            <a href="/privacy-policy" className="underline hover:text-orange-400 transition-colors">Privacy</a> |{" "}
-            <a href="/refund-policy" className="underline hover:text-orange-400 transition-colors">Refund Policy</a>
-          </p>
-        </div>
-      </footer>
+      <Footer />
 
       {/* ═══ STICKY MOBILE CTA ═══ */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#0A0A0A]/95 backdrop-blur-md border-t border-white/[0.06] p-3 flex gap-2">
-        <Button className="flex-1 h-11 font-black text-sm bg-orange-500 hover:bg-orange-600 text-white border-0 rounded-full" onClick={() => scrollTo("masterclass-section")}>
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-background/95 backdrop-blur-md border-t border-border p-3 flex gap-2">
+        <Button className="flex-1 h-11 font-black text-sm rounded-full shadow-lg shadow-primary/20" onClick={() => scrollTo("masterclass-section")}>
           Free Masterclass
         </Button>
-        <Button variant="outline" className="flex-1 h-11 font-bold text-sm border-white/20 text-white/80 hover:bg-white/5 rounded-full bg-transparent" onClick={() => scrollTo("call-section")}>
-          Free Call
+        <Button variant="outline" className="flex-1 h-11 font-bold text-sm border-primary text-primary hover:bg-primary hover:text-primary-foreground rounded-full" asChild>
+          <a href="tel:+919911928071">Strategy Call</a>
         </Button>
       </div>
-      <div className="h-16 md:hidden" />
+      <div className="h-14 md:hidden" />
     </div>
   );
 }
