@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { trackComparisonFormSubmit } from "@/lib/tracking";
 import {
   CheckCircle, ArrowRight, Phone, BookOpen, Users, TrendingUp,
   ChevronDown, GraduationCap, MessageCircle, Target, Brain, Award,
