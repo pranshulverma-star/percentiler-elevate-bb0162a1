@@ -38,6 +38,7 @@ const CATDailyStudyPlanner = lazy(() => import("./pages/CATDailyStudyPlanner"));
 const CATOMETCourses = lazy(() => import("./pages/CATOMETCourses"));
 const FreeCourses = lazy(() => import("./pages/FreeCourses"));
 const TestSeries = lazy(() => import("./pages/TestSeries"));
+const PracticeLab = lazy(() => import("./pages/PracticeLab"));
 const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
@@ -73,6 +74,7 @@ const App = () => (
                   <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
                   <Route path="/free-courses" element={<FreeCourses />} />
                   <Route path="/test-series" element={<TestSeries />} />
+                  <Route path="/practice-lab" element={<ProtectedRoute requirePhone source="practice-lab"><PracticeLab /></ProtectedRoute>} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/refund-policy" element={<RefundPolicy />} />
