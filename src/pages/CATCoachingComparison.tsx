@@ -316,7 +316,9 @@ function JourneyTimeline() {
               stroke="hsl(var(--primary))"
               strokeWidth="3.5"
               fill="none"
-              style={{ pathLength: roadProgress }}
+              pathLength={1}
+              strokeDasharray="1"
+              strokeDashoffset={1 - roadProgress}
             />
           </svg>
 
