@@ -77,6 +77,11 @@ const Navbar = () => {
                 </a>
               )
             )}
+            {isAuthenticated && (
+              <Link to="/dashboard" className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
+                <LayoutDashboard className="h-4 w-4" /> Dashboard
+              </Link>
+            )}
             <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20">Book Free Strategy Call</Button>
             <ThemeToggle />
           </nav>
