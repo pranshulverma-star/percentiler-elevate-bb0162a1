@@ -412,7 +412,7 @@ export default function CATCoachingComparison() {
               {whatsappScreenshots.map((src, i) => (
                 <div key={i} className="break-inside-avoid mb-4">
                   <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card">
-                    <img src={src} alt={`WhatsApp testimonial from a CAT student – screenshot ${i + 1}`} className="w-full h-auto object-contain" loading="lazy" decoding="async" />
+                    <img src={src} alt={`WhatsApp testimonial from a CAT student – screenshot ${i + 1}`} width={400} height={600} className="w-full h-auto object-contain" loading="lazy" decoding="async" />
                   </div>
                 </div>
               ))}
