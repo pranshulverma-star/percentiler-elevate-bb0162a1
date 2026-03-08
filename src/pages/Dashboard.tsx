@@ -7,6 +7,7 @@ import DashboardProfile from "@/components/dashboard/DashboardProfile";
 import DashboardPlanner from "@/components/dashboard/DashboardPlanner";
 import DashboardMasterclass from "@/components/dashboard/DashboardMasterclass";
 import DashboardCallCTA from "@/components/dashboard/DashboardCallCTA";
+import DashboardPracticeLab from "@/components/dashboard/DashboardPracticeLab";
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import SEO from "@/components/SEO";
@@ -21,11 +22,13 @@ export default function Dashboard() {
   const [plannerData, setPlannerData] = useState<any>(null);
   const [engagement, setEngagement] = useState<any>(null);
   const [campaign, setCampaign] = useState<any>(null);
+  const [practiceAttempts, setPracticeAttempts] = useState<any[]>([]);
 
   const [loadingLead, setLoadingLead] = useState(true);
   const [loadingPlanner, setLoadingPlanner] = useState(true);
   const [loadingMasterclass, setLoadingMasterclass] = useState(true);
   const [loadingCampaign, setLoadingCampaign] = useState(true);
+  const [loadingPractice, setLoadingPractice] = useState(true);
 
   const fetchLead = async () => {
     if (!userId) return;
@@ -89,12 +92,25 @@ export default function Dashboard() {
     setLoadingCampaign(false);
   };
 
+  const fetchPractice = async () => {
+    if (!userId) { setLoadingPractice(false); return; }
+    setLoadingPractice(true);
+    const { data } = await (supabase.from("practice_lab_attempts") as any)
+      .select("section_id, chapter_slug, score_pct, total_questions, correct, time_used_seconds, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
+      .limit(20);
+    setPracticeAttempts(data || []);
+    setLoadingPractice(false);
+  };
+
   useEffect(() => {
     if (userId && email) {
       fetchLead();
       fetchPlanner();
       fetchMasterclass();
       fetchCampaign();
+      fetchPractice();
     }
   }, [userId, email]);
 
@@ -123,6 +139,7 @@ export default function Dashboard() {
             <DashboardCallCTA campaign={campaign} loading={loadingCampaign} />
             <DashboardPlanner data={plannerData} loading={loadingPlanner} />
             <DashboardMasterclass engagement={engagement} loading={loadingMasterclass} />
+            <DashboardPracticeLab attempts={practiceAttempts} loading={loadingPractice} />
           </div>
         </div>
       </main>
