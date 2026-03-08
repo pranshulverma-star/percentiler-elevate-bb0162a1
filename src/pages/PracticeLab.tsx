@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen, Zap, ChevronRight, Lock } from "lucide-react";
+import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen, Zap, ChevronRight, Lock, Trophy, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -34,15 +34,34 @@ const fadeUp = {
 
 // ─── Section Cards ───────────────────────────────────────────────────────────
 
+// ─── Mock Leaderboard Data ───────────────────────────────────────────────────
+
+const leaderboardData = [
+  { rank: 1, name: "Aarav M.", score: 980, streak: 12, badge: "🥇" },
+  { rank: 2, name: "Priya S.", score: 945, streak: 10, badge: "🥈" },
+  { rank: 3, name: "Rohan K.", score: 920, streak: 9, badge: "🥉" },
+  { rank: 4, name: "Ananya D.", score: 890, streak: 8, badge: "" },
+  { rank: 5, name: "Karthik N.", score: 870, streak: 7, badge: "" },
+];
+
+const practiceTestimonials = [
+  { name: "Meera T.", text: "The timed quizzes helped me improve my speed. Jumped from 85 to 98 percentile!", highlight: "85 → 98 percentile" },
+  { name: "Karthik N.", text: "Practising chapter-wise before mocks made a huge difference in my accuracy.", highlight: "Accuracy boost" },
+  { name: "Divya S.", text: "The leaderboard kept me motivated. Competing with peers pushed me harder.", highlight: "Peer motivation" },
+];
+
+// ─── Section Cards ───────────────────────────────────────────────────────────
+
 function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
   const sectionColors = [
     "from-orange-500/20 to-amber-500/10 border-orange-500/20",
     "from-blue-500/20 to-cyan-500/10 border-blue-500/20",
     "from-emerald-500/20 to-teal-500/10 border-emerald-500/20",
   ];
+  const sectionIcons = ["📐", "🧩", "📖"];
 
   return (
-    <motion.div {...fadeUp} className="space-y-8">
+    <motion.div {...fadeUp} className="space-y-12">
       {/* Hero */}
       <div className="text-center space-y-3">
         <Badge variant="secondary" className="text-xs tracking-wide uppercase font-medium">
@@ -56,8 +75,8 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
         </p>
       </div>
 
-      {/* Section Cards */}
-      <div className="grid gap-4 md:grid-cols-3 max-w-4xl mx-auto">
+      {/* Section Cards — equal height */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
         {practiceLabSections.map((section, i) => {
           const totalQ = section.chapters.reduce((sum, ch) => sum + ch.questions.length, 0);
           const available = section.chapters.filter(ch => ch.questions.length > 0).length;
@@ -67,19 +86,20 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1, duration: 0.4 }}
+              className="flex"
             >
               <Card
                 className={`group relative overflow-hidden cursor-pointer border bg-gradient-to-br ${sectionColors[i]} 
-                  hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1`}
+                  hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 flex flex-col w-full`}
                 onClick={() => onSelect(section)}
               >
-                <div className="p-6 md:p-8 space-y-4">
-                  <div className="text-4xl">{section.icon}</div>
-                  <div>
+                <div className="p-6 md:p-8 flex flex-col flex-1 space-y-4">
+                  <div className="text-4xl">{sectionIcons[i]}</div>
+                  <div className="flex-1">
                     <h2 className="text-lg font-semibold text-foreground tracking-tight">{section.name}</h2>
                     <p className="text-sm text-muted-foreground mt-1">{section.description}</p>
                   </div>
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between mt-auto">
                     <span className="text-xs text-muted-foreground">
                       {section.chapters.length} chapters · {totalQ} questions
                     </span>
@@ -93,6 +113,55 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
             </motion.div>
           );
         })}
+      </div>
+
+      {/* Leaderboard */}
+      <div className="max-w-2xl mx-auto space-y-4">
+        <div className="flex items-center gap-2">
+          <Trophy className="w-5 h-5 text-primary" />
+          <h2 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">Leaderboard</h2>
+        </div>
+        <Card className="border overflow-hidden">
+          <div className="divide-y divide-border">
+            {leaderboardData.map((entry) => (
+              <div
+                key={entry.rank}
+                className={`flex items-center gap-4 px-4 py-3 md:px-6 md:py-4 ${
+                  entry.rank <= 3 ? "bg-primary/[0.03]" : ""
+                }`}
+              >
+                <span className="w-8 text-center font-bold text-lg">
+                  {entry.badge || `#${entry.rank}`}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-foreground truncate">{entry.name}</p>
+                  <p className="text-xs text-muted-foreground">{entry.streak}-day streak</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm font-semibold text-foreground">{entry.score}</p>
+                  <p className="text-xs text-muted-foreground">points</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </div>
+
+      {/* Testimonials */}
+      <div className="max-w-4xl mx-auto space-y-4">
+        <div className="flex items-center gap-2">
+          <Users className="w-5 h-5 text-primary" />
+          <h2 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">What Students Say</h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {practiceTestimonials.map((t, i) => (
+            <Card key={i} className="p-5 border space-y-3">
+              <Badge variant="secondary" className="text-xs">{t.highlight}</Badge>
+              <p className="text-sm text-muted-foreground leading-relaxed">"{t.text}"</p>
+              <p className="text-xs font-medium text-foreground">— {t.name}</p>
+            </Card>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
