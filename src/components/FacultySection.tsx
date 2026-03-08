@@ -1,9 +1,9 @@
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { motion } from "framer-motion";
 
-import facultyGaurav from "@/assets/faculty-gaurav.jpeg";
-import facultyShweta from "@/assets/faculty-shweta.png";
-import facultyPuru from "@/assets/faculty-puru.png";
+import facultyGaurav from "@/assets/faculty-gaurav.webp";
+import facultyShweta from "@/assets/faculty-shweta.webp";
+import facultyPuru from "@/assets/faculty-puru.webp";
 import facultyPranshul from "@/assets/founder-pranshul.webp";
 
 const faculty = [

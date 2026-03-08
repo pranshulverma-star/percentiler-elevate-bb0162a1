@@ -12,7 +12,7 @@ import studentRitik from "@/assets/student-ritik.webp";
 import studentPrakhar from "@/assets/student-prakhar.webp";
 import studentSaloni from "@/assets/student-saloni.webp";
 import studentSattaki from "@/assets/student-sattaki.webp";
-import studentRahul from "@/assets/student-rahul.jpeg";
+import studentRahul from "@/assets/student-rahul.webp";
 
 const results = [
   { name: "Bhavy Jain", percentile: "99.5", college: "FMS Delhi", initials: "BJ", photo: studentBhavy, quote: "The structured strategy made all the difference in my preparation." },

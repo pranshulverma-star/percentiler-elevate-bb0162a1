@@ -17,14 +17,14 @@ import studentRitik from "@/assets/student-ritik.webp";
 import studentPrakhar from "@/assets/student-prakhar.webp";
 import studentSaloni from "@/assets/student-saloni.webp";
 import studentSattaki from "@/assets/student-sattaki.webp";
-import studentRahul from "@/assets/student-rahul.jpeg";
+import studentRahul from "@/assets/student-rahul.webp";
 
-import whatsapp1 from "@/assets/whatsapp-1.jpg";
-import whatsapp2 from "@/assets/whatsapp-2.jpg";
-import whatsapp3 from "@/assets/whatsapp-3.jpg";
-import whatsapp4 from "@/assets/whatsapp-4.jpg";
-import whatsapp5 from "@/assets/whatsapp-5.jpg";
-import whatsapp6 from "@/assets/whatsapp-6.jpg";
+import whatsapp1 from "@/assets/whatsapp-1.webp";
+import whatsapp2 from "@/assets/whatsapp-2.webp";
+import whatsapp3 from "@/assets/whatsapp-3.webp";
+import whatsapp4 from "@/assets/whatsapp-4.webp";
+import whatsapp5 from "@/assets/whatsapp-5.webp";
+import whatsapp6 from "@/assets/whatsapp-6.webp";
 
 const COMPETITOR_MAP: Record<string, { name: string; headline: string }> = {
   unacademy: { name: "Unacademy", headline: "Tired of Unacademy's One-Size-Fits-All CAT Coaching?" },
@@ -355,7 +355,7 @@ export default function CATCoachingComparison() {
               <div key={r.name} className="p-6 rounded-2xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all group">
                 <div className="flex items-center gap-3 mb-4">
                   <Avatar className="h-12 w-12 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
-                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile CAT scorer`} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" decoding="async" />
+                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile CAT scorer`} width={48} height={48} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" decoding="async" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{r.initials}</AvatarFallback>
                   </Avatar>
                   <div>
@@ -412,7 +412,7 @@ export default function CATCoachingComparison() {
               {whatsappScreenshots.map((src, i) => (
                 <div key={i} className="break-inside-avoid mb-4">
                   <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card">
-                    <img src={src} alt={`WhatsApp testimonial from a CAT student – screenshot ${i + 1}`} className="w-full h-auto object-contain" loading="lazy" decoding="async" />
+                    <img src={src} alt={`WhatsApp testimonial from a CAT student – screenshot ${i + 1}`} width={400} height={600} className="w-full h-auto object-contain" loading="lazy" decoding="async" />
                   </div>
                 </div>
               ))}
