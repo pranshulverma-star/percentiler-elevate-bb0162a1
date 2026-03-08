@@ -198,10 +198,20 @@ export default function CATCoachingComparison() {
   return (
     <>
       <SEO
-        title={`Best CAT Coaching – Compare & Choose | Percentilers`}
+        title="CAT Coaching Comparison 2026 – Best Institute | Percentilers"
         description="Compare CAT coaching institutes side-by-side. See why 300+ students chose Percentilers' IIM-alumni mentorship over big coaching brands. Free masterclass inside."
-        canonical={`https://percentilers.in/cat-coaching-comparison`}
+        canonical="https://percentilers.in/cat-coaching-comparison"
       />
+      {/* FAQ structured data for rich snippets */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faqs.map(f => ({
+          "@type": "Question",
+          "name": f.q,
+          "acceptedAnswer": { "@type": "Answer", "text": f.a }
+        }))
+      })}} />
 
       {/* ─── HERO ─── */}
       <section className="relative bg-foreground text-primary-foreground overflow-hidden">
@@ -345,7 +355,7 @@ export default function CATCoachingComparison() {
               <div key={r.name} className="p-6 rounded-2xl border border-border bg-card hover:shadow-lg hover:border-primary/50 transition-all group">
                 <div className="flex items-center gap-3 mb-4">
                   <Avatar className="h-12 w-12 ring-2 ring-primary/20 group-hover:ring-primary/50 transition-all bg-muted overflow-hidden">
-                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile`} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" />
+                    <AvatarImage src={r.photo} alt={`${r.name} – ${r.percentile}%ile CAT scorer`} className="object-cover object-top scale-[1.3] translate-y-[5%]" loading="lazy" decoding="async" />
                     <AvatarFallback className="bg-primary/10 text-primary font-bold text-sm">{r.initials}</AvatarFallback>
                   </Avatar>
                   <div>
@@ -402,7 +412,7 @@ export default function CATCoachingComparison() {
               {whatsappScreenshots.map((src, i) => (
                 <div key={i} className="break-inside-avoid mb-4">
                   <div className="rounded-2xl overflow-hidden border border-border/50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-card">
-                    <img src={src} alt={`WhatsApp testimonial from a CAT student – screenshot ${i + 1}`} className="w-full h-auto object-contain" loading="lazy" />
+                    <img src={src} alt={`WhatsApp testimonial from a CAT student – screenshot ${i + 1}`} className="w-full h-auto object-contain" loading="lazy" decoding="async" />
                   </div>
                 </div>
               ))}
@@ -443,7 +453,7 @@ export default function CATCoachingComparison() {
       <section className="py-8 bg-foreground text-primary-foreground text-center">
         <div className="max-w-4xl mx-auto px-4">
           <p className="text-sm text-primary-foreground/60">
-            © {new Date().getFullYear()} Percentilers. All rights reserved. |{" "}
+            © 2025 Percentilers. All rights reserved. |{" "}
             <a href="/terms" className="underline hover:text-primary">Terms</a> |{" "}
             <a href="/privacy-policy" className="underline hover:text-primary">Privacy</a> |{" "}
             <a href="/refund-policy" className="underline hover:text-primary">Refund Policy</a>
