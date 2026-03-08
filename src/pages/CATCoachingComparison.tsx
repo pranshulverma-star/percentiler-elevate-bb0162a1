@@ -919,7 +919,7 @@ export default function CATCoachingComparison() {
         <div className="max-w-5xl mx-auto px-6">
           <ChapterHeading number="Chapter 06" title="Straight From WhatsApp" subtitle="Unedited messages from real students." />
 
-          <div className="inline-flex items-center gap-2 bg-green-500/10 text-green-600 px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
+          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-semibold tracking-wider uppercase mb-8">
             <MessageCircle className="h-3.5 w-3.5" />
             Actual Screenshots
           </div>
