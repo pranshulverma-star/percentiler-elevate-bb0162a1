@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, ShieldAlert } from "lucide-react";
+import { Loader2, ShieldAlert, LogIn } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import AdminSummaryBar from "@/components/admin/AdminSummaryBar";
 import AdminLeadsTable from "@/components/admin/AdminLeadsTable";
 import AdminPlannerStats from "@/components/admin/AdminPlannerStats";
@@ -12,7 +13,7 @@ import AdminCampaignPipeline from "@/components/admin/AdminCampaignPipeline";
 const ADMIN_EMAILS = ["pranshul.verma1992@gmail.com"];
 
 export default function AdminDashboard() {
-  const { user } = useAuth();
+  const { user, loading: authLoading, isAuthenticated, signIn } = useAuth();
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,6 +21,7 @@ export default function AdminDashboard() {
   const isAdmin = user?.email && ADMIN_EMAILS.includes(user.email.toLowerCase());
 
   useEffect(() => {
+    if (authLoading) return;
     if (!isAdmin) {
       setLoading(false);
       return;
@@ -57,14 +59,42 @@ export default function AdminDashboard() {
     };
 
     fetchData();
-  }, [isAdmin]);
+  }, [authLoading, isAdmin]);
 
+  // Auth still loading
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  // Not logged in — show login page
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-5">
+        <ShieldAlert className="h-14 w-14 text-muted-foreground" />
+        <h1 className="text-2xl font-bold text-foreground">Admin Login</h1>
+        <p className="text-muted-foreground text-sm max-w-xs text-center">
+          Sign in with your authorized Google account to access the admin dashboard.
+        </p>
+        <Button size="lg" onClick={() => signIn("/admin")} className="gap-2">
+          <LogIn className="h-4 w-4" />
+          Sign in with Google
+        </Button>
+      </div>
+    );
+  }
+
+  // Logged in but not admin
   if (!isAdmin) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-3">
         <ShieldAlert className="h-12 w-12 text-destructive" />
         <h1 className="text-xl font-bold text-foreground">Access Denied</h1>
         <p className="text-muted-foreground text-sm">You don't have admin privileges.</p>
+        <p className="text-xs text-muted-foreground">Signed in as: {user?.email}</p>
       </div>
     );
   }
