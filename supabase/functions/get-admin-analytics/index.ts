@@ -29,16 +29,15 @@ Deno.serve(async (req) => {
       { global: { headers: { Authorization: authHeader } } }
     );
 
-    const token = authHeader.replace("Bearer ", "");
-    const { data: claimsData, error: claimsError } = await anonClient.auth.getClaims(token);
-    if (claimsError || !claimsData?.claims) {
+    const { data: { user }, error: userError } = await anonClient.auth.getUser();
+    if (userError || !user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
         status: 401,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    const email = (claimsData.claims.email as string || "").toLowerCase();
+    const email = (user.email || "").toLowerCase();
     if (!ADMIN_EMAILS.includes(email)) {
       return new Response(JSON.stringify({ error: "Forbidden" }), {
         status: 403,
