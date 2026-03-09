@@ -64,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
     // Safety timeout: unblock UI after 3s no matter what
+    // Reduced from 3s to 1.5s for faster UI unblock
     const fallbackTimer = window.setTimeout(() => {
       if (resolved || !isMounted) return;
       console.warn("Auth timed out, unblocking UI");
