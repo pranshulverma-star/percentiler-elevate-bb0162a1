@@ -1,5 +1,9 @@
 # SPA rewrites for allowed routes only.
 # Unknown routes are NOT caught here — Cloudflare Worker handles them.
+/iim-kozhikode-cutoff               https://old.percentilers.in/iim-kozhikode-cutoff              301
+/iim-kozhikode-cutoff/              https://old.percentilers.in/iim-kozhikode-cutoff/             301
+/cat-percentile-predictor           https://old.percentilers.in/cat-percentile-predictor          301
+/cat-percentile-predictor/          https://old.percentilers.in/cat-percentile-predictor/         301
 /                                   /index.html  200
 /terms                              /index.html  200
 /privacy-policy                     /index.html  200
