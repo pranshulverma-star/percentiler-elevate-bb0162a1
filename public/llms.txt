@@ -1,0 +1,52 @@
+# Percentilers
+
+> India's premier CAT & MBA prep platform — mentorship-driven coaching for 99+ percentile aspirants.
+
+## About
+
+Percentilers is an ed-tech company focused on CAT (Common Admission Test) and other MBA entrance exam preparation. Founded by Pranshul Agrawal (IIM Ahmedabad alumnus), Percentilers offers structured mentorship, daily study plans, live masterclasses, and practice labs to help students crack top B-school admissions across India.
+
+## Core Offerings
+
+- **CAT & OMET Courses**: Comprehensive coaching for CAT, XAT, NMAT, SNAP, IIFT, and other MBA entrance exams.
+- **1-on-1 Mentorship**: Personalized guidance from IIM alumni and 99+ percentile scorers.
+- **Free Masterclass**: Strategy sessions on how to crack CAT and secure admission to top IIMs.
+- **Daily Study Planner**: AI-powered day-by-day CAT preparation schedule tailored to individual goals.
+- **Practice Lab**: Topic-wise practice questions with timed quizzes and performance analytics.
+- **CAT Readiness Assessment**: Free diagnostic tool to evaluate preparation level.
+- **Percentile Planner**: Profile-based tool estimating target percentiles needed for top B-schools.
+- **Test Series**: Full-length and sectional mock tests simulating actual CAT exam conditions.
+
+## Key Results
+
+- Students admitted to IIM Ahmedabad, IIM Bangalore, IIM Calcutta, IIM Kozhikode, XLRI, JBIMS, SP Jain, FMS Delhi, IIT Bombay, and 50+ other top B-schools.
+- Multiple students achieving 99+ percentile in CAT.
+
+## Faculty & Mentors
+
+- **Pranshul Agrawal** — Founder, IIM Ahmedabad alumnus
+- **Gaurav** — VARC specialist
+- **Shweta** — QA specialist
+- **Puru** — LRDI specialist
+
+## Pages
+
+- Homepage: https://percentilers.in/
+- Courses (CAT & OMET): https://percentilers.in/courses/cat-omet
+- Free Courses: https://percentilers.in/free-courses
+- Mentorship: https://percentilers.in/mentorship
+- Masterclass: https://percentilers.in/masterclass
+- Daily Study Planner: https://percentilers.in/cat-daily-study-planner
+- Practice Lab: https://percentilers.in/practice-lab
+- Test Series: https://percentilers.in/test-series
+- CAT Readiness Assessment: https://percentilers.in/free-cat-readiness-assessment
+- CAT Coaching Comparison: https://percentilers.in/cat-coaching-comparison
+- Contact: https://percentilers.in/contact
+- Privacy Policy: https://percentilers.in/privacy-policy
+- Terms: https://percentilers.in/terms
+- Refund Policy: https://percentilers.in/refund-policy
+
+## Contact
+
+- Website: https://percentilers.in
+- WhatsApp: Available via floating button on site
