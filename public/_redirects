@@ -1,10 +1,8 @@
-# SPA rewrites for allowed routes only.
-# Unknown routes are NOT caught here — Cloudflare Worker handles them.
-/iim-kozhikode-cutoff               https://old.percentilers.in/iim-kozhikode-cutoff              301
-/iim-kozhikode-cutoff/              https://old.percentilers.in/iim-kozhikode-cutoff/             301
-/cat-percentile-predictor           https://old.percentilers.in/cat-percentile-predictor          301
-/cat-percentile-predictor/          https://old.percentilers.in/cat-percentile-predictor/         301
-/llms.txt                            /llms.txt    200
+/llms.txt                            /llms.txt                                          200
+/iim-kozhikode-cutoff               https://old.percentilers.in/iim-kozhikode-cutoff   301
+/iim-kozhikode-cutoff/              https://old.percentilers.in/iim-kozhikode-cutoff/  301
+/cat-percentile-predictor           https://old.percentilers.in/cat-percentile-predictor   301
+/cat-percentile-predictor/          https://old.percentilers.in/cat-percentile-predictor/  301
 /                                   /index.html  200
 /terms                              /index.html  200
 /privacy-policy                     /index.html  200
@@ -22,6 +20,9 @@
 /dashboard                          /index.html  200
 /cat-coaching-comparison            /index.html  200
 /admin                              /index.html  200
-
-# Everything else → 301 to legacy site (server-side, before page loads)
 /*  https://old.percentilers.in/:splat  301
+```"
+
+---
+
+Yes, just copy the whole thing and send it to Lovable. After it redeploys, test in incognito.
