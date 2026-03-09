@@ -41,10 +41,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           localStorage.setItem("percentilers_email", email);
           if (name) localStorage.setItem("percentilers_name", name);
 
-          await (supabase.from("leads") as any).upsert(
+          // Fire-and-forget: don't block auth state with DB call
+          (supabase.from("leads") as any).upsert(
             { user_id: currentUser.id, email, name, source: "google_signin" },
             { onConflict: "user_id" }
-          );
+          ).then(() => {}).catch((err: any) => console.warn("Lead upsert failed:", err));
         }
       }
     );
@@ -63,11 +64,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
     // Safety timeout: unblock UI after 3s no matter what
+    // Reduced from 3s to 1.5s for faster UI unblock
     const fallbackTimer = window.setTimeout(() => {
       if (resolved || !isMounted) return;
       console.warn("Auth timed out, unblocking UI");
       setLoading(false);
-    }, 3000);
+    }, 1500);
 
     return () => {
       isMounted = false;
