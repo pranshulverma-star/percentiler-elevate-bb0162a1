@@ -69,7 +69,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (resolved || !isMounted) return;
       console.warn("Auth timed out, unblocking UI");
       setLoading(false);
-    }, 3000);
+    }, 1500);
 
     return () => {
       isMounted = false;
