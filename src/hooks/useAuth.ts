@@ -41,10 +41,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           localStorage.setItem("percentilers_email", email);
           if (name) localStorage.setItem("percentilers_name", name);
 
-          await (supabase.from("leads") as any).upsert(
+          // Fire-and-forget: don't block auth state with DB call
+          (supabase.from("leads") as any).upsert(
             { user_id: currentUser.id, email, name, source: "google_signin" },
             { onConflict: "user_id" }
-          );
+          ).then(() => {}).catch((err: any) => console.warn("Lead upsert failed:", err));
         }
       }
     );
