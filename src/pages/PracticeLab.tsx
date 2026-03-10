@@ -793,6 +793,7 @@ export default function PracticeLab() {
     }
     // All clear — start quiz
     setSelectedChapter(ch);
+    setQuizQuestions(pickRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
