@@ -744,7 +744,8 @@ function ResultsView({
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 0.5, ease: "backOut" }}
+            transition={{ duration: 0.4, ease: "backOut" }}
+            className="flex items-center justify-center gap-1.5 md:gap-2"
             className="flex items-center justify-center gap-2"
           >
             {[1, 2, 3].map((s) => (
