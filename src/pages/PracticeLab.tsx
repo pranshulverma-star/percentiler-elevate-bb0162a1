@@ -381,31 +381,29 @@ function QuizView({
   return (
     <motion.div {...fadeUp} className="max-w-5xl mx-auto">
       {/* HUD Bar */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2 md:mb-3">
         <button
           onClick={onBack}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          className="flex items-center gap-1 text-[11px] md:text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" /> Retreat
+          <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" /> Exit
         </button>
-        <div className="flex items-center gap-4">
-          {/* Streak indicator */}
+        <div className="flex items-center gap-2 md:gap-4">
           {answeredCount > 0 && (
-            <div className="flex items-center gap-1 text-xs font-bold">
-              <Flame className={`w-4 h-4 ${answeredCount >= 3 ? "text-primary streak-glow" : "text-muted-foreground"}`} />
+            <div className="flex items-center gap-1 text-[11px] md:text-xs font-bold">
+              <Flame className={`w-3.5 h-3.5 md:w-4 md:h-4 ${answeredCount >= 3 ? "text-primary streak-glow" : "text-muted-foreground"}`} />
               <span className={answeredCount >= 3 ? "text-primary" : "text-muted-foreground"}>{answeredCount}</span>
             </div>
           )}
-          <Badge variant="secondary" className="text-[10px] font-semibold">{chapter.name}</Badge>
-          {/* Timer */}
-          <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm font-mono font-bold transition-all
+          <Badge variant="secondary" className="text-[9px] md:text-[10px] font-semibold hidden sm:inline-flex">{chapter.name}</Badge>
+          <div className={`flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 rounded-full border text-xs md:text-sm font-mono font-bold transition-all
             ${isCritical 
               ? "border-destructive/50 bg-destructive/10 text-destructive animate-pulse" 
               : isLowTime 
                 ? "border-primary/50 bg-primary/10 text-primary" 
                 : "border-border text-foreground"}`}
           >
-            <Clock className="w-3.5 h-3.5" />
+            <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" />
             {formatTime(timeLeft)}
           </div>
         </div>
