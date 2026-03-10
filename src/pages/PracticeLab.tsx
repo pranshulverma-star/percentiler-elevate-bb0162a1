@@ -742,7 +742,7 @@ export default function PracticeLab() {
     setPhase("quiz");
   }, [isAuthenticated, hasPhone, signIn]);
 
-  const handleFinishQuiz = useCallback((answers: Record<number, number | null>, timeUsed: number) => {
+  const handleFinishQuiz = useCallback((answers: Record<number, number | string | null>, timeUsed: number) => {
     setQuizAnswers(answers);
     setQuizTimeUsed(timeUsed);
     setPhase("results");
