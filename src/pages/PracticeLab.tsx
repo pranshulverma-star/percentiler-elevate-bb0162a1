@@ -321,7 +321,7 @@ function QuizView({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
   const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION);
-  const [streak, setStreak] = useState(0);
+  const [_streak] = useState(0);
 
   useEffect(() => {
     if (timeLeft <= 0) {
