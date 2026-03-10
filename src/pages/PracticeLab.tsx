@@ -801,28 +801,27 @@ function ResultsView({
           </motion.div>
 
           {/* Stats row */}
-          <div className="flex items-center justify-center gap-6 pt-2">
-            <div className="flex items-center gap-1.5 text-sm">
-              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+          <div className="flex items-center justify-center gap-4 md:gap-6 pt-1 md:pt-2">
+            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
+              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" />
               <span className="text-foreground font-bold">{correct}</span>
-              <span className="text-muted-foreground text-xs">correct</span>
+              <span className="text-muted-foreground text-[10px] md:text-xs">correct</span>
             </div>
-            <div className="flex items-center gap-1.5 text-sm">
-              <XCircle className="w-5 h-5 text-destructive" />
+            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
+              <XCircle className="w-4 h-4 md:w-5 md:h-5 text-destructive" />
               <span className="text-foreground font-bold">{incorrect}</span>
-              <span className="text-muted-foreground text-xs">wrong</span>
+              <span className="text-muted-foreground text-[10px] md:text-xs">wrong</span>
             </div>
-            <div className="flex items-center gap-1.5 text-sm">
-              <MinusCircle className="w-5 h-5 text-muted-foreground" />
+            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
+              <MinusCircle className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
               <span className="text-foreground font-bold">{unanswered}</span>
-              <span className="text-muted-foreground text-xs">skipped</span>
+              <span className="text-muted-foreground text-[10px] md:text-xs">skipped</span>
             </div>
           </div>
 
-          {/* Time */}
           {timeUsed > 0 && (
-            <p className="text-xs text-muted-foreground flex items-center justify-center gap-1.5">
-              <Clock className="w-3.5 h-3.5" /> Completed in {formatTime(timeUsed)}
+            <p className="text-[11px] md:text-xs text-muted-foreground flex items-center justify-center gap-1">
+              <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" /> {formatTime(timeUsed)}
               {timeUsed < 600 && <span className="text-primary font-semibold ml-1">⚡ Speed Bonus!</span>}
             </p>
           )}
