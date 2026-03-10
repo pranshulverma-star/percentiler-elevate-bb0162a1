@@ -756,7 +756,7 @@ function ResultsView({
                 transition={{ delay: 0.3 + s * 0.15, duration: 0.4, ease: "backOut" }}
               >
                 <Star
-                  className={`w-10 h-10 md:w-12 md:h-12 ${
+                  className={`w-8 h-8 md:w-12 md:h-12 ${
                     s <= stars
                       ? "text-amber-400 fill-amber-400 drop-shadow-lg"
                       : "text-border"
