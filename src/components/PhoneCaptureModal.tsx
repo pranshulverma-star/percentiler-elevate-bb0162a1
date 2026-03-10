@@ -86,7 +86,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       }
 
       if (upsertError) {
-        console.error("Lead upsert failed:", upsertError);
+        console.error("Lead upsert failed:", JSON.stringify(upsertError));
         toast({ title: "Something went wrong", description: "Could not save phone number. Please try again.", variant: "destructive" });
         setSubmitting(false);
         return;
