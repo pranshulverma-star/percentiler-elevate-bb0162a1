@@ -991,10 +991,8 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
 // ─── Main Page ───
 
 export default function CATDailyStudyPlanner() {
-  const [view, setView] = useState<"lead" | "dashboard">(() => {
-    // Check if user has planner data stored
-    return localStorage.getItem("planner_identifier") ? "dashboard" : "lead";
-  });
+  const { isAuthenticated, user, loading: authLoading } = useAuth();
+  const [view, setView] = useState<"loading" | "lead" | "dashboard">("loading");
 
   const [leadData, setLeadData] = useState<LeadData>(() => ({
     phone: localStorage.getItem("planner_identifier") || localStorage.getItem("percentilers_phone") || "",
@@ -1010,6 +1008,53 @@ export default function CATDailyStudyPlanner() {
     prepLevel: localStorage.getItem("planner_prep_level") || "Beginner",
     startDate: localStorage.getItem("planner_start_date") || new Date().toISOString().split("T")[0],
   }));
+
+  // Auto-detect existing planner data from DB for authenticated users
+  useEffect(() => {
+    if (authLoading) return;
+
+    // If we already have local planner data, skip DB check
+    if (localStorage.getItem("planner_identifier")) {
+      setView("dashboard");
+      return;
+    }
+
+    // If authenticated, check DB for existing planner_stats
+    if (isAuthenticated && user?.email) {
+      const identifier = user.email;
+      supabase
+        .from("planner_stats")
+        .select("phone_number, start_date, target_year, crash_mode, current_phase")
+        .eq("phone_number", identifier)
+        .maybeSingle()
+        .then(({ data: stats }) => {
+          if (stats) {
+            // User has existing planner data — restore and skip form
+            const name = user.user_metadata?.full_name || user.user_metadata?.name || "Aspirant";
+            localStorage.setItem("planner_identifier", identifier);
+            localStorage.setItem("planner_year", String(stats.target_year));
+            localStorage.setItem("planner_start_date", stats.start_date);
+            if (name) localStorage.setItem("percentilers_name", name);
+
+            setLeadData({
+              phone: identifier,
+              name,
+              targetYear: stats.target_year,
+              prepLevel: localStorage.getItem("planner_prep_level") || "Beginner",
+              startDate: stats.start_date,
+            });
+            setView("dashboard");
+          } else {
+            setView("lead");
+          }
+        })
+        .catch(() => {
+          setView("lead");
+        });
+    } else {
+      setView("lead");
+    }
+  }, [authLoading, isAuthenticated, user]);
 
   const handleLeadComplete = (data: LeadData) => {
     setLeadData(data);
@@ -1032,6 +1077,11 @@ export default function CATDailyStudyPlanner() {
         canonical="https://percentilers.in/cat-daily-study-planner"
       />
       <Navbar />
+      {view === "loading" && (
+        <section className="min-h-[85vh] flex items-center justify-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </section>
+      )}
       {view === "lead" && <LeadCapture onComplete={handleLeadComplete} />}
       {view === "dashboard" && <PlannerDashboard leadData={leadData} onReset={handleReset} />}
       <Footer />
