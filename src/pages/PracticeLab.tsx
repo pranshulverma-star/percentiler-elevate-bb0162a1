@@ -602,26 +602,30 @@ function QuizView({
             )}
           </div>
 
-          {/* Mobile question pills */}
-          <div className="flex flex-wrap gap-2 justify-center pt-2 md:hidden">
+          {/* Mobile question pills — compact scrollable strip */}
+          <div className="flex gap-1.5 justify-center flex-wrap pt-1 pb-2 md:hidden">
             {questions.map((qq, i) => {
               const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
               return (
                 <button
                   key={i}
                   onClick={() => setCurrentIndex(i)}
-                  className={`relative w-9 h-9 rounded-lg text-xs font-bold transition-all border
+                  className={`relative w-8 h-8 rounded-lg text-[11px] font-bold transition-all border
                     ${i === currentIndex
                       ? "border-primary bg-primary text-primary-foreground game-glow"
                       : isAnswered
                         ? "border-primary/40 bg-primary/15 text-primary"
-                        : "border-border text-muted-foreground hover:border-muted-foreground"
+                        : "border-border text-muted-foreground"
                     }`}
                 >
                   {i + 1}
                 </button>
               );
             })}
+            {/* Mobile submit */}
+            <Button onClick={handleSubmit} size="sm" className="w-full mt-2 font-bold gap-1.5 game-glow-pulse md:hidden">
+              <Swords className="w-3.5 h-3.5" /> Finish Battle
+            </Button>
           </div>
         </div>
       </div>
