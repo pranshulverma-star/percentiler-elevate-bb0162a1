@@ -250,11 +250,11 @@ function QuizView({
 }: {
   chapter: Chapter;
   questions: PracticeQuestion[];
-  onFinish: (answers: Record<number, number | null>, timeUsed: number) => void;
+  onFinish: (answers: Record<number, number | string | null>, timeUsed: number) => void;
   onBack: () => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, number | null>>({});
+  const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
   const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION);
 
   useEffect(() => {
@@ -273,6 +273,10 @@ function QuizView({
 
   const handleSelect = (optIndex: number) => {
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
+  };
+
+  const handleNumericChange = (value: string) => {
+    setAnswers((prev) => ({ ...prev, [q.id]: value }));
   };
 
   const handleSubmit = () => {
@@ -314,30 +318,52 @@ function QuizView({
           transition={{ duration: 0.25 }}
         >
           <Card className="p-6 md:p-8 border space-y-6">
-            <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
-              {q.question}
-            </p>
+            <div className="flex items-start gap-2">
+              <Badge variant="outline" className="text-[10px] shrink-0 mt-0.5">
+                {q.type === "mcq" ? "MCQ" : "Fill in"}
+              </Badge>
+              <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
+                {q.question}
+              </p>
+            </div>
 
-            <RadioGroup
-              value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
-              onValueChange={(v) => handleSelect(Number(v))}
-              className="space-y-3"
-            >
-              {q.options.map((opt, idx) => (
-                <Label
-                  key={idx}
-                  htmlFor={`opt-${q.id}-${idx}`}
-                  className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all
-                    ${answers[q.id] === idx
-                      ? "border-primary bg-primary/5 shadow-sm"
-                      : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
-                    }`}
-                >
-                  <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} />
-                  <span className="text-sm text-foreground">{opt}</span>
+            {q.type === "mcq" ? (
+              <RadioGroup
+                value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
+                onValueChange={(v) => handleSelect(Number(v))}
+                className="space-y-3"
+              >
+                {q.options.map((opt, idx) => (
+                  <Label
+                    key={idx}
+                    htmlFor={`opt-${q.id}-${idx}`}
+                    className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all
+                      ${answers[q.id] === idx
+                        ? "border-primary bg-primary/5 shadow-sm"
+                        : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
+                      }`}
+                  >
+                    <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} />
+                    <span className="text-sm text-foreground">{opt}</span>
+                  </Label>
+                ))}
+              </RadioGroup>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor={`numeric-${q.id}`} className="text-sm text-muted-foreground">
+                  Type your answer
                 </Label>
-              ))}
-            </RadioGroup>
+                <Input
+                  id={`numeric-${q.id}`}
+                  type="text"
+                  placeholder="Enter your answer..."
+                  value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
+                  onChange={(e) => handleNumericChange(e.target.value)}
+                  className="text-base"
+                  autoComplete="off"
+                />
+              </div>
+            )}
           </Card>
         </motion.div>
       </AnimatePresence>
