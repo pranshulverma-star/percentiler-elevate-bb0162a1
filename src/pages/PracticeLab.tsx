@@ -739,7 +739,7 @@ function ResultsView({
         <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-amber-500/5" />
         {isPerfect && <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.1)_0%,transparent_70%)]" />}
         
-        <div className="relative z-10 space-y-5">
+        <div className="relative z-10 space-y-3 md:space-y-5">
           {/* Stars */}
           <motion.div
             initial={{ scale: 0 }}
