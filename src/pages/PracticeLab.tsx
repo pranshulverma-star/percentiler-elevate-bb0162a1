@@ -687,7 +687,7 @@ export default function PracticeLab() {
   const [phase, setPhase] = useState<Phase>("sections");
   const [selectedSection, setSelectedSection] = useState<SectionData | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
-  const [quizAnswers, setQuizAnswers] = useState<Record<number, number | null>>({});
+  const [quizAnswers, setQuizAnswers] = useState<Record<number, number | string | null>>({});
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
 
