@@ -41,6 +41,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       const userId = user?.id || null;
       const email = user?.email || null;
       const name = nameInput || user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || null;
+      console.log("[PhoneCapture] userId:", userId, "email:", email, "name:", name);
 
       if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
