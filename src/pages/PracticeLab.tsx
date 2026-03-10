@@ -20,6 +20,12 @@ import { supabase } from "@/integrations/supabase/client";
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
 const QUIZ_DURATION = 900; // 15 minutes
+const QUIZ_QUESTION_COUNT = 10;
+
+function pickRandom<T>(arr: T[], count: number): T[] {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(count, shuffled.length));
+}
 
 function formatTime(seconds: number) {
   const m = Math.floor(seconds / 60);
