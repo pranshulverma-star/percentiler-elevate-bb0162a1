@@ -44,22 +44,6 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       let upsertError: any = null;
       if (userId) {
-        // First, check if this phone belongs to an orphan lead (no user_id) and clean it up
-        const { data: orphan } = await (supabase.from("leads") as any)
-          .select("id, user_id")
-          .eq("phone_number", phone)
-          .maybeSingle();
-
-        if (orphan && !orphan.user_id) {
-          // Delete orphan so our upsert won't hit the phone unique constraint
-          await (supabase.from("leads") as any).delete().eq("id", orphan.id);
-        } else if (orphan && orphan.user_id && orphan.user_id !== userId) {
-          // Phone belongs to another authenticated user — clear it from that row first
-          await (supabase.from("leads") as any)
-            .update({ phone_number: null })
-            .eq("id", orphan.id);
-        }
-
         const res = await (supabase.from("leads") as any).upsert(
           {
             user_id: userId,
@@ -73,16 +57,26 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
         );
         upsertError = res.error;
       } else {
-        const res = await (supabase.from("leads") as any).upsert(
-          {
+        // Anonymous: try update first, then insert
+        const { data: existing } = await (supabase.from("leads") as any)
+          .select("id")
+          .eq("phone_number", phone)
+          .maybeSingle();
+
+        if (existing) {
+          const res = await (supabase.from("leads") as any)
+            .update({ name, source, ...(targetYear ? { target_year: targetYear } : {}) })
+            .eq("id", existing.id);
+          upsertError = res.error;
+        } else {
+          const res = await (supabase.from("leads") as any).insert({
             phone_number: phone,
             name,
             source,
             ...(targetYear ? { target_year: targetYear } : {}),
-          },
-          { onConflict: "phone_number" }
-        );
-        upsertError = res.error;
+          });
+          upsertError = res.error;
+        }
       }
 
       if (upsertError) {
