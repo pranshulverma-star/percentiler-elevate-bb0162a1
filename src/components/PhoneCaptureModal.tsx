@@ -44,18 +44,30 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       let upsertError: any = null;
       if (userId) {
-        const res = await (supabase.from("leads") as any).upsert(
-          {
+        // Update-first strategy to avoid race with the fire-and-forget
+        // lead upsert in useAuth's onAuthStateChange handler.
+        const updatePayload = {
+          email,
+          name,
+          phone_number: phone,
+          source,
+          ...(targetYear ? { target_year: targetYear } : {}),
+        };
+        const { data: updated, error: updateErr } = await (supabase.from("leads") as any)
+          .update(updatePayload)
+          .eq("user_id", userId)
+          .select("id");
+
+        if (updateErr) {
+          upsertError = updateErr;
+        } else if (!updated || updated.length === 0) {
+          // No existing row yet — insert
+          const res = await (supabase.from("leads") as any).insert({
             user_id: userId,
-            email,
-            name,
-            phone_number: phone,
-            source,
-            ...(targetYear ? { target_year: targetYear } : {}),
-          },
-          { onConflict: "user_id" }
-        );
-        upsertError = res.error;
+            ...updatePayload,
+          });
+          upsertError = res.error;
+        }
       } else {
         // Anonymous: try update first, then insert
         const { data: existing } = await (supabase.from("leads") as any)
