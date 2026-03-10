@@ -30,7 +30,9 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("[PhoneCapture] Submit started, phone:", phone, "source:", source);
     if (!/^[6-9]\d{9}$/.test(phone)) {
+      console.log("[PhoneCapture] Validation failed for phone:", phone);
       toast({ title: "Invalid phone number", description: "Please enter a valid 10-digit Indian mobile number.", variant: "destructive" });
       return;
     }
@@ -39,6 +41,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       const userId = user?.id || null;
       const email = user?.email || null;
       const name = nameInput || user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || null;
+      console.log("[PhoneCapture] userId:", userId, "email:", email, "name:", name);
 
       if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
@@ -72,6 +75,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       let upsertError: any = null;
       if (userId) {
+        console.log("[PhoneCapture] Upserting with onConflict: user_id");
         const res = await (supabase.from("leads") as any).upsert(
           {
             user_id: userId,
@@ -84,7 +88,9 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           { onConflict: "user_id" }
         );
         upsertError = res.error;
+        console.log("[PhoneCapture] Upsert result:", JSON.stringify(res.error), JSON.stringify(res.status));
       } else {
+        console.log("[PhoneCapture] Upserting with onConflict: phone_number");
         const res = await (supabase.from("leads") as any).upsert(
           {
             phone_number: phone,
@@ -95,6 +101,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           { onConflict: "phone_number" }
         );
         upsertError = res.error;
+        console.log("[PhoneCapture] Upsert result:", JSON.stringify(res.error), JSON.stringify(res.status));
       }
 
       if (upsertError) {
@@ -119,7 +126,8 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       setTargetYear("");
       setNameInput("");
       onSuccess?.();
-    } catch {
+    } catch (err) {
+      console.error("[PhoneCapture] Catch block error:", err);
       toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
     } finally {
       setSubmitting(false);
