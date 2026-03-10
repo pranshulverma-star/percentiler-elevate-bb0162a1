@@ -770,6 +770,7 @@ export default function PracticeLab() {
     const ch = pendingChapter.current;
     pendingChapter.current = null;
     setSelectedChapter(ch);
+    setQuizQuestions(pickRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
