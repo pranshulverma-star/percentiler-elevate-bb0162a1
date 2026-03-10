@@ -121,31 +121,11 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
     setSubmitting(true);
     try {
       const source = `competitor_ads${competitor ? `_${competitor}` : ""}`;
-
-      // Get current auth session to include user_id if logged in
-      const { data: { session } } = await supabase.auth.getSession();
-      const userId = session?.user?.id || null;
-      const email = session?.user?.email || null;
-
-      const leadPayload: Record<string, unknown> = {
-        phone_number: phone,
-        name: name.trim(),
-        source,
-        current_status: ctaType,
-        ...(targetYear ? { target_year: targetYear } : {}),
-      };
-
-      // If authenticated, upsert by user_id to satisfy RLS; otherwise by phone_number
-      if (userId) {
-        leadPayload.user_id = userId;
-        if (email) leadPayload.email = email;
-        const { error } = await (supabase.from("leads") as any).upsert(leadPayload, { onConflict: "user_id" });
-        if (error) throw error;
-      } else {
-        const { error } = await (supabase.from("leads") as any).upsert(leadPayload, { onConflict: "phone_number" });
-        if (error) throw error;
-      }
-
+      const { error } = await (supabase.from("leads") as any).upsert(
+        { phone_number: phone, name: name.trim(), source, current_status: ctaType, ...(targetYear ? { target_year: targetYear } : {}) },
+        { onConflict: "phone_number" }
+      );
+      if (error) throw error;
       localStorage.setItem("percentilers_phone", phone);
       localStorage.setItem("percentilers_name", name.trim());
       supabase.functions.invoke("sync-lead-to-sheet", { body: { phone_number: phone, source, name: name.trim() } }).catch(() => {});
