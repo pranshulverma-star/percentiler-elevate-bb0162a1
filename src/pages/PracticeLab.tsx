@@ -619,23 +619,42 @@ function ResultsView({
           >
             {questions.map((q, i) => {
               const userAnswer = answers[q.id];
-              const isCorrect = userAnswer === q.correctAnswer;
-              const isSkipped = userAnswer === undefined || userAnswer === null;
+              const isSkipped = userAnswer === undefined || userAnswer === null || userAnswer === "";
+              const isCorrect = q.type === "mcq"
+                ? userAnswer === q.correctAnswer
+                : !isSkipped && String(userAnswer).trim().toLowerCase() === (q.numericAnswer || "").trim().toLowerCase();
+
               return (
                 <Card key={q.id} className="p-5 border space-y-3">
                   <div className="flex items-start gap-3">
                     <span className="text-xs font-mono text-muted-foreground mt-1">Q{i + 1}</span>
                     <div className="flex-1 space-y-2">
                       <p className="text-sm font-medium text-foreground">{q.question}</p>
-                      <div className="space-y-1">
-                        {q.options.map((opt, idx) => {
-                          let cls = "text-sm px-3 py-1.5 rounded-lg ";
-                          if (idx === q.correctAnswer) cls += "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium";
-                          else if (idx === userAnswer && !isCorrect) cls += "bg-destructive/10 text-destructive line-through";
-                          else cls += "text-muted-foreground";
-                          return <div key={idx} className={cls}>{opt}</div>;
-                        })}
-                      </div>
+
+                      {q.type === "mcq" ? (
+                        <div className="space-y-1">
+                          {q.options.map((opt, idx) => {
+                            let cls = "text-sm px-3 py-1.5 rounded-lg ";
+                            if (idx === q.correctAnswer) cls += "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium";
+                            else if (idx === userAnswer && !isCorrect) cls += "bg-destructive/10 text-destructive line-through";
+                            else cls += "text-muted-foreground";
+                            return <div key={idx} className={cls}>{opt}</div>;
+                          })}
+                        </div>
+                      ) : (
+                        <div className="space-y-1.5">
+                          <div className="text-sm">
+                            <span className="text-muted-foreground">Your answer: </span>
+                            <span className={isSkipped ? "text-muted-foreground italic" : isCorrect ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-destructive line-through"}>
+                              {isSkipped ? "Skipped" : String(userAnswer)}
+                            </span>
+                          </div>
+                          <div className="text-sm px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium">
+                            Correct: {q.numericAnswer || "See explanation"}
+                          </div>
+                        </div>
+                      )}
+
                       {q.explanation && (
                         <p className="text-xs text-muted-foreground italic border-t border-border pt-2 mt-2">
                           💡 {q.explanation}
