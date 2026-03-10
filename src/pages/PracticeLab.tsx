@@ -287,7 +287,8 @@ function ChaptersView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06, duration: 0.35 }}
             >
-              <div className="game-card rounded-xl p-3.5 md:p-5 transition-all duration-200 ${
+              <div
+                className={`game-card rounded-xl p-3.5 md:p-5 transition-all duration-200 ${
                   hasQuestions
                     ? "cursor-pointer"
                     : "opacity-40 cursor-not-allowed !shadow-none hover:!transform-none"
