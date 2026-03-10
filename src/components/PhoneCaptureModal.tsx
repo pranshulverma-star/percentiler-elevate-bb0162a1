@@ -44,6 +44,22 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       let upsertError: any = null;
       if (userId) {
+        // First, check if this phone belongs to an orphan lead (no user_id) and clean it up
+        const { data: orphan } = await (supabase.from("leads") as any)
+          .select("id, user_id")
+          .eq("phone_number", phone)
+          .maybeSingle();
+
+        if (orphan && !orphan.user_id) {
+          // Delete orphan so our upsert won't hit the phone unique constraint
+          await (supabase.from("leads") as any).delete().eq("id", orphan.id);
+        } else if (orphan && orphan.user_id && orphan.user_id !== userId) {
+          // Phone belongs to another authenticated user — clear it from that row first
+          await (supabase.from("leads") as any)
+            .update({ phone_number: null })
+            .eq("id", orphan.id);
+        }
+
         const res = await (supabase.from("leads") as any).upsert(
           {
             user_id: userId,
