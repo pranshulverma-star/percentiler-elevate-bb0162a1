@@ -115,4 +115,9 @@
     background-size: 200% 100%;
     animation: shimmer 2.5s ease-in-out infinite;
   }
+
+  .content-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 600px;
+  }
 }
