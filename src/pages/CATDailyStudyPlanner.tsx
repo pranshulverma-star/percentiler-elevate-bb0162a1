@@ -1022,14 +1022,15 @@ export default function CATDailyStudyPlanner() {
     // If authenticated, check DB for existing planner_stats
     if (isAuthenticated && user?.email) {
       const identifier = user.email;
-      supabase
-        .from("planner_stats")
-        .select("phone_number, start_date, target_year, crash_mode, current_phase")
-        .eq("phone_number", identifier)
-        .maybeSingle()
-        .then(({ data: stats }) => {
+      const checkDb = async () => {
+        try {
+          const { data: stats } = await supabase
+            .from("planner_stats")
+            .select("phone_number, start_date, target_year, crash_mode, current_phase")
+            .eq("phone_number", identifier)
+            .maybeSingle();
+
           if (stats) {
-            // User has existing planner data — restore and skip form
             const name = user.user_metadata?.full_name || user.user_metadata?.name || "Aspirant";
             localStorage.setItem("planner_identifier", identifier);
             localStorage.setItem("planner_year", String(stats.target_year));
@@ -1047,10 +1048,11 @@ export default function CATDailyStudyPlanner() {
           } else {
             setView("lead");
           }
-        })
-        .catch(() => {
+        } catch {
           setView("lead");
-        });
+        }
+      };
+      checkDb();
     } else {
       setView("lead");
     }
