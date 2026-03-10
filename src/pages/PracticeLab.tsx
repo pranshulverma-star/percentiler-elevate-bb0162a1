@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { practiceLabSections, type SectionData, type Chapter, type PracticeQuestion } from "@/data/practiceLabQuestions";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
@@ -249,11 +250,11 @@ function QuizView({
 }: {
   chapter: Chapter;
   questions: PracticeQuestion[];
-  onFinish: (answers: Record<number, number | null>, timeUsed: number) => void;
+  onFinish: (answers: Record<number, number | string | null>, timeUsed: number) => void;
   onBack: () => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, number | null>>({});
+  const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
   const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION);
 
   useEffect(() => {
@@ -272,6 +273,10 @@ function QuizView({
 
   const handleSelect = (optIndex: number) => {
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
+  };
+
+  const handleNumericChange = (value: string) => {
+    setAnswers((prev) => ({ ...prev, [q.id]: value }));
   };
 
   const handleSubmit = () => {
@@ -313,30 +318,52 @@ function QuizView({
           transition={{ duration: 0.25 }}
         >
           <Card className="p-6 md:p-8 border space-y-6">
-            <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
-              {q.question}
-            </p>
+            <div className="flex items-start gap-2">
+              <Badge variant="outline" className="text-[10px] shrink-0 mt-0.5">
+                {q.type === "mcq" ? "MCQ" : "Fill in"}
+              </Badge>
+              <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
+                {q.question}
+              </p>
+            </div>
 
-            <RadioGroup
-              value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
-              onValueChange={(v) => handleSelect(Number(v))}
-              className="space-y-3"
-            >
-              {q.options.map((opt, idx) => (
-                <Label
-                  key={idx}
-                  htmlFor={`opt-${q.id}-${idx}`}
-                  className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all
-                    ${answers[q.id] === idx
-                      ? "border-primary bg-primary/5 shadow-sm"
-                      : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
-                    }`}
-                >
-                  <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} />
-                  <span className="text-sm text-foreground">{opt}</span>
+            {q.type === "mcq" ? (
+              <RadioGroup
+                value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
+                onValueChange={(v) => handleSelect(Number(v))}
+                className="space-y-3"
+              >
+                {q.options.map((opt, idx) => (
+                  <Label
+                    key={idx}
+                    htmlFor={`opt-${q.id}-${idx}`}
+                    className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all
+                      ${answers[q.id] === idx
+                        ? "border-primary bg-primary/5 shadow-sm"
+                        : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
+                      }`}
+                  >
+                    <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} />
+                    <span className="text-sm text-foreground">{opt}</span>
+                  </Label>
+                ))}
+              </RadioGroup>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor={`numeric-${q.id}`} className="text-sm text-muted-foreground">
+                  Type your answer
                 </Label>
-              ))}
-            </RadioGroup>
+                <Input
+                  id={`numeric-${q.id}`}
+                  type="text"
+                  placeholder="Enter your answer..."
+                  value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
+                  onChange={(e) => handleNumericChange(e.target.value)}
+                  className="text-base"
+                  autoComplete="off"
+                />
+              </div>
+            )}
           </Card>
         </motion.div>
       </AnimatePresence>
@@ -409,7 +436,7 @@ function ResultsView({
   onBack,
 }: {
   questions: PracticeQuestion[];
-  answers: Record<number, number | null>;
+  answers: Record<number, number | string | null>;
   timeUsed: number;
   chapterName: string;
   sectionId: string;
@@ -426,9 +453,18 @@ function ResultsView({
     let correct = 0, incorrect = 0, unanswered = 0;
     questions.forEach((q) => {
       const a = answers[q.id];
-      if (a === undefined || a === null) unanswered++;
-      else if (a === q.correctAnswer) correct++;
-      else incorrect++;
+      if (a === undefined || a === null || a === "") {
+        unanswered++;
+      } else if (q.type === "mcq") {
+        if (a === q.correctAnswer) correct++;
+        else incorrect++;
+      } else {
+        // Numeric: normalize and compare
+        const userStr = String(a).trim().toLowerCase();
+        const correctStr = (q.numericAnswer || "").trim().toLowerCase();
+        if (correctStr && userStr === correctStr) correct++;
+        else incorrect++; // self-review will show correct answer
+      }
     });
     return { correct, incorrect, unanswered };
   }, [questions, answers]);
@@ -583,23 +619,42 @@ function ResultsView({
           >
             {questions.map((q, i) => {
               const userAnswer = answers[q.id];
-              const isCorrect = userAnswer === q.correctAnswer;
-              const isSkipped = userAnswer === undefined || userAnswer === null;
+              const isSkipped = userAnswer === undefined || userAnswer === null || userAnswer === "";
+              const isCorrect = q.type === "mcq"
+                ? userAnswer === q.correctAnswer
+                : !isSkipped && String(userAnswer).trim().toLowerCase() === (q.numericAnswer || "").trim().toLowerCase();
+
               return (
                 <Card key={q.id} className="p-5 border space-y-3">
                   <div className="flex items-start gap-3">
                     <span className="text-xs font-mono text-muted-foreground mt-1">Q{i + 1}</span>
                     <div className="flex-1 space-y-2">
                       <p className="text-sm font-medium text-foreground">{q.question}</p>
-                      <div className="space-y-1">
-                        {q.options.map((opt, idx) => {
-                          let cls = "text-sm px-3 py-1.5 rounded-lg ";
-                          if (idx === q.correctAnswer) cls += "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium";
-                          else if (idx === userAnswer && !isCorrect) cls += "bg-destructive/10 text-destructive line-through";
-                          else cls += "text-muted-foreground";
-                          return <div key={idx} className={cls}>{opt}</div>;
-                        })}
-                      </div>
+
+                      {q.type === "mcq" ? (
+                        <div className="space-y-1">
+                          {q.options.map((opt, idx) => {
+                            let cls = "text-sm px-3 py-1.5 rounded-lg ";
+                            if (idx === q.correctAnswer) cls += "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium";
+                            else if (idx === userAnswer && !isCorrect) cls += "bg-destructive/10 text-destructive line-through";
+                            else cls += "text-muted-foreground";
+                            return <div key={idx} className={cls}>{opt}</div>;
+                          })}
+                        </div>
+                      ) : (
+                        <div className="space-y-1.5">
+                          <div className="text-sm">
+                            <span className="text-muted-foreground">Your answer: </span>
+                            <span className={isSkipped ? "text-muted-foreground italic" : isCorrect ? "text-emerald-600 dark:text-emerald-400 font-medium" : "text-destructive line-through"}>
+                              {isSkipped ? "Skipped" : String(userAnswer)}
+                            </span>
+                          </div>
+                          <div className="text-sm px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium">
+                            Correct: {q.numericAnswer || "See explanation"}
+                          </div>
+                        </div>
+                      )}
+
                       {q.explanation && (
                         <p className="text-xs text-muted-foreground italic border-t border-border pt-2 mt-2">
                           💡 {q.explanation}
@@ -632,7 +687,7 @@ export default function PracticeLab() {
   const [phase, setPhase] = useState<Phase>("sections");
   const [selectedSection, setSelectedSection] = useState<SectionData | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
-  const [quizAnswers, setQuizAnswers] = useState<Record<number, number | null>>({});
+  const [quizAnswers, setQuizAnswers] = useState<Record<number, number | string | null>>({});
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
 
@@ -687,7 +742,7 @@ export default function PracticeLab() {
     setPhase("quiz");
   }, [isAuthenticated, hasPhone, signIn]);
 
-  const handleFinishQuiz = useCallback((answers: Record<number, number | null>, timeUsed: number) => {
+  const handleFinishQuiz = useCallback((answers: Record<number, number | string | null>, timeUsed: number) => {
     setQuizAnswers(answers);
     setQuizTimeUsed(timeUsed);
     setPhase("results");
