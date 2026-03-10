@@ -264,14 +264,14 @@ function ChaptersView({
         <ArrowLeft className="w-4 h-4" /> Back to Arena
       </button>
 
-      <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center text-2xl">
+      <div className="flex items-center gap-3 md:gap-4">
+        <div className="w-11 h-11 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center text-xl md:text-2xl shrink-0">
           {section.icon}
         </div>
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">{section.name}</h2>
-          <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-            <Target className="w-3.5 h-3.5 text-primary" /> Select a mission to begin
+          <h2 className="text-xl md:text-3xl font-bold tracking-tight text-foreground">{section.name}</h2>
+          <p className="text-xs md:text-sm text-muted-foreground flex items-center gap-1">
+            <Target className="w-3 h-3 md:w-3.5 md:h-3.5 text-primary" /> Select a mission
           </p>
         </div>
       </div>
