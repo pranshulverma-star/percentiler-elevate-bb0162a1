@@ -183,23 +183,46 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
       </div>
 
       {/* Leaderboard — Game Style */}
-      <div className="max-w-2xl mx-auto space-y-4">
+      <div className="max-w-2xl mx-auto space-y-3 md:space-y-4">
         <div className="flex items-center gap-2">
-          <Crown className="w-5 h-5 text-primary" />
-          <h2 className="text-xl font-bold text-foreground tracking-tight">Arena Leaderboard</h2>
+          <Crown className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+          <h2 className="text-base md:text-xl font-bold text-foreground tracking-tight">Arena Leaderboard</h2>
           <Badge variant="secondary" className="text-[10px] ml-auto">This Week</Badge>
         </div>
         <Card className="border overflow-hidden">
           <div className="divide-y divide-border">
-            {leaderboardData.map((entry, i) => (
+            {leaderboardData.slice(0, 3).map((entry, i) => (
               <motion.div
                 key={entry.rank}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + i * 0.08 }}
-                className={`flex items-center gap-4 px-4 py-3 md:px-6 md:py-4 transition-colors hover:bg-secondary/50 ${
+                transition={{ delay: 0.3 + i * 0.06 }}
+                className={`flex items-center gap-3 px-3 py-2.5 md:px-6 md:py-4 transition-colors hover:bg-secondary/50 ${
                   entry.rank <= 3 ? "bg-primary/[0.03]" : ""
                 }`}
+              >
+                <span className="text-lg md:text-xl w-6 md:w-8 text-center">{entry.badge}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs md:text-sm font-semibold text-foreground truncate">{entry.name}</p>
+                  <div className="flex items-center gap-1 text-[10px] md:text-xs text-muted-foreground">
+                    <Flame className="w-2.5 h-2.5 md:w-3 md:h-3 text-primary" />
+                    <span>{entry.streak}-day streak</span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs md:text-sm font-bold text-primary">{entry.xp}</p>
+                  <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase tracking-wider">XP</p>
+                </div>
+              </motion.div>
+            ))}
+            {/* Show remaining on desktop */}
+            {leaderboardData.slice(3).map((entry, i) => (
+              <motion.div
+                key={entry.rank}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 + i * 0.06 }}
+                className="hidden md:flex items-center gap-3 px-6 py-4 transition-colors hover:bg-secondary/50"
               >
                 <span className="text-xl w-8 text-center">{entry.badge}</span>
                 <div className="flex-1 min-w-0">
