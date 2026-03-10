@@ -111,7 +111,9 @@ function extractAnswerFromExplanation(explanation: string): string {
 }
 
 // Build from raw data
-const qaChapters = buildChaptersFromRaw(rawQuestions as RawQuestion[]);
+const rawData = Array.isArray(rawQuestions) ? rawQuestions : (rawQuestions as any).default || [];
+const qaChapters = buildChaptersFromRaw(rawData as RawQuestion[]);
+console.log("[PracticeLab] Loaded", rawData.length, "raw questions →", qaChapters.length, "chapters");
 
 export const practiceLabSections: SectionData[] = [
   {
