@@ -110,10 +110,9 @@ function extractAnswerFromExplanation(explanation: string): string {
   return "";
 }
 
-// Build from raw data
-const rawData = Array.isArray(rawQuestions) ? rawQuestions : (rawQuestions as any).default || [];
-const qaChapters = buildChaptersFromRaw(rawData as RawQuestion[]);
-console.log("[PracticeLab] Loaded", rawData.length, "raw questions →", qaChapters.length, "chapters");
+// Build from raw data — handle both ESM default and direct array
+const rawData: RawQuestion[] = Array.isArray(rawQuestions) ? rawQuestions : ((rawQuestions as any).default ?? []);
+const qaChapters = buildChaptersFromRaw(rawData);
 
 export const practiceLabSections: SectionData[] = [
   {
