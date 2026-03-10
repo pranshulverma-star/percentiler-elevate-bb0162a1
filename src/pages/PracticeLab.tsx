@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen, Zap, ChevronRight, Lock, Trophy, Users, TrendingUp, BarChart3 } from "lucide-react";
+import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen, Zap, ChevronRight, Lock, Trophy, TrendingUp, BarChart3, Flame, Shield, Star, Swords, Target, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -19,8 +18,10 @@ import { supabase } from "@/integrations/supabase/client";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
-const QUIZ_DURATION = 900; // 15 minutes
+const QUIZ_DURATION = 900;
 const QUIZ_QUESTION_COUNT = 10;
+const XP_PER_CORRECT = 15;
+const XP_PER_SPEED_BONUS = 5;
 
 function pickRandom<T>(arr: T[], count: number): T[] {
   const shuffled = [...arr].sort(() => Math.random() - 0.5);
@@ -33,6 +34,14 @@ function formatTime(seconds: number) {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+function getRank(totalXP: number) {
+  if (totalXP >= 500) return { name: "Grandmaster", icon: "👑", color: "text-amber-400", next: null, xpToNext: 0 };
+  if (totalXP >= 300) return { name: "Diamond", icon: "💎", color: "text-cyan-400", next: 500, xpToNext: 500 - totalXP };
+  if (totalXP >= 150) return { name: "Gold", icon: "🥇", color: "text-amber-500", next: 300, xpToNext: 300 - totalXP };
+  if (totalXP >= 50) return { name: "Silver", icon: "🥈", color: "text-muted-foreground", next: 150, xpToNext: 150 - totalXP };
+  return { name: "Bronze", icon: "🥉", color: "text-amber-700", next: 50, xpToNext: 50 - totalXP };
+}
+
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
@@ -40,143 +49,175 @@ const fadeUp = {
   transition: { duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
 };
 
-// ─── Section Cards ───────────────────────────────────────────────────────────
-
-// ─── Mock Leaderboard Data ───────────────────────────────────────────────────
-
+// ─── Leaderboard Data ────────────────────────────────────────────────────────
 const leaderboardData = [
-  { rank: 1, name: "Aarav M.", score: 980, streak: 12, badge: "🥇" },
-  { rank: 2, name: "Priya S.", score: 945, streak: 10, badge: "🥈" },
-  { rank: 3, name: "Rohan K.", score: 920, streak: 9, badge: "🥉" },
-  { rank: 4, name: "Ananya D.", score: 890, streak: 8, badge: "" },
-  { rank: 5, name: "Karthik N.", score: 870, streak: 7, badge: "" },
+  { rank: 1, name: "Aarav M.", xp: 980, streak: 12, badge: "👑" },
+  { rank: 2, name: "Priya S.", xp: 945, streak: 10, badge: "💎" },
+  { rank: 3, name: "Rohan K.", xp: 920, streak: 9, badge: "🥇" },
+  { rank: 4, name: "Ananya D.", xp: 890, streak: 8, badge: "🥈" },
+  { rank: 5, name: "Karthik N.", xp: 870, streak: 7, badge: "🥈" },
 ];
 
-const practiceTestimonials = [
-  { name: "Meera T.", text: "The timed quizzes helped me improve my speed. Jumped from 85 to 98 percentile!", highlight: "85 → 98 percentile" },
-  { name: "Karthik N.", text: "Practising chapter-wise before mocks made a huge difference in my accuracy.", highlight: "Accuracy boost" },
-  { name: "Divya S.", text: "The leaderboard kept me motivated. Competing with peers pushed me harder.", highlight: "Peer motivation" },
-];
+// ─── XP Bar Component ────────────────────────────────────────────────────────
+function XPBar({ current, max, label, className = "" }: { current: number; max: number; label?: string; className?: string }) {
+  const pct = Math.min(100, Math.round((current / max) * 100));
+  return (
+    <div className={`space-y-1 ${className}`}>
+      {label && (
+        <div className="flex justify-between text-[10px] font-semibold uppercase tracking-wider">
+          <span className="text-muted-foreground">{label}</span>
+          <span className="text-primary">{current}/{max} XP</span>
+        </div>
+      )}
+      <div className="relative h-2.5 rounded-full bg-secondary overflow-hidden border border-border">
+        <div
+          className="h-full rounded-full bg-gradient-to-r from-primary to-amber-400 xp-bar-fill"
+          style={{ "--xp-width": `${pct}%` } as React.CSSProperties}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-50" />
+      </div>
+    </div>
+  );
+}
 
-// ─── Section Cards ───────────────────────────────────────────────────────────
-
+// ─── Section Cards (Level Select) ───────────────────────────────────────────
 function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
-  const sectionColors = [
-    "from-orange-500/20 to-amber-500/10 border-orange-500/20",
-    "from-blue-500/20 to-cyan-500/10 border-blue-500/20",
-    "from-emerald-500/20 to-teal-500/10 border-emerald-500/20",
+  const sectionThemes = [
+    { gradient: "from-orange-500/15 to-amber-500/5", icon: "⚔️", subtitle: "Quantitative Arena" },
+    { gradient: "from-blue-500/15 to-indigo-500/5", icon: "🧩", subtitle: "Logic Battleground" },
+    { gradient: "from-emerald-500/15 to-teal-500/5", icon: "📜", subtitle: "Verbal Conquest" },
   ];
-  const sectionIcons = ["📐", "🧩", "📖"];
+
+  const totalXP = 175; // Mock — would come from DB
 
   return (
-    <motion.div {...fadeUp} className="space-y-12">
+    <motion.div {...fadeUp} className="space-y-10 game-grid-bg">
       {/* Hero */}
-      <div className="text-center space-y-3">
-        <Badge variant="secondary" className="text-xs tracking-wide uppercase font-medium">
-          <Zap className="w-3 h-3 mr-1" /> Free Practice
-        </Badge>
-        <h1 className="text-3xl md:text-5xl font-bold tracking-[-0.03em] text-foreground">
-          Practice Lab
+      <div className="text-center space-y-4">
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "backOut" }}
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full game-badge text-xs font-bold uppercase tracking-wider mb-3">
+            <Flame className="w-3.5 h-3.5" /> Practice Arena
+          </div>
+        </motion.div>
+        <h1 className="text-3xl md:text-5xl font-black tracking-[-0.04em] text-foreground">
+          Choose Your <span className="text-primary">Battle</span>
         </h1>
-        <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto leading-relaxed">
-          Sharpen your CAT prep with timed quizzes across all three sections. Pick a section to begin.
+        <p className="text-muted-foreground text-base max-w-md mx-auto">
+          10 questions. 15 minutes. Earn XP and climb the ranks.
         </p>
+
+        {/* Player rank bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="max-w-xs mx-auto pt-2"
+        >
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="text-xl">{getRank(totalXP).icon}</span>
+            <span className="text-sm font-bold text-foreground">{getRank(totalXP).name}</span>
+          </div>
+          <XPBar current={totalXP} max={getRank(totalXP).next || totalXP} label="Rank Progress" />
+        </motion.div>
       </div>
 
-      {/* Section Cards — equal height */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+      {/* Section Cards — Game Style */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
         {practiceLabSections.map((section, i) => {
           const totalQ = section.chapters.reduce((sum, ch) => sum + ch.questions.length, 0);
           const available = section.chapters.filter(ch => ch.questions.length > 0).length;
+          const theme = sectionThemes[i];
           return (
             <motion.div
               key={section.id}
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1, duration: 0.4 }}
+              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: i * 0.12, duration: 0.45, ease: "backOut" }}
               className="flex"
             >
-              <Card
-                className={`group relative overflow-hidden cursor-pointer border bg-gradient-to-br ${sectionColors[i]} 
-                  hover:shadow-lg hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1 flex flex-col w-full`}
+              <div
+                className={`game-card rounded-xl cursor-pointer flex flex-col w-full overflow-hidden`}
                 onClick={() => onSelect(section)}
               >
-                <div className="p-6 md:p-8 flex flex-col flex-1 space-y-4">
-                  <div className="text-4xl">{sectionIcons[i]}</div>
+                {/* Top accent bar */}
+                <div className={`h-1 bg-gradient-to-r ${theme.gradient.replace('/15', '').replace('/5', '')} from-primary to-amber-400 opacity-60`} />
+                
+                <div className="p-6 md:p-7 flex flex-col flex-1 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-3xl">{theme.icon}</span>
+                    {available > 0 ? (
+                      <div className="flex items-center gap-1 text-[10px] font-bold text-primary uppercase tracking-wider">
+                        <Swords className="w-3 h-3" /> Ready
+                      </div>
+                    ) : (
+                      <Badge variant="outline" className="text-[10px]">Locked</Badge>
+                    )}
+                  </div>
                   <div className="flex-1">
-                    <h2 className="text-lg font-semibold text-foreground tracking-tight">{section.name}</h2>
-                    <p className="text-sm text-muted-foreground mt-1">{section.description}</p>
+                    <h2 className="text-lg font-bold text-foreground tracking-tight">{section.name}</h2>
+                    <p className="text-xs text-muted-foreground mt-0.5">{theme.subtitle}</p>
                   </div>
-                  <div className="flex items-center justify-between mt-auto">
-                    <span className="text-xs text-muted-foreground">
-                      {section.chapters.length} chapters · {totalQ} questions
-                    </span>
-                    <ChevronRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                      <span>{available} missions</span>
+                      <span className="font-semibold text-foreground">{totalQ} Qs</span>
+                    </div>
+                    <div className="h-1 rounded-full bg-secondary overflow-hidden">
+                      <div className="h-full rounded-full bg-primary/40" style={{ width: `${Math.min(100, available * 15)}%` }} />
+                    </div>
                   </div>
-                  {available === 0 && (
-                    <Badge variant="outline" className="text-xs absolute top-4 right-4">Coming Soon</Badge>
-                  )}
                 </div>
-              </Card>
+              </div>
             </motion.div>
           );
         })}
       </div>
 
-      {/* Leaderboard */}
+      {/* Leaderboard — Game Style */}
       <div className="max-w-2xl mx-auto space-y-4">
         <div className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-primary" />
-          <h2 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">Leaderboard</h2>
+          <Crown className="w-5 h-5 text-primary" />
+          <h2 className="text-xl font-bold text-foreground tracking-tight">Arena Leaderboard</h2>
+          <Badge variant="secondary" className="text-[10px] ml-auto">This Week</Badge>
         </div>
         <Card className="border overflow-hidden">
           <div className="divide-y divide-border">
-            {leaderboardData.map((entry) => (
-              <div
+            {leaderboardData.map((entry, i) => (
+              <motion.div
                 key={entry.rank}
-                className={`flex items-center gap-4 px-4 py-3 md:px-6 md:py-4 ${
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.4 + i * 0.08 }}
+                className={`flex items-center gap-4 px-4 py-3 md:px-6 md:py-4 transition-colors hover:bg-secondary/50 ${
                   entry.rank <= 3 ? "bg-primary/[0.03]" : ""
                 }`}
               >
-                <span className="w-8 text-center font-bold text-lg">
-                  {entry.badge || `#${entry.rank}`}
-                </span>
+                <span className="text-xl w-8 text-center">{entry.badge}</span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground truncate">{entry.name}</p>
-                  <p className="text-xs text-muted-foreground">{entry.streak}-day streak</p>
+                  <p className="text-sm font-semibold text-foreground truncate">{entry.name}</p>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <Flame className="w-3 h-3 text-primary" />
+                    <span>{entry.streak}-day streak</span>
+                  </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm font-semibold text-foreground">{entry.score}</p>
-                  <p className="text-xs text-muted-foreground">points</p>
+                  <p className="text-sm font-bold text-primary">{entry.xp}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider">XP</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </Card>
-      </div>
-
-      {/* Testimonials */}
-      <div className="max-w-4xl mx-auto space-y-4">
-        <div className="flex items-center gap-2">
-          <Users className="w-5 h-5 text-primary" />
-          <h2 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">What Students Say</h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {practiceTestimonials.map((t, i) => (
-            <Card key={i} className="p-5 border space-y-3">
-              <Badge variant="secondary" className="text-xs">{t.highlight}</Badge>
-              <p className="text-sm text-muted-foreground leading-relaxed">"{t.text}"</p>
-              <p className="text-xs font-medium text-foreground">— {t.name}</p>
-            </Card>
-          ))}
-        </div>
       </div>
     </motion.div>
   );
 }
 
-// ─── Chapter Grid ────────────────────────────────────────────────────────────
-
+// ─── Chapter Grid (Mission Select) ──────────────────────────────────────────
 function ChaptersView({
   section,
   onBack,
@@ -192,18 +233,25 @@ function ChaptersView({
         onClick={onBack}
         className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" /> Back to sections
+        <ArrowLeft className="w-4 h-4" /> Back to Arena
       </button>
 
-      <div>
-        <span className="text-3xl mb-2 block">{section.icon}</span>
-        <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">{section.name}</h2>
-        <p className="text-muted-foreground mt-1">Select a chapter to start practicing</p>
+      <div className="flex items-center gap-4">
+        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center text-2xl">
+          {section.icon}
+        </div>
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">{section.name}</h2>
+          <p className="text-sm text-muted-foreground flex items-center gap-1.5">
+            <Target className="w-3.5 h-3.5 text-primary" /> Select a mission to begin
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
         {section.chapters.map((ch, i) => {
           const hasQuestions = ch.questions.length > 0;
+          const qCount = Math.min(ch.questions.length, QUIZ_QUESTION_COUNT);
           return (
             <motion.div
               key={ch.slug}
@@ -211,33 +259,44 @@ function ChaptersView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06, duration: 0.35 }}
             >
-              <Card
-                className={`p-5 border transition-all duration-200 ${
+              <div
+                className={`game-card rounded-xl p-5 transition-all duration-200 ${
                   hasQuestions
-                    ? "cursor-pointer hover:border-primary/40 hover:shadow-md hover:-translate-y-0.5"
-                    : "opacity-50 cursor-not-allowed"
+                    ? "cursor-pointer"
+                    : "opacity-40 cursor-not-allowed !shadow-none hover:!transform-none"
                 }`}
                 onClick={() => hasQuestions && onSelect(ch)}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     {hasQuestions ? (
-                      <BookOpen className="w-5 h-5 text-primary" />
+                      <div className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                        <Swords className="w-4 h-4 text-primary" />
+                      </div>
                     ) : (
-                      <Lock className="w-5 h-5 text-muted-foreground" />
+                      <div className="w-9 h-9 rounded-lg bg-secondary border border-border flex items-center justify-center">
+                        <Lock className="w-4 h-4 text-muted-foreground" />
+                      </div>
                     )}
                     <div>
-                      <h3 className="font-medium text-foreground text-sm">{ch.name}</h3>
-                      <span className="text-xs text-muted-foreground">
-                        {hasQuestions ? `${ch.questions.length} questions` : "Coming soon"}
-                      </span>
+                      <h3 className="font-semibold text-foreground text-sm">{ch.name}</h3>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        {hasQuestions ? (
+                          <>
+                            <span className="text-[10px] text-muted-foreground">{qCount} Qs · 15 min</span>
+                            <span className="text-[10px] font-semibold text-primary">+{qCount * XP_PER_CORRECT} XP</span>
+                          </>
+                        ) : (
+                          <span className="text-[10px] text-muted-foreground">🔒 Coming soon</span>
+                        )}
+                      </div>
                     </div>
                   </div>
                   {hasQuestions && (
                     <ChevronRight className="w-4 h-4 text-muted-foreground" />
                   )}
                 </div>
-              </Card>
+              </div>
             </motion.div>
           );
         })}
@@ -246,8 +305,7 @@ function ChaptersView({
   );
 }
 
-// ─── Quiz Phase ──────────────────────────────────────────────────────────────
-
+// ─── Quiz Phase (Battle Mode) ───────────────────────────────────────────────
 function QuizView({
   chapter,
   questions,
@@ -262,6 +320,7 @@ function QuizView({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
   const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION);
+  const [_streak] = useState(0);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -275,7 +334,9 @@ function QuizView({
   const q = questions[currentIndex];
   const isLast = currentIndex === questions.length - 1;
   const isLowTime = timeLeft <= 120;
+  const isCritical = timeLeft <= 60;
   const answeredCount = questions.filter((qq) => answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "").length;
+  const timeProgress = (timeLeft / QUIZ_DURATION) * 100;
 
   const handleSelect = (optIndex: number) => {
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
@@ -291,88 +352,142 @@ function QuizView({
 
   return (
     <motion.div {...fadeUp} className="max-w-5xl mx-auto">
-      {/* Top bar */}
-      <div className="flex items-center justify-between mb-4">
+      {/* HUD Bar */}
+      <div className="flex items-center justify-between mb-3">
         <button
           onClick={onBack}
-          className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" /> Exit
+          <ArrowLeft className="w-4 h-4" /> Retreat
         </button>
-        <div className="flex items-center gap-3">
-          <Badge variant="secondary" className="text-xs">{chapter.name}</Badge>
-          <div className={`flex items-center gap-1.5 text-sm font-mono font-semibold ${isLowTime ? "text-destructive animate-pulse" : "text-foreground"}`}>
-            <Clock className="w-4 h-4" />
+        <div className="flex items-center gap-4">
+          {/* Streak indicator */}
+          {answeredCount > 0 && (
+            <div className="flex items-center gap-1 text-xs font-bold">
+              <Flame className={`w-4 h-4 ${answeredCount >= 3 ? "text-primary streak-glow" : "text-muted-foreground"}`} />
+              <span className={answeredCount >= 3 ? "text-primary" : "text-muted-foreground"}>{answeredCount}</span>
+            </div>
+          )}
+          <Badge variant="secondary" className="text-[10px] font-semibold">{chapter.name}</Badge>
+          {/* Timer */}
+          <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm font-mono font-bold transition-all
+            ${isCritical 
+              ? "border-destructive/50 bg-destructive/10 text-destructive animate-pulse" 
+              : isLowTime 
+                ? "border-primary/50 bg-primary/10 text-primary" 
+                : "border-border text-foreground"}`}
+          >
+            <Clock className="w-3.5 h-3.5" />
             {formatTime(timeLeft)}
           </div>
         </div>
       </div>
 
-      <div className="flex gap-4">
-        {/* Left Question Palette */}
-        <div className="hidden md:block w-48 shrink-0">
-          <Card className="p-4 border sticky top-24 space-y-4">
-            <div className="space-y-1">
-              <p className="text-xs font-semibold text-foreground uppercase tracking-wider">Questions</p>
-              <p className="text-[10px] text-muted-foreground">{answeredCount}/{questions.length} answered</p>
+      {/* Timer progress bar */}
+      <div className="relative h-1.5 rounded-full bg-secondary overflow-hidden mb-5 border border-border/50">
+        <motion.div
+          className={`h-full rounded-full transition-colors duration-1000 ${
+            isCritical ? "bg-destructive" : isLowTime ? "bg-primary" : "bg-gradient-to-r from-primary to-amber-400"
+          }`}
+          style={{ width: `${timeProgress}%` }}
+          transition={{ duration: 0.5 }}
+        />
+      </div>
+
+      <div className="flex gap-5">
+        {/* Left Question Palette — HUD style */}
+        <div className="hidden md:block w-52 shrink-0">
+          <div className="game-card rounded-xl p-4 sticky top-24 space-y-4">
+            {/* Mini scoreboard */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-primary" />
+                <span className="text-xs font-bold text-foreground uppercase tracking-wider">Mission</span>
+              </div>
+              <span className="text-[10px] font-mono text-primary font-bold">{answeredCount}/{questions.length}</span>
             </div>
-            <div className="grid grid-cols-5 gap-1.5">
+
+            {/* Question grid */}
+            <div className="grid grid-cols-5 gap-2">
               {questions.map((qq, i) => {
                 const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
+                const isCurrent = i === currentIndex;
                 return (
                   <button
                     key={i}
                     onClick={() => setCurrentIndex(i)}
-                    className={`w-7 h-7 rounded-md text-[11px] font-medium transition-all border
-                      ${i === currentIndex
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                    className={`relative w-8 h-8 rounded-lg text-[11px] font-bold transition-all duration-200 border
+                      ${isCurrent
+                        ? "border-primary bg-primary text-primary-foreground shadow-md game-glow"
                         : isAnswered
-                          ? "border-primary/40 bg-primary/10 text-primary"
-                          : "border-border text-muted-foreground hover:border-muted-foreground/60"
+                          ? "border-primary/40 bg-primary/15 text-primary"
+                          : "border-border text-muted-foreground hover:border-muted-foreground/60 hover:bg-secondary"
                       }`}
                   >
                     {i + 1}
+                    {isAnswered && !isCurrent && (
+                      <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary" />
+                    )}
                   </button>
                 );
               })}
             </div>
-            <div className="space-y-1.5 pt-2 border-t border-border">
+
+            {/* Legend */}
+            <div className="space-y-1.5 pt-2 border-t border-border/50">
               <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                <span className="w-3 h-3 rounded-sm bg-primary/10 border border-primary/40" />
+                <span className="w-3.5 h-3.5 rounded bg-primary/15 border border-primary/40 flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
+                </span>
                 Answered
               </div>
               <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                <span className="w-3 h-3 rounded-sm border border-border" />
-                Not answered
+                <span className="w-3.5 h-3.5 rounded border border-border" />
+                Unanswered
               </div>
               <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                <span className="w-3 h-3 rounded-sm bg-primary border border-primary" />
+                <span className="w-3.5 h-3.5 rounded bg-primary border border-primary game-glow" />
                 Current
               </div>
             </div>
-            <Button onClick={handleSubmit} size="sm" className="w-full mt-2">
-              Submit Quiz
+
+            {/* XP preview */}
+            <div className="pt-2 border-t border-border/50 space-y-1">
+              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
+                <Zap className="w-3 h-3 text-primary" />
+                <span>Potential XP: <strong className="text-primary">{questions.length * XP_PER_CORRECT}</strong></span>
+              </div>
+            </div>
+
+            <Button onClick={handleSubmit} size="sm" className="w-full font-bold gap-1.5 game-glow-pulse">
+              <Swords className="w-3.5 h-3.5" /> Finish Battle
             </Button>
-          </Card>
+          </div>
         </div>
 
         {/* Main question area */}
         <div className="flex-1 min-w-0 space-y-4">
-          {/* Progress bar */}
-          <Progress value={((currentIndex + 1) / questions.length) * 100} className="h-1.5" />
-
           {/* Question Card */}
           <AnimatePresence mode="wait">
             <motion.div
               key={q.id}
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
+              initial={{ opacity: 0, x: 30, scale: 0.98 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: -30, scale: 0.98 }}
               transition={{ duration: 0.25 }}
             >
-              <Card className="p-6 md:p-8 border space-y-6">
-                <div className="flex items-start gap-2">
-                  <span className="text-xs font-mono text-muted-foreground mt-1 shrink-0">Q{currentIndex + 1}.</span>
+              <Card className="p-6 md:p-8 border space-y-6 relative overflow-hidden">
+                {/* Question number badge */}
+                <div className="absolute top-0 right-0">
+                  <div className="bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-bl-lg">
+                    Q{currentIndex + 1} of {questions.length}
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 pt-2">
+                  <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <span className="text-xs font-bold text-primary">{currentIndex + 1}</span>
+                  </div>
                   <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
                     {q.question}
                   </p>
@@ -382,42 +497,52 @@ function QuizView({
                   <RadioGroup
                     value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
                     onValueChange={(v) => handleSelect(Number(v))}
-                    className="space-y-3"
+                    className="space-y-2.5"
                   >
-                    {q.options.map((opt, idx) => (
-                      <Label
-                        key={idx}
-                        htmlFor={`opt-${q.id}-${idx}`}
-                        className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all
-                          ${answers[q.id] === idx
-                            ? "border-primary bg-primary/5 shadow-sm"
-                            : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
-                          }`}
-                      >
-                        <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} />
-                        <span className="text-sm text-foreground">{opt}</span>
-                      </Label>
-                    ))}
+                    {q.options.map((opt, idx) => {
+                      const optLabels = ["A", "B", "C", "D"];
+                      return (
+                        <Label
+                          key={idx}
+                          htmlFor={`opt-${q.id}-${idx}`}
+                          className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-200
+                            ${answers[q.id] === idx
+                              ? "border-primary bg-primary/5 shadow-sm game-glow"
+                              : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
+                            }`}
+                        >
+                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-colors
+                            ${answers[q.id] === idx
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-secondary text-muted-foreground border border-border"
+                            }`}
+                          >
+                            {optLabels[idx]}
+                          </div>
+                          <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} className="sr-only" />
+                          <span className="text-sm text-foreground">{opt}</span>
+                        </Label>
+                      );
+                    })}
                   </RadioGroup>
                 ) : (
                   <div className="space-y-2">
-                    <Label htmlFor={`numeric-${q.id}`} className="text-sm text-muted-foreground">
-                      Type your answer
+                    <Label htmlFor={`numeric-${q.id}`} className="text-sm text-muted-foreground flex items-center gap-1.5">
+                      <Target className="w-3.5 h-3.5" /> Enter your answer (number only)
                     </Label>
                     <Input
                       id={`numeric-${q.id}`}
                       type="text"
                       inputMode="decimal"
-                      placeholder="Enter a number..."
+                      placeholder="e.g. 48"
                       value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
                       onChange={(e) => {
                         const val = e.target.value;
-                        // Allow only numbers, decimal point, colon (for ratios), slash, and minus
                         if (val === "" || /^[-\d.:/ ]*$/.test(val)) {
                           handleNumericChange(val);
                         }
                       }}
-                      className="text-base"
+                      className="text-base font-mono"
                       autoComplete="off"
                     />
                   </div>
@@ -434,19 +559,19 @@ function QuizView({
               disabled={currentIndex === 0}
               onClick={() => setCurrentIndex((i) => i - 1)}
             >
-              Previous
+              ← Previous
             </Button>
 
             {isLast ? (
-              <Button onClick={handleSubmit} className="px-6">
-                Submit Quiz
+              <Button onClick={handleSubmit} className="px-6 gap-1.5 font-bold game-glow-pulse">
+                <Swords className="w-4 h-4" /> Finish Battle
               </Button>
             ) : (
               <Button
                 variant="outline"
                 onClick={() => setCurrentIndex((i) => i + 1)}
               >
-                Next
+                Next →
               </Button>
             )}
           </div>
@@ -459,11 +584,11 @@ function QuizView({
                 <button
                   key={i}
                   onClick={() => setCurrentIndex(i)}
-                  className={`w-8 h-8 rounded-full text-xs font-medium transition-all border
+                  className={`relative w-9 h-9 rounded-lg text-xs font-bold transition-all border
                     ${i === currentIndex
-                      ? "border-primary bg-primary text-primary-foreground"
+                      ? "border-primary bg-primary text-primary-foreground game-glow"
                       : isAnswered
-                        ? "border-primary/40 bg-primary/10 text-primary"
+                        ? "border-primary/40 bg-primary/15 text-primary"
                         : "border-border text-muted-foreground hover:border-muted-foreground"
                     }`}
                 >
@@ -478,6 +603,7 @@ function QuizView({
   );
 }
 
+// ─── Results (Victory / Defeat Screen) ──────────────────────────────────────
 interface AttemptRecord {
   score_pct: number;
   correct: number;
@@ -520,17 +646,20 @@ function ResultsView({
         if (a === q.correctAnswer) correct++;
         else incorrect++;
       } else {
-        // Numeric: normalize and compare
         const userStr = String(a).trim().toLowerCase();
         const correctStr = (q.numericAnswer || "").trim().toLowerCase();
         if (correctStr && userStr === correctStr) correct++;
-        else incorrect++; // self-review will show correct answer
+        else incorrect++;
       }
     });
     return { correct, incorrect, unanswered };
   }, [questions, answers]);
 
   const pct = Math.round((correct / questions.length) * 100);
+  const xpEarned = correct * XP_PER_CORRECT + (timeUsed < 600 ? XP_PER_SPEED_BONUS * correct : 0);
+  const isVictory = pct >= 60;
+  const isPerfect = pct === 100;
+  const stars = pct >= 90 ? 3 : pct >= 60 ? 2 : pct >= 30 ? 1 : 0;
   const [showReview, setShowReview] = useState(false);
 
   // Save attempt + fetch history
@@ -538,7 +667,6 @@ function ResultsView({
     if (!user?.id) { setLoadingHistory(false); return; }
 
     const saveAndFetch = async () => {
-      // Save current attempt (once)
       if (!savedRef.current) {
         savedRef.current = true;
         await (supabase.from("practice_lab_attempts") as any).insert({
@@ -555,7 +683,6 @@ function ResultsView({
         });
       }
 
-      // Fetch past attempts for this chapter
       const { data } = await (supabase.from("practice_lab_attempts") as any)
         .select("score_pct, correct, total_questions, time_used_seconds, created_at")
         .eq("user_id", user.id)
@@ -577,36 +704,97 @@ function ResultsView({
 
   return (
     <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-8">
-      {/* Score Hero */}
+      {/* Victory/Defeat Card */}
       <Card className="p-8 md:p-10 border text-center space-y-6 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent" />
-        <div className="relative z-10 space-y-4">
-          <Badge variant="secondary" className="text-xs">{chapterName}</Badge>
-          <div className="text-6xl md:text-7xl font-bold text-foreground tracking-tighter">
-            {pct}<span className="text-3xl text-muted-foreground">%</span>
-          </div>
-          <p className="text-muted-foreground">
-            You got <span className="text-foreground font-semibold">{correct}</span> out of {questions.length} correct
-            {timeUsed > 0 && <> in <span className="font-semibold text-foreground">{formatTime(timeUsed)}</span></>}
-          </p>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-amber-500/5" />
+        {isPerfect && <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.1)_0%,transparent_70%)]" />}
+        
+        <div className="relative z-10 space-y-5">
+          {/* Stars */}
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, ease: "backOut" }}
+            className="flex items-center justify-center gap-2"
+          >
+            {[1, 2, 3].map((s) => (
+              <motion.div
+                key={s}
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: s <= stars ? 1 : 0.6, rotate: 0 }}
+                transition={{ delay: 0.3 + s * 0.15, duration: 0.4, ease: "backOut" }}
+              >
+                <Star
+                  className={`w-10 h-10 md:w-12 md:h-12 ${
+                    s <= stars
+                      ? "text-amber-400 fill-amber-400 drop-shadow-lg"
+                      : "text-border"
+                  }`}
+                />
+              </motion.div>
+            ))}
+          </motion.div>
 
+          {/* Victory/Defeat text */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-2"
+              style={{
+                background: isVictory
+                  ? "linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(45 100% 50% / 0.1))"
+                  : "hsl(var(--secondary))",
+                color: isVictory ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
+              }}
+            >
+              {isPerfect ? <Crown className="w-3.5 h-3.5" /> : isVictory ? <Trophy className="w-3.5 h-3.5" /> : <Shield className="w-3.5 h-3.5" />}
+              {isPerfect ? "FLAWLESS VICTORY" : isVictory ? "MISSION COMPLETE" : "DEFEATED"}
+            </div>
+          </motion.div>
+
+          {/* Score */}
+          <div className="score-pop">
+            <div className="text-6xl md:text-8xl font-black text-foreground tracking-tighter">
+              {pct}<span className="text-3xl md:text-4xl text-muted-foreground">%</span>
+            </div>
+          </div>
+
+          {/* XP Earned */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1 }}
+            className="flex items-center justify-center gap-2"
+          >
+            <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full game-badge text-sm font-bold">
+              <Zap className="w-4 h-4" /> +{xpEarned} XP Earned
+            </div>
+          </motion.div>
+
+          {/* Stats row */}
           <div className="flex items-center justify-center gap-6 pt-2">
             <div className="flex items-center gap-1.5 text-sm">
-              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-              <span className="text-foreground font-medium">{correct}</span>
-              <span className="text-muted-foreground">correct</span>
+              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+              <span className="text-foreground font-bold">{correct}</span>
+              <span className="text-muted-foreground text-xs">correct</span>
             </div>
             <div className="flex items-center gap-1.5 text-sm">
-              <XCircle className="w-4 h-4 text-destructive" />
-              <span className="text-foreground font-medium">{incorrect}</span>
-              <span className="text-muted-foreground">wrong</span>
+              <XCircle className="w-5 h-5 text-destructive" />
+              <span className="text-foreground font-bold">{incorrect}</span>
+              <span className="text-muted-foreground text-xs">wrong</span>
             </div>
             <div className="flex items-center gap-1.5 text-sm">
-              <MinusCircle className="w-4 h-4 text-muted-foreground" />
-              <span className="text-foreground font-medium">{unanswered}</span>
-              <span className="text-muted-foreground">skipped</span>
+              <MinusCircle className="w-5 h-5 text-muted-foreground" />
+              <span className="text-foreground font-bold">{unanswered}</span>
+              <span className="text-muted-foreground text-xs">skipped</span>
             </div>
           </div>
+
+          {/* Time */}
+          {timeUsed > 0 && (
+            <p className="text-xs text-muted-foreground flex items-center justify-center gap-1.5">
+              <Clock className="w-3.5 h-3.5" /> Completed in {formatTime(timeUsed)}
+              {timeUsed < 600 && <span className="text-primary font-semibold ml-1">⚡ Speed Bonus!</span>}
+            </p>
+          )}
         </div>
       </Card>
 
@@ -615,35 +803,34 @@ function ResultsView({
         <Card className="p-5 border space-y-4">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-primary" />
-            <h3 className="font-semibold text-foreground">Your Performance History</h3>
+            <h3 className="font-bold text-foreground">Battle History</h3>
           </div>
           <div className="grid grid-cols-3 gap-3 text-center">
-            <div className="rounded-lg bg-secondary p-3">
-              <div className="text-xl font-bold text-primary">{bestScore}%</div>
-              <p className="text-xs text-muted-foreground mt-1">Best Score</p>
+            <div className="game-card rounded-xl p-3">
+              <div className="text-xl font-black text-primary">{bestScore}%</div>
+              <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Best</p>
             </div>
-            <div className="rounded-lg bg-secondary p-3">
-              <div className="text-xl font-bold text-foreground">{avgScore}%</div>
-              <p className="text-xs text-muted-foreground mt-1">Average</p>
+            <div className="game-card rounded-xl p-3">
+              <div className="text-xl font-black text-foreground">{avgScore}%</div>
+              <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Average</p>
             </div>
-            <div className="rounded-lg bg-secondary p-3">
-              <div className={`text-xl font-bold flex items-center justify-center gap-1 ${improvement > 0 ? "text-emerald-500" : improvement < 0 ? "text-destructive" : "text-muted-foreground"}`}>
+            <div className="game-card rounded-xl p-3">
+              <div className={`text-xl font-black flex items-center justify-center gap-1 ${improvement > 0 ? "text-emerald-500" : improvement < 0 ? "text-destructive" : "text-muted-foreground"}`}>
                 {improvement > 0 && <TrendingUp className="w-4 h-4" />}
                 {improvement > 0 ? "+" : ""}{improvement}%
               </div>
-              <p className="text-xs text-muted-foreground mt-1">Trend</p>
+              <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Trend</p>
             </div>
           </div>
 
-          {/* Mini attempt timeline */}
           <div className="space-y-1.5">
-            <p className="text-xs text-muted-foreground font-medium">Recent Attempts</p>
+            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Recent Battles</p>
             {pastAttempts.slice(0, 5).map((a, i) => (
               <div key={i} className="flex items-center justify-between text-xs py-1.5 border-b border-border last:border-0">
                 <span className="text-muted-foreground">{new Date(a.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>
                 <div className="flex items-center gap-3">
                   <span className="text-muted-foreground">{formatTime(a.time_used_seconds)}</span>
-                  <span className={`font-semibold ${a.score_pct >= 70 ? "text-emerald-500" : a.score_pct >= 40 ? "text-primary" : "text-destructive"}`}>
+                  <span className={`font-bold ${a.score_pct >= 70 ? "text-emerald-500" : a.score_pct >= 40 ? "text-primary" : "text-destructive"}`}>
                     {a.score_pct}%
                   </span>
                 </div>
@@ -655,17 +842,18 @@ function ResultsView({
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Button onClick={onRetry} className="gap-2">
-          <RotateCcw className="w-4 h-4" /> Try Again
+        <Button onClick={onRetry} className="gap-2 font-bold game-glow-pulse">
+          <RotateCcw className="w-4 h-4" /> Battle Again
         </Button>
-        <Button variant="outline" onClick={onBack}>
-          Back to Chapters
+        <Button variant="outline" onClick={onBack} className="gap-2">
+          <ArrowLeft className="w-4 h-4" /> Back to Missions
         </Button>
         <Button
           variant="ghost"
           onClick={() => setShowReview((v) => !v)}
+          className="gap-2"
         >
-          {showReview ? "Hide Review" : "Review Answers"}
+          <BookOpen className="w-4 h-4" /> {showReview ? "Hide Review" : "Review Answers"}
         </Button>
       </div>
 
@@ -688,9 +876,19 @@ function ResultsView({
               return (
                 <Card key={q.id} className="p-5 border space-y-3">
                   <div className="flex items-start gap-3">
-                    <span className="text-xs font-mono text-muted-foreground mt-1">Q{i + 1}</span>
+                    <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${
+                      isSkipped ? "bg-secondary" : isCorrect ? "bg-emerald-500/15" : "bg-destructive/15"
+                    }`}>
+                      {isSkipped ? (
+                        <MinusCircle className="w-3.5 h-3.5 text-muted-foreground" />
+                      ) : isCorrect ? (
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+                      ) : (
+                        <XCircle className="w-3.5 h-3.5 text-destructive" />
+                      )}
+                    </div>
                     <div className="flex-1 space-y-2">
-                      <p className="text-sm font-medium text-foreground">{q.question}</p>
+                      <p className="text-sm font-medium text-foreground">Q{i + 1}. {q.question}</p>
 
                       {q.type === "mcq" ? (
                         <div className="space-y-1">
@@ -722,15 +920,6 @@ function ResultsView({
                         </p>
                       )}
                     </div>
-                    <div className="mt-1">
-                      {isSkipped ? (
-                        <MinusCircle className="w-4 h-4 text-muted-foreground" />
-                      ) : isCorrect ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                      ) : (
-                        <XCircle className="w-4 h-4 text-destructive" />
-                      )}
-                    </div>
                   </div>
                 </Card>
               );
@@ -743,7 +932,6 @@ function ResultsView({
 }
 
 // ─── Main Page ───────────────────────────────────────────────────────────────
-
 export default function PracticeLab() {
   const [phase, setPhase] = useState<Phase>("sections");
   const [selectedSection, setSelectedSection] = useState<SectionData | null>(null);
@@ -756,7 +944,6 @@ export default function PracticeLab() {
   const { isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
 
-  // Store pending chapter selection while auth/phone gate resolves
   const pendingChapter = useRef<Chapter | null>(null);
 
   const handleSelectSection = useCallback((s: SectionData) => {
@@ -764,16 +951,14 @@ export default function PracticeLab() {
     setPhase("chapters");
   }, []);
 
-  // After auth or phone resolves, check if we have a pending chapter to start
   useEffect(() => {
     if (!pendingChapter.current) return;
     if (authLoading || phoneLoading) return;
-    if (!isAuthenticated) return; // still waiting for OAuth return
+    if (!isAuthenticated) return;
     if (!hasPhone) {
       setPhoneModalOpen(true);
       return;
     }
-    // All gates passed — start quiz
     const ch = pendingChapter.current;
     pendingChapter.current = null;
     setSelectedChapter(ch);
@@ -783,22 +968,17 @@ export default function PracticeLab() {
     setPhase("quiz");
   }, [authLoading, phoneLoading, isAuthenticated, hasPhone]);
 
-  // CTA Type: Both (Gmail + Phone)
-  // Handles: Scenario 1 (no auth → Google sign-in), 2 (auth, no phone → phone modal), 3 (N/A — Gmail first), 4 (cleared → re-gate)
   const handleSelectChapter = useCallback((ch: Chapter) => {
-    // Gate: require sign-in first
     if (!isAuthenticated) {
       pendingChapter.current = ch;
       signIn(window.location.pathname);
       return;
     }
-    // Gate: require phone number
     if (!hasPhone) {
       pendingChapter.current = ch;
       setPhoneModalOpen(true);
       return;
     }
-    // All clear — start quiz
     setSelectedChapter(ch);
     setQuizQuestions(pickRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
@@ -838,7 +1018,7 @@ export default function PracticeLab() {
         canonical="https://percentiler-elevate.lovable.app/practice-lab"
       />
       <Navbar />
-      <main className="min-h-screen bg-background pt-6 pb-16 px-4 md:px-6">
+      <main className="min-h-screen bg-background pt-6 pb-16 px-4 md:px-6 game-grid-bg">
         <div className="max-w-5xl mx-auto py-10 md:py-16">
           <AnimatePresence mode="wait">
             {phase === "sections" && (
