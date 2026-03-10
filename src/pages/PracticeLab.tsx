@@ -537,7 +537,7 @@ function QuizView({
                               : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
                             }`}
                         >
-                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-colors
+                          <div className={`w-6 h-6 md:w-7 md:h-7 rounded-lg flex items-center justify-center text-[11px] md:text-xs font-bold shrink-0 transition-colors
                             ${answers[q.id] === idx
                               ? "bg-primary text-primary-foreground"
                               : "bg-secondary text-muted-foreground border border-border"
