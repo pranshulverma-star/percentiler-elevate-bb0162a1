@@ -126,7 +126,8 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       setTargetYear("");
       setNameInput("");
       onSuccess?.();
-    } catch {
+    } catch (err) {
+      console.error("[PhoneCapture] Catch block error:", err);
       toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
     } finally {
       setSubmitting(false);

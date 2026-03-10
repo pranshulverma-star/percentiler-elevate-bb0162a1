@@ -131,6 +131,7 @@ const HeroSection = () => {
   // Handles: Scenario 1 (no phone → modal), 2 (N/A), 3 (phone exists → proceed), 4 (cleared → modal)
   const handleStrategyCall = () => {
     const phone = localStorage.getItem("percentilers_phone") || "";
+    console.log("[HeroStrategyCall] phone from localStorage:", phone);
     if (phone) {
       supabase.functions.invoke("mark-lead-hot", {
         body: { phone_number: phone, source: "hero_strategy_call", name: localStorage.getItem("percentilers_name") || null },
@@ -139,6 +140,7 @@ const HeroSection = () => {
     } else {
       openPhoneModal("hero_strategy_call", () => {
         const newPhone = localStorage.getItem("percentilers_phone") || "";
+        console.log("[HeroStrategyCall] onSuccess, newPhone:", newPhone);
         if (newPhone) {
           supabase.functions.invoke("mark-lead-hot", {
             body: { phone_number: newPhone, source: "hero_strategy_call", name: localStorage.getItem("percentilers_name") || null },
