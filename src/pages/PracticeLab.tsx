@@ -91,23 +91,23 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
   const totalXP = 175; // Mock — would come from DB
 
   return (
-    <motion.div {...fadeUp} className="space-y-10 game-grid-bg">
+    <motion.div {...fadeUp} className="space-y-8 md:space-y-10 game-grid-bg">
       {/* Hero */}
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-3">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, ease: "backOut" }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full game-badge text-xs font-bold uppercase tracking-wider mb-3">
-            <Flame className="w-3.5 h-3.5" /> Practice Arena
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full game-badge text-[10px] md:text-xs font-bold uppercase tracking-wider mb-2">
+            <Flame className="w-3 h-3" /> Practice Arena
           </div>
         </motion.div>
-        <h1 className="text-3xl md:text-5xl font-black tracking-[-0.04em] text-foreground">
+        <h1 className="text-2xl md:text-5xl font-black tracking-[-0.03em] text-foreground">
           Choose Your <span className="text-primary">Battle</span>
         </h1>
-        <p className="text-muted-foreground text-base max-w-md mx-auto">
-          10 questions. 15 minutes. Earn XP and climb the ranks.
+        <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
+          10 questions · 15 minutes · Earn XP
         </p>
 
         {/* Player rank bar */}
@@ -115,18 +115,18 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="max-w-xs mx-auto pt-2"
+          className="max-w-[200px] md:max-w-xs mx-auto pt-1"
         >
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-xl">{getRank(totalXP).icon}</span>
-            <span className="text-sm font-bold text-foreground">{getRank(totalXP).name}</span>
+          <div className="flex items-center gap-1.5 mb-1">
+            <span className="text-base md:text-xl">{getRank(totalXP).icon}</span>
+            <span className="text-xs md:text-sm font-bold text-foreground">{getRank(totalXP).name}</span>
           </div>
           <XPBar current={totalXP} max={getRank(totalXP).next || totalXP} label="Rank Progress" />
         </motion.div>
       </div>
 
       {/* Section Cards — Game Style */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-5 max-w-4xl mx-auto">
         {practiceLabSections.map((section, i) => {
           const totalQ = section.chapters.reduce((sum, ch) => sum + ch.questions.length, 0);
           const available = section.chapters.filter(ch => ch.questions.length > 0).length;
@@ -134,21 +134,26 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
           return (
             <motion.div
               key={section.id}
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: i * 0.12, duration: 0.45, ease: "backOut" }}
+              transition={{ delay: i * 0.08, duration: 0.35, ease: "backOut" }}
               className="flex"
             >
               <div
-                className={`game-card rounded-xl cursor-pointer flex flex-col w-full overflow-hidden`}
+                className="game-card rounded-xl cursor-pointer flex flex-col w-full overflow-hidden"
                 onClick={() => onSelect(section)}
               >
-                {/* Top accent bar */}
-                <div className={`h-1 bg-gradient-to-r ${theme.gradient.replace('/15', '').replace('/5', '')} from-primary to-amber-400 opacity-60`} />
+                <div className={`h-1 bg-gradient-to-r from-primary to-amber-400 opacity-60`} />
                 
-                <div className="p-6 md:p-7 flex flex-col flex-1 space-y-4">
+                <div className="p-4 md:p-7 flex flex-col flex-1 space-y-3 md:space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-3xl">{theme.icon}</span>
+                    <div className="flex items-center gap-2.5 md:block md:space-y-0">
+                      <span className="text-2xl md:text-3xl">{theme.icon}</span>
+                      <div className="md:hidden">
+                        <h2 className="text-base font-bold text-foreground tracking-tight">{section.name}</h2>
+                        <p className="text-[11px] text-muted-foreground">{theme.subtitle}</p>
+                      </div>
+                    </div>
                     {available > 0 ? (
                       <div className="flex items-center gap-1 text-[10px] font-bold text-primary uppercase tracking-wider">
                         <Swords className="w-3 h-3" /> Ready
@@ -157,12 +162,12 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
                       <Badge variant="outline" className="text-[10px]">Locked</Badge>
                     )}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 hidden md:block">
                     <h2 className="text-lg font-bold text-foreground tracking-tight">{section.name}</h2>
                     <p className="text-xs text-muted-foreground mt-0.5">{theme.subtitle}</p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <div className="space-y-1.5 md:space-y-2">
+                    <div className="flex items-center justify-between text-[11px] md:text-xs text-muted-foreground">
                       <span>{available} missions</span>
                       <span className="font-semibold text-foreground">{totalQ} Qs</span>
                     </div>
@@ -178,23 +183,46 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
       </div>
 
       {/* Leaderboard — Game Style */}
-      <div className="max-w-2xl mx-auto space-y-4">
+      <div className="max-w-2xl mx-auto space-y-3 md:space-y-4">
         <div className="flex items-center gap-2">
-          <Crown className="w-5 h-5 text-primary" />
-          <h2 className="text-xl font-bold text-foreground tracking-tight">Arena Leaderboard</h2>
+          <Crown className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+          <h2 className="text-base md:text-xl font-bold text-foreground tracking-tight">Arena Leaderboard</h2>
           <Badge variant="secondary" className="text-[10px] ml-auto">This Week</Badge>
         </div>
         <Card className="border overflow-hidden">
           <div className="divide-y divide-border">
-            {leaderboardData.map((entry, i) => (
+            {leaderboardData.slice(0, 3).map((entry, i) => (
               <motion.div
                 key={entry.rank}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.4 + i * 0.08 }}
-                className={`flex items-center gap-4 px-4 py-3 md:px-6 md:py-4 transition-colors hover:bg-secondary/50 ${
+                transition={{ delay: 0.3 + i * 0.06 }}
+                className={`flex items-center gap-3 px-3 py-2.5 md:px-6 md:py-4 transition-colors hover:bg-secondary/50 ${
                   entry.rank <= 3 ? "bg-primary/[0.03]" : ""
                 }`}
+              >
+                <span className="text-lg md:text-xl w-6 md:w-8 text-center">{entry.badge}</span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs md:text-sm font-semibold text-foreground truncate">{entry.name}</p>
+                  <div className="flex items-center gap-1 text-[10px] md:text-xs text-muted-foreground">
+                    <Flame className="w-2.5 h-2.5 md:w-3 md:h-3 text-primary" />
+                    <span>{entry.streak}-day streak</span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs md:text-sm font-bold text-primary">{entry.xp}</p>
+                  <p className="text-[9px] md:text-[10px] text-muted-foreground uppercase tracking-wider">XP</p>
+                </div>
+              </motion.div>
+            ))}
+            {/* Show remaining on desktop */}
+            {leaderboardData.slice(3).map((entry, i) => (
+              <motion.div
+                key={entry.rank}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 + i * 0.06 }}
+                className="hidden md:flex items-center gap-3 px-6 py-4 transition-colors hover:bg-secondary/50"
               >
                 <span className="text-xl w-8 text-center">{entry.badge}</span>
                 <div className="flex-1 min-w-0">
@@ -236,14 +264,14 @@ function ChaptersView({
         <ArrowLeft className="w-4 h-4" /> Back to Arena
       </button>
 
-      <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center text-2xl">
+      <div className="flex items-center gap-3 md:gap-4">
+        <div className="w-11 h-11 md:w-14 md:h-14 rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/20 flex items-center justify-center text-xl md:text-2xl shrink-0">
           {section.icon}
         </div>
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground">{section.name}</h2>
-          <p className="text-sm text-muted-foreground flex items-center gap-1.5">
-            <Target className="w-3.5 h-3.5 text-primary" /> Select a mission to begin
+          <h2 className="text-xl md:text-3xl font-bold tracking-tight text-foreground">{section.name}</h2>
+          <p className="text-xs md:text-sm text-muted-foreground flex items-center gap-1">
+            <Target className="w-3 h-3 md:w-3.5 md:h-3.5 text-primary" /> Select a mission
           </p>
         </div>
       </div>
@@ -260,7 +288,7 @@ function ChaptersView({
               transition={{ delay: i * 0.06, duration: 0.35 }}
             >
               <div
-                className={`game-card rounded-xl p-5 transition-all duration-200 ${
+                className={`game-card rounded-xl p-3.5 md:p-5 transition-all duration-200 ${
                   hasQuestions
                     ? "cursor-pointer"
                     : "opacity-40 cursor-not-allowed !shadow-none hover:!transform-none"
@@ -353,31 +381,29 @@ function QuizView({
   return (
     <motion.div {...fadeUp} className="max-w-5xl mx-auto">
       {/* HUD Bar */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2 md:mb-3">
         <button
           onClick={onBack}
-          className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+          className="flex items-center gap-1 text-[11px] md:text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
-          <ArrowLeft className="w-4 h-4" /> Retreat
+          <ArrowLeft className="w-3.5 h-3.5 md:w-4 md:h-4" /> Exit
         </button>
-        <div className="flex items-center gap-4">
-          {/* Streak indicator */}
+        <div className="flex items-center gap-2 md:gap-4">
           {answeredCount > 0 && (
-            <div className="flex items-center gap-1 text-xs font-bold">
-              <Flame className={`w-4 h-4 ${answeredCount >= 3 ? "text-primary streak-glow" : "text-muted-foreground"}`} />
+            <div className="flex items-center gap-1 text-[11px] md:text-xs font-bold">
+              <Flame className={`w-3.5 h-3.5 md:w-4 md:h-4 ${answeredCount >= 3 ? "text-primary streak-glow" : "text-muted-foreground"}`} />
               <span className={answeredCount >= 3 ? "text-primary" : "text-muted-foreground"}>{answeredCount}</span>
             </div>
           )}
-          <Badge variant="secondary" className="text-[10px] font-semibold">{chapter.name}</Badge>
-          {/* Timer */}
-          <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-sm font-mono font-bold transition-all
+          <Badge variant="secondary" className="text-[9px] md:text-[10px] font-semibold hidden sm:inline-flex">{chapter.name}</Badge>
+          <div className={`flex items-center gap-1 md:gap-1.5 px-2 md:px-3 py-1 md:py-1.5 rounded-full border text-xs md:text-sm font-mono font-bold transition-all
             ${isCritical 
               ? "border-destructive/50 bg-destructive/10 text-destructive animate-pulse" 
               : isLowTime 
                 ? "border-primary/50 bg-primary/10 text-primary" 
                 : "border-border text-foreground"}`}
           >
-            <Clock className="w-3.5 h-3.5" />
+            <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" />
             {formatTime(timeLeft)}
           </div>
         </div>
@@ -476,19 +502,19 @@ function QuizView({
               exit={{ opacity: 0, x: -30, scale: 0.98 }}
               transition={{ duration: 0.25 }}
             >
-              <Card className="p-6 md:p-8 border space-y-6 relative overflow-hidden">
+              <Card className="p-4 md:p-8 border space-y-4 md:space-y-6 relative overflow-hidden">
                 {/* Question number badge */}
                 <div className="absolute top-0 right-0">
-                  <div className="bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-bl-lg">
-                    Q{currentIndex + 1} of {questions.length}
+                  <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
+                    Q{currentIndex + 1}/{questions.length}
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 pt-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                    <span className="text-xs font-bold text-primary">{currentIndex + 1}</span>
+                <div className="flex items-start gap-2 md:gap-3 pt-1 md:pt-2">
+                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <span className="text-[11px] md:text-xs font-bold text-primary">{currentIndex + 1}</span>
                   </div>
-                  <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
+                  <p className="text-sm md:text-lg font-medium text-foreground leading-relaxed">
                     {q.question}
                   </p>
                 </div>
@@ -497,7 +523,7 @@ function QuizView({
                   <RadioGroup
                     value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
                     onValueChange={(v) => handleSelect(Number(v))}
-                    className="space-y-2.5"
+                    className="space-y-2 md:space-y-2.5"
                   >
                     {q.options.map((opt, idx) => {
                       const optLabels = ["A", "B", "C", "D"];
@@ -505,13 +531,13 @@ function QuizView({
                         <Label
                           key={idx}
                           htmlFor={`opt-${q.id}-${idx}`}
-                          className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-200
+                          className={`flex items-center gap-2.5 md:gap-3 p-3 md:p-4 rounded-xl border cursor-pointer transition-all duration-200
                             ${answers[q.id] === idx
                               ? "border-primary bg-primary/5 shadow-sm game-glow"
                               : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
                             }`}
                         >
-                          <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0 transition-colors
+                          <div className={`w-6 h-6 md:w-7 md:h-7 rounded-lg flex items-center justify-center text-[11px] md:text-xs font-bold shrink-0 transition-colors
                             ${answers[q.id] === idx
                               ? "bg-primary text-primary-foreground"
                               : "bg-secondary text-muted-foreground border border-border"
@@ -576,26 +602,30 @@ function QuizView({
             )}
           </div>
 
-          {/* Mobile question pills */}
-          <div className="flex flex-wrap gap-2 justify-center pt-2 md:hidden">
+          {/* Mobile question pills — compact scrollable strip */}
+          <div className="flex gap-1.5 justify-center flex-wrap pt-1 pb-2 md:hidden">
             {questions.map((qq, i) => {
               const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
               return (
                 <button
                   key={i}
                   onClick={() => setCurrentIndex(i)}
-                  className={`relative w-9 h-9 rounded-lg text-xs font-bold transition-all border
+                  className={`relative w-8 h-8 rounded-lg text-[11px] font-bold transition-all border
                     ${i === currentIndex
                       ? "border-primary bg-primary text-primary-foreground game-glow"
                       : isAnswered
                         ? "border-primary/40 bg-primary/15 text-primary"
-                        : "border-border text-muted-foreground hover:border-muted-foreground"
+                        : "border-border text-muted-foreground"
                     }`}
                 >
                   {i + 1}
                 </button>
               );
             })}
+            {/* Mobile submit */}
+            <Button onClick={handleSubmit} size="sm" className="w-full mt-2 font-bold gap-1.5 game-glow-pulse md:hidden">
+              <Swords className="w-3.5 h-3.5" /> Finish Battle
+            </Button>
           </div>
         </div>
       </div>
@@ -703,19 +733,19 @@ function ResultsView({
   const improvement = pastAttempts.length >= 2 ? pastAttempts[0].score_pct - pastAttempts[pastAttempts.length - 1].score_pct : 0;
 
   return (
-    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-8">
+    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-5 md:space-y-8">
       {/* Victory/Defeat Card */}
-      <Card className="p-8 md:p-10 border text-center space-y-6 relative overflow-hidden">
+      <Card className="p-5 md:p-10 border text-center space-y-4 md:space-y-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-amber-500/5" />
         {isPerfect && <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.1)_0%,transparent_70%)]" />}
         
-        <div className="relative z-10 space-y-5">
+        <div className="relative z-10 space-y-3 md:space-y-5">
           {/* Stars */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ duration: 0.5, ease: "backOut" }}
-            className="flex items-center justify-center gap-2"
+            transition={{ duration: 0.4, ease: "backOut" }}
+            className="flex items-center justify-center gap-1.5 md:gap-2"
           >
             {[1, 2, 3].map((s) => (
               <motion.div
@@ -725,7 +755,7 @@ function ResultsView({
                 transition={{ delay: 0.3 + s * 0.15, duration: 0.4, ease: "backOut" }}
               >
                 <Star
-                  className={`w-10 h-10 md:w-12 md:h-12 ${
+                  className={`w-8 h-8 md:w-12 md:h-12 ${
                     s <= stars
                       ? "text-amber-400 fill-amber-400 drop-shadow-lg"
                       : "text-border"
@@ -752,8 +782,8 @@ function ResultsView({
 
           {/* Score */}
           <div className="score-pop">
-            <div className="text-6xl md:text-8xl font-black text-foreground tracking-tighter">
-              {pct}<span className="text-3xl md:text-4xl text-muted-foreground">%</span>
+            <div className="text-5xl md:text-8xl font-black text-foreground tracking-tighter">
+              {pct}<span className="text-2xl md:text-4xl text-muted-foreground">%</span>
             </div>
           </div>
 
@@ -770,28 +800,27 @@ function ResultsView({
           </motion.div>
 
           {/* Stats row */}
-          <div className="flex items-center justify-center gap-6 pt-2">
-            <div className="flex items-center gap-1.5 text-sm">
-              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+          <div className="flex items-center justify-center gap-4 md:gap-6 pt-1 md:pt-2">
+            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
+              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" />
               <span className="text-foreground font-bold">{correct}</span>
-              <span className="text-muted-foreground text-xs">correct</span>
+              <span className="text-muted-foreground text-[10px] md:text-xs">correct</span>
             </div>
-            <div className="flex items-center gap-1.5 text-sm">
-              <XCircle className="w-5 h-5 text-destructive" />
+            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
+              <XCircle className="w-4 h-4 md:w-5 md:h-5 text-destructive" />
               <span className="text-foreground font-bold">{incorrect}</span>
-              <span className="text-muted-foreground text-xs">wrong</span>
+              <span className="text-muted-foreground text-[10px] md:text-xs">wrong</span>
             </div>
-            <div className="flex items-center gap-1.5 text-sm">
-              <MinusCircle className="w-5 h-5 text-muted-foreground" />
+            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
+              <MinusCircle className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
               <span className="text-foreground font-bold">{unanswered}</span>
-              <span className="text-muted-foreground text-xs">skipped</span>
+              <span className="text-muted-foreground text-[10px] md:text-xs">skipped</span>
             </div>
           </div>
 
-          {/* Time */}
           {timeUsed > 0 && (
-            <p className="text-xs text-muted-foreground flex items-center justify-center gap-1.5">
-              <Clock className="w-3.5 h-3.5" /> Completed in {formatTime(timeUsed)}
+            <p className="text-[11px] md:text-xs text-muted-foreground flex items-center justify-center gap-1">
+              <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" /> {formatTime(timeUsed)}
               {timeUsed < 600 && <span className="text-primary font-semibold ml-1">⚡ Speed Bonus!</span>}
             </p>
           )}
@@ -1018,8 +1047,8 @@ export default function PracticeLab() {
         canonical="https://percentiler-elevate.lovable.app/practice-lab"
       />
       <Navbar />
-      <main className="min-h-screen bg-background pt-6 pb-16 px-4 md:px-6 game-grid-bg">
-        <div className="max-w-5xl mx-auto py-10 md:py-16">
+      <main className="min-h-screen bg-background pt-4 pb-12 px-3 md:pt-6 md:pb-16 md:px-6 game-grid-bg">
+        <div className="max-w-5xl mx-auto py-6 md:py-16">
           <AnimatePresence mode="wait">
             {phase === "sections" && (
               <SectionsView key="sections" onSelect={handleSelectSection} />
