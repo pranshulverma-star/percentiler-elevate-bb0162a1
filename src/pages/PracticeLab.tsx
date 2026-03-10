@@ -531,7 +531,7 @@ function QuizView({
                         <Label
                           key={idx}
                           htmlFor={`opt-${q.id}-${idx}`}
-                          className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all duration-200
+                          className={`flex items-center gap-2.5 md:gap-3 p-3 md:p-4 rounded-xl border cursor-pointer transition-all duration-200
                             ${answers[q.id] === idx
                               ? "border-primary bg-primary/5 shadow-sm game-glow"
                               : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
