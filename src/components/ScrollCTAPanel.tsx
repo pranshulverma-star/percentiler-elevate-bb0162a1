@@ -10,7 +10,7 @@ const ScrollCTAPanel = () => {
   const [visible, setVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [hasClickedCTA, setHasClickedCTA] = useState(false);
-  const hasPhone = !!localStorage.getItem("percentilers_phone");
+  const [hasPhone] = useState(() => !!localStorage.getItem("percentilers_phone"));
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {

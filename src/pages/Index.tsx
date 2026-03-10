@@ -41,43 +41,57 @@ const Index = () => (
       {/* Everything below is lazy loaded + error-bounded */}
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <PreparationPathSection />
+          <div className="content-auto">
+            <PreparationPathSection />
+          </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <TrustStrip />
-          <ResultsSection />
+          <div className="content-auto">
+            <TrustStrip />
+            <ResultsSection />
+          </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <FreeToolsSection />
-          <PercentilePlannerSection />
+          <div className="content-auto">
+            <FreeToolsSection />
+            <PercentilePlannerSection />
+          </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <TestimonialsSection />
+          <div className="content-auto">
+            <TestimonialsSection />
+          </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <WebinarSection />
-          <CoursesSection />
-          <FacultySection />
+          <div className="content-auto">
+            <WebinarSection />
+            <CoursesSection />
+            <FacultySection />
+          </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <FounderSection />
+          <div className="content-auto">
+            <FounderSection />
+          </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <WhyDifferentSection />
-          <FAQSection />
-          <FinalCTASection />
+          <div className="content-auto">
+            <WhyDifferentSection />
+            <FAQSection />
+            <FinalCTASection />
+          </div>
         </Suspense>
       </SectionErrorBoundary>
     </main>

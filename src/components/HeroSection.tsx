@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import studentAayushiJha from "@/assets/student-aayushi-jha.jpeg";
 import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
 import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
-import studentSaloni from "@/assets/student-saloni.jpeg";
+import studentSaloni from "@/assets/student-saloni.webp";
 import collegeIIMA from "@/assets/college-iima.png";
 import collegeIIMB from "@/assets/college-iimb.png";
 import collegeIIMC from "@/assets/college-iimc.png";
