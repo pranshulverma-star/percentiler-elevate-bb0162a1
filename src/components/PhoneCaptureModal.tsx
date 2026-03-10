@@ -75,6 +75,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       let upsertError: any = null;
       if (userId) {
+        console.log("[PhoneCapture] Upserting with onConflict: user_id");
         const res = await (supabase.from("leads") as any).upsert(
           {
             user_id: userId,
@@ -87,7 +88,9 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           { onConflict: "user_id" }
         );
         upsertError = res.error;
+        console.log("[PhoneCapture] Upsert result:", JSON.stringify(res.error), JSON.stringify(res.status));
       } else {
+        console.log("[PhoneCapture] Upserting with onConflict: phone_number");
         const res = await (supabase.from("leads") as any).upsert(
           {
             phone_number: phone,
@@ -98,6 +101,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           { onConflict: "phone_number" }
         );
         upsertError = res.error;
+        console.log("[PhoneCapture] Upsert result:", JSON.stringify(res.error), JSON.stringify(res.status));
       }
 
       if (upsertError) {
