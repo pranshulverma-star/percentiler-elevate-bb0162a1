@@ -523,7 +523,7 @@ function QuizView({
                   <RadioGroup
                     value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
                     onValueChange={(v) => handleSelect(Number(v))}
-                    className="space-y-2.5"
+                    className="space-y-2 md:space-y-2.5"
                   >
                     {q.options.map((opt, idx) => {
                       const optLabels = ["A", "B", "C", "D"];
