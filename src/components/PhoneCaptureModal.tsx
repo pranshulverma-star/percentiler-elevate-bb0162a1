@@ -42,7 +42,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
-      // Check if phone already belongs to a different user
+      // Check if phone already belongs to a different authenticated user
       if (userId) {
         const { data: existing } = await (supabase.from("leads") as any)
           .select("user_id")
@@ -55,6 +55,18 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           toast({ title: "Phone number already registered", description: "This phone number is already registered. Please log in with your registered Gmail ID.", variant: "destructive" });
           setSubmitting(false);
           return;
+        }
+
+        // Remove any orphan row (no user_id) that has this phone to avoid unique constraint clash
+        const { data: orphan } = await (supabase.from("leads") as any)
+          .select("id")
+          .eq("phone_number", phone)
+          .is("user_id", null)
+          .limit(1)
+          .single();
+
+        if (orphan) {
+          await (supabase.from("leads") as any).delete().eq("id", orphan.id);
         }
       }
 
@@ -86,7 +98,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       }
 
       if (upsertError) {
-        console.error("Lead upsert failed:", upsertError);
+        console.error("Lead upsert failed:", JSON.stringify(upsertError));
         toast({ title: "Something went wrong", description: "Could not save phone number. Please try again.", variant: "destructive" });
         setSubmitting(false);
         return;
