@@ -502,19 +502,19 @@ function QuizView({
               exit={{ opacity: 0, x: -30, scale: 0.98 }}
               transition={{ duration: 0.25 }}
             >
-              <Card className="p-6 md:p-8 border space-y-6 relative overflow-hidden">
+              <Card className="p-4 md:p-8 border space-y-4 md:space-y-6 relative overflow-hidden">
                 {/* Question number badge */}
                 <div className="absolute top-0 right-0">
-                  <div className="bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-bl-lg">
-                    Q{currentIndex + 1} of {questions.length}
+                  <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
+                    Q{currentIndex + 1}/{questions.length}
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 pt-2">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
-                    <span className="text-xs font-bold text-primary">{currentIndex + 1}</span>
+                <div className="flex items-start gap-2 md:gap-3 pt-1 md:pt-2">
+                  <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                    <span className="text-[11px] md:text-xs font-bold text-primary">{currentIndex + 1}</span>
                   </div>
-                  <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
+                  <p className="text-sm md:text-lg font-medium text-foreground leading-relaxed">
                     {q.question}
                   </p>
                 </div>
