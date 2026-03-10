@@ -273,9 +273,9 @@ function QuizView({
   }, [timeLeft]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const q = questions[currentIndex];
-  const progress = ((currentIndex + 1) / questions.length) * 100;
   const isLast = currentIndex === questions.length - 1;
   const isLowTime = timeLeft <= 120;
+  const answeredCount = questions.filter((qq) => answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "").length;
 
   const handleSelect = (optIndex: number) => {
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
@@ -290,138 +290,186 @@ function QuizView({
   };
 
   return (
-    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-6">
+    <motion.div {...fadeUp} className="max-w-5xl mx-auto">
       {/* Top bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-4">
         <button
           onClick={onBack}
           className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="w-4 h-4" /> Exit
         </button>
-        <div className={`flex items-center gap-1.5 text-sm font-mono font-semibold ${isLowTime ? "text-destructive animate-pulse" : "text-foreground"}`}>
-          <Clock className="w-4 h-4" />
-          {formatTime(timeLeft)}
+        <div className="flex items-center gap-3">
+          <Badge variant="secondary" className="text-xs">{chapter.name}</Badge>
+          <div className={`flex items-center gap-1.5 text-sm font-mono font-semibold ${isLowTime ? "text-destructive animate-pulse" : "text-foreground"}`}>
+            <Clock className="w-4 h-4" />
+            {formatTime(timeLeft)}
+          </div>
         </div>
       </div>
 
-      {/* Progress */}
-      <div className="space-y-2">
-        <div className="flex items-center justify-between text-xs text-muted-foreground">
-          <span>{chapter.name}</span>
-          <span>Question {currentIndex + 1} of {questions.length}</span>
-        </div>
-        <Progress value={progress} className="h-1.5" />
-      </div>
-
-      {/* Question Card */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={q.id}
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -30 }}
-          transition={{ duration: 0.25 }}
-        >
-          <Card className="p-6 md:p-8 border space-y-6">
-            <div className="flex items-start gap-2">
-              <Badge variant="outline" className="text-[10px] shrink-0 mt-0.5">
-                {q.type === "mcq" ? "MCQ" : "Fill in"}
-              </Badge>
-              <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
-                {q.question}
-              </p>
+      <div className="flex gap-4">
+        {/* Left Question Palette */}
+        <div className="hidden md:block w-48 shrink-0">
+          <Card className="p-4 border sticky top-24 space-y-4">
+            <div className="space-y-1">
+              <p className="text-xs font-semibold text-foreground uppercase tracking-wider">Questions</p>
+              <p className="text-[10px] text-muted-foreground">{answeredCount}/{questions.length} answered</p>
             </div>
-
-            {q.type === "mcq" ? (
-              <RadioGroup
-                value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
-                onValueChange={(v) => handleSelect(Number(v))}
-                className="space-y-3"
-              >
-                {q.options.map((opt, idx) => (
-                  <Label
-                    key={idx}
-                    htmlFor={`opt-${q.id}-${idx}`}
-                    className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all
-                      ${answers[q.id] === idx
-                        ? "border-primary bg-primary/5 shadow-sm"
-                        : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
+            <div className="grid grid-cols-5 gap-1.5">
+              {questions.map((qq, i) => {
+                const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
+                return (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentIndex(i)}
+                    className={`w-7 h-7 rounded-md text-[11px] font-medium transition-all border
+                      ${i === currentIndex
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                        : isAnswered
+                          ? "border-primary/40 bg-primary/10 text-primary"
+                          : "border-border text-muted-foreground hover:border-muted-foreground/60"
                       }`}
                   >
-                    <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} />
-                    <span className="text-sm text-foreground">{opt}</span>
-                  </Label>
-                ))}
-              </RadioGroup>
-            ) : (
-              <div className="space-y-2">
-                <Label htmlFor={`numeric-${q.id}`} className="text-sm text-muted-foreground">
-                  Type your answer
-                </Label>
-                <Input
-                  id={`numeric-${q.id}`}
-                  type="text"
-                  placeholder="Enter your answer..."
-                  value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
-                  onChange={(e) => handleNumericChange(e.target.value)}
-                  className="text-base"
-                  autoComplete="off"
-                />
+                    {i + 1}
+                  </button>
+                );
+              })}
+            </div>
+            <div className="space-y-1.5 pt-2 border-t border-border">
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                <span className="w-3 h-3 rounded-sm bg-primary/10 border border-primary/40" />
+                Answered
               </div>
-            )}
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                <span className="w-3 h-3 rounded-sm border border-border" />
+                Not answered
+              </div>
+              <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                <span className="w-3 h-3 rounded-sm bg-primary border border-primary" />
+                Current
+              </div>
+            </div>
+            <Button onClick={handleSubmit} size="sm" className="w-full mt-2">
+              Submit Quiz
+            </Button>
           </Card>
-        </motion.div>
-      </AnimatePresence>
+        </div>
 
-      {/* Navigation */}
-      <div className="flex items-center justify-between pt-2">
-        <Button
-          variant="ghost"
-          size="sm"
-          disabled={currentIndex === 0}
-          onClick={() => setCurrentIndex((i) => i - 1)}
-        >
-          Previous
-        </Button>
+        {/* Main question area */}
+        <div className="flex-1 min-w-0 space-y-4">
+          {/* Progress bar */}
+          <Progress value={((currentIndex + 1) / questions.length) * 100} className="h-1.5" />
 
-        {isLast ? (
-          <Button onClick={handleSubmit} className="px-6">
-            Submit Quiz
-          </Button>
-        ) : (
-          <Button
-            variant="outline"
-            onClick={() => setCurrentIndex((i) => i + 1)}
-          >
-            Next
-          </Button>
-        )}
-      </div>
+          {/* Question Card */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={q.id}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -30 }}
+              transition={{ duration: 0.25 }}
+            >
+              <Card className="p-6 md:p-8 border space-y-6">
+                <div className="flex items-start gap-2">
+                  <span className="text-xs font-mono text-muted-foreground mt-1 shrink-0">Q{currentIndex + 1}.</span>
+                  <p className="text-base md:text-lg font-medium text-foreground leading-relaxed">
+                    {q.question}
+                  </p>
+                </div>
 
-      {/* Question pills */}
-      <div className="flex flex-wrap gap-2 justify-center pt-2">
-        {questions.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrentIndex(i)}
-            className={`w-8 h-8 rounded-full text-xs font-medium transition-all border
-              ${i === currentIndex
-                ? "border-primary bg-primary text-primary-foreground"
-                : answers[questions[i].id] !== undefined
-                  ? "border-primary/40 bg-primary/10 text-primary"
-                  : "border-border text-muted-foreground hover:border-muted-foreground"
-              }`}
-          >
-            {i + 1}
-          </button>
-        ))}
+                {q.type === "mcq" ? (
+                  <RadioGroup
+                    value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
+                    onValueChange={(v) => handleSelect(Number(v))}
+                    className="space-y-3"
+                  >
+                    {q.options.map((opt, idx) => (
+                      <Label
+                        key={idx}
+                        htmlFor={`opt-${q.id}-${idx}`}
+                        className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-all
+                          ${answers[q.id] === idx
+                            ? "border-primary bg-primary/5 shadow-sm"
+                            : "border-border hover:border-muted-foreground/30 hover:bg-muted/50"
+                          }`}
+                      >
+                        <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} />
+                        <span className="text-sm text-foreground">{opt}</span>
+                      </Label>
+                    ))}
+                  </RadioGroup>
+                ) : (
+                  <div className="space-y-2">
+                    <Label htmlFor={`numeric-${q.id}`} className="text-sm text-muted-foreground">
+                      Type your answer
+                    </Label>
+                    <Input
+                      id={`numeric-${q.id}`}
+                      type="text"
+                      placeholder="Enter your answer..."
+                      value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
+                      onChange={(e) => handleNumericChange(e.target.value)}
+                      className="text-base"
+                      autoComplete="off"
+                    />
+                  </div>
+                )}
+              </Card>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation */}
+          <div className="flex items-center justify-between">
+            <Button
+              variant="ghost"
+              size="sm"
+              disabled={currentIndex === 0}
+              onClick={() => setCurrentIndex((i) => i - 1)}
+            >
+              Previous
+            </Button>
+
+            {isLast ? (
+              <Button onClick={handleSubmit} className="px-6">
+                Submit Quiz
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                onClick={() => setCurrentIndex((i) => i + 1)}
+              >
+                Next
+              </Button>
+            )}
+          </div>
+
+          {/* Mobile question pills */}
+          <div className="flex flex-wrap gap-2 justify-center pt-2 md:hidden">
+            {questions.map((qq, i) => {
+              const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
+              return (
+                <button
+                  key={i}
+                  onClick={() => setCurrentIndex(i)}
+                  className={`w-8 h-8 rounded-full text-xs font-medium transition-all border
+                    ${i === currentIndex
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : isAnswered
+                        ? "border-primary/40 bg-primary/10 text-primary"
+                        : "border-border text-muted-foreground hover:border-muted-foreground"
+                    }`}
+                >
+                  {i + 1}
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </motion.div>
   );
 }
-
-// ─── Results Phase ───────────────────────────────────────────────────────────
 
 interface AttemptRecord {
   score_pct: number;
