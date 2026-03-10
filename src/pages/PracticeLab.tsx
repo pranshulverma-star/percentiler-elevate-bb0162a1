@@ -91,23 +91,23 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
   const totalXP = 175; // Mock — would come from DB
 
   return (
-    <motion.div {...fadeUp} className="space-y-10 game-grid-bg">
+    <motion.div {...fadeUp} className="space-y-8 md:space-y-10 game-grid-bg">
       {/* Hero */}
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-3">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5, ease: "backOut" }}
         >
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full game-badge text-xs font-bold uppercase tracking-wider mb-3">
-            <Flame className="w-3.5 h-3.5" /> Practice Arena
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full game-badge text-[10px] md:text-xs font-bold uppercase tracking-wider mb-2">
+            <Flame className="w-3 h-3" /> Practice Arena
           </div>
         </motion.div>
-        <h1 className="text-3xl md:text-5xl font-black tracking-[-0.04em] text-foreground">
+        <h1 className="text-2xl md:text-5xl font-black tracking-[-0.03em] text-foreground">
           Choose Your <span className="text-primary">Battle</span>
         </h1>
-        <p className="text-muted-foreground text-base max-w-md mx-auto">
-          10 questions. 15 minutes. Earn XP and climb the ranks.
+        <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
+          10 questions · 15 minutes · Earn XP
         </p>
 
         {/* Player rank bar */}
@@ -115,11 +115,11 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="max-w-xs mx-auto pt-2"
+          className="max-w-[200px] md:max-w-xs mx-auto pt-1"
         >
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-xl">{getRank(totalXP).icon}</span>
-            <span className="text-sm font-bold text-foreground">{getRank(totalXP).name}</span>
+          <div className="flex items-center gap-1.5 mb-1">
+            <span className="text-base md:text-xl">{getRank(totalXP).icon}</span>
+            <span className="text-xs md:text-sm font-bold text-foreground">{getRank(totalXP).name}</span>
           </div>
           <XPBar current={totalXP} max={getRank(totalXP).next || totalXP} label="Rank Progress" />
         </motion.div>
