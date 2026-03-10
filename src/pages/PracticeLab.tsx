@@ -407,9 +407,16 @@ function QuizView({
                     <Input
                       id={`numeric-${q.id}`}
                       type="text"
-                      placeholder="Enter your answer..."
+                      inputMode="decimal"
+                      placeholder="Enter a number..."
                       value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
-                      onChange={(e) => handleNumericChange(e.target.value)}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        // Allow only numbers, decimal point, colon (for ratios), slash, and minus
+                        if (val === "" || /^[-\d.:/ ]*$/.test(val)) {
+                          handleNumericChange(val);
+                        }
+                      }}
                       className="text-base"
                       autoComplete="off"
                     />

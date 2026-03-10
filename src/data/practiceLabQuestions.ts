@@ -49,6 +49,10 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
   const topicMap = new Map<string, PracticeQuestion[]>();
 
   for (const r of raw) {
+    // Skip duplicate/reference questions like "Same as id 73"
+    if (/same as id\s*\d+|see id\s*\d+/i.test(r.question) || /see full explanation there/i.test(r.question)) {
+      continue;
+    }
     const optKeys = Object.keys(r.options);
     const isMcq = optKeys.length >= 2 && optKeys.every((k) => /^\d+$/.test(k));
 
