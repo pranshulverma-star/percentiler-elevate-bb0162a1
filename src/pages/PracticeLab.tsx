@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { practiceLabSections, type SectionData, type Chapter, type PracticeQuestion } from "@/data/practiceLabQuestions";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
