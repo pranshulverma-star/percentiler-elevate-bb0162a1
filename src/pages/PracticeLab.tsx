@@ -436,7 +436,7 @@ function ResultsView({
   onBack,
 }: {
   questions: PracticeQuestion[];
-  answers: Record<number, number | null>;
+  answers: Record<number, number | string | null>;
   timeUsed: number;
   chapterName: string;
   sectionId: string;
@@ -453,9 +453,18 @@ function ResultsView({
     let correct = 0, incorrect = 0, unanswered = 0;
     questions.forEach((q) => {
       const a = answers[q.id];
-      if (a === undefined || a === null) unanswered++;
-      else if (a === q.correctAnswer) correct++;
-      else incorrect++;
+      if (a === undefined || a === null || a === "") {
+        unanswered++;
+      } else if (q.type === "mcq") {
+        if (a === q.correctAnswer) correct++;
+        else incorrect++;
+      } else {
+        // Numeric: normalize and compare
+        const userStr = String(a).trim().toLowerCase();
+        const correctStr = (q.numericAnswer || "").trim().toLowerCase();
+        if (correctStr && userStr === correctStr) correct++;
+        else incorrect++; // self-review will show correct answer
+      }
     });
     return { correct, incorrect, unanswered };
   }, [questions, answers]);
