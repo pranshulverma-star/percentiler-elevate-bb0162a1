@@ -1047,8 +1047,8 @@ export default function PracticeLab() {
         canonical="https://percentiler-elevate.lovable.app/practice-lab"
       />
       <Navbar />
-      <main className="min-h-screen bg-background pt-6 pb-16 px-4 md:px-6 game-grid-bg">
-        <div className="max-w-5xl mx-auto py-10 md:py-16">
+      <main className="min-h-screen bg-background pt-4 pb-12 px-3 md:pt-6 md:pb-16 md:px-6 game-grid-bg">
+        <div className="max-w-5xl mx-auto py-6 md:py-16">
           <AnimatePresence mode="wait">
             {phase === "sections" && (
               <SectionsView key="sections" onSelect={handleSelectSection} />
