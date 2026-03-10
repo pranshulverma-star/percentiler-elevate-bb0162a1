@@ -783,8 +783,8 @@ function ResultsView({
 
           {/* Score */}
           <div className="score-pop">
-            <div className="text-6xl md:text-8xl font-black text-foreground tracking-tighter">
-              {pct}<span className="text-3xl md:text-4xl text-muted-foreground">%</span>
+            <div className="text-5xl md:text-8xl font-black text-foreground tracking-tighter">
+              {pct}<span className="text-2xl md:text-4xl text-muted-foreground">%</span>
             </div>
           </div>
 
