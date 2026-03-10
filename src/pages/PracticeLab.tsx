@@ -845,11 +845,11 @@ export default function PracticeLab() {
                 onSelect={handleSelectChapter}
               />
             )}
-            {phase === "quiz" && selectedChapter && selectedChapter.questions.length > 0 && (
+            {phase === "quiz" && selectedChapter && quizQuestions.length > 0 && (
               <QuizView
                 key="quiz"
                 chapter={selectedChapter}
-                questions={selectedChapter.questions}
+                questions={quizQuestions}
                 onFinish={handleFinishQuiz}
                 onBack={handleBackToChapters}
               />
@@ -857,7 +857,7 @@ export default function PracticeLab() {
             {phase === "results" && selectedChapter && selectedSection && (
               <ResultsView
                 key="results"
-                questions={selectedChapter.questions}
+                questions={quizQuestions}
                 answers={quizAnswers}
                 timeUsed={quizTimeUsed}
                 chapterName={selectedChapter.name}
