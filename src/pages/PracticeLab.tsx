@@ -733,9 +733,9 @@ function ResultsView({
   const improvement = pastAttempts.length >= 2 ? pastAttempts[0].score_pct - pastAttempts[pastAttempts.length - 1].score_pct : 0;
 
   return (
-    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-8">
+    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-5 md:space-y-8">
       {/* Victory/Defeat Card */}
-      <Card className="p-8 md:p-10 border text-center space-y-6 relative overflow-hidden">
+      <Card className="p-5 md:p-10 border text-center space-y-4 md:space-y-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-amber-500/5" />
         {isPerfect && <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.1)_0%,transparent_70%)]" />}
         
