@@ -30,7 +30,9 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("[PhoneCapture] Submit started, phone:", phone, "source:", source);
     if (!/^[6-9]\d{9}$/.test(phone)) {
+      console.log("[PhoneCapture] Validation failed for phone:", phone);
       toast({ title: "Invalid phone number", description: "Please enter a valid 10-digit Indian mobile number.", variant: "destructive" });
       return;
     }
