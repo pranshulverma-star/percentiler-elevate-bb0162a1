@@ -42,22 +42,6 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       if (nameInput) localStorage.setItem("percentilers_name", nameInput);
 
-      // Check if phone already belongs to a different user
-      if (userId) {
-        const { data: existing } = await (supabase.from("leads") as any)
-          .select("user_id")
-          .eq("phone_number", phone)
-          .not("user_id", "is", null)
-          .limit(1)
-          .single();
-
-        if (existing && existing.user_id !== userId) {
-          toast({ title: "Phone number already registered", description: "This phone number is already registered. Please log in with your registered Gmail ID.", variant: "destructive" });
-          setSubmitting(false);
-          return;
-        }
-      }
-
       let upsertError: any = null;
       if (userId) {
         const res = await (supabase.from("leads") as any).upsert(
