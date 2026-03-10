@@ -806,10 +806,13 @@ export default function PracticeLab() {
   }, []);
 
   const handleRetry = useCallback(() => {
+    if (selectedChapter) {
+      setQuizQuestions(pickRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
+    }
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
-  }, []);
+  }, [selectedChapter]);
 
   const handleBackToChapters = useCallback(() => {
     setPhase("chapters");
