@@ -126,7 +126,7 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
       </div>
 
       {/* Section Cards — Game Style */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-5 max-w-4xl mx-auto">
         {practiceLabSections.map((section, i) => {
           const totalQ = section.chapters.reduce((sum, ch) => sum + ch.questions.length, 0);
           const available = section.chapters.filter(ch => ch.questions.length > 0).length;
@@ -134,21 +134,26 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
           return (
             <motion.div
               key={section.id}
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ delay: i * 0.12, duration: 0.45, ease: "backOut" }}
+              transition={{ delay: i * 0.08, duration: 0.35, ease: "backOut" }}
               className="flex"
             >
               <div
-                className={`game-card rounded-xl cursor-pointer flex flex-col w-full overflow-hidden`}
+                className="game-card rounded-xl cursor-pointer flex flex-col w-full overflow-hidden"
                 onClick={() => onSelect(section)}
               >
-                {/* Top accent bar */}
-                <div className={`h-1 bg-gradient-to-r ${theme.gradient.replace('/15', '').replace('/5', '')} from-primary to-amber-400 opacity-60`} />
+                <div className={`h-1 bg-gradient-to-r from-primary to-amber-400 opacity-60`} />
                 
-                <div className="p-6 md:p-7 flex flex-col flex-1 space-y-4">
+                <div className="p-4 md:p-7 flex flex-col flex-1 space-y-3 md:space-y-4">
                   <div className="flex items-center justify-between">
-                    <span className="text-3xl">{theme.icon}</span>
+                    <div className="flex items-center gap-2.5 md:block md:space-y-0">
+                      <span className="text-2xl md:text-3xl">{theme.icon}</span>
+                      <div className="md:hidden">
+                        <h2 className="text-base font-bold text-foreground tracking-tight">{section.name}</h2>
+                        <p className="text-[11px] text-muted-foreground">{theme.subtitle}</p>
+                      </div>
+                    </div>
                     {available > 0 ? (
                       <div className="flex items-center gap-1 text-[10px] font-bold text-primary uppercase tracking-wider">
                         <Swords className="w-3 h-3" /> Ready
@@ -157,12 +162,12 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
                       <Badge variant="outline" className="text-[10px]">Locked</Badge>
                     )}
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 hidden md:block">
                     <h2 className="text-lg font-bold text-foreground tracking-tight">{section.name}</h2>
                     <p className="text-xs text-muted-foreground mt-0.5">{theme.subtitle}</p>
                   </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground">
+                  <div className="space-y-1.5 md:space-y-2">
+                    <div className="flex items-center justify-between text-[11px] md:text-xs text-muted-foreground">
                       <span>{available} missions</span>
                       <span className="font-semibold text-foreground">{totalQ} Qs</span>
                     </div>
