@@ -890,20 +890,21 @@ function ResultsView({
         timeUsed={timeUsed}
       />
 
-      {/* Actions */}
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <Button onClick={onRetry} className="gap-2 font-bold game-glow-pulse">
-          <RotateCcw className="w-4 h-4" /> Battle Again
+      {/* Actions — full-width stacked on mobile */}
+      <div className="flex flex-col gap-2 md:flex-row md:gap-3 md:justify-center">
+        <Button onClick={onRetry} className="gap-2 font-bold game-glow-pulse w-full md:w-auto" size="sm">
+          <RotateCcw className="w-3.5 h-3.5" /> Battle Again
         </Button>
-        <Button variant="outline" onClick={onBack} className="gap-2">
-          <ArrowLeft className="w-4 h-4" /> Back to Missions
+        <Button variant="outline" onClick={onBack} className="gap-2 w-full md:w-auto" size="sm">
+          <ArrowLeft className="w-3.5 h-3.5" /> Back to Missions
         </Button>
         <Button
           variant="ghost"
           onClick={() => setShowReview((v) => !v)}
-          className="gap-2"
+          className="gap-2 w-full md:w-auto"
+          size="sm"
         >
-          <BookOpen className="w-4 h-4" /> {showReview ? "Hide Review" : "Review Answers"}
+          <BookOpen className="w-3.5 h-3.5" /> {showReview ? "Hide Review" : "Review Answers"}
         </Button>
       </div>
 

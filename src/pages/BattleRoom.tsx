@@ -366,19 +366,19 @@ function BattleResults({
   const myRank = ranked.findIndex(p => p.user_id === currentUserId);
 
   return (
-    <motion.div {...fadeUp} className="max-w-lg mx-auto space-y-6 text-center">
-      <div className="space-y-2">
+    <motion.div {...fadeUp} className="max-w-lg mx-auto px-1 space-y-4 md:space-y-6 text-center">
+      <div className="space-y-1.5 md:space-y-2">
         <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} transition={{ ease: "backOut" }}>
-          <Trophy className="w-12 h-12 text-amber-400 mx-auto" />
+          <Trophy className="w-8 h-8 md:w-12 md:h-12 text-amber-400 mx-auto" />
         </motion.div>
-        <h1 className="text-2xl md:text-4xl font-black text-foreground">Battle <span className="text-primary">Results</span></h1>
-        {myRank === 0 && <p className="text-sm text-amber-400 font-bold">🎉 You won!</p>}
+        <h1 className="text-xl md:text-4xl font-black text-foreground">Battle <span className="text-primary">Results</span></h1>
+        {myRank === 0 && <p className="text-xs md:text-sm text-amber-400 font-bold">🎉 You won!</p>}
       </div>
 
-      <Card className="p-5 border space-y-3">
-        <div className="flex items-center gap-2 mb-2">
-          <Crown className="w-4 h-4 text-primary" />
-          <span className="text-sm font-bold text-foreground">Leaderboard</span>
+      <Card className="p-3 md:p-5 border space-y-2 md:space-y-3">
+        <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
+          <Crown className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
+          <span className="text-xs md:text-sm font-bold text-foreground">Leaderboard</span>
         </div>
         {ranked.map((p, i) => {
           const isMe = p.user_id === currentUserId;
@@ -388,20 +388,20 @@ function BattleResults({
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.15 }}
-              className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${isMe ? "border-primary bg-primary/5" : "border-border"}`}
+              className={`flex items-center gap-2 md:gap-3 p-2 md:p-3 rounded-lg md:rounded-xl border transition-all ${isMe ? "border-primary bg-primary/5" : "border-border"}`}
             >
-              <span className="text-xl w-8 text-center">{medalIcons[i] || `#${i + 1}`}</span>
+              <span className="text-lg md:text-xl w-6 md:w-8 text-center">{medalIcons[i] || `#${i + 1}`}</span>
               <div className="flex-1 text-left min-w-0">
-                <p className="text-sm font-semibold text-foreground truncate">
+                <p className="text-xs md:text-sm font-semibold text-foreground truncate">
                   {p.display_name || "Anonymous"} {isMe && <span className="text-primary">(You)</span>}
                 </p>
-                <p className="text-[10px] text-muted-foreground flex items-center gap-1">
-                  <Clock className="w-2.5 h-2.5" /> {formatTime(p.time_used_seconds)}
+                <p className="text-[9px] md:text-[10px] text-muted-foreground flex items-center gap-0.5 md:gap-1">
+                  <Clock className="w-2 h-2 md:w-2.5 md:h-2.5" /> {formatTime(p.time_used_seconds)}
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-lg font-black text-foreground">{p.score_pct}%</p>
-                <p className="text-[10px] text-muted-foreground">{p.correct}/{questions.length}</p>
+                <p className="text-base md:text-lg font-black text-foreground">{p.score_pct}%</p>
+                <p className="text-[9px] md:text-[10px] text-muted-foreground">{p.correct}/{questions.length}</p>
               </div>
             </motion.div>
           );
@@ -419,14 +419,14 @@ function BattleResults({
         }))}
       />
 
-      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+      <div className="flex flex-col gap-2 md:flex-row md:gap-3 md:justify-center">
         {onPlayAgain && (
-          <Button onClick={onPlayAgain} className="gap-2 font-bold game-glow-pulse">
-            <Swords className="w-4 h-4" /> Play Again
+          <Button onClick={onPlayAgain} className="gap-2 font-bold game-glow-pulse w-full md:w-auto" size="sm">
+            <Swords className="w-3.5 h-3.5" /> Play Again
           </Button>
         )}
-        <Button variant="outline" onClick={onExit} className="gap-2">
-          <ArrowLeft className="w-4 h-4" /> Back to Practice Lab
+        <Button variant="outline" onClick={onExit} className="gap-2 w-full md:w-auto" size="sm">
+          <ArrowLeft className="w-3.5 h-3.5" /> Back to Practice Lab
         </Button>
       </div>
     </motion.div>
