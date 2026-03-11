@@ -2926,8 +2926,8 @@
     "subtopic": "Students & Institutes",
     "question": "If Chitra majors in Finance, which subject does Bandita major in?",
     "options": {"1": "Cannot be determined uniquely from the given information", "2": "Marketing", "3": "Finance", "4": "Operations"},
-    "correct_answer": "2",
-    "explanation": "If Chitra majors in Finance, then among the remaining subjects for Bandita (who is at Z), she must major in Marketing since Operations is taken by the female at Y.",
+    "correct_answer": "4",
+    "explanation": "If Chitra majors in Finance, only one female can major in Finance (constraint 4). Since Bandita and Chitra are both from Z, and the subjects at Z are Finance and Operations, Bandita must major in Operations.",
     "group_id": "cat2018-s1-lr-students",
     "group_context": ""
   },
