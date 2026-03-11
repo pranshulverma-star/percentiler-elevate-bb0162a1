@@ -14,6 +14,92 @@ export type Database = {
   }
   public: {
     Tables: {
+      battle_players: {
+        Row: {
+          answers_json: Json | null
+          correct: number
+          display_name: string
+          finished_at: string | null
+          id: string
+          joined_at: string
+          room_id: string
+          score_pct: number
+          time_used_seconds: number
+          user_id: string
+        }
+        Insert: {
+          answers_json?: Json | null
+          correct?: number
+          display_name?: string
+          finished_at?: string | null
+          id?: string
+          joined_at?: string
+          room_id: string
+          score_pct?: number
+          time_used_seconds?: number
+          user_id: string
+        }
+        Update: {
+          answers_json?: Json | null
+          correct?: number
+          display_name?: string
+          finished_at?: string | null
+          id?: string
+          joined_at?: string
+          room_id?: string
+          score_pct?: number
+          time_used_seconds?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "battle_players_room_id_fkey"
+            columns: ["room_id"]
+            isOneToOne: false
+            referencedRelation: "battle_rooms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      battle_rooms: {
+        Row: {
+          chapter_slug: string
+          code: string
+          created_at: string
+          host_user_id: string
+          id: string
+          max_players: number
+          questions_json: Json
+          section_id: string
+          started_at: string | null
+          status: string
+        }
+        Insert: {
+          chapter_slug: string
+          code: string
+          created_at?: string
+          host_user_id: string
+          id?: string
+          max_players?: number
+          questions_json: Json
+          section_id: string
+          started_at?: string | null
+          status?: string
+        }
+        Update: {
+          chapter_slug?: string
+          code?: string
+          created_at?: string
+          host_user_id?: string
+          id?: string
+          max_players?: number
+          questions_json?: Json
+          section_id?: string
+          started_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       campaign_state: {
         Row: {
           call_booked_at: string | null
