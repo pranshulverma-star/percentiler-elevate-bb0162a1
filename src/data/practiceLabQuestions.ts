@@ -305,7 +305,7 @@ const qaRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "qa");
 const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "lrdi");
 const varcRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "varc");
 
-const qaChapters = buildChaptersFromRaw(qaRaw);
+const qaChapters = buildChaptersFromRaw(qaRaw, false, true);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
 const varcChapters = buildChaptersFromRaw(varcRaw);
 
