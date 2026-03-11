@@ -2743,8 +2743,8 @@
     "subtopic": "Bengal Displacement",
     "question": "Five sentences related to a topic are given below. Four can form a meaningful paragraph. Identify the odd one out:\n\n1. Displacement in Bengal is thus not very significant in view of its magnitude.\n2. A factor of displacement in Bengal is the shifting course of the Ganges leading to erosion of river banks.\n3. The nature of displacement in Bengal makes it an interesting case study.\n4. Since displacement due to erosion is well spread over a long period of time, it remains invisible.\n5. Rapid displacement would have helped sensitize the public to its human costs.",
     "options": {"1": "1", "2": "2", "3": "3", "4": "5"},
-    "correct_answer": "1",
-    "explanation": "Sentences 3, 2, 4, 5 form a coherent paragraph about Bengal's gradual displacement. Sentence 1 saying displacement is 'not very significant' contradicts the paragraph's point."
+    "correct_answer": "4",
+    "explanation": "Sentences 3, 2, 4, 1 form a coherent paragraph: nature of displacement is interesting (3) → river erosion causes it (2) → gradual so remains invisible (4) → rapid displacement would have sensitized public (1). Sentence 5 does not connect with any other sentence and is the odd one out."
   },
   {
     "id": 254,
