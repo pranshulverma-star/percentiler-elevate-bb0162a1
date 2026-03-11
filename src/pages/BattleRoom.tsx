@@ -1,0 +1,615 @@
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, Copy, Share2, Users, Swords, Crown, Shield, Star, Zap, Flame, Target, Trophy } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
+import SEO from "@/components/SEO";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import type { PracticeQuestion } from "@/data/practiceLabQuestions";
+
+const QUIZ_DURATION = 900;
+
+function formatTime(seconds: number) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+const fadeUp = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -10 },
+  transition: { duration: 0.35 },
+};
+
+interface BattleRoom {
+  id: string;
+  code: string;
+  host_user_id: string;
+  section_id: string;
+  chapter_slug: string;
+  questions_json: PracticeQuestion[];
+  status: string;
+  max_players: number;
+  started_at: string | null;
+}
+
+interface BattlePlayer {
+  id: string;
+  room_id: string;
+  user_id: string;
+  display_name: string;
+  answers_json: Record<number, number | string | null> | null;
+  score_pct: number;
+  correct: number;
+  time_used_seconds: number;
+  finished_at: string | null;
+  joined_at: string;
+}
+
+// ─── Lobby ──────────────────────────────────────────────────────────────────
+function BattleLobby({
+  room,
+  players,
+  isHost,
+  onStart,
+}: {
+  room: BattleRoom;
+  players: BattlePlayer[];
+  isHost: boolean;
+  onStart: () => void;
+}) {
+  const shareUrl = `${window.location.origin}/practice-lab/battle/${room.code}`;
+  const canStart = players.length >= 2;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(shareUrl);
+    toast({ title: "Link copied!", description: "Share it with your friends." });
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: "Battle Quiz Challenge!", text: `Join my quiz battle! Code: ${room.code}`, url: shareUrl });
+      } catch { /* cancelled */ }
+    } else {
+      handleCopy();
+    }
+  };
+
+  const playerColors = ["text-amber-400", "text-cyan-400", "text-emerald-400", "text-purple-400", "text-rose-400"];
+
+  return (
+    <motion.div {...fadeUp} className="max-w-lg mx-auto space-y-6 text-center">
+      <div className="space-y-2">
+        <motion.div initial={{ scale: 0.8 }} animate={{ scale: 1 }} transition={{ ease: "backOut" }}>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full game-badge text-[10px] md:text-xs font-bold uppercase tracking-wider">
+            <Swords className="w-3 h-3" /> Battle Arena
+          </div>
+        </motion.div>
+        <h1 className="text-2xl md:text-4xl font-black text-foreground">
+          Waiting for <span className="text-primary">Warriors</span>
+        </h1>
+        <p className="text-sm text-muted-foreground">{room.chapter_slug.replace(/-/g, " ")} · {(room.questions_json as any[]).length} questions</p>
+      </div>
+
+      {/* Room Code */}
+      <Card className="p-5 border space-y-4">
+        <div>
+          <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Room Code</p>
+          <p className="text-3xl md:text-4xl font-black tracking-[0.2em] text-primary font-mono">{room.code}</p>
+        </div>
+
+        <div className="flex gap-2 justify-center">
+          <Button size="sm" variant="outline" onClick={handleCopy} className="gap-1.5">
+            <Copy className="w-3.5 h-3.5" /> Copy Link
+          </Button>
+          <Button size="sm" onClick={handleShare} className="gap-1.5">
+            <Share2 className="w-3.5 h-3.5" /> Share
+          </Button>
+        </div>
+      </Card>
+
+      {/* Players */}
+      <Card className="p-5 border space-y-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-primary" />
+            <span className="text-sm font-bold text-foreground">Warriors</span>
+          </div>
+          <Badge variant="secondary" className="text-[10px]">{players.length}/{room.max_players}</Badge>
+        </div>
+
+        <div className="space-y-2">
+          {players.map((p, i) => (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="flex items-center gap-3 p-2.5 rounded-lg bg-secondary/50"
+            >
+              <div className={`w-8 h-8 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center text-sm font-bold ${playerColors[i] || "text-foreground"}`}>
+                {p.display_name?.[0]?.toUpperCase() || "?"}
+              </div>
+              <span className="text-sm font-semibold text-foreground flex-1 text-left truncate">{p.display_name || "Anonymous"}</span>
+              {p.user_id === room.host_user_id && (
+                <Badge variant="outline" className="text-[9px]">
+                  <Crown className="w-2.5 h-2.5 mr-0.5" /> Host
+                </Badge>
+              )}
+            </motion.div>
+          ))}
+          {/* Empty slots */}
+          {Array.from({ length: room.max_players - players.length }).map((_, i) => (
+            <div key={`empty-${i}`} className="flex items-center gap-3 p-2.5 rounded-lg border border-dashed border-border">
+              <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center">
+                <Users className="w-3.5 h-3.5 text-muted-foreground" />
+              </div>
+              <span className="text-sm text-muted-foreground italic">Waiting...</span>
+            </div>
+          ))}
+        </div>
+      </Card>
+
+      {isHost ? (
+        <Button onClick={onStart} disabled={!canStart} className="w-full gap-2 font-bold game-glow-pulse" size="lg">
+          <Swords className="w-4 h-4" /> {canStart ? "Start Battle!" : "Need 2+ players"}
+        </Button>
+      ) : (
+        <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+          <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          Waiting for host to start...
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+// ─── Battle Quiz ────────────────────────────────────────────────────────────
+function BattleQuiz({
+  questions,
+  onFinish,
+}: {
+  questions: PracticeQuestion[];
+  onFinish: (answers: Record<number, number | string | null>, timeUsed: number) => void;
+}) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
+  const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION);
+
+  useEffect(() => {
+    if (timeLeft <= 0) { onFinish(answers, QUIZ_DURATION); return; }
+    const timer = setInterval(() => setTimeLeft(t => t - 1), 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const q = questions[currentIndex];
+  const isLast = currentIndex === questions.length - 1;
+  const isLowTime = timeLeft <= 120;
+  const isCritical = timeLeft <= 60;
+  const answeredCount = questions.filter(qq => answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "").length;
+  const timeProgress = (timeLeft / QUIZ_DURATION) * 100;
+
+  const handleSubmit = () => onFinish(answers, QUIZ_DURATION - timeLeft);
+
+  return (
+    <motion.div {...fadeUp} className="max-w-3xl mx-auto">
+      {/* HUD */}
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2">
+          <Badge variant="secondary" className="text-[9px] font-semibold">
+            <Swords className="w-2.5 h-2.5 mr-1" /> Battle Mode
+          </Badge>
+          <span className="text-[11px] text-muted-foreground">{answeredCount}/{questions.length}</span>
+        </div>
+        <div className={`flex items-center gap-1 px-2 py-1 rounded-full border text-xs font-mono font-bold transition-all
+          ${isCritical ? "border-destructive/50 bg-destructive/10 text-destructive animate-pulse"
+            : isLowTime ? "border-primary/50 bg-primary/10 text-primary"
+            : "border-border text-foreground"}`}>
+          <Clock className="w-3 h-3" />
+          {formatTime(timeLeft)}
+        </div>
+      </div>
+
+      {/* Timer bar */}
+      <div className="relative h-1.5 rounded-full bg-secondary overflow-hidden mb-5 border border-border/50">
+        <motion.div
+          className={`h-full rounded-full ${isCritical ? "bg-destructive" : isLowTime ? "bg-primary" : "bg-gradient-to-r from-primary to-amber-400"}`}
+          style={{ width: `${timeProgress}%` }}
+        />
+      </div>
+
+      {/* Question */}
+      <AnimatePresence mode="wait">
+        <motion.div key={q.id} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }}>
+          <Card className="p-4 md:p-8 border space-y-4 md:space-y-6 relative overflow-hidden">
+            <div className="absolute top-0 right-0">
+              <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">
+                Q{currentIndex + 1}/{questions.length}
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2 pt-1">
+              <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                <span className="text-[11px] font-bold text-primary">{currentIndex + 1}</span>
+              </div>
+              <p className="text-sm md:text-lg font-medium text-foreground leading-relaxed">{q.question}</p>
+            </div>
+
+            {q.type === "mcq" ? (
+              <RadioGroup
+                value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
+                onValueChange={v => setAnswers(prev => ({ ...prev, [q.id]: Number(v) }))}
+                className="space-y-2"
+              >
+                {q.options.map((opt, idx) => {
+                  const labels = ["A", "B", "C", "D"];
+                  return (
+                    <Label key={idx} htmlFor={`b-opt-${q.id}-${idx}`}
+                      className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all
+                        ${answers[q.id] === idx ? "border-primary bg-primary/5 shadow-sm game-glow" : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"}`}>
+                      <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-bold shrink-0
+                        ${answers[q.id] === idx ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground border border-border"}`}>
+                        {labels[idx]}
+                      </div>
+                      <RadioGroupItem value={String(idx)} id={`b-opt-${q.id}-${idx}`} className="sr-only" />
+                      <span className="text-sm text-foreground">{opt}</span>
+                    </Label>
+                  );
+                })}
+              </RadioGroup>
+            ) : (
+              <div className="space-y-2">
+                <Label className="text-sm text-muted-foreground flex items-center gap-1.5">
+                  <Target className="w-3.5 h-3.5" /> Enter your answer
+                </Label>
+                <Input
+                  type="text" inputMode="decimal" placeholder="e.g. 48"
+                  value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
+                  onChange={e => { const v = e.target.value; if (v === "" || /^[-\d.:/ ]*$/.test(v)) setAnswers(prev => ({ ...prev, [q.id]: v })); }}
+                  className="text-base font-mono" autoComplete="off"
+                />
+              </div>
+            )}
+          </Card>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* Nav */}
+      <div className="flex items-center justify-between mt-4">
+        <Button variant="ghost" size="sm" disabled={currentIndex === 0} onClick={() => setCurrentIndex(i => i - 1)}>← Previous</Button>
+        {isLast ? (
+          <Button onClick={handleSubmit} className="px-6 gap-1.5 font-bold game-glow-pulse">
+            <Swords className="w-4 h-4" /> Finish Battle
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={() => setCurrentIndex(i => i + 1)}>Next →</Button>
+        )}
+      </div>
+
+      {/* Mobile pills */}
+      <div className="flex gap-1.5 justify-center flex-wrap pt-3 md:hidden">
+        {questions.map((qq, i) => {
+          const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
+          return (
+            <button key={i} onClick={() => setCurrentIndex(i)}
+              className={`w-8 h-8 rounded-lg text-[11px] font-bold border
+                ${i === currentIndex ? "border-primary bg-primary text-primary-foreground game-glow"
+                  : isAnswered ? "border-primary/40 bg-primary/15 text-primary" : "border-border text-muted-foreground"}`}>
+              {i + 1}
+            </button>
+          );
+        })}
+        <Button onClick={handleSubmit} size="sm" className="w-full mt-2 font-bold gap-1.5 game-glow-pulse md:hidden">
+          <Swords className="w-3.5 h-3.5" /> Finish Battle
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Waiting Overlay ────────────────────────────────────────────────────────
+function WaitingOverlay({ finishedCount, totalCount }: { finishedCount: number; totalCount: number }) {
+  return (
+    <motion.div {...fadeUp} className="max-w-md mx-auto text-center space-y-4 py-16">
+      <div className="w-16 h-16 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto">
+        <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      </div>
+      <h2 className="text-xl font-bold text-foreground">Battle in Progress</h2>
+      <p className="text-sm text-muted-foreground">{finishedCount}/{totalCount} warriors have finished</p>
+      <p className="text-xs text-muted-foreground">Waiting for everyone to complete...</p>
+    </motion.div>
+  );
+}
+
+// ─── Battle Results ─────────────────────────────────────────────────────────
+function BattleResults({
+  players,
+  questions,
+  currentUserId,
+  onPlayAgain,
+  onExit,
+}: {
+  players: BattlePlayer[];
+  questions: PracticeQuestion[];
+  currentUserId: string;
+  onPlayAgain?: () => void;
+  onExit: () => void;
+}) {
+  const ranked = [...players].sort((a, b) => b.score_pct - a.score_pct || a.time_used_seconds - b.time_used_seconds);
+  const medalIcons = ["👑", "🥈", "🥉"];
+  const myRank = ranked.findIndex(p => p.user_id === currentUserId);
+
+  return (
+    <motion.div {...fadeUp} className="max-w-lg mx-auto space-y-6 text-center">
+      <div className="space-y-2">
+        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} transition={{ ease: "backOut" }}>
+          <Trophy className="w-12 h-12 text-amber-400 mx-auto" />
+        </motion.div>
+        <h1 className="text-2xl md:text-4xl font-black text-foreground">Battle <span className="text-primary">Results</span></h1>
+        {myRank === 0 && <p className="text-sm text-amber-400 font-bold">🎉 You won!</p>}
+      </div>
+
+      <Card className="p-5 border space-y-3">
+        <div className="flex items-center gap-2 mb-2">
+          <Crown className="w-4 h-4 text-primary" />
+          <span className="text-sm font-bold text-foreground">Leaderboard</span>
+        </div>
+        {ranked.map((p, i) => {
+          const isMe = p.user_id === currentUserId;
+          return (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.15 }}
+              className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${isMe ? "border-primary bg-primary/5" : "border-border"}`}
+            >
+              <span className="text-xl w-8 text-center">{medalIcons[i] || `#${i + 1}`}</span>
+              <div className="flex-1 text-left min-w-0">
+                <p className="text-sm font-semibold text-foreground truncate">
+                  {p.display_name || "Anonymous"} {isMe && <span className="text-primary">(You)</span>}
+                </p>
+                <p className="text-[10px] text-muted-foreground flex items-center gap-1">
+                  <Clock className="w-2.5 h-2.5" /> {formatTime(p.time_used_seconds)}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-lg font-black text-foreground">{p.score_pct}%</p>
+                <p className="text-[10px] text-muted-foreground">{p.correct}/{questions.length}</p>
+              </div>
+            </motion.div>
+          );
+        })}
+      </Card>
+
+      <div className="flex flex-col sm:flex-row gap-3 justify-center">
+        {onPlayAgain && (
+          <Button onClick={onPlayAgain} className="gap-2 font-bold game-glow-pulse">
+            <Swords className="w-4 h-4" /> Play Again
+          </Button>
+        )}
+        <Button variant="outline" onClick={onExit} className="gap-2">
+          <ArrowLeft className="w-4 h-4" /> Back to Practice Lab
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── Main Page ──────────────────────────────────────────────────────────────
+export default function BattleRoomPage() {
+  const { code } = useParams<{ code: string }>();
+  const navigate = useNavigate();
+  const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
+
+  const [room, setRoom] = useState<BattleRoom | null>(null);
+  const [players, setPlayers] = useState<BattlePlayer[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [myFinished, setMyFinished] = useState(false);
+  const joinedRef = useRef(false);
+
+  // Redirect to sign in if not authenticated
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      signIn(`/practice-lab/battle/${code}`);
+    }
+  }, [authLoading, isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Fetch room + join
+  useEffect(() => {
+    if (!isAuthenticated || !user || !code) return;
+
+    const fetchAndJoin = async () => {
+      // Fetch room
+      const { data: roomData, error: roomErr } = await (supabase.from("battle_rooms") as any)
+        .select("*")
+        .eq("code", code.toUpperCase())
+        .single();
+
+      if (roomErr || !roomData) {
+        setError("Battle room not found. Check the code and try again.");
+        setLoading(false);
+        return;
+      }
+      setRoom(roomData);
+
+      // Fetch existing players
+      const { data: playersData } = await (supabase.from("battle_players") as any)
+        .select("*")
+        .eq("room_id", roomData.id)
+        .order("joined_at", { ascending: true });
+
+      setPlayers(playersData || []);
+
+      // Auto-join if not already in
+      const alreadyJoined = (playersData || []).some((p: BattlePlayer) => p.user_id === user.id);
+      if (!alreadyJoined && roomData.status === "waiting" && (playersData || []).length < roomData.max_players && !joinedRef.current) {
+        joinedRef.current = true;
+        const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Player";
+        await (supabase.from("battle_players") as any).insert({
+          room_id: roomData.id,
+          user_id: user.id,
+          display_name: displayName,
+        });
+      }
+
+      // Check if I already finished
+      const me = (playersData || []).find((p: BattlePlayer) => p.user_id === user.id);
+      if (me?.finished_at) setMyFinished(true);
+
+      setLoading(false);
+    };
+
+    fetchAndJoin();
+  }, [isAuthenticated, user, code]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Realtime subscriptions
+  useEffect(() => {
+    if (!room?.id) return;
+
+    const roomChannel = supabase
+      .channel(`battle-room-${room.id}`)
+      .on("postgres_changes", { event: "*", schema: "public", table: "battle_rooms", filter: `id=eq.${room.id}` },
+        (payload: any) => {
+          if (payload.new) setRoom(payload.new as BattleRoom);
+        })
+      .on("postgres_changes", { event: "*", schema: "public", table: "battle_players", filter: `room_id=eq.${room.id}` },
+        async () => {
+          // Refetch all players on any change
+          const { data } = await (supabase.from("battle_players") as any)
+            .select("*").eq("room_id", room.id).order("joined_at", { ascending: true });
+          if (data) setPlayers(data);
+        })
+      .subscribe();
+
+    return () => { supabase.removeChannel(roomChannel); };
+  }, [room?.id]);
+
+  // Host starts battle
+  const handleStart = useCallback(async () => {
+    if (!room) return;
+    await (supabase.from("battle_rooms") as any)
+      .update({ status: "active", started_at: new Date().toISOString() })
+      .eq("id", room.id);
+  }, [room]);
+
+  // Player finishes quiz
+  const handleFinishQuiz = useCallback(async (answers: Record<number, number | string | null>, timeUsed: number) => {
+    if (!room || !user) return;
+    const questions = room.questions_json as PracticeQuestion[];
+
+    let correct = 0;
+    questions.forEach(q => {
+      const a = answers[q.id];
+      if (a === undefined || a === null || a === "") return;
+      if (q.type === "mcq") {
+        if (a === q.correctAnswer) correct++;
+      } else {
+        if (String(a).trim().toLowerCase() === (q.numericAnswer || "").trim().toLowerCase()) correct++;
+      }
+    });
+
+    const pct = Math.round((correct / questions.length) * 100);
+
+    await (supabase.from("battle_players") as any)
+      .update({
+        answers_json: answers,
+        score_pct: pct,
+        correct,
+        time_used_seconds: timeUsed,
+        finished_at: new Date().toISOString(),
+      })
+      .eq("room_id", room.id)
+      .eq("user_id", user.id);
+
+    setMyFinished(true);
+
+    // Check if all players finished
+    const { data: allPlayers } = await (supabase.from("battle_players") as any)
+      .select("finished_at").eq("room_id", room.id);
+    
+    if (allPlayers && allPlayers.every((p: any) => p.finished_at)) {
+      // I'm the last one — mark room finished (only host can update, so try)
+      await (supabase.from("battle_rooms") as any)
+        .update({ status: "finished" })
+        .eq("id", room.id);
+    }
+  }, [room, user]);
+
+  const handleExit = () => navigate("/practice-lab");
+
+  // Loading / Error states
+  if (authLoading || loading) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-background flex items-center justify-center game-grid-bg">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </main>
+      </>
+    );
+  }
+
+  if (error || !room) {
+    return (
+      <>
+        <Navbar />
+        <main className="min-h-screen bg-background flex flex-col items-center justify-center gap-4 game-grid-bg px-4">
+          <Shield className="w-12 h-12 text-muted-foreground" />
+          <h1 className="text-xl font-bold text-foreground">{error || "Room not found"}</h1>
+          <Button onClick={handleExit} variant="outline" className="gap-2">
+            <ArrowLeft className="w-4 h-4" /> Back to Practice Lab
+          </Button>
+        </main>
+      </>
+    );
+  }
+
+  const isHost = user?.id === room.host_user_id;
+  const questions = room.questions_json as PracticeQuestion[];
+  const finishedCount = players.filter(p => p.finished_at).length;
+
+  return (
+    <>
+      <SEO title={`Battle Quiz — ${room.code} | Percentilers`} description="Multiplayer battle quiz" />
+      <Navbar />
+      <main className="min-h-screen bg-background pt-4 pb-12 px-3 md:pt-6 md:pb-16 md:px-6 game-grid-bg">
+        <div className="max-w-5xl mx-auto py-6 md:py-16">
+          <AnimatePresence mode="wait">
+            {room.status === "waiting" && (
+              <BattleLobby key="lobby" room={room} players={players} isHost={isHost} onStart={handleStart} />
+            )}
+            {room.status === "active" && !myFinished && (
+              <BattleQuiz key="quiz" questions={questions} onFinish={handleFinishQuiz} />
+            )}
+            {room.status === "active" && myFinished && (
+              <WaitingOverlay key="waiting" finishedCount={finishedCount} totalCount={players.length} />
+            )}
+            {room.status === "finished" && (
+              <BattleResults
+                key="results"
+                players={players}
+                questions={questions}
+                currentUserId={user?.id || ""}
+                onExit={handleExit}
+              />
+            )}
+          </AnimatePresence>
+        </div>
+      </main>
+      <Footer />
+    </>
+  );
+}

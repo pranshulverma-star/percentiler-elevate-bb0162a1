@@ -79,6 +79,7 @@ const App = () => (
                   <Route path="/free-courses" element={<FreeCourses />} />
                   <Route path="/test-series" element={<TestSeries />} />
                   <Route path="/practice-lab" element={<PracticeLab />} />
+                  <Route path="/practice-lab/battle/:code" element={<BattleRoom />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/refund-policy" element={<RefundPolicy />} />
