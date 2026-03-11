@@ -15,8 +15,22 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import type { PracticeQuestion } from "@/data/practiceLabQuestions";
+import { practiceLabSections } from "@/data/practiceLabQuestions";
 
 const QUIZ_DURATION = 900;
+const QUIZ_QUESTION_COUNT = 10;
+
+function pickRandom<T>(arr: T[], count: number): T[] {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(count, shuffled.length));
+}
+
+function generateCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
 
 function formatTime(seconds: number) {
   const m = Math.floor(seconds / 60);
