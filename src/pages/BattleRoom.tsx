@@ -22,6 +22,7 @@ import ShareableResultCard from "@/components/ShareableResultCard";
 const QUIZ_DURATION = 900;
 const QUIZ_QUESTION_COUNT = 10;
 
+// pickRandom kept for non-question use
 function pickRandom<T>(arr: T[], count: number): T[] {
   const shuffled = [...arr].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, Math.min(count, shuffled.length));
