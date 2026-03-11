@@ -16,6 +16,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import type { PracticeQuestion } from "@/data/practiceLabQuestions";
 import { practiceLabSections } from "@/data/practiceLabQuestions";
+import ShareableResultCard from "@/components/ShareableResultCard";
 
 const QUIZ_DURATION = 900;
 const QUIZ_QUESTION_COUNT = 10;
@@ -406,6 +407,17 @@ function BattleResults({
           );
         })}
       </Card>
+
+      {/* Shareable Card */}
+      <ShareableResultCard
+        correct={ranked.find(p => p.user_id === currentUserId)?.correct ?? 0}
+        total={questions.length}
+        leaderboard={ranked.map(p => ({
+          name: p.display_name || "Anonymous",
+          score: p.score_pct,
+          isMe: p.user_id === currentUserId,
+        }))}
+      />
 
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         {onPlayAgain && (

@@ -16,6 +16,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
+import ShareableResultCard from "@/components/ShareableResultCard";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
@@ -880,6 +881,14 @@ function ResultsView({
           </div>
         </Card>
       )}
+
+      {/* Shareable Card */}
+      <ShareableResultCard
+        correct={correct}
+        total={questions.length}
+        chapterName={chapterName}
+        timeUsed={timeUsed}
+      />
 
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
