@@ -17,6 +17,7 @@ import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
 import ShareableResultCard from "@/components/ShareableResultCard";
+import ResultsView from "@/components/practice-lab/ResultsView";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
