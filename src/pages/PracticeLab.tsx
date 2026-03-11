@@ -26,6 +26,7 @@ const QUIZ_QUESTION_COUNT = 10;
 const XP_PER_CORRECT = 15;
 const XP_PER_SPEED_BONUS = 5;
 
+// pickRandom kept only for non-question use; questions use pickGroupedRandom
 function pickRandom<T>(arr: T[], count: number): T[] {
   const shuffled = [...arr].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, Math.min(count, shuffled.length));
