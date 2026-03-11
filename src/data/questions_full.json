@@ -3185,8 +3185,8 @@
     "subtopic": "Averages",
     "question": "In an apartment complex, the number of people aged 51 years and above is 30 and there are at most 39 people whose ages are below 51 years. The average age of all the people in the apartment complex is 38 years. What is the largest possible average age, in years, of the people whose ages are below 51 years?",
     "options": {"1": "27", "2": "28", "3": "26", "4": "25"},
-    "correct_answer": "4",
-    "explanation": "Let n be the number of people below 51. Total people = 30 + n. Average = 38. Total age = 38(30+n). To maximize average of below-51 group, minimize n and maximize their total age while minimizing the 51+ group's total age. Min age of 51+ group = 30 × 51 = 1530. Total age of below-51 = 38(30+n) - 1530 = 1140 + 38n - 1530 = 38n - 390. Average of below-51 = (38n-390)/n = 38 - 390/n. To maximize, maximize n. Max n = 39. Average = 38 - 390/39 = 38 - 10 = 28. Hmm, that gives 28. But wait, we need the ages to be below 51. Let me re-check. Actually to maximize average below 51, we want to maximize n (more people to dilute the subtracted term). With n=39: avg = 38 - 390/39 = 28. But we also need each person below 51 to have age < 51. Average = 28 < 51 ✓. But let's check option 4 = 25. Hmm, the answer should be 25. Let me reconsider. Actually minimum total age of 51+ group: they are 51+, so minimum is 30×51=1530. With n people below 51: 38(30+n) = sum_above + sum_below. sum_below = 38(30+n) - sum_above ≤ 38(30+n) - 1530. avg_below = sum_below/n ≤ (1140+38n-1530)/n... Wait that's negative for small n. We need n ≥ 390/38 ≈ 10.3, so n ≥ 11. For max avg_below with constraint n ≤ 39, avg_below = 38 - 390/n. Max at n=39: 28. So answer is 2 (28). Let me recheck my work... Yes, answer is 28."
+    "correct_answer": "2",
+    "explanation": "Let n = number of people below 51 (n ≤ 39), avg below 51 = y, avg above 51 = x (x ≥ 51). Total age: 30x + ny = 38(30+n). To maximize y, minimize x = 51. Then 30(51) + ny = 38(30+n) → 1530 + ny = 1140 + 38n → ny = 38n - 390 → y = 38 - 390/n. Maximize y by maximizing n. At n = 39: y = 38 - 10 = 28."
   },
   {
     "id": 296,
