@@ -692,6 +692,7 @@ export default function BattleRoomPage() {
                 players={players}
                 questions={questions}
                 currentUserId={user?.id || ""}
+                onPlayAgain={handlePlayAgain}
                 onExit={handleExit}
               />
             )}
