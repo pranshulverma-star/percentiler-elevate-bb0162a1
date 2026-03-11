@@ -1,0 +1,2 @@
+ALTER TABLE public.battle_rooms REPLICA IDENTITY FULL;
+ALTER TABLE public.battle_players REPLICA IDENTITY FULL;
