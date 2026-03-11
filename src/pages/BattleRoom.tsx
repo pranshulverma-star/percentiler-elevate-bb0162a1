@@ -417,6 +417,7 @@ export default function BattleRoomPage() {
   const [players, setPlayers] = useState<BattlePlayer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState<number | null>(null);
   const [myFinished, setMyFinished] = useState(false);
   const joinedRef = useRef(false);
 
