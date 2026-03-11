@@ -541,7 +541,7 @@ export default function BattleRoomPage() {
       return;
     }
     // Host broadcasts countdown to other players
-    if (isHost && room) {
+    if (user?.id === room?.host_user_id && room) {
       supabase.channel(`battle-room-${room.id}`).send({
         type: "broadcast",
         event: "countdown",
@@ -550,7 +550,7 @@ export default function BattleRoomPage() {
     }
     const timer = setTimeout(() => setCountdown(c => (c !== null ? c - 1 : null)), 1000);
     return () => clearTimeout(timer);
-  }, [countdown, room, isHost]);
+  }, [countdown, room, user]);
 
   // Player finishes quiz
   const handleFinishQuiz = useCallback(async (answers: Record<number, number | string | null>, timeUsed: number) => {
