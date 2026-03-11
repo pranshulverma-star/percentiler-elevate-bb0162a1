@@ -2893,8 +2893,8 @@
     "subtopic": "Students & Institutes",
     "question": "Who are the students from the institute Z?",
     "options": {"1": "Adriana and Bandita", "2": "Adriana and Daisy", "3": "Bandita and Chitra", "4": "Chitra and Daisy"},
-    "correct_answer": "1",
-    "explanation": "From the constraints: Adriana and Deb are from the same institute (clue 5). Since two students from Z are both female, and Daisy is from the same institute as Amit (clue 5), Adriana and Bandita must be from Z.",
+    "correct_answer": "3",
+    "explanation": "From constraints: two students from Z are both female. Daisy and Amit are from the same institute, and Adriana and Deb are from the same institute — so neither Daisy nor Adriana can be at Z (they'd bring a male). Therefore Bandita and Chitra are from Z.",
     "group_id": "cat2018-s1-lr-students",
     "group_context": "Eight students (4 female: Adriana, Bandita, Chitra, Daisy; 4 male: Amit, Barun, Chetan, Deb) study at three institutes X, Y, Z. Each majors in one of Marketing, Operations, Finance and minors in a different one.\n\n1. Three from X, three from Y, two (both female) from Z.\n2. Both males from Y minor in Finance; the female from Y majors in Operations.\n3. Only one male majors in Operations; three females minor in Marketing.\n4. One female and two males major in Finance.\n5. Adriana and Deb are from the same institute. Daisy and Amit are from the same institute.\n6. Barun is from Y, majors in Operations. Chetan is from X, majors in Finance.\n7. Daisy minors in Operations."
   },
