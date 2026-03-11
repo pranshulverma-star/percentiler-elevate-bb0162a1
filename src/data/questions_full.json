@@ -1388,30 +1388,5 @@
     },
     "correct_answer": "2",
     "explanation": "Already solved in id 94. 3M+4W = 1/5, 4M+2W = 1/5. Solving: M = 2W. 2M+6W = 4W+6W = 10W. Since 10W = 1/5 per day, they take 5 days. Completes on 5th day."
-  },
-  {
-    "id": 120,
-    "source_pages": "pg31-32",
-    "topic": "Speed, Distance & Time",
-    "subtopic": "Challenge Problems #02",
-    "question": "A military convoy 10 km long had to drive a distance of 24 km. (Same as id 73 — see full explanation there.)",
-    "options": {
-      "1": "39 km",
-      "2": "36 km",
-      "3": "30 km",
-      "4": "32 km"
-    },
-    "correct_answer": "2",
-    "explanation": "See id 73. Answer: 36 km."
-  },
-  {
-    "id": 121,
-    "source_pages": "pg35-36",
-    "topic": "Speed, Distance & Time",
-    "subtopic": "Challenge Problems #02",
-    "question": "Two guns were fired from the same place at an interval of 13 minutes but a person in a train approaching the place hears the second report 12 minutes 30 seconds after the first. Find the speed of the train, supposing that sound travels at the speed of 330 m/s.",
-    "options": {},
-    "correct_answer": "47.52 km/hr (≈13.2 m/s)",
-    "explanation": "See id 74. Speed of train = 9900/750 = 13.2 m/s = 47.52 km/hr."
   }
 ]
