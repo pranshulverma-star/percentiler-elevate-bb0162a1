@@ -1,37 +1,78 @@
 
 
-## Consolidate Phone Capture: Remove Duplicated Logic
+# Multiplayer Battle Quiz — Plan
 
-### Problem
-`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
+## Overview
+Add a "Battle Mode" where a user creates a battle room for a selected chapter, gets a shareable link, waits for up to 4 friends to join, then all players take the same 10-question quiz simultaneously. A live scoreboard shows results after everyone finishes.
 
-### What Changes
+## Database Changes
 
-**1. `src/components/LeadModalProvider.tsx`**
-- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
-- Replace it with a single `<PhoneCaptureModal>` component usage
-- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
-- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
+**New table: `battle_rooms`**
+- `id` (uuid, PK)
+- `code` (text, unique, 6-char alphanumeric — used in shareable URL)
+- `host_user_id` (uuid, not null)
+- `section_id` (text)
+- `chapter_slug` (text)
+- `questions_json` (jsonb — stores the 10 pre-picked questions so all players get the same set)
+- `status` (text: `waiting` | `active` | `finished`, default `waiting`)
+- `max_players` (int, default 5)
+- `started_at` (timestamptz, nullable)
+- `created_at` (timestamptz, default now())
 
-**2. `src/components/PhoneCaptureModal.tsx`**
-- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
-- The component already supports custom `title` and `description`, so no changes needed there
+**New table: `battle_players`**
+- `id` (uuid, PK)
+- `room_id` (uuid, FK → battle_rooms)
+- `user_id` (uuid)
+- `display_name` (text)
+- `answers_json` (jsonb, nullable — submitted answers)
+- `score_pct` (int, default 0)
+- `correct` (int, default 0)
+- `time_used_seconds` (int, default 0)
+- `finished_at` (timestamptz, nullable)
+- `joined_at` (timestamptz, default now())
 
-### Result
-- One single source of truth for phone capture logic
-- Future fixes (like the duplicate phone check) only need to be applied once
-- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
+Both tables get RLS for authenticated users. Enable realtime on `battle_players` and `battle_rooms` so lobby and scoreboard update live.
 
-### Technical Details
+## New Route
+- `/practice-lab/battle/:code` — joins an existing battle room via the shareable link
 
-**`PhoneCaptureModal.tsx` changes:**
-- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
-- Add a name input field that renders when `showNameField` is true and no user name is available
-- Include the name in the upsert payload and persist to localStorage
+## UI Flow
 
-**`LeadModalProvider.tsx` changes:**
-- Remove ~60 lines of form state, validation, and submit logic
-- Remove the inline `<Dialog>` JSX (~30 lines)
-- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
-- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
+### 1. Create Battle (from ChaptersView)
+- Add a "Battle Mode" button next to each chapter card (sword icon)
+- Clicking it creates a `battle_room` with a random 6-char code and pre-picks 10 questions
+- Navigates to the **Battle Lobby** screen
+
+### 2. Battle Lobby (`waiting` status)
+- Shows the shareable link (`/practice-lab/battle/ABC123`) with a copy button and native share (Web Share API on mobile)
+- Displays player avatars/names as they join (realtime subscription on `battle_players`)
+- Shows "X/5 warriors joined" counter
+- Host sees a "Start Battle" button (enabled when 2+ players)
+- Non-host players see "Waiting for host to start..."
+
+### 3. Quiz Phase (`active` status)
+- Reuses existing `QuizView` component with the pre-set questions from `questions_json`
+- On finish, player's answers/score are written to `battle_players`
+- Shows a "Waiting for others..." overlay if player finishes before others
+
+### 4. Battle Results (`finished` status)
+- When all players finish (or timer expires), room status → `finished`
+- Shows a ranked leaderboard with scores, time used, and a crown for the winner
+- "Play Again" creates a new room with same chapter, "Back to Chapters" exits
+
+## Shareable Link
+- Format: `https://percentiler-elevate.lovable.app/practice-lab/battle/ABC123`
+- When a non-authenticated user opens the link, they sign in first, then auto-join the room
+
+## Technical Details
+
+- **Realtime**: Subscribe to `battle_players` filtered by `room_id` for live lobby updates, and `battle_rooms` for status changes
+- **Question seeding**: Host's client picks 10 random questions and stores them in `questions_json` at room creation time — all players read from this
+- **Auto-finish**: A client-side check — if all `battle_players` have `finished_at` set, the last finisher updates room status to `finished`
+- **Code generation**: 6-char uppercase alphanumeric, generated client-side with collision retry
+
+## Files to Create/Edit
+- **Migration**: Create `battle_rooms` and `battle_players` tables with RLS + realtime
+- **`src/pages/PracticeLab.tsx`**: Add Battle button to ChaptersView, new `BattleLobby` and `BattleResults` components
+- **`src/App.tsx`**: Add `/practice-lab/battle/:code` route
 
