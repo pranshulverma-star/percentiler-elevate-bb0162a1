@@ -505,6 +505,22 @@ function QuizView({
 
         {/* Main question area */}
         <div className="flex-1 min-w-0 space-y-4">
+          {/* Group Context (passage / set description) */}
+          {q.group_context && (
+            (() => {
+              const isFirstInGroup = currentIndex === 0 || questions[currentIndex - 1]?.group_id !== q.group_id;
+              const showContext = isFirstInGroup || true; // always show for current question's group
+              return showContext ? (
+                <Card className="p-4 md:p-6 border border-primary/20 bg-primary/[0.02]">
+                  <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-2">📖 Passage / Set</p>
+                  <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+                    {q.group_context}
+                  </div>
+                </Card>
+              ) : null;
+            })()
+          )}
+
           {/* Question Card */}
           <AnimatePresence mode="wait">
             <motion.div
