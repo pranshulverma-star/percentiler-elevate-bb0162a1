@@ -383,9 +383,6 @@ function QuizView({
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
   };
 
-  const handleNumericChange = (value: string) => {
-    setAnswers((prev) => ({ ...prev, [q.id]: value }));
-  };
 
   const handleSubmit = () => {
     onFinish(answers, QUIZ_DURATION - timeLeft);
