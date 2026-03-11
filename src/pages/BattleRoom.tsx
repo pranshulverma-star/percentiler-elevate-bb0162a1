@@ -15,8 +15,22 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import type { PracticeQuestion } from "@/data/practiceLabQuestions";
+import { practiceLabSections } from "@/data/practiceLabQuestions";
 
 const QUIZ_DURATION = 900;
+const QUIZ_QUESTION_COUNT = 10;
+
+function pickRandom<T>(arr: T[], count: number): T[] {
+  const shuffled = [...arr].sort(() => Math.random() - 0.5);
+  return shuffled.slice(0, Math.min(count, shuffled.length));
+}
+
+function generateCode() {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let code = "";
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
 
 function formatTime(seconds: number) {
   const m = Math.floor(seconds / 60);
@@ -565,6 +579,36 @@ export default function BattleRoomPage() {
     }
   }, [room, user]);
 
+  const handlePlayAgain = useCallback(async () => {
+    if (!room || !user) return;
+    // Find the chapter's questions from the sections data
+    const section = practiceLabSections.find(s => s.id === room.section_id);
+    const chapter = section?.chapters.find(ch => ch.slug === room.chapter_slug);
+    if (!chapter || chapter.questions.length === 0) return;
+
+    const questions = pickRandom(chapter.questions, QUIZ_QUESTION_COUNT);
+    const newCode = generateCode();
+    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
+
+    const { data: newRoom, error: err } = await (supabase.from("battle_rooms") as any).insert({
+      code: newCode,
+      host_user_id: user.id,
+      section_id: room.section_id,
+      chapter_slug: room.chapter_slug,
+      questions_json: questions,
+    }).select("id").single();
+
+    if (err || !newRoom) return;
+
+    await (supabase.from("battle_players") as any).insert({
+      room_id: newRoom.id,
+      user_id: user.id,
+      display_name: displayName,
+    });
+
+    navigate(`/practice-lab/battle/${newCode}`);
+  }, [room, user, navigate]);
+
   const handleExit = () => navigate("/practice-lab");
 
   // Loading / Error states
@@ -648,6 +692,7 @@ export default function BattleRoomPage() {
                 players={players}
                 questions={questions}
                 currentUserId={user?.id || ""}
+                onPlayAgain={handlePlayAgain}
                 onExit={handleExit}
               />
             )}
