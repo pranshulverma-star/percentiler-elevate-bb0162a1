@@ -574,12 +574,17 @@ export default function BattleRoomPage() {
   const [myFinished, setMyFinished] = useState(false);
   const joinedRef = useRef(false);
 
-  // Redirect to sign in if not authenticated
+  // Redirect to sign in if not authenticated, then ask for phone
   useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
+    if (authLoading || phoneLoading) return;
+    if (!isAuthenticated) {
       signIn(`/practice-lab/battle/${code}`);
+      return;
     }
-  }, [authLoading, isAuthenticated]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (!hasPhone) {
+      setPhoneModalOpen(true);
+    }
+  }, [authLoading, phoneLoading, isAuthenticated, hasPhone]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fetch room + join
   useEffect(() => {
