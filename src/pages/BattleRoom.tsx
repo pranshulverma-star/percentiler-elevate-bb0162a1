@@ -617,7 +617,7 @@ export default function BattleRoomPage() {
     const chapter = section?.chapters.find(ch => ch.slug === room.chapter_slug);
     if (!chapter || chapter.questions.length === 0) return;
 
-    const questions = pickRandom(chapter.questions, QUIZ_QUESTION_COUNT);
+    const questions = pickGroupedRandom(chapter.questions, QUIZ_QUESTION_COUNT);
     const newCode = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 
