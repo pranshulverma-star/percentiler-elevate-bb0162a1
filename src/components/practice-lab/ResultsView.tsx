@@ -149,8 +149,7 @@ export default function ResultsView({
     const wrongTopics: Record<string, number> = {};
     questions.forEach((q) => {
       const a = answers[q.id];
-      const isCorrect = q.type === "mcq" ? a === q.correctAnswer :
-        a !== undefined && a !== null && a !== "" && String(a).trim().toLowerCase() === (q.numericAnswer || "").trim().toLowerCase();
+      const isCorrect = a === q.correctAnswer;
       if (!isCorrect) {
         // Use chapter name as the weak area
         wrongTopics[chapterName] = (wrongTopics[chapterName] || 0) + 1;
