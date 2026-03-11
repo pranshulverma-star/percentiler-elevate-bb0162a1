@@ -3036,8 +3036,8 @@
     "subtopic": "Recruitment Scores",
     "question": "Which of the following statements MUST be FALSE?",
     "options": {"1": "Chetna scored more than Bala in DI", "2": "Harini's composite score was less than that of Falak", "3": "Bala's composite score was less than that of Ester", "4": "Bala scored same as Jatin in DI"},
-    "correct_answer": "1",
-    "explanation": "Chetna's DI score is 19, and Bala's DI score can be determined through constraints. Statement 1 is already true (19 > Bala's DI), so looking at which MUST be false — option 1 is actually true. Re-examining: the statement that must be false involves checking all constraints carefully.",
+    "correct_answer": "4",
+    "explanation": "From the solution table: Jatin's DI = 20. If Bala scored same as Jatin in DI (20), then Bala's composite = 2(20)+9+11 = 60 = same as Indu. But constraint 1 says no two have same composite. So 'Bala scored same as Jatin in DI' MUST be FALSE.",
     "group_id": "cat2018-s1-di-recruit",
     "group_context": ""
   },
