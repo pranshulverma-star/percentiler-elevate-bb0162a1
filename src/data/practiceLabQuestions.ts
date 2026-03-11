@@ -292,7 +292,7 @@ const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "lrdi");
 const varcRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "varc");
 
 const qaChapters = buildChaptersFromRaw(qaRaw);
-const lrdiChapters = buildChaptersFromRaw(lrdiRaw);
+const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
 const varcChapters = buildChaptersFromRaw(varcRaw);
 
 export const practiceLabSections: SectionData[] = [
