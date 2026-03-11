@@ -212,7 +212,7 @@ function extractAnswerFromExplanation(explanation: string): string {
   return "";
 }
 
-function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
+function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false): Chapter[] {
   const topicMap = new Map<string, PracticeQuestion[]>();
 
   for (const r of raw) {
@@ -241,15 +241,11 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
         group_image: r.group_image,
       };
     } else {
-      // Convert numeric/open-ended to MCQ with generated options
       const answerText = r.correct_answer === "Open-ended"
         ? extractAnswerFromExplanation(r.explanation || "")
         : r.correct_answer;
 
-      if (!answerText) {
-        // Can't determine answer — skip question
-        continue;
-      }
+      if (!answerText) continue;
 
       const { options, correctIndex } = generateDistractors(answerText, r.id);
 
@@ -266,14 +262,14 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
       };
     }
 
-    const topic = r.topic;
-    if (!topicMap.has(topic)) topicMap.set(topic, []);
-    topicMap.get(topic)!.push(pq);
+    const key = useSubtopic ? (r.subtopic || r.topic) : r.topic;
+    if (!topicMap.has(key)) topicMap.set(key, []);
+    topicMap.get(key)!.push(pq);
   }
 
-  return Array.from(topicMap.entries()).map(([topic, questions]) => ({
-    slug: slugify(topic),
-    name: topic,
+  return Array.from(topicMap.entries()).map(([name, questions]) => ({
+    slug: slugify(name),
+    name,
     questions,
   }));
 }
