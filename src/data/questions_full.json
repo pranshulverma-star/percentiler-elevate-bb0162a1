@@ -2400,5 +2400,203 @@
     "options": {"1": "Contrary to our assumption that urban settlements have always involved hierarchical political and administrative structures, ancient cities were not organised in this way.", "2": "The lack of hierarchical administration in ancient cities can be deduced by the absence of religious and regal structures such as temples and palaces.", "3": "The history of ancient cities shows evidence of both egalitarian and hierarchical forms of social organization, casting doubt on urban life necessarily requiring a ruling class.", "4": "Evidence from the world's earliest cities shows that urban life need not involve hierarchical political structures, opening up egalitarian possibilities for our future."},
     "correct_answer": "4",
     "explanation": "Option 4 best captures both the historical evidence (earliest cities without hierarchical structures) and the forward-looking conclusion (opening egalitarian possibilities). Option 1 is too narrow, Option 2 focuses on method of deduction, Option 3 doesn't capture the forward-looking element."
+  },
+  {
+    "id": 221,
+    "topic": "Reading Comprehension",
+    "subtopic": "Elephant Trauma",
+    "question": "The passage makes all of the following claims EXCEPT:",
+    "options": {"1": "elephant mothers are evolving newer ways of rearing their calves to adapt to emerging threats.", "2": "the elephant response to deeply disturbing experiences is similar to that of humans.", "3": "human actions such as poaching and culling have created stressful conditions for elephant communities.", "4": "elephants establish extended and enduring familial relationships as do humans."},
+    "correct_answer": "1",
+    "explanation": "The passage never claims elephants are 'evolving newer ways of rearing calves.' Instead, it discusses the breakdown of traditional elephant social structures due to human interference. Options 2, 3, and 4 are all supported by the passage.",
+    "group_id": "cat2018-s1-rc1",
+    "group_context": "Passage: \"Everybody pretty much agrees that the relationship between elephants and people has dramatically changed,\" says psychologist Gay Bradshaw. \"Where for centuries humans and elephants lived in relatively peaceful coexistence, there is now hostility and violence...\" Bradshaw argues that today's elephant populations are suffering from chronic stress, a species-wide trauma caused by decades of poaching, culling and habitat loss that have disrupted the intricate web of familial and societal relations. Elephants are profoundly social creatures raised within extended networks of female caregivers over lifespans of 70 years. This social fabric has been frayed by habitat loss, poaching, and systematic culling. Young orphaned elephants exhibit post-traumatic stress disorder symptoms similar to humans: abnormal startle response, unpredictable asocial behavior, and hyperaggression. Bradshaw notes that \"elephants are suffering and behaving in the same ways that we recognize in ourselves as a result of violence.\""
+  },
+  {
+    "id": 222,
+    "topic": "Reading Comprehension",
+    "subtopic": "Elephant Trauma",
+    "question": "Which of the following statements best expresses the overall argument of this passage?",
+    "options": {"1": "Recent elephant behaviour could be understood as a form of species-wide trauma-related response.", "2": "Elephants, like the humans they are in conflict with, are profoundly social creatures.", "3": "The relationship between elephants and humans has changed from one of coexistence to one of hostility.", "4": "The brain organisation and early development of elephants and humans are extremely similar."},
+    "correct_answer": "1",
+    "explanation": "The central argument of the passage is that elephant aggression and abnormal behavior can be understood as a trauma response caused by decades of human interference. Options 2, 3, and 4 are supporting details, not the main argument.",
+    "group_id": "cat2018-s1-rc1",
+    "group_context": ""
+  },
+  {
+    "id": 223,
+    "topic": "Reading Comprehension",
+    "subtopic": "Elephant Trauma",
+    "question": "Which of the following measures is Bradshaw most likely to support to address the problem of elephant aggression?",
+    "options": {"1": "Funding of more studies to better understand the impact of testosterone on male elephant aggression.", "2": "The development of treatment programmes for elephants drawing on insights gained from treating post-traumatic stress disorder in humans.", "3": "Studying the impact of isolating elephant calves on their early brain development, behaviour and aggression.", "4": "Increased funding for research into the similarity of humans and other animals drawing on insights gained from human-elephant similarities."},
+    "correct_answer": "2",
+    "explanation": "Bradshaw draws explicit parallels between elephant trauma and human PTSD. She would most likely support treatment programmes that leverage insights from human PTSD treatment. Option 1 focuses on testosterone (which the passage says is NOT the main cause), and options 3 and 4 are too broad.",
+    "group_id": "cat2018-s1-rc1",
+    "group_context": ""
+  },
+  {
+    "id": 224,
+    "topic": "Reading Comprehension",
+    "subtopic": "Elephant Trauma",
+    "question": "In paragraph 4, the phrase \"The fabric of elephant society . . . has(s) effectively been frayed by . . .\" is:",
+    "options": {"1": "an accurate description of the condition of elephant herds today.", "2": "a metaphor for the effect of human activity on elephant communities.", "3": "an exaggeration aimed at bolstering Bradshaw's claims.", "4": "an ode to the fragility of elephant society today."},
+    "correct_answer": "2",
+    "explanation": "The phrase uses 'fabric' and 'frayed' as a metaphor to describe how human activities (habitat loss, poaching, culling) have damaged elephant social structures. It is not literal description (option 1), nor exaggeration (option 3), nor an ode (option 4).",
+    "group_id": "cat2018-s1-rc1",
+    "group_context": ""
+  },
+  {
+    "id": 225,
+    "topic": "Reading Comprehension",
+    "subtopic": "Elephant Trauma",
+    "question": "In the first paragraph, Bradshaw uses the term \"violence\" to describe the recent change in the human-elephant relationship because, according to him:",
+    "options": {"1": "there is a purposefulness in human and elephant aggression towards each other.", "2": "elephant herds and their habitat have been systematically destroyed by humans.", "3": "human-elephant interactions have changed their character over time.", "4": "both humans and elephants have killed members of each other's species."},
+    "correct_answer": "1",
+    "explanation": "Bradshaw explicitly states he uses 'violence' because of 'the intentionality associated with it' — purposefulness in the aggression on both sides. This is directly stated in paragraph 1.",
+    "group_id": "cat2018-s1-rc1",
+    "group_context": ""
+  },
+  {
+    "id": 226,
+    "topic": "Reading Comprehension",
+    "subtopic": "Plastic Pollution",
+    "question": "In the second paragraph, the phrase \"what hammering a nail is to halting a falling skyscraper\" means:",
+    "options": {"1": "relying on emerging technologies to mitigate the ill-effects of plastic pollution.", "2": "encouraging the responsible production of plastics by firms.", "3": "focusing on consumer behaviour to tackle the problem of plastics pollution.", "4": "focusing on single-use plastic bags to reduce the plastics footprint."},
+    "correct_answer": "3",
+    "explanation": "The analogy compares recycling (a tiny, inadequate effort) to halting a falling skyscraper with a nail. The passage argues that focusing on consumer recycling behavior is wholly inadequate compared to addressing the real problem of single-use plastic production.",
+    "group_id": "cat2018-s1-rc2",
+    "group_context": "Passage: The lie is that blame for the plastic problem is wasteful consumers and that changing our individual habits will fix it. Recycling plastic is to saving the Earth what hammering a nail is to halting a falling skyscraper. The real problem is single-use plastic production. As an ecologist, the author highlights the hazards of plastic pollution: slow biodegradation, toxic chemical absorption, wildlife entanglement, and food chain contamination. Big beverage companies formed Keep America Beautiful, ostensibly to promote environmental stewardship but actually to shift blame from corporate polluters to consumers and thwart producer-responsibility legislation. The author argues we must reject the lie that litterbugs are responsible, and instead pass regulations targeted at producers that generate plastic products."
+  },
+  {
+    "id": 227,
+    "topic": "Reading Comprehension",
+    "subtopic": "Plastic Pollution",
+    "question": "In the first paragraph, the author uses \"lie\" to refer to the:",
+    "options": {"1": "blame assigned to consumers for indiscriminate use of plastics.", "2": "understatement of the enormity of the plastics pollution problem.", "3": "understatement of the effects of recycling plastics.", "4": "fact that people do not know they have been lied to."},
+    "correct_answer": "1",
+    "explanation": "The 'lie' the author refers to is explicitly stated: 'The lie is that blame for the plastic problem is wasteful consumers and that changing our individual habits will fix it.' This is about falsely blaming consumers.",
+    "group_id": "cat2018-s1-rc2",
+    "group_context": ""
+  },
+  {
+    "id": 228,
+    "topic": "Reading Comprehension",
+    "subtopic": "Plastic Pollution",
+    "question": "The author lists all of the following as negative effects of the use of plastics EXCEPT the:",
+    "options": {"1": "slow pace of degradation or non-degradation of plastics in the environment.", "2": "air pollution caused during the process of recycling plastics.", "3": "adverse impacts on the digestive systems of animals exposed to plastic.", "4": "poisonous chemicals released into the water and food we consume."},
+    "correct_answer": "2",
+    "explanation": "The passage mentions slow biodegradation (option 1), wildlife entanglement and ingestion (option 3), and toxic chemicals in water/food (option 4). Air pollution from recycling (option 2) is never mentioned.",
+    "group_id": "cat2018-s1-rc2",
+    "group_context": ""
+  },
+  {
+    "id": 229,
+    "topic": "Reading Comprehension",
+    "subtopic": "Plastic Pollution",
+    "question": "Which of the following interventions would the author most strongly support:",
+    "options": {"1": "completely banning all single-use plastic bags.", "2": "having all consumers change their plastic consumption habits.", "3": "recycling all plastic debris in the seabed.", "4": "passing regulations targeted at producers that generate plastic products."},
+    "correct_answer": "4",
+    "explanation": "The author explicitly states: 'Our huge problem with plastic is the result of a permissive legal framework' and advocates for regulations targeting producers. The author dismisses consumer-focused solutions (option 2) and recycling (option 3) as inadequate.",
+    "group_id": "cat2018-s1-rc2",
+    "group_context": ""
+  },
+  {
+    "id": 230,
+    "topic": "Reading Comprehension",
+    "subtopic": "Plastic Pollution",
+    "question": "It can be inferred that the author considers the Keep America Beautiful organisation:",
+    "options": {"1": "an innovative example of a collaborative corporate social responsibility initiative.", "2": "a sham as it diverted attention away from the role of corporates in plastics pollution.", "3": "an important step in sensitising producers to the need to tackle plastics pollution.", "4": "a \"greenwash\" because it was a benevolent attempt to improve public recycling habits."},
+    "correct_answer": "2",
+    "explanation": "The author describes Keep America Beautiful as 'the first corporate greenwashing front' that shifted blame from corporate polluters to consumers and 'actively thwarted legislation' for producer responsibility. This makes it a sham (option 2).",
+    "group_id": "cat2018-s1-rc2",
+    "group_context": ""
+  },
+  {
+    "id": 231,
+    "topic": "Reading Comprehension",
+    "subtopic": "Well-being Technology",
+    "question": "In the author's opinion, the shift in thinking in the 1970s:",
+    "options": {"1": "introduced greater stress into people's lives as they were expected to be responsible for their own happiness.", "2": "was a welcome change from the earlier view that depression could be cured by changing circumstances.", "3": "put people in touch with their own feelings rather than depending on psychologists.", "4": "reflected the emergence of neuroscience as the authority on human emotions."},
+    "correct_answer": "1",
+    "explanation": "The author states that since the 1970s, depression has been viewed as an individual defect, which 'escalates the sense of responsibility each of us feels for our own feelings, and with it, the sense of failure when things go badly.' This introduced greater stress (option 1).",
+    "group_id": "cat2018-s1-rc3",
+    "group_context": "Passage: Economists have spent most of the 20th century ignoring psychology, but today there is great emphasis on measuring and optimizing happiness. Wearable technologies offer data-driven advice; happiness has become something monitored and measured through behavior, social media, and bodily indicators. The author argues that businesses and experts driving this quantification often conceal their own agendas — in workplaces, happy workers are viewed as more productive. Cities like Dubai use intrusive data collection including CCTV facial monitoring. Since the 1970s, depression has been viewed as an individual cognitive defect rather than a consequence of circumstances, escalating personal responsibility for emotions and the sense of failure. The author argues that removing sources of misery (e.g., exploitative employment) would be more effective than making happiness the overarching goal."
+  },
+  {
+    "id": 232,
+    "topic": "Reading Comprehension",
+    "subtopic": "Well-being Technology",
+    "question": "The author's view would be undermined by which of the following research findings?",
+    "options": {"1": "There is a definitive move towards the adoption of wearable technology that taps into emotions.", "2": "A proliferation of gyms that are collecting data on customer well-being.", "3": "Individuals worldwide are utilising technologies to monitor and increase their well-being.", "4": "Stakeholders globally are moving away from collecting data on the well-being of individuals."},
+    "correct_answer": "4",
+    "explanation": "The author's argument is that there's a concerning trend toward monitoring and measuring happiness. If stakeholders were moving AWAY from this (option 4), it would undermine the author's concern. Options 1-3 would actually support the author's argument.",
+    "group_id": "cat2018-s1-rc3",
+    "group_context": ""
+  },
+  {
+    "id": 233,
+    "topic": "Reading Comprehension",
+    "subtopic": "Well-being Technology",
+    "question": "According to the author, Dubai:",
+    "options": {"1": "develops sophisticated technologies to monitor its inhabitants' states of mind.", "2": "incentivises companies that prioritise worker welfare.", "3": "collaborates with Facebook to selectively influence its inhabitants' moods.", "4": "is on its way to becoming one of the world's happiest cities."},
+    "correct_answer": "1",
+    "explanation": "The passage states Dubai has 'pledged to become the happiest city' and uses 'ever-more elaborate and intrusive ways of collecting data on well-being' including CCTV cameras to monitor facial expressions. This aligns with option 1.",
+    "group_id": "cat2018-s1-rc3",
+    "group_context": ""
+  },
+  {
+    "id": 234,
+    "topic": "Reading Comprehension",
+    "subtopic": "Well-being Technology",
+    "question": "According to the author, wearable technologies and social media are contributing most to:",
+    "options": {"1": "happiness as a \"personal project\".", "2": "disciplining individuals to be happy.", "3": "depression as a thing of the past.", "4": "making individuals aware of stress in their lives."},
+    "correct_answer": "2",
+    "explanation": "The author argues that happiness measurement is increasingly used 'as a basis to transform or discipline individuals.' Wearable tech and social media monitoring serve this disciplinary function. Option 1 is related but less specific to the role of technology.",
+    "group_id": "cat2018-s1-rc3",
+    "group_context": ""
+  },
+  {
+    "id": 235,
+    "topic": "Reading Comprehension",
+    "subtopic": "Well-being Technology",
+    "question": "From the passage we can infer that the author would like economists to:",
+    "options": {"1": "correlate measurements of happiness with economic indicators.", "2": "measure the effectiveness of Facebook and social media advertising.", "3": "incorporate psychological findings into their research cautiously.", "4": "work closely with neuroscientists to understand human behaviour."},
+    "correct_answer": "3",
+    "explanation": "The author is critical of how economists have embraced happiness measurement without questioning the agendas behind it. The passage implies economists should be more cautious about incorporating such psychological/emotional metrics into their work.",
+    "group_id": "cat2018-s1-rc3",
+    "group_context": ""
+  },
+  {
+    "id": 236,
+    "topic": "Reading Comprehension",
+    "subtopic": "Evolution & Epigenetics",
+    "question": "The Emory University experiment with mice points to the inheritance of:",
+    "options": {"1": "psychological markers", "2": "acquired characteristics", "3": "personality traits", "4": "acquired parental fears"},
+    "correct_answer": "2",
+    "explanation": "The mice experiment showed that fear of almond smell was passed to offspring through epigenetic marks — these are acquired characteristics (not innate). The passage explicitly connects this to 'epigenetic inheritance' and the inheritance of acquired characteristics, which was previously thought impossible.",
+    "group_id": "cat2018-s1-rc4",
+    "group_context": "Passage: Modern evolutionary biology's traditional view is that adaptations are fully explained by natural selection and genetic inheritance. However, new evidence from genomics, epigenetics, and developmental biology shows evolution is more complex. Edward O Wilson's dog-walker metaphor illustrates multiple forces (developmental factors, epigenetics, antibodies, hormones, culture) tugging evolution in different directions. The Emory University experiment showed mice trained to fear almond smell passed this fear to children and grandchildren through epigenetic marks — chemical attachments that switch genes on/off. Epigenetics is part of a broader picture where genomic evolution, epigenetic modifications, inherited cultural factors, and parental effects collectively inform how organisms adapt, giving them flexibility for rapid environmental adjustments."
+  },
+  {
+    "id": 237,
+    "topic": "Reading Comprehension",
+    "subtopic": "Evolution & Epigenetics",
+    "question": "Which of the following best describes the author's argument?",
+    "options": {"1": "Darwin's and Mendel's theories together best explain evolution.", "2": "Mendel's theory of inheritance is unfairly underestimated in explaining evolution.", "3": "Wilson's theory of evolution is scientifically superior to either Darwin's or Mendel's.", "4": "Darwin's theory of natural selection cannot fully explain evolution."},
+    "correct_answer": "4",
+    "explanation": "The author's central argument is that the traditional Darwin-Mendel synthesis is incomplete. New evidence from epigenetics, developmental biology, and cultural inheritance shows that evolution involves more than just natural selection and genetic inheritance.",
+    "group_id": "cat2018-s1-rc4",
+    "group_context": ""
+  },
+  {
+    "id": 238,
+    "topic": "Reading Comprehension",
+    "subtopic": "Evolution & Epigenetics",
+    "question": "Which of the following, if found to be true, would negate the main message of the passage?",
+    "options": {"1": "A study affirming the influence of socio-cultural markers on evolutionary processes.", "2": "A study highlighting the criticality of epigenetic inheritance to evolution.", "3": "A study indicating the primacy of ecological impact on human adaptation.", "4": "A study affirming the sole influence of natural selection and inheritance on evolution."},
+    "correct_answer": "4",
+    "explanation": "The passage argues evolution is MORE complex than just natural selection and inheritance. A study proving that natural selection and inheritance are the SOLE drivers (option 4) would directly negate this argument. Options 1-3 would actually support the author's position.",
+    "group_id": "cat2018-s1-rc4",
+    "group_context": ""
   }
 ]
