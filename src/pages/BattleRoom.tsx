@@ -856,6 +856,17 @@ export default function BattleRoomPage() {
         </div>
       </main>
       <Footer />
+      <PhoneCaptureModal
+        open={phoneModalOpen}
+        onOpenChange={setPhoneModalOpen}
+        source="battle-room"
+        onSuccess={() => {
+          refetchPhone();
+          setPhoneModalOpen(false);
+        }}
+        title="One Last Step Before Battle"
+        description="Share your phone number so we can track your progress."
+      />
     </>
   );
 }
