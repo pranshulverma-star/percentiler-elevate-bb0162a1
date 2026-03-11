@@ -842,35 +842,35 @@ function ResultsView({
 
       {/* Analytics Card */}
       {pastAttempts.length > 1 && (
-        <Card className="p-5 border space-y-4">
+        <Card className="p-3 md:p-5 border space-y-3 md:space-y-4">
           <div className="flex items-center gap-2">
-            <BarChart3 className="w-5 h-5 text-primary" />
-            <h3 className="font-bold text-foreground">Battle History</h3>
+            <BarChart3 className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+            <h3 className="text-sm md:text-base font-bold text-foreground">Battle History</h3>
           </div>
-          <div className="grid grid-cols-3 gap-3 text-center">
-            <div className="game-card rounded-xl p-3">
-              <div className="text-xl font-black text-primary">{bestScore}%</div>
-              <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Best</p>
+          <div className="grid grid-cols-3 gap-2 md:gap-3 text-center">
+            <div className="game-card rounded-lg md:rounded-xl p-2 md:p-3">
+              <div className="text-base md:text-xl font-black text-primary">{bestScore}%</div>
+              <p className="text-[9px] md:text-[10px] text-muted-foreground mt-0.5 md:mt-1 uppercase tracking-wider">Best</p>
             </div>
-            <div className="game-card rounded-xl p-3">
-              <div className="text-xl font-black text-foreground">{avgScore}%</div>
-              <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Average</p>
+            <div className="game-card rounded-lg md:rounded-xl p-2 md:p-3">
+              <div className="text-base md:text-xl font-black text-foreground">{avgScore}%</div>
+              <p className="text-[9px] md:text-[10px] text-muted-foreground mt-0.5 md:mt-1 uppercase tracking-wider">Average</p>
             </div>
-            <div className="game-card rounded-xl p-3">
-              <div className={`text-xl font-black flex items-center justify-center gap-1 ${improvement > 0 ? "text-emerald-500" : improvement < 0 ? "text-destructive" : "text-muted-foreground"}`}>
-                {improvement > 0 && <TrendingUp className="w-4 h-4" />}
+            <div className="game-card rounded-lg md:rounded-xl p-2 md:p-3">
+              <div className={`text-base md:text-xl font-black flex items-center justify-center gap-0.5 md:gap-1 ${improvement > 0 ? "text-emerald-500" : improvement < 0 ? "text-destructive" : "text-muted-foreground"}`}>
+                {improvement > 0 && <TrendingUp className="w-3 h-3 md:w-4 md:h-4" />}
                 {improvement > 0 ? "+" : ""}{improvement}%
               </div>
-              <p className="text-[10px] text-muted-foreground mt-1 uppercase tracking-wider">Trend</p>
+              <p className="text-[9px] md:text-[10px] text-muted-foreground mt-0.5 md:mt-1 uppercase tracking-wider">Trend</p>
             </div>
           </div>
 
-          <div className="space-y-1.5">
-            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Recent Battles</p>
-            {pastAttempts.slice(0, 5).map((a, i) => (
-              <div key={i} className="flex items-center justify-between text-xs py-1.5 border-b border-border last:border-0">
+          <div className="space-y-1">
+            <p className="text-[9px] md:text-[10px] text-muted-foreground font-bold uppercase tracking-wider">Recent Battles</p>
+            {pastAttempts.slice(0, 3).map((a, i) => (
+              <div key={i} className="flex items-center justify-between text-[11px] md:text-xs py-1 md:py-1.5 border-b border-border last:border-0">
                 <span className="text-muted-foreground">{new Date(a.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}</span>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 md:gap-3">
                   <span className="text-muted-foreground">{formatTime(a.time_used_seconds)}</span>
                   <span className={`font-bold ${a.score_pct >= 70 ? "text-emerald-500" : a.score_pct >= 40 ? "text-primary" : "text-destructive"}`}>
                     {a.score_pct}%
