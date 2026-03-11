@@ -2761,8 +2761,8 @@
     "subtopic": "Satellites",
     "question": "What best can be said about the number of satellites serving C?",
     "options": {"1": "Must be between 450 and 725", "2": "Cannot be more than 800", "3": "Must be between 400 and 800", "4": "Must be at least 100"},
-    "correct_answer": "3",
-    "explanation": "Using the constraints (ratio 2:1:1 for B:C:S, 100 serve all three, exclusivity relationships, total 1600), the number of satellites serving C must be between 400 and 800.",
+    "correct_answer": "1",
+    "explanation": "C = 725 − 2.5y where y is the number serving only C&S. y ranges from 0 to 110 (since z = 550−5y ≥ 0). So C ranges from 450 (when y=110) to 725 (when y=0). Must be between 450 and 725.",
     "group_id": "cat2018-s1-di-satellites",
     "group_context": "1600 satellites were sent up by a country for several purposes: Broadcasting (B), Communication (C), Surveillance (S), and Others (O). A satellite serving B, C, or S does not serve O.\n\n1. Numbers serving B, C, and S (not exclusively) are in ratio 2:1:1.\n2. Number serving all three of B, C, and S is 100.\n3. Number exclusively serving C = number exclusively serving S = 30% of number exclusively serving B.\n4. Number serving O = number serving both C and S but not B."
   },
