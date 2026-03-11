@@ -9,6 +9,7 @@ export interface PracticeQuestion {
   explanation?: string;
   group_id?: string;
   group_context?: string;
+  group_image?: string;
 }
 
 export interface Chapter {
