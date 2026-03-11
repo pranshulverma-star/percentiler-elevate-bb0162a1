@@ -881,6 +881,14 @@ function ResultsView({
         </Card>
       )}
 
+      {/* Shareable Card */}
+      <ShareableResultCard
+        correct={correct}
+        total={questions.length}
+        chapterName={chapterName}
+        timeUsed={timeUsed}
+      />
+
       {/* Actions */}
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <Button onClick={onRetry} className="gap-2 font-bold game-glow-pulse">
