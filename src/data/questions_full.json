@@ -2598,5 +2598,205 @@
     "explanation": "The passage argues evolution is MORE complex than just natural selection and inheritance. A study proving that natural selection and inheritance are the SOLE drivers (option 4) would directly negate this argument. Options 1-3 would actually support the author's position.",
     "group_id": "cat2018-s1-rc4",
     "group_context": ""
+  },
+  {
+    "id": 239,
+    "topic": "Reading Comprehension",
+    "subtopic": "Evolution & Epigenetics",
+    "question": "The passage uses the metaphor of a dog walker to argue that evolutionary adaptation is most comprehensively understood as being determined by:",
+    "options": {"1": "extra genetic, genetic, epigenetic and genomic legacies.", "2": "socio-cultural, genetic, epigenetic, and genomic legacies", "3": "ecological, hormonal, extra genetic and genetic legacies.", "4": "genetic, epigenetic, developmental factors, and ecological legacies."},
+    "correct_answer": "4",
+    "explanation": "The dog-walker metaphor illustrates multiple 'tugs' on evolution: developmental factors, epigenetics, antibodies, hormones, culture, and ecological legacies. Option 4 best captures this comprehensive set of factors.",
+    "group_id": "cat2018-s1-rc4",
+    "group_context": ""
+  },
+  {
+    "id": 240,
+    "topic": "Reading Comprehension",
+    "subtopic": "India's WWII Role",
+    "question": "In the first paragraph, the author laments the fact that:",
+    "options": {"1": "there is no recognition of the Indian soldiers who served in the Second World War.", "2": "the new war memorial will be built right next to India Gate.", "3": "India lost thousands of human lives during the Second World War.", "4": "funds will be wasted on another war memorial when we already have the India Gate memorial."},
+    "correct_answer": "1",
+    "explanation": "The author's main lament is that India's contribution to WWII is 'airbrushed out of existence' — the new National War Memorial honours post-1947 campaigns but ignores WWII soldiers.",
+    "group_id": "cat2018-s1-rc5",
+    "group_context": "Passage: The Indian government announced a National War Memorial to honour soldiers from post-1947 wars, built adjacent to India Gate (a WWI memorial). Between these two memorials, India's WWII contribution is airbrushed out. Yet WWII played a crucial role in India's independence and partition. India recruited 2.5 million men, with 90,000 killed. India served as a major military-industrial base for Allied operations. The war reversed India's financial relationship with Britain — India finished as one of Britain's largest creditors. The Bengal famine killed millions. Indians served hoping it would lead to freedom. The post-war political and social upheaval was crucial in persuading Britain to leave India. The author argues India should engage with its WWII legacy and include it in the new memorial."
+  },
+  {
+    "id": 241,
+    "topic": "Reading Comprehension",
+    "subtopic": "India's WWII Role",
+    "question": "The phrase \"mood music\" is used in the second paragraph to indicate that the Second World War is viewed as:",
+    "options": {"1": "setting the stage for the emergence of the India–Pakistan rivalry in the subcontinent.", "2": "a tragic period in terms of loss of lives and national wealth.", "3": "a backdrop to the subsequent independence and partition of the region.", "4": "a part of the narrative on the ill-effects of colonial rule on India."},
+    "correct_answer": "3",
+    "explanation": "The passage states that India's WWII experience 'continues to be seen as little more than mood music in the drama of India's advance towards independence and partition.' WWII is treated merely as background.",
+    "group_id": "cat2018-s1-rc5",
+    "group_context": ""
+  },
+  {
+    "id": 242,
+    "topic": "Reading Comprehension",
+    "subtopic": "India's WWII Role",
+    "question": "The author lists all of the following as outcomes of the Second World War EXCEPT:",
+    "options": {"1": "independence of the subcontinent and its partition into two countries.", "2": "US recognition of India's strategic location and role in the War.", "3": "large-scale deaths in Bengal as a result of deprivation and famine.", "4": "the large financial debt India owed to Britain after the War."},
+    "correct_answer": "4",
+    "explanation": "The passage states India finished the war as 'one of the largest creditors to the imperial power' — meaning Britain owed India, not the other way around. Option 4 reverses this.",
+    "group_id": "cat2018-s1-rc5",
+    "group_context": ""
+  },
+  {
+    "id": 243,
+    "topic": "Reading Comprehension",
+    "subtopic": "India's WWII Role",
+    "question": "The author claims that omitting mention of Indians who served in the Second World War from the new National War Memorial is:",
+    "options": {"1": "a reflection of the academic and popular view of India's role in the War.", "2": "appropriate as their names can always be included in the India Gate memorial.", "3": "a reflection of misplaced priorities of the post-independence Indian governments.", "4": "is something which can be rectified in future by constructing a separate memorial."},
+    "correct_answer": "1",
+    "explanation": "The passage states the government's conception 'accurately reflected the fact that both academic history and popular memory have yet to come to terms with India's Second World War.'",
+    "group_id": "cat2018-s1-rc5",
+    "group_context": ""
+  },
+  {
+    "id": 244,
+    "topic": "Reading Comprehension",
+    "subtopic": "India's WWII Role",
+    "question": "The author suggests that a major reason why India has not so far acknowledged its role in the Second World War is that it:",
+    "options": {"1": "blames the War for leading to the momentous partition of the country.", "2": "wants to forget the human and financial toll of the War on the country.", "3": "has been focused on building an independent, non-colonial political identity.", "4": "views the War as a predominantly Allied effort, with India playing only a supporting role."},
+    "correct_answer": "3",
+    "explanation": "The passage explains that post-partition, 'both of the new nations needed fresh stories for self-legitimisation rather than focusing on shared wartime experiences.'",
+    "group_id": "cat2018-s1-rc5",
+    "group_context": ""
+  },
+  {
+    "id": 245,
+    "topic": "Para Jumbles",
+    "subtopic": "Transparency & Algorithms",
+    "question": "The four sentences (labelled 1,2,3,4) given in this question, when properly sequenced, form a coherent paragraph. Decide on the proper sequence:\n\n1. Impartiality and objectivity are fiendishly difficult concepts that can cause all sorts of injustices even if transparently implemented.\n2. It encourages us into bubbles of people we know and like, while blinding us to different perspectives, but the deeper problem of 'transparency' lies in the words \"…and much more.\"\n3. Twitter's website says that \"tweets you are likely to care about most will show up first in your timeline…based on accounts you interact with most, tweets you engage with, and much more.\"\n4. We are only told some of the basic principles, and we can't see the algorithm itself, making it hard for citizens to analyse the system sensibly or fairly or be convinced of its impartiality and objectivity.",
+    "options": {"1": "3214", "2": "1324", "3": "3241", "4": "1243"},
+    "correct_answer": "1",
+    "explanation": "Flow: Twitter's claim (3) → it creates bubbles, deeper problem is 'and much more' (2) → impartiality is difficult (1) → we can't see the algorithm (4). Sequence: 3-2-1-4."
+  },
+  {
+    "id": 246,
+    "topic": "Para Jumbles",
+    "subtopic": "Translators & Bumblebees",
+    "question": "Five sentences related to a topic are given below. Four of them can be put together to form a meaningful and coherent short paragraph. Identify the odd one out:\n\n1. Translators are like bumblebees.\n2. Though long since scientifically disproved, this factoid is still routinely trotted out.\n3. Similar pronouncements about the impossibility of translation have dogged practitioners since Leonardo Bruni's De interpretatione recta, published in 1424.\n4. Bees, unaware of these deliberations, have continued to flit from flower to flower, and translators continue to translate.\n5. In 1934, the French entomologist August Magnan pronounced the flight of the bumblebee to be aerodynamically impossible.",
+    "options": {"1": "1", "2": "2", "3": "3", "4": "4"},
+    "correct_answer": "2",
+    "explanation": "Sentences 1, 5, 3, 4 form a coherent paragraph comparing translators to bumblebees. Sentence 2 about 'this factoid being disproved' disrupts the analogy's point that both carry on despite being told it's impossible."
+  },
+  {
+    "id": 247,
+    "topic": "Para Jumbles",
+    "subtopic": "Woodland Canopy & Swifts",
+    "question": "The four sentences (labelled 1, 2, 3, and 4) when properly sequenced, form a coherent paragraph. Decide on the proper order:\n\n1. The woodland's canopy receives most of the sunlight that falls on the trees.\n2. Swifts do not confine themselves to woodlands, but hunt wherever there are insects in the air.\n3. With their streamlined bodies, swifts are agile flyers, ideally adapted to twisting and turning through the air as they chase flying insects – the creatures that form their staple diet.\n4. Hundreds of thousands of insects fly in the sunshine up above the canopy, some falling prey to swifts and swallows.",
+    "options": {"1": "1342", "2": "1432", "3": "3214", "4": "3142"},
+    "correct_answer": "1",
+    "explanation": "Canopy receives sunlight (1) → swifts chase insects (3) → insects above canopy are preyed on (4) → swifts hunt beyond woodlands (2). Sequence: 1-3-4-2."
+  },
+  {
+    "id": 248,
+    "topic": "Summary",
+    "subtopic": "Knowledge Production & Professions",
+    "question": "Choose the option that best captures the author's position.\n\nProduction and legitimation of scientific knowledge can be approached from a number of perspectives. To study knowledge production from the sociology of professions perspective would mean a focus on the institutionalization of a body of knowledge. The professions-approach informed earlier research on managerial occupation, business schools and management knowledge. It however tends to reify institutional power structures in its understanding of the links between knowledge and authority. Knowledge production is restricted in the perspective to the selected members of the professional community, most notably to the university and professional college faculties. Power is understood as a negative mechanism, which prevents the non-professional actors from offering their ideas and information as legitimate knowledge.",
+    "options": {"1": "Professions-approach aims at the institutionalization of knowledge but restricts knowledge production as a function of a select few.", "2": "The study of knowledge production can be done through many perspectives.", "3": "Professions-approach focuses on the creation of institutions of higher education and disciplines to promote knowledge production.", "4": "The professions-approach has been one of the most relied upon perspective in the study of management knowledge production."},
+    "correct_answer": "1",
+    "explanation": "Option 1 best captures both the approach (institutionalization) and its limitation (restricting knowledge production to select professional members)."
+  },
+  {
+    "id": 249,
+    "topic": "Summary",
+    "subtopic": "Artificial Embryo Twinning",
+    "question": "Choose the option that best captures the author's position.\n\nArtificial embryo twinning is a relatively low-tech way to make clones. As the name suggests, this technique mimics the natural process that creates identical twins. In nature, twins form very early in development when the embryo splits in two. Twinning happens in the first days after egg and sperm join, while the embryo is made of just a small number of unspecialized cells. Each half of the embryo continues dividing on its own, ultimately developing into separate, complete individuals. Since they developed from the same fertilized egg, the resulting individuals are genetically identical.",
+    "options": {"1": "Artificial embryo twinning is low-tech and mimetic of the natural development of genetically identical twins from the embryo after fertilization.", "2": "Artificial embryo twinning is low-tech unlike the natural development of identical twins from the embryo after fertilization.", "3": "Artificial embryo twinning is just like the natural development of twins, where during fertilization twins are formed.", "4": "Artificial embryo twinning is low-tech and is close to the natural development of twins where the embryo splits into two identical twins."},
+    "correct_answer": "4",
+    "explanation": "Option 4 captures both key aspects: it's low-tech AND closely mimics the natural process where an embryo splits. Option 3 incorrectly says twins form 'during fertilization'."
+  },
+  {
+    "id": 250,
+    "topic": "Summary",
+    "subtopic": "Landscape & Art History",
+    "question": "Choose the option that best captures the author's position.\n\nThe conceptualization of landscape as a geometric object first occurred in Europe and is historically related to the European conceptualization of the organism, particularly the human body, as a geometric object with parts having a rational, three-dimensional organization and integration. The European idea of landscape appeared before the science of landscape emerged, and it is no coincidence that Renaissance artists such as Leonardo da Vinci, who studied the structure of the human body, also facilitated an understanding of the structure of landscape. Landscape which had been a subordinate background to religious or historical narratives, became an independent genre or subject of art by the end of sixteenth century or the beginning of the seventeenth century.",
+    "options": {"1": "Landscape became a major subject of art at the turn of the sixteenth century.", "2": "The three-dimensional understanding of the organism in Europe led to a similar approach towards the understanding of landscape.", "3": "The study of landscape as an independent genre was aided by the Renaissance artists.", "4": "The Renaissance artists were responsible for the study of landscape as a subject of art."},
+    "correct_answer": "2",
+    "explanation": "The passage's central argument is that the European conceptualization of the human body as a 3D geometric object led to a similar conceptualization of landscape."
+  },
+  {
+    "id": 251,
+    "topic": "Para Jumbles",
+    "subtopic": "Democracy & Inequality",
+    "question": "The four sentences (labelled 1,2,3,4) when properly sequenced, form a coherent paragraph. Decide on the proper sequence:\n\n1. But now we have another group: the unwitting enablers.\n2. Democracy and high levels of inequality of the kind that have come to characterize the United States are simply incompatible.\n3. Believing these people are working for a better world, they are, actually, at most, chipping away at the margins, making slight course corrections, ensuring the system goes on as it is, uninterrupted.\n4. Very rich people will always use money to maintain their political and economic power.",
+    "options": {"1": "2413", "2": "2143", "3": "4213", "4": "4231"},
+    "correct_answer": "1",
+    "explanation": "Flow: Democracy and inequality are incompatible (2) → Rich people use money for power (4) → But there are unwitting enablers (1) → They chip away at margins but maintain the system (3). Sequence: 2-4-1-3."
+  },
+  {
+    "id": 252,
+    "topic": "Para Jumbles",
+    "subtopic": "Immunization & Inconsistency",
+    "question": "Five sentences related to a topic are given below. Four can form a meaningful paragraph. Identify the odd one out:\n\n1. In many cases time inconsistency is what prevents our going from intention to action.\n2. For people to continuously postpone getting their children immunized, they would need to be constantly fooled by themselves.\n3. In the specific case of immunization, however, it is hard to believe that time inconsistency by itself would be sufficient to make people permanently postpone the decision if they were fully cognizant of its benefits.\n4. In most cases, even a small cost of immunization was large enough to discourage most people.\n5. Not only do they have to think that they prefer to spend time going to the camp next month rather than today, they also have to believe that they will indeed go next month.",
+    "options": {"1": "1", "2": "2", "3": "3", "4": "4"},
+    "correct_answer": "4",
+    "explanation": "Sentences 1, 3, 2, 5 discuss time inconsistency and immunization. Sentence 4 introduces 'cost' as a separate factor that doesn't fit the time-inconsistency theme."
+  },
+  {
+    "id": 253,
+    "topic": "Para Jumbles",
+    "subtopic": "Bengal Displacement",
+    "question": "Five sentences related to a topic are given below. Four can form a meaningful paragraph. Identify the odd one out:\n\n1. Displacement in Bengal is thus not very significant in view of its magnitude.\n2. A factor of displacement in Bengal is the shifting course of the Ganges leading to erosion of river banks.\n3. The nature of displacement in Bengal makes it an interesting case study.\n4. Since displacement due to erosion is well spread over a long period of time, it remains invisible.\n5. Rapid displacement would have helped sensitize the public to its human costs.",
+    "options": {"1": "1", "2": "2", "3": "3", "4": "5"},
+    "correct_answer": "1",
+    "explanation": "Sentences 3, 2, 4, 5 form a coherent paragraph about Bengal's gradual displacement. Sentence 1 saying displacement is 'not very significant' contradicts the paragraph's point."
+  },
+  {
+    "id": 254,
+    "topic": "Para Jumbles",
+    "subtopic": "Skin Cancer Diagnosis",
+    "question": "The four sentences (labelled 1, 2, 3, and 4) when properly sequenced, form a coherent paragraph. Decide on the proper order:\n\n1. The eventual diagnosis was skin cancer and after treatment all seemed well.\n2. The viola player didn't know what it was; nor did her GP.\n3. Then a routine scan showed it had come back and spread to her lungs.\n4. It started with a lump on Cathy Perkins' index finger.",
+    "options": {"1": "4213", "2": "4231", "3": "2413", "4": "4123"},
+    "correct_answer": "1",
+    "explanation": "Chronological: Lump appeared (4) → She didn't know what it was (2) → Diagnosed as skin cancer, treated (1) → It came back (3). Sequence: 4-2-1-3."
+  },
+  {
+    "id": 255,
+    "topic": "Data Interpretation",
+    "subtopic": "Satellites",
+    "question": "What best can be said about the number of satellites serving C?",
+    "options": {"1": "Must be between 450 and 725", "2": "Cannot be more than 800", "3": "Must be between 400 and 800", "4": "Must be at least 100"},
+    "correct_answer": "3",
+    "explanation": "Using the constraints (ratio 2:1:1 for B:C:S, 100 serve all three, exclusivity relationships, total 1600), the number of satellites serving C must be between 400 and 800.",
+    "group_id": "cat2018-s1-di-satellites",
+    "group_context": "1600 satellites were sent up by a country for several purposes: Broadcasting (B), Communication (C), Surveillance (S), and Others (O). A satellite serving B, C, or S does not serve O.\n\n1. Numbers serving B, C, and S (not exclusively) are in ratio 2:1:1.\n2. Number serving all three of B, C, and S is 100.\n3. Number exclusively serving C = number exclusively serving S = 30% of number exclusively serving B.\n4. Number serving O = number serving both C and S but not B."
+  },
+  {
+    "id": 256,
+    "topic": "Data Interpretation",
+    "subtopic": "Satellites",
+    "question": "What is the minimum possible number of satellites serving B exclusively?",
+    "options": {"1": "100", "2": "200", "3": "500", "4": "250"},
+    "correct_answer": "3",
+    "explanation": "Using the constraints and the ratio 2:1:1, the minimum number of satellites exclusively serving B works out to 500.",
+    "group_id": "cat2018-s1-di-satellites",
+    "group_context": ""
+  },
+  {
+    "id": 257,
+    "topic": "Data Interpretation",
+    "subtopic": "Satellites",
+    "question": "If at least 100 of the 1600 satellites were serving O, what can be said about the number of satellites serving S?",
+    "options": {"1": "At most 475", "2": "Exactly 475", "3": "At least 475", "4": "No conclusion is possible based on the given information"},
+    "correct_answer": "1",
+    "explanation": "If at least 100 satellites serve O, this constrains the C∩S overlap. Working through the constraints, the maximum number serving S is 475.",
+    "group_id": "cat2018-s1-di-satellites",
+    "group_context": ""
+  },
+  {
+    "id": 258,
+    "topic": "Data Interpretation",
+    "subtopic": "Satellites",
+    "question": "If the number of satellites serving at least two among B, C, and S is 1200, which of the following MUST be FALSE?",
+    "options": {"1": "The number of satellites serving C cannot be uniquely determined", "2": "The number of satellites serving B is more than 1000", "3": "All 1600 satellites serve B or C or S", "4": "The number of satellites serving B exclusively is exactly 250"},
+    "correct_answer": "4",
+    "explanation": "If 1200 satellites serve at least two of B, C, S, then the number exclusively serving B cannot be exactly 250 given the ratio and overlap constraints.",
+    "group_id": "cat2018-s1-di-satellites",
+    "group_context": ""
   }
 ]
