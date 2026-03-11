@@ -2716,8 +2716,8 @@
     "subtopic": "Landscape & Art History",
     "question": "Choose the option that best captures the author's position.\n\nThe conceptualization of landscape as a geometric object first occurred in Europe and is historically related to the European conceptualization of the organism, particularly the human body, as a geometric object with parts having a rational, three-dimensional organization and integration. The European idea of landscape appeared before the science of landscape emerged, and it is no coincidence that Renaissance artists such as Leonardo da Vinci, who studied the structure of the human body, also facilitated an understanding of the structure of landscape. Landscape which had been a subordinate background to religious or historical narratives, became an independent genre or subject of art by the end of sixteenth century or the beginning of the seventeenth century.",
     "options": {"1": "Landscape became a major subject of art at the turn of the sixteenth century.", "2": "The three-dimensional understanding of the organism in Europe led to a similar approach towards the understanding of landscape.", "3": "The study of landscape as an independent genre was aided by the Renaissance artists.", "4": "The Renaissance artists were responsible for the study of landscape as a subject of art."},
-    "correct_answer": "2",
-    "explanation": "The passage's central argument is that the European conceptualization of the human body as a 3D geometric object led to a similar conceptualization of landscape."
+    "correct_answer": "3",
+    "explanation": "Option 3 best captures the author's position. The passage says Renaissance artists 'facilitated an understanding of the structure of landscape' — option 3 uses 'aided by' which matches. Option 2 distorts by saying 'three-dimensional understanding' instead of 'geometric'. Option 4 says 'responsible' but the passage says 'facilitated'."
   },
   {
     "id": 251,
