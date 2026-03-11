@@ -2,9 +2,9 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen,
-  Zap, TrendingUp, BarChart3, Flame, Shield, Star, Swords, Target, Crown,
-  Trophy, Users2, AlertTriangle, ChevronRight, Download, Share2
+  ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, BookOpen,
+  BarChart3, Flame, Swords, Target, Crown,
+  AlertTriangle, ChevronRight, Share2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
