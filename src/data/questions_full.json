@@ -2794,8 +2794,8 @@
     "subtopic": "Satellites",
     "question": "If the number of satellites serving at least two among B, C, and S is 1200, which of the following MUST be FALSE?",
     "options": {"1": "The number of satellites serving C cannot be uniquely determined", "2": "The number of satellites serving B is more than 1000", "3": "All 1600 satellites serve B or C or S", "4": "The number of satellites serving B exclusively is exactly 250"},
-    "correct_answer": "4",
-    "explanation": "If 1200 satellites serve at least two of B, C, S, then the number exclusively serving B cannot be exactly 250 given the ratio and overlap constraints.",
+    "correct_answer": "1",
+    "explanation": "If at-least-two = 1200, then 2z + y + 100 = 1200 → y = 0 (since 1200 − 9y = 1200). With y=0: C = 725 uniquely. So 'C cannot be uniquely determined' MUST be FALSE.",
     "group_id": "cat2018-s1-di-satellites",
     "group_context": ""
   },
