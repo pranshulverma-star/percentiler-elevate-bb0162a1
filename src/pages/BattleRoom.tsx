@@ -249,6 +249,16 @@ function BattleQuiz({
       {/* Question */}
       <AnimatePresence mode="wait">
         <motion.div key={q.id} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }}>
+          {/* Group context */}
+          {q.group_context && (
+            <Card className="p-4 md:p-6 border border-primary/20 bg-primary/[0.02] mb-3">
+              <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-2">📖 Passage / Set</p>
+              <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+                {q.group_context}
+              </div>
+            </Card>
+          )}
+
           <Card className="p-4 md:p-8 border space-y-4 md:space-y-6 relative overflow-hidden">
             <div className="absolute top-0 right-0">
               <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">
