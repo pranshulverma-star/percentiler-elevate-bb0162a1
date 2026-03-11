@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Share2, Target, Flame, Crown } from "lucide-react";
+import { Share2, Download, Target, Flame, Crown } from "lucide-react";
+import { toPng } from "html-to-image";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 
