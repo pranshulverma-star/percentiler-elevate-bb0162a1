@@ -498,13 +498,29 @@ export default function BattleRoomPage() {
     return () => { supabase.removeChannel(roomChannel); };
   }, [room?.id]);
 
-  // Host starts battle
+  // Host starts battle — trigger countdown
   const handleStart = useCallback(async () => {
     if (!room) return;
-    await (supabase.from("battle_rooms") as any)
-      .update({ status: "active", started_at: new Date().toISOString() })
-      .eq("id", room.id);
+    // Start countdown 3-2-1-GO
+    setCountdown(3);
   }, [room]);
+
+  // Countdown effect
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown <= -1) {
+      // Countdown finished, actually start the battle
+      setCountdown(null);
+      if (room) {
+        (supabase.from("battle_rooms") as any)
+          .update({ status: "active", started_at: new Date().toISOString() })
+          .eq("id", room.id);
+      }
+      return;
+    }
+    const timer = setTimeout(() => setCountdown(c => (c !== null ? c - 1 : null)), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown, room]);
 
   // Player finishes quiz
   const handleFinishQuiz = useCallback(async (answers: Record<number, number | string | null>, timeUsed: number) => {
