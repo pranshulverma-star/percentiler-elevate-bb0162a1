@@ -1388,5 +1388,367 @@
     },
     "correct_answer": "2",
     "explanation": "Already solved in id 94. 3M+4W = 1/5, 4M+2W = 1/5. Solving: M = 2W. 2M+6W = 4W+6W = 10W. Since 10W = 1/5 per day, they take 5 days. Completes on 5th day."
+  },
+  {
+    "id": 118,
+    "topic": "Logical Reasoning",
+    "subtopic": "Elections & Campaigns",
+    "group_id": "cat24-s1-election",
+    "group_context": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya's and Ramya's campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types: they can either focus on issues, or on attacking the other candidate.\n\nIf Amiya and Ramya both run campaigns focusing on issues, then:\n• The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if both run vigorous campaigns, then 20 × (2+2)% = 80% of the students will vote.\n• Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns.\n\nThe above percentages change as follows if at least one of them runs a campaign attacking their opponent:\n• If Amiya attacks Ramya while Ramya focuses on issues: 10% of students who would have voted for Amiya will vote for Ramya, and another 10% who would have voted for Amiya will not vote at all.\n• If Ramya attacks Amiya while Amiya focuses on issues: 20% of students who would have voted for Ramya will vote for Amiya, and another 5% who would have voted for Ramya will not vote at all.\n• If both run campaigns attacking each other: 10% of the students who would have otherwise voted for them (had they run issue campaigns) will not vote at all.",
+    "question": "If both of them run staid campaigns attacking the other, then what percentage of students will vote in the election?",
+    "options": {"1": "60%", "2": "64%", "3": "40%", "4": "36%"},
+    "correct_answer": "4",
+    "explanation": "Both staid (level 1), both attacking. Base voting = 20×(1+1) = 40%. With both attacking, 10% of voters don't vote. So 40% × 0.90 = 36%."
+  },
+  {
+    "id": 119,
+    "topic": "Logical Reasoning",
+    "subtopic": "Elections & Campaigns",
+    "group_id": "cat24-s1-election",
+    "group_context": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya's and Ramya's campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types: they can either focus on issues, or on attacking the other candidate.\n\nIf Amiya and Ramya both run campaigns focusing on issues, then:\n• The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if both run vigorous campaigns, then 20 × (2+2)% = 80% of the students will vote.\n• Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns.\n\nThe above percentages change as follows if at least one of them runs a campaign attacking their opponent:\n• If Amiya attacks Ramya while Ramya focuses on issues: 10% of students who would have voted for Amiya will vote for Ramya, and another 10% who would have voted for Amiya will not vote at all.\n• If Ramya attacks Amiya while Amiya focuses on issues: 20% of students who would have voted for Ramya will vote for Amiya, and another 5% who would have voted for Ramya will not vote at all.\n• If both run campaigns attacking each other: 10% of the students who would have otherwise voted for them (had they run issue campaigns) will not vote at all.",
+    "question": "What is the minimum percentage of students who will vote in the election?",
+    "options": {"1": "36%", "2": "38%", "3": "32%", "4": "40%"},
+    "correct_answer": "1",
+    "explanation": "Minimum voting occurs when both run staid campaigns attacking each other: 20×(1+1)=40% base, 10% don't vote → 36%."
+  },
+  {
+    "id": 120,
+    "topic": "Logical Reasoning",
+    "subtopic": "Elections & Campaigns",
+    "group_id": "cat24-s1-election",
+    "group_context": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya's and Ramya's campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types: they can either focus on issues, or on attacking the other candidate.\n\nIf Amiya and Ramya both run campaigns focusing on issues, then:\n• The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if both run vigorous campaigns, then 20 × (2+2)% = 80% of the students will vote.\n• Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns.\n\nThe above percentages change as follows if at least one of them runs a campaign attacking their opponent:\n• If Amiya attacks Ramya while Ramya focuses on issues: 10% of students who would have voted for Amiya will vote for Ramya, and another 10% who would have voted for Amiya will not vote at all.\n• If Ramya attacks Amiya while Amiya focuses on issues: 20% of students who would have voted for Ramya will vote for Amiya, and another 5% who would have voted for Ramya will not vote at all.\n• If both run campaigns attacking each other: 10% of the students who would have otherwise voted for them (had they run issue campaigns) will not vote at all.",
+    "question": "If Amiya runs a campaign focusing on issues, then what is the maximum percentage of votes that she can get?",
+    "options": {"1": "44%", "2": "40%", "3": "48%", "4": "36%"},
+    "correct_answer": "3",
+    "explanation": "Best for Amiya: Both vigorous, Amiya on issues, Ramya attacks. Base 80%, each gets 40%. 20% of Ramya's voters (8%) switch to Amiya, 5% of Ramya's (2%) don't vote. Amiya gets 48%."
+  },
+  {
+    "id": 121,
+    "topic": "Logical Reasoning",
+    "subtopic": "Elections & Campaigns",
+    "group_id": "cat24-s1-election",
+    "group_context": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya's and Ramya's campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types: they can either focus on issues, or on attacking the other candidate.\n\nIf Amiya and Ramya both run campaigns focusing on issues, then:\n• The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if both run vigorous campaigns, then 20 × (2+2)% = 80% of the students will vote.\n• Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns.\n\nThe above percentages change as follows if at least one of them runs a campaign attacking their opponent:\n• If Amiya attacks Ramya while Ramya focuses on issues: 10% of students who would have voted for Amiya will vote for Ramya, and another 10% who would have voted for Amiya will not vote at all.\n• If Ramya attacks Amiya while Amiya focuses on issues: 20% of students who would have voted for Ramya will vote for Amiya, and another 5% who would have voted for Ramya will not vote at all.\n• If both run campaigns attacking each other: 10% of the students who would have otherwise voted for them (had they run issue campaigns) will not vote at all.",
+    "question": "If Ramya runs a campaign attacking Amiya, then what is the minimum percentage of votes that she is guaranteed to get?",
+    "options": {"1": "15%", "2": "30%", "3": "12%", "4": "18%"},
+    "correct_answer": "1",
+    "explanation": "Worst case for Ramya when she attacks: Both staid, Amiya on issues. Base 40%, each gets 20%. 20% of Ramya's switch to Amiya (4%), 5% don't vote (1%). Ramya: 20-4-1=15%."
+  },
+  {
+    "id": 122,
+    "topic": "Logical Reasoning",
+    "subtopic": "Elections & Campaigns",
+    "group_id": "cat24-s1-election",
+    "group_context": "Two students, Amiya and Ramya are the only candidates in an election for the position of class representative. Students will vote based on the intensity level of Amiya's and Ramya's campaigns and the type of campaigns they run. Each campaign is said to have a level of 1 if it is a staid campaign and a level of 2 if it is a vigorous campaign. Campaigns can be of two types: they can either focus on issues, or on attacking the other candidate.\n\nIf Amiya and Ramya both run campaigns focusing on issues, then:\n• The percentage of students voting in the election will be 20 times the sum of the levels of campaigning of the two students. For example, if both run vigorous campaigns, then 20 × (2+2)% = 80% of the students will vote.\n• Among voting students, the percentage of votes for each candidate will be proportional to the levels of their campaigns.\n\nThe above percentages change as follows if at least one of them runs a campaign attacking their opponent:\n• If Amiya attacks Ramya while Ramya focuses on issues: 10% of students who would have voted for Amiya will vote for Ramya, and another 10% who would have voted for Amiya will not vote at all.\n• If Ramya attacks Amiya while Amiya focuses on issues: 20% of students who would have voted for Ramya will vote for Amiya, and another 5% who would have voted for Ramya will not vote at all.\n• If both run campaigns attacking each other: 10% of the students who would have otherwise voted for them (had they run issue campaigns) will not vote at all.",
+    "question": "What is the maximum possible voting margin with which one of the candidates can win?",
+    "options": {"1": "29%", "2": "26%", "3": "20%", "4": "28%"},
+    "correct_answer": "1",
+    "explanation": "Amiya vigorous issues, Ramya staid attacks: Base 60%, Amiya gets 2/3=40%, Ramya gets 1/3=20%. 20% of Ramya's switch (4%) and 5% don't vote (1%). Amiya: 44%, Ramya: 15%. Margin = 29%."
+  },
+  {
+    "id": 123,
+    "topic": "Logical Reasoning",
+    "subtopic": "Tournament Scheduling",
+    "group_id": "cat24-s1-quiet",
+    "group_context": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. Every team plays exactly one game in each round.\n\nThe following additional facts are known about the schedule of games in the tournament:\n1. Each team played against a team from the other group in Round 8.\n2. In Round 4 and Round 7, the match-ups were identical. In Round 5 and Round 8, the match-ups were identical.\n3. Team 4 played Team 6 in both Round 1 and Round 2.\n4. Team 1 played Team 5 ONLY once and that was in Round 2.\n5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6.\n6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+    "question": "How many rounds were there in the tournament?",
+    "options": {},
+    "correct_answer": "8",
+    "explanation": "Each team plays 2 within-group games + 6 cross-group games = 8 total games. With one game per round, there are 8 rounds."
+  },
+  {
+    "id": 124,
+    "topic": "Logical Reasoning",
+    "subtopic": "Tournament Scheduling",
+    "group_id": "cat24-s1-quiet",
+    "group_context": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. Every team plays exactly one game in each round.\n\nThe following additional facts are known about the schedule of games in the tournament:\n1. Each team played against a team from the other group in Round 8.\n2. In Round 4 and Round 7, the match-ups were identical. In Round 5 and Round 8, the match-ups were identical.\n3. Team 4 played Team 6 in both Round 1 and Round 2.\n4. Team 1 played Team 5 ONLY once and that was in Round 2.\n5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6.\n6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+    "question": "What is the number of the team that played Team 1 in Round 5?",
+    "options": {},
+    "correct_answer": "4",
+    "explanation": "Round 5 = Round 8 matchups. In Round 8: T3-T6, T2-T5, T1-T4. So Team 1 played Team 4 in Round 5."
+  },
+  {
+    "id": 125,
+    "topic": "Logical Reasoning",
+    "subtopic": "Tournament Scheduling",
+    "group_id": "cat24-s1-quiet",
+    "group_context": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. Every team plays exactly one game in each round.\n\nThe following additional facts are known about the schedule of games in the tournament:\n1. Each team played against a team from the other group in Round 8.\n2. In Round 4 and Round 7, the match-ups were identical. In Round 5 and Round 8, the match-ups were identical.\n3. Team 4 played Team 6 in both Round 1 and Round 2.\n4. Team 1 played Team 5 ONLY once and that was in Round 2.\n5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6.\n6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+    "question": "Which team among the teams numbered 2, 3, 4, and 5 was not part of the same group?",
+    "options": {"1": "3", "2": "2", "3": "4", "4": "5"},
+    "correct_answer": "4",
+    "explanation": "Groups are {1,5,6} and {2,3,4}. T1 and T5 must be same group (they play only once). T4 and T6 different groups (play twice). Among 2,3,4,5: teams 2,3,4 are in one group, team 5 is in the other."
+  },
+  {
+    "id": 126,
+    "topic": "Logical Reasoning",
+    "subtopic": "Tournament Scheduling",
+    "group_id": "cat24-s1-quiet",
+    "group_context": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. Every team plays exactly one game in each round.\n\nThe following additional facts are known about the schedule of games in the tournament:\n1. Each team played against a team from the other group in Round 8.\n2. In Round 4 and Round 7, the match-ups were identical. In Round 5 and Round 8, the match-ups were identical.\n3. Team 4 played Team 6 in both Round 1 and Round 2.\n4. Team 1 played Team 5 ONLY once and that was in Round 2.\n5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6.\n6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+    "question": "What is the number of the team that played Team 1 in Round 7?",
+    "options": {},
+    "correct_answer": "3",
+    "explanation": "R4=R7. T1's remaining cross-group opponents: T2 (twice) and T3 (twice). T1 plays T2 in R1 and R3, and T3 in R4 and R7. So Team 3 played Team 1 in Round 7."
+  },
+  {
+    "id": 127,
+    "topic": "Logical Reasoning",
+    "subtopic": "Tournament Scheduling",
+    "group_id": "cat24-s1-quiet",
+    "group_context": "The game of QUIET is played between two teams. Six teams, numbered 1, 2, 3, 4, 5, and 6, play in a QUIET tournament. These teams are divided equally into two groups. In the tournament, each team plays every other team in the same group only once, and each team in the other group exactly twice. Every team plays exactly one game in each round.\n\nThe following additional facts are known about the schedule of games in the tournament:\n1. Each team played against a team from the other group in Round 8.\n2. In Round 4 and Round 7, the match-ups were identical. In Round 5 and Round 8, the match-ups were identical.\n3. Team 4 played Team 6 in both Round 1 and Round 2.\n4. Team 1 played Team 5 ONLY once and that was in Round 2.\n5. Team 3 played Team 4 in Round 3. Team 1 played Team 6 in Round 6.\n6. In Round 8, Team 3 played Team 6, while Team 2 played Team 5.",
+    "question": "What is the number of the team that played Team 6 in Round 3?",
+    "options": {},
+    "correct_answer": "5",
+    "explanation": "In R3: T3-T4 (given), T1-T2 (cross-group), and T5-T6 (within group {1,5,6}). So Team 5 played Team 6 in Round 3."
+  },
+  {
+    "id": 128,
+    "topic": "Algebra",
+    "subtopic": "CAT 2024 Quant",
+    "question": "In the XY-plane, the area, in sq. units, of the region defined by the inequalities y ≥ x + 4 and −4 ≤ x² + y² + 4(x − y) ≤ 0 is",
+    "options": {"1": "π", "2": "2π", "3": "4π", "4": "3π"},
+    "correct_answer": "1",
+    "explanation": "x²+y²+4x-4y ≤ 0 → (x+2)²+(y-2)² ≤ 8. Circle center (-2,2), radius 2√2. The line y = x+4 passes through (-2,2) and is a diameter. The inner inequality −4 ≤ x²+y²+4(x−y) gives (x+2)²+(y-2)² ≥ 4, circle radius 2. The region y ≥ x+4 is a semicircle of the outer minus semicircle of the inner = (8π/2 - 4π/2)/2. Net area = π."
+  },
+  {
+    "id": 129,
+    "topic": "Algebra",
+    "subtopic": "CAT 2024 Quant",
+    "question": "The sum of all real values of k for which (1/8)^k × (1/32768)^(1/3) = (1/8) × (1/32768)^(1/k), is",
+    "options": {"1": "4/3", "2": "-4/3", "3": "2/3", "4": "-2/3"},
+    "correct_answer": "4",
+    "explanation": "32768 = 8⁵. So equation becomes 8^(-k) × 8^(-5/3) = 8^(-1) × 8^(-5/k). Equating exponents: k + 5/3 = 1 + 5/k. This gives 3k² + 2k - 15 = 0. Sum of roots = -2/3."
+  },
+  {
+    "id": 130,
+    "topic": "Number Systems",
+    "subtopic": "CAT 2024 Quant",
+    "question": "The sum of all four-digit numbers that can be formed with the distinct non-zero digits a, b, c, and d, with each digit appearing exactly once in every number, is 153310 + n, where n is a single digit natural number. Then, the value of (a + b + c + d + n) is",
+    "options": {},
+    "correct_answer": "31",
+    "explanation": "Sum = 6 × (a+b+c+d) × 1111 = 6666 × S. 6666 × 23 = 153318. So n = 8, S = 23. Answer = 23 + 8 = 31."
+  },
+  {
+    "id": 131,
+    "topic": "Work & Time",
+    "subtopic": "CAT 2024 Quant",
+    "question": "Renu would take 15 days working 4 hours per day to complete a certain task whereas Seema would take 8 days working 5 hours per day to complete the same task. They decide to work together to complete this task. Seema agrees to work for double the number of hours per day as Renu, while Renu agrees to work for double the number of days as Seema. If Renu works 2 hours per day, then the number of days Seema will work, is",
+    "options": {},
+    "correct_answer": "6",
+    "explanation": "Renu rate = 1/60 per hour, Seema rate = 1/40 per hour. Renu works 2 hrs/day for 2d days, Seema works 4 hrs/day for d days. (2×2d)/60 + (4×d)/40 = 1 → d/15 + d/10 = 1 → 5d/30 = 1 → d = 6."
+  },
+  {
+    "id": 132,
+    "topic": "Number Systems",
+    "subtopic": "CAT 2024 Quant",
+    "question": "For any natural number n, let aₙ be the largest integer not exceeding √n. Then the value of a₁ + a₂ + ⋯ + a₅₀ is",
+    "options": {},
+    "correct_answer": "217",
+    "explanation": "aₙ = floor(√n). Sum = 1×3 + 2×5 + 3×7 + 4×9 + 5×11 + 6×13 + 7×2 = 3+10+21+36+55+78+14 = 217."
+  },
+  {
+    "id": 133,
+    "topic": "Geometry",
+    "subtopic": "CAT 2024 Quant",
+    "question": "The surface area of a closed rectangular box, which is inscribed in a sphere, is 846 sq cm, and the sum of the lengths of all its edges is 144 cm. The volume, in cubic cm, of the sphere is",
+    "options": {"1": "750π", "2": "1125π√2", "3": "1125π", "4": "750π√2"},
+    "correct_answer": "2",
+    "explanation": "2(lb+bh+lh) = 846, 4(l+b+h) = 144 → l+b+h = 36. (l+b+h)² = l²+b²+h² + 2(lb+bh+lh) → 1296 = l²+b²+h² + 846 → l²+b²+h² = 450. Sphere diameter = √450 = 15√2, r = 15√2/2. V = (4/3)πr³ = 1125π√2."
+  },
+  {
+    "id": 134,
+    "topic": "Algebra",
+    "subtopic": "CAT 2024 Quant",
+    "question": "If x is a positive real number such that 4log₁₀x + 4log₁₀₀x + 8log₁₀₀₀x = 13, then the greatest integer not exceeding x, is",
+    "options": {},
+    "correct_answer": "31",
+    "explanation": "Let t = log₁₀x. Then 4t + 4(t/2) + 8(t/3) = 13 → 4t + 2t + 8t/3 = 13 → 26t/3 = 13 → t = 3/2. x = 10^(3/2) = 10√10 ≈ 31.62. Answer = 31."
+  },
+  {
+    "id": 135,
+    "topic": "Algebra",
+    "subtopic": "CAT 2024 Quant",
+    "question": "If (a + b√n) is the positive square root of (29 − 12√5), where a and b are integers, and n is a natural number, then the maximum possible value of (a + b + n) is",
+    "options": {"1": "22", "2": "4", "3": "6", "4": "18"},
+    "correct_answer": "2",
+    "explanation": "(a+b√5)² = a²+5b²+2ab√5 = 29-12√5. So a²+5b²=29 and 2ab=-12. With a=-3, b=2: 9+20=29 ✓, 2(-3)(2)=-12 ✓. -3+2√5 ≈ 1.47 > 0 ✓. a+b+n = -3+2+5 = 4."
+  },
+  {
+    "id": 136,
+    "topic": "Arithmetic",
+    "subtopic": "CAT 2024 Quant",
+    "question": "A shop wants to sell a certain quantity (in kg) of grains. It sells half the quantity and an additional 3 kg of these grains to the first customer. Then, it sells half of the remaining quantity and an additional 3 kg of these grains to the second customer. Finally, when the shop sells half of the remaining quantity and an additional 3 kg of these grains to the third customer, there are no grains left. The initial quantity, in kg, of grains is",
+    "options": {"1": "50", "2": "18", "3": "42", "4": "36"},
+    "correct_answer": "3",
+    "explanation": "Working backwards: Before 3rd customer: r₂/2-3=0 → r₂=6. Before 2nd: r₁/2-3=6 → r₁=18. Before 1st: x/2-3=18 → x=42."
+  },
+  {
+    "id": 137,
+    "topic": "Algebra",
+    "subtopic": "CAT 2024 Quant",
+    "question": "Let x, y, and z be real numbers satisfying 4(x² + y² + z²) = a, 4(x − y − z) = 3 + a. Then a equals",
+    "options": {"1": "1", "2": "3", "3": "4", "4": "4/3"},
+    "correct_answer": "2",
+    "explanation": "Substituting: 4(x²+y²+z²) - 4(x-y-z) + 3 = 0 → (2x-1)²+(2y+1)²+(2z+1)² = 0. All squares must be 0: x=1/2, y=-1/2, z=-1/2. a = 4(1/4+1/4+1/4) = 3."
+  },
+  {
+    "id": 138,
+    "topic": "Combinatorics",
+    "subtopic": "CAT 2024 Quant",
+    "question": "Consider two sets A = {2,3,5,7,11,13} and B = {1,8,27}. Let f be a function from A to B such that for every element b in B, there is at least one element a in A such that f(a) = b. Then, the total number of such functions f is",
+    "options": {"1": "665", "2": "667", "3": "537", "4": "540"},
+    "correct_answer": "4",
+    "explanation": "Surjective functions from |A|=6 to |B|=3: Using inclusion-exclusion = 3⁶ - C(3,1)×2⁶ + C(3,2)×1⁶ = 729 - 192 + 3 = 540."
+  },
+  {
+    "id": 139,
+    "topic": "Profit & Loss",
+    "subtopic": "CAT 2024 Quant",
+    "question": "The selling price of a product is fixed to ensure 40% profit. If the product had cost 40% less and had been sold for 5 rupees less, then the resulting profit would have been 50%. The original selling price, in rupees, of the product is",
+    "options": {"1": "20", "2": "15", "3": "14", "4": "10"},
+    "correct_answer": "3",
+    "explanation": "SP = 1.4C. New cost = 0.6C, new SP = 1.4C-5 = 1.5×0.6C = 0.9C. So 1.4C-5 = 0.9C → 0.5C = 5 → C = 10, SP = 14."
+  },
+  {
+    "id": 140,
+    "topic": "Averages",
+    "subtopic": "CAT 2024 Quant",
+    "question": "There are four numbers such that average of first two numbers is 1 more than the first number, average of first three numbers is 2 more than average of first two numbers, and average of first four numbers is 3 more than average of first three numbers. Then, the difference between the largest and the smallest numbers, is",
+    "options": {},
+    "correct_answer": "15",
+    "explanation": "Let numbers be a, b, c, d. (a+b)/2=a+1 → b=a+2. (a+b+c)/3=(a+b)/2+2=a+3 → c=a+7. (a+b+c+d)/4=(a+b+c)/3+3=a+6 → d=a+15. Difference = 15."
+  },
+  {
+    "id": 141,
+    "topic": "Simple Interest",
+    "subtopic": "CAT 2024 Quant",
+    "question": "An amount of Rs 10000 is deposited in bank A for a certain number of years at a simple interest of 5% per annum. On maturity, the total amount received is deposited in bank B for another 5 years at a simple interest of 6% per annum. If the interests received from bank A and bank B are in the ratio 10:13, then the investment period, in years, in bank A is",
+    "options": {"1": "6", "2": "4", "3": "3", "4": "5"},
+    "correct_answer": "1",
+    "explanation": "I_A = 500t, I_B = (10000+500t)×0.3 = 3000+150t. 500t/(3000+150t) = 10/13 → 6500t = 30000+1500t → t = 6."
+  },
+  {
+    "id": 142,
+    "topic": "Ratios",
+    "subtopic": "CAT 2024 Quant",
+    "question": "A fruit seller has a total of 187 fruits consisting of apples, mangoes and oranges. The number of apples and mangoes are in the ratio 5:2. After she sells 75 apples, 26 mangoes and half of the oranges, the ratio of number of unsold apples to number of unsold oranges becomes 3:2. The total number of unsold fruits is",
+    "options": {},
+    "correct_answer": "66",
+    "explanation": "A=5k, M=2k, O=187-7k. After selling: (5k-75)/(O/2) = 3/2 → O = (20k-300)/3. Also O=187-7k → (20k-300)/3 = 187-7k → k=21. Unsold = 30+16+20 = 66."
+  },
+  {
+    "id": 143,
+    "topic": "Geometry",
+    "subtopic": "CAT 2024 Quant",
+    "question": "ABCD is a rectangle with sides AB = 56 cm and BC = 45 cm, and E is the midpoint of side CD. Then, the length, in cm, of radius of incircle of △ADE is",
+    "options": {},
+    "correct_answer": "10",
+    "explanation": "AD=45, DE=28, AE=√(28²+45²)=√2809=53. Semi-perimeter s=(45+28+53)/2=63. Area=(1/2)×28×45=630. r = Area/s = 630/63 = 10."
+  },
+  {
+    "id": 144,
+    "topic": "Algebra",
+    "subtopic": "CAT 2024 Quant",
+    "question": "If the equations x² + mx + 9 = 0, x² + nx + 17 = 0 and x² + (m+n)x + 35 = 0 have a common negative root, then the value of (2m + 3n) is",
+    "options": {},
+    "correct_answer": "38",
+    "explanation": "Let r be common negative root. Adding first two: 2r²+(m+n)r+26=0. Third: r²+(m+n)r+35=0. Subtracting: r²-9=0 → r=-3. Then m=6, n=26/3. 2m+3n = 12+26 = 38."
+  },
+  {
+    "id": 145,
+    "topic": "Percentages",
+    "subtopic": "CAT 2024 Quant",
+    "question": "In September, the incomes of Kamal, Amal and Vimal are in the ratio 8:6:5. They rent a house together, and Kamal pays 15%, Amal pays 12% and Vimal pays 18% of their respective incomes to cover the total house rent in that month. In October, the house rent remains unchanged while their incomes increase by 10%, 12%, and 15%, respectively. In October, the percentage of their total income that will be paid as house rent, is nearest to",
+    "options": {"1": "15.18", "2": "13.26", "3": "12.75", "4": "14.84"},
+    "correct_answer": "2",
+    "explanation": "Sept rent = 0.15(8x)+0.12(6x)+0.18(5x) = 2.82x. Oct incomes: 8.8x+6.72x+5.75x = 21.27x. Percentage = 2.82/21.27 × 100 ≈ 13.26%."
+  },
+  {
+    "id": 146,
+    "topic": "Progressions",
+    "subtopic": "CAT 2024 Quant",
+    "question": "Suppose x₁, x₂, x₃, …, x₁₀₀ are in arithmetic progression such that x₅ = −4 and 2x₆ + 2x₉ = x₁₁ + x₁₃. Then, x₁₀₀ equals",
+    "options": {"1": "-196", "2": "206", "3": "204", "4": "-194"},
+    "correct_answer": "4",
+    "explanation": "a+4d=-4. 2(a+5d)+2(a+8d)=(a+10d)+(a+12d) → 4a+26d=2a+22d → 2a+4d=0 → a=-2d. Then -2d+4d=-4 → d=-2, a=4. x₁₀₀=4+99(-2)=-194."
+  },
+  {
+    "id": 147,
+    "topic": "Ratios",
+    "subtopic": "CAT 2024 Quant",
+    "question": "A glass is filled with milk. Two-thirds of its content is poured out and replaced with water. If this process of pouring out two-thirds the content and replacing with water is repeated three more times, then the final ratio of milk to water in the glass, is",
+    "options": {"1": "1:26", "2": "1:80", "3": "1:27", "4": "1:81"},
+    "correct_answer": "2",
+    "explanation": "After each operation, milk = 1/3 of previous. After 4 operations: milk = (1/3)⁴ = 1/81 of glass. Water = 80/81. Ratio = 1:80."
+  },
+  {
+    "id": 148,
+    "topic": "Speed, Time & Distance",
+    "subtopic": "CAT 2024 Quant",
+    "question": "Two places A and B are 45 kms apart and connected by a straight road. Anil goes from A to B while Sunil goes from B to A. Starting at the same time, they cross each other in exactly 1 hour 30 minutes. If Anil reaches B exactly 1 hour 15 minutes after Sunil reaches A, the speed of Anil, in km per hour, is",
+    "options": {"1": "18", "2": "14", "3": "12", "4": "16"},
+    "correct_answer": "3",
+    "explanation": "a+b=30. 45/a - 45/b = 5/4. Solving: a²-102a+1080=0 → a=12 or 90. Since b=30-a>0, a=12."
+  },
+  {
+    "id": 149,
+    "topic": "Number Systems",
+    "subtopic": "CAT 2024 Quant",
+    "question": "When 10¹⁰⁰ is divided by 7, the remainder is",
+    "options": {"1": "1", "2": "3", "3": "4", "4": "6"},
+    "correct_answer": "3",
+    "explanation": "10 mod 7 cycles: 3,2,6,4,5,1 (period 6). 100 = 6×16+4. 10¹⁰⁰ mod 7 = 10⁴ mod 7 = 4."
+  },
+  {
+    "id": 150,
+    "topic": "Inequalities",
+    "subtopic": "Top CAT Inequalities",
+    "question": "x and y are real numbers satisfying the conditions 2 < x < 3 and −8 < y < −7. Which of the following expressions will have the least value?",
+    "options": {"1": "x²y", "2": "xy²", "3": "5xy", "4": "None of these"},
+    "correct_answer": "3",
+    "explanation": "x²y ranges ~(-72,-28), xy² ranges ~(98,192), 5xy ranges ~(-120,-70). 5xy has the most negative minimum value, so it has the least value."
+  },
+  {
+    "id": 151,
+    "topic": "Inequalities",
+    "subtopic": "Top CAT Inequalities",
+    "question": "The smallest integer n such that n³ − 11n² + 32n − 28 > 0 is",
+    "options": {},
+    "correct_answer": "8",
+    "explanation": "n³-11n²+32n-28 = (n-2)²(n-7). This is >0 when (n-2)²>0 and n-7>0, i.e., n>7 and n≠2. Smallest integer is 8."
+  },
+  {
+    "id": 152,
+    "topic": "Inequalities",
+    "subtopic": "Top CAT Inequalities",
+    "question": "The number of integer solutions of equation 2|x|(x² + 1) = 5x² is",
+    "options": {},
+    "correct_answer": "3",
+    "explanation": "x=0: 0=0 ✓. x>0: 2x³+2x=5x² → 2x²-5x+2=0 → x=2 or 1/2. Integer: x=2. x<0: 2x³+2x=-5x² → 2x²+5x+2=0 → x=-2 or -1/2. Integer: x=-2. Total: {0,2,-2} = 3."
+  },
+  {
+    "id": 153,
+    "topic": "Inequalities",
+    "subtopic": "Top CAT Inequalities",
+    "question": "Let x and y be two positive numbers such that x + y = 1. Then the minimum value of (x + 1/x)² + (y + 1/y)² is",
+    "options": {"1": "12", "2": "20", "3": "12.5", "4": "13.3"},
+    "correct_answer": "3",
+    "explanation": "At x=y=1/2: (1/2+2)²+(1/2+2)² = (5/2)²×2 = 25/4×2 = 25/2 = 12.5. By symmetry and convexity, this is the minimum."
+  },
+  {
+    "id": 154,
+    "topic": "Inequalities",
+    "subtopic": "Top CAT Inequalities",
+    "question": "From any two numbers x and y, we define x ∗ y = x + 0.5y − xy. Suppose that both x and y are greater than 0.5. Then x ∗ x < y ∗ y if",
+    "options": {"1": "1 > x > y", "2": "x > 1 > y", "3": "1 > y > x", "4": "y > 1 > x"},
+    "correct_answer": "2",
+    "explanation": "x∗x = 1.5x−x², y∗y = 1.5y−y². x∗x < y∗y ⟺ 1.5(x−y) < (x−y)(x+y). If x>y: 1.5 < x+y. With x>1>y>0.5: x+y > 1.5 always. ✓"
+  },
+  {
+    "id": 155,
+    "topic": "Inequalities",
+    "subtopic": "Top CAT Inequalities",
+    "question": "If a, b, c and d are four positive real numbers such that abcd = 1, what is the minimum value of (1 + a)(1 + b)(1 + c)(1 + d)?",
+    "options": {"1": "4", "2": "1", "3": "16", "4": "18"},
+    "correct_answer": "3",
+    "explanation": "By AM-GM: 1+a ≥ 2√a. So (1+a)(1+b)(1+c)(1+d) ≥ 16√(abcd) = 16. Equality when a=b=c=d=1."
   }
 ]
