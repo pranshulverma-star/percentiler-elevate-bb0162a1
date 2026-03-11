@@ -496,24 +496,26 @@ export default function BattleRoomPage() {
 
     const roomChannel = supabase
       .channel(`battle-room-${room.id}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "battle_rooms", filter: `id=eq.${room.id}` },
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "battle_rooms", filter: `id=eq.${room.id}` },
         (payload: any) => {
+          console.log("[Battle] Room update:", payload.new?.status);
           if (payload.new) setRoom(payload.new as BattleRoom);
         })
       .on("postgres_changes", { event: "*", schema: "public", table: "battle_players", filter: `room_id=eq.${room.id}` },
-        async () => {
-          // Refetch all players on any change
+        async (payload: any) => {
+          console.log("[Battle] Players change:", payload.eventType);
           const { data } = await (supabase.from("battle_players") as any)
             .select("*").eq("room_id", room.id).order("joined_at", { ascending: true });
           if (data) setPlayers(data);
         })
       .on("broadcast", { event: "countdown" }, (payload: any) => {
-        // Non-host players receive countdown broadcast
         if (payload.payload?.value !== undefined) {
           setCountdown(payload.payload.value);
         }
       })
-      .subscribe();
+      .subscribe((status: string, err: any) => {
+        console.log("[Battle] Channel status:", status, err);
+      });
 
     return () => { supabase.removeChannel(roomChannel); };
   }, [room?.id]);
@@ -521,7 +523,6 @@ export default function BattleRoomPage() {
   // Host starts battle — trigger countdown
   const handleStart = useCallback(async () => {
     if (!room) return;
-    // Start countdown 3-2-1-GO
     setCountdown(3);
   }, [room]);
 
@@ -532,10 +533,14 @@ export default function BattleRoomPage() {
       // Countdown finished, actually start the battle
       setCountdown(null);
       if (room) {
+        // Optimistically update local state so quiz renders immediately
+        setRoom(prev => prev ? { ...prev, status: "active", started_at: new Date().toISOString() } : prev);
+        // Then persist to DB (triggers realtime for other players)
         (async () => {
-          await (supabase.from("battle_rooms") as any)
+          const { error } = await (supabase.from("battle_rooms") as any)
             .update({ status: "active", started_at: new Date().toISOString() })
             .eq("id", room.id);
+          if (error) console.error("[Battle] Failed to start:", error);
         })();
       }
       return;
