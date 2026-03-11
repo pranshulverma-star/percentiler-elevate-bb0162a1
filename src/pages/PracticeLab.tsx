@@ -1114,6 +1114,7 @@ export default function PracticeLab() {
                 section={selectedSection}
                 onBack={handleBackToSections}
                 onSelect={handleSelectChapter}
+                onBattle={handleBattle}
               />
             )}
             {phase === "quiz" && selectedChapter && quizQuestions.length > 0 && (
