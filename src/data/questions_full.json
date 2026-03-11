@@ -3239,7 +3239,7 @@
     "subtopic": "Mensuration",
     "question": "A right circular cone, of height 12 ft, stands on its base which has diameter 8 ft. The tip of the cone is cut off with a plane which is parallel to the base and 9 ft from the base. With π = 22/7, the volume, in cubic ft, of the remaining part of the cone is",
     "options": {},
-    "correct_answer": "segregated",
+    "correct_answer": "198",
     "explanation": "Height of full cone = 12, radius = 4. Height cut from top = 12-9 = 3. Radius at cut = 4×(3/12) = 1. Volume of full cone = (1/3)π(4²)(12) = 64π. Volume of small cone cut = (1/3)π(1²)(3) = π. Remaining = 63π = 63×22/7 = 198 cubic ft."
   },
   {
