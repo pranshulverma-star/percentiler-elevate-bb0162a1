@@ -383,9 +383,6 @@ function QuizView({
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
   };
 
-  const handleNumericChange = (value: string) => {
-    setAnswers((prev) => ({ ...prev, [q.id]: value }));
-  };
 
   const handleSubmit = () => {
     onFinish(answers, QUIZ_DURATION - timeLeft);
@@ -532,8 +529,7 @@ function QuizView({
                   </p>
                 </div>
 
-                {q.type === "mcq" ? (
-                  <RadioGroup
+                <RadioGroup
                     value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
                     onValueChange={(v) => handleSelect(Number(v))}
                     className="space-y-2 md:space-y-2.5"
@@ -564,28 +560,6 @@ function QuizView({
                       );
                     })}
                   </RadioGroup>
-                ) : (
-                  <div className="space-y-2">
-                    <Label htmlFor={`numeric-${q.id}`} className="text-sm text-muted-foreground flex items-center gap-1.5">
-                      <Target className="w-3.5 h-3.5" /> Enter your answer (number only)
-                    </Label>
-                    <Input
-                      id={`numeric-${q.id}`}
-                      type="text"
-                      inputMode="decimal"
-                      placeholder="e.g. 48"
-                      value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        if (val === "" || /^[-\d.:/ ]*$/.test(val)) {
-                          handleNumericChange(val);
-                        }
-                      }}
-                      className="text-base font-mono"
-                      autoComplete="off"
-                    />
-                  </div>
-                )}
               </Card>
             </motion.div>
           </AnimatePresence>
