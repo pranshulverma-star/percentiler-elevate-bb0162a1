@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { pickGroupedRandom } from "@/lib/pickGroupedQuestions";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Clock, Copy, Share2, Users, Swords, Crown, Shield, Target, Trophy } from "lucide-react";
