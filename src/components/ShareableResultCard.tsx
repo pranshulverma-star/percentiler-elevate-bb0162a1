@@ -206,16 +206,39 @@ export default function ShareableResultCard({
         </div>
       </div>
 
-      {/* Share button */}
-      <div className="flex justify-center mt-3 md:mt-4">
+      {/* Action buttons */}
+      <div className="flex items-center justify-center gap-2 mt-3 md:mt-4">
+        <Button
+          onClick={async () => {
+            if (!cardRef.current) return;
+            try {
+              // Run toPng twice for better quality (first pass warms up fonts)
+              await toPng(cardRef.current, { pixelRatio: 3, cacheBust: true });
+              const dataUrl = await toPng(cardRef.current, { pixelRatio: 3, cacheBust: true });
+              const link = document.createElement("a");
+              link.download = `cat-practice-result-${pct}pct.png`;
+              link.href = dataUrl;
+              link.click();
+              toast({ title: "Image saved!", description: "Share it on Instagram or WhatsApp 🚀" });
+            } catch {
+              toast({ title: "Couldn't generate image", description: "Try again", variant: "destructive" });
+            }
+          }}
+          variant="outline"
+          className="gap-2 font-bold px-4 md:px-5 text-sm"
+          size="sm"
+        >
+          <Download className="w-3.5 h-3.5 md:w-4 md:h-4" />
+          Save Image
+        </Button>
         <Button
           onClick={handleShare}
           disabled={sharing}
-          className="gap-2 font-bold px-5 md:px-6 text-sm game-glow-pulse"
+          className="gap-2 font-bold px-4 md:px-5 text-sm game-glow-pulse"
           size="sm"
         >
           <Share2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
-          Share Result
+          Share
         </Button>
       </div>
     </motion.div>
