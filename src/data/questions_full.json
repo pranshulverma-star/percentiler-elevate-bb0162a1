@@ -2707,8 +2707,8 @@
     "subtopic": "Artificial Embryo Twinning",
     "question": "Choose the option that best captures the author's position.\n\nArtificial embryo twinning is a relatively low-tech way to make clones. As the name suggests, this technique mimics the natural process that creates identical twins. In nature, twins form very early in development when the embryo splits in two. Twinning happens in the first days after egg and sperm join, while the embryo is made of just a small number of unspecialized cells. Each half of the embryo continues dividing on its own, ultimately developing into separate, complete individuals. Since they developed from the same fertilized egg, the resulting individuals are genetically identical.",
     "options": {"1": "Artificial embryo twinning is low-tech and mimetic of the natural development of genetically identical twins from the embryo after fertilization.", "2": "Artificial embryo twinning is low-tech unlike the natural development of identical twins from the embryo after fertilization.", "3": "Artificial embryo twinning is just like the natural development of twins, where during fertilization twins are formed.", "4": "Artificial embryo twinning is low-tech and is close to the natural development of twins where the embryo splits into two identical twins."},
-    "correct_answer": "4",
-    "explanation": "Option 4 captures both key aspects: it's low-tech AND closely mimics the natural process where an embryo splits. Option 3 incorrectly says twins form 'during fertilization'."
+    "correct_answer": "1",
+    "explanation": "Option 1 captures both key aspects: it's low-tech and mimics ('mimetic of') the natural process of identical twin development after fertilization. Option 4 says 'close to' instead of 'mimics', which distorts the passage's explicit use of 'mimics'."
   },
   {
     "id": 250,
