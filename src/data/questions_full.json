@@ -2926,8 +2926,8 @@
     "subtopic": "Students & Institutes",
     "question": "If Chitra majors in Finance, which subject does Bandita major in?",
     "options": {"1": "Cannot be determined uniquely from the given information", "2": "Marketing", "3": "Finance", "4": "Operations"},
-    "correct_answer": "2",
-    "explanation": "If Chitra majors in Finance, then among the remaining subjects for Bandita (who is at Z), she must major in Marketing since Operations is taken by the female at Y.",
+    "correct_answer": "4",
+    "explanation": "If Chitra majors in Finance, only one female can major in Finance (constraint 4). Since Bandita and Chitra are both from Z, and the subjects at Z are Finance and Operations, Bandita must major in Operations.",
     "group_id": "cat2018-s1-lr-students",
     "group_context": ""
   },
@@ -2992,8 +2992,8 @@
     "subtopic": "Fuel Contamination",
     "question": "What best can be said about the number of pumps at which the contamination levels were recorded as medium?",
     "options": {"1": "Exactly 8", "2": "More than 4", "3": "At least 8", "4": "At most 9"},
-    "correct_answer": "2",
-    "explanation": "From the constraints, the number of medium-contamination pumps must be more than 4.",
+    "correct_answer": "3",
+    "explanation": "From constraint 5: H = 2L. If L=3: H=6, M=11. If L=4: H=8, M=8. In all valid cases, M ≥ 8. So 'At least 8' is the best description.",
     "group_id": "cat2018-s1-lr-fuel",
     "group_context": ""
   },
@@ -3036,8 +3036,8 @@
     "subtopic": "Recruitment Scores",
     "question": "Which of the following statements MUST be FALSE?",
     "options": {"1": "Chetna scored more than Bala in DI", "2": "Harini's composite score was less than that of Falak", "3": "Bala's composite score was less than that of Ester", "4": "Bala scored same as Jatin in DI"},
-    "correct_answer": "1",
-    "explanation": "Chetna's DI score is 19, and Bala's DI score can be determined through constraints. Statement 1 is already true (19 > Bala's DI), so looking at which MUST be false — option 1 is actually true. Re-examining: the statement that must be false involves checking all constraints carefully.",
+    "correct_answer": "4",
+    "explanation": "From the solution table: Jatin's DI = 20. If Bala scored same as Jatin in DI (20), then Bala's composite = 2(20)+9+11 = 60 = same as Indu. But constraint 1 says no two have same composite. So 'Bala scored same as Jatin in DI' MUST be FALSE.",
     "group_id": "cat2018-s1-di-recruit",
     "group_context": ""
   },
@@ -3131,8 +3131,8 @@
     "subtopic": "Indices & Surds",
     "question": "Given that x^(2018) × y^(2017) = 1/2 and x^(2016) × y^(2019) = 8, the value of x² + y³ is",
     "options": {"1": "35/4", "2": "37/4", "3": "31/4", "4": "33/4"},
-    "correct_answer": "1",
-    "explanation": "Dividing the two equations: x^(2018-2016) × y^(2017-2019) = (1/2)/8 = 1/16. So x²/y² = 1/16, meaning x/y = 1/4 (taking positive values). So x = y/4. Substituting in first equation and solving gives y = 2, x = 1/2. x² + y³ = 1/4 + 8 = 33/4. Wait let me recheck. x²y⁻² = 1/16 → (x/y)² = 1/16 → x/y = ±1/4. Using x = y/4 in eq1: (y/4)^2018 · y^2017 = 1/2. y^(2018+2017)/4^2018 = 1/2. Hmm, this gets complex. Actually dividing eq2 by eq1: x^(-2) · y^2 = 16, so y²/x² = 16, y/x = 4, y = 4x. Sub in eq1: x^2018 · (4x)^2017 = 1/2 → x^4035 · 4^2017 = 1/2. This means x^4035 = 1/2^(2018) = 2^(-2018). Hmm, let me try x=1/2, y=2: x^2018 · y^2017 = (1/2)^2018 · 2^2017 = 2^(-2018) · 2^2017 = 2^(-1) = 1/2 ✓. x^2016 · y^2019 = (1/2)^2016 · 2^2019 = 2^(-2016+2019) = 2^3 = 8 ✓. So x²+y³ = 1/4 + 8 = 33/4. Answer is 33/4... but that's option 4. Let me recheck the options from the image: 1. 35/4, 2. 37/4, 3. 31/4, 4. 33/4. Correct answer is 4."
+    "correct_answer": "4",
+    "explanation": "Dividing eq1 by eq2: x²/y² = 1/16, so x/y = ±1/4. Since x=y/4, substituting: (y/4)^2018 · y^2017 = 1/2. Trying x=1/2, y=2: (1/2)^2018 · 2^2017 = 2^(-1) = 1/2 ✓. (1/2)^2016 · 2^2019 = 2^3 = 8 ✓. So x²+y³ = 1/4 + 8 = 33/4."
   },
   {
     "id": 290,
@@ -3185,8 +3185,8 @@
     "subtopic": "Averages",
     "question": "In an apartment complex, the number of people aged 51 years and above is 30 and there are at most 39 people whose ages are below 51 years. The average age of all the people in the apartment complex is 38 years. What is the largest possible average age, in years, of the people whose ages are below 51 years?",
     "options": {"1": "27", "2": "28", "3": "26", "4": "25"},
-    "correct_answer": "4",
-    "explanation": "Let n be the number of people below 51. Total people = 30 + n. Average = 38. Total age = 38(30+n). To maximize average of below-51 group, minimize n and maximize their total age while minimizing the 51+ group's total age. Min age of 51+ group = 30 × 51 = 1530. Total age of below-51 = 38(30+n) - 1530 = 1140 + 38n - 1530 = 38n - 390. Average of below-51 = (38n-390)/n = 38 - 390/n. To maximize, maximize n. Max n = 39. Average = 38 - 390/39 = 38 - 10 = 28. Hmm, that gives 28. But wait, we need the ages to be below 51. Let me re-check. Actually to maximize average below 51, we want to maximize n (more people to dilute the subtracted term). With n=39: avg = 38 - 390/39 = 28. But we also need each person below 51 to have age < 51. Average = 28 < 51 ✓. But let's check option 4 = 25. Hmm, the answer should be 25. Let me reconsider. Actually minimum total age of 51+ group: they are 51+, so minimum is 30×51=1530. With n people below 51: 38(30+n) = sum_above + sum_below. sum_below = 38(30+n) - sum_above ≤ 38(30+n) - 1530. avg_below = sum_below/n ≤ (1140+38n-1530)/n... Wait that's negative for small n. We need n ≥ 390/38 ≈ 10.3, so n ≥ 11. For max avg_below with constraint n ≤ 39, avg_below = 38 - 390/n. Max at n=39: 28. So answer is 2 (28). Let me recheck my work... Yes, answer is 28."
+    "correct_answer": "2",
+    "explanation": "Let n = number of people below 51 (n ≤ 39), avg below 51 = y, avg above 51 = x (x ≥ 51). Total age: 30x + ny = 38(30+n). To maximize y, minimize x = 51. Then 30(51) + ny = 38(30+n) → 1530 + ny = 1140 + 38n → ny = 38n - 390 → y = 38 - 390/n. Maximize y by maximizing n. At n = 39: y = 38 - 10 = 28."
   },
   {
     "id": 296,
@@ -3203,8 +3203,8 @@
     "subtopic": "Quadratic Equations",
     "question": "If u² + (u−2v−1)² = −4v(u + v), then what is the value of u + 3v?",
     "options": {"1": "1/4", "2": "0", "3": "1/2", "4": "-1/4"},
-    "correct_answer": "2",
-    "explanation": "Expanding: u² + u² - 4uv - 2u + 4v² + 4v + 1 = -4uv - 4v². So 2u² - 4uv - 2u + 4v² + 4v + 1 + 4uv + 4v² = 0. 2u² - 2u + 8v² + 4v + 1 = 0. 2(u² - u) + 8v² + 4v + 1 = 0. 2(u - 1/2)² - 1/2 + 8(v + 1/4)² - 1/2 + 1 = 0. 2(u-1/2)² + 8(v+1/4)² = 0. So u = 1/2, v = -1/4. u + 3v = 1/2 - 3/4 = -1/4. That's option 4. Let me recheck: u+3v = 1/2 + 3(-1/4) = 1/2 - 3/4 = -1/4. Answer is 4."
+    "correct_answer": "4",
+    "explanation": "Expanding and simplifying: 2u² - 2u + 8v² + 4v + 1 = 0. Completing the square: 2(u-1/2)² + 8(v+1/4)² = 0. Both squares must be 0: u = 1/2, v = -1/4. u + 3v = 1/2 - 3/4 = -1/4."
   },
   {
     "id": 298,
@@ -3239,7 +3239,7 @@
     "subtopic": "Mensuration",
     "question": "A right circular cone, of height 12 ft, stands on its base which has diameter 8 ft. The tip of the cone is cut off with a plane which is parallel to the base and 9 ft from the base. With π = 22/7, the volume, in cubic ft, of the remaining part of the cone is",
     "options": {},
-    "correct_answer": "segregated",
+    "correct_answer": "198",
     "explanation": "Height of full cone = 12, radius = 4. Height cut from top = 12-9 = 3. Radius at cut = 4×(3/12) = 1. Volume of full cone = (1/3)π(4²)(12) = 64π. Volume of small cone cut = (1/3)π(1²)(3) = π. Remaining = 63π = 63×22/7 = 198 cubic ft."
   },
   {
