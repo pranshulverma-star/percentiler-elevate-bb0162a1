@@ -507,6 +507,12 @@ export default function BattleRoomPage() {
             .select("*").eq("room_id", room.id).order("joined_at", { ascending: true });
           if (data) setPlayers(data);
         })
+      .on("broadcast", { event: "countdown" }, (payload: any) => {
+        // Non-host players receive countdown broadcast
+        if (payload.payload?.value !== undefined) {
+          setCountdown(payload.payload.value);
+        }
+      })
       .subscribe();
 
     return () => { supabase.removeChannel(roomChannel); };
