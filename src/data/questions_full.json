@@ -3203,8 +3203,8 @@
     "subtopic": "Quadratic Equations",
     "question": "If u² + (u−2v−1)² = −4v(u + v), then what is the value of u + 3v?",
     "options": {"1": "1/4", "2": "0", "3": "1/2", "4": "-1/4"},
-    "correct_answer": "2",
-    "explanation": "Expanding: u² + u² - 4uv - 2u + 4v² + 4v + 1 = -4uv - 4v². So 2u² - 4uv - 2u + 4v² + 4v + 1 + 4uv + 4v² = 0. 2u² - 2u + 8v² + 4v + 1 = 0. 2(u² - u) + 8v² + 4v + 1 = 0. 2(u - 1/2)² - 1/2 + 8(v + 1/4)² - 1/2 + 1 = 0. 2(u-1/2)² + 8(v+1/4)² = 0. So u = 1/2, v = -1/4. u + 3v = 1/2 - 3/4 = -1/4. That's option 4. Let me recheck: u+3v = 1/2 + 3(-1/4) = 1/2 - 3/4 = -1/4. Answer is 4."
+    "correct_answer": "4",
+    "explanation": "Expanding and simplifying: 2u² - 2u + 8v² + 4v + 1 = 0. Completing the square: 2(u-1/2)² + 8(v+1/4)² = 0. Both squares must be 0: u = 1/2, v = -1/4. u + 3v = 1/2 - 3/4 = -1/4."
   },
   {
     "id": 298,
