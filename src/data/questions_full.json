@@ -2992,8 +2992,8 @@
     "subtopic": "Fuel Contamination",
     "question": "What best can be said about the number of pumps at which the contamination levels were recorded as medium?",
     "options": {"1": "Exactly 8", "2": "More than 4", "3": "At least 8", "4": "At most 9"},
-    "correct_answer": "2",
-    "explanation": "From the constraints, the number of medium-contamination pumps must be more than 4.",
+    "correct_answer": "3",
+    "explanation": "From constraint 5: H = 2L. If L=3: H=6, M=11. If L=4: H=8, M=8. In all valid cases, M ≥ 8. So 'At least 8' is the best description.",
     "group_id": "cat2018-s1-lr-fuel",
     "group_context": ""
   },
