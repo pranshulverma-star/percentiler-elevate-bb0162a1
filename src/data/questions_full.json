@@ -2183,5 +2183,141 @@
     "options": {},
     "correct_answer": "1",
     "explanation": "Sentences 2→3→4 form a coherent paragraph about food being framed as individual choice in a neoliberal context. Sentence 1 about women and cooking is the odd one out."
+  },
+
+  {
+    "id": 197,
+    "topic": "Sentence Placement",
+    "subtopic": "Return-to-Office Costs",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: This reality is putting stress on employees who have to pay for transport, desk lunches, more childcare, clothing and that after-work socialisation – costs they haven't incurred for nearly two years.\n\nParagraph: __(1)__. Prices are rising at their fastest rate in 40 years, consequently, return-to-office-related costs have shot up – think petrol and food, for instance.__(2)__. Yet wages haven't kept up with inflation – even despite the salary growth many workers have enjoyed during a favorable pandemic labour market. __(3)__. This is especially jarring for workers who were able to save during remote work, when these expenditures weren't a factor. __(4)__. In April 2022, Umus, a London university lecturer, told BBC Work life that they were spending nearly a quarter of what they made every day on return-to-work costs.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence introduces the stress of return-to-office costs, fitting at position 1 before the paragraph elaborates on rising prices and specific cost categories."
+  },
+  {
+    "id": 198,
+    "topic": "Sentence Placement",
+    "subtopic": "Trang Bang Photograph",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Taken outside the village of Trang Bang on June 8, 1972, the picture captured the trauma and indiscriminate violence of a conflict that claimed, by some estimates, a million or more civilian lives.\n\nParagraph: The horrifying photograph of children fleeing a deadly napalm attack has become a defining image not only of the Vietnam War but the 20th century. __(1)__. Dark smoke billowing behind them, the young subjects' faces are painted with a mixture of terror, pain and confusion. __(2)__. Soldiers from the South Vietnamese army's 25th Division follow helplessly behind. __(3)__. The picture was officially titled \"The Terror of War,\" but the photo is better known by the nickname given to the naked 9-year-old at its centre \"Napalm Girl\". __(4)__.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence providing the date, location, and broader context of the photograph fits at position 1, right after introducing the photograph and before describing its visual details."
+  },
+  {
+    "id": 199,
+    "topic": "Sentence Placement",
+    "subtopic": "Somalia Drought",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Many have had to leave their homes behind, with more than 1.3 million people being displaced due to the drought.\n\nParagraph: Somalia has been dealing with an enormous humanitarian catastrophe, driven by the longest and most severe drought the country has experienced in at least 40 years. __(1)__. Five consecutive rainy seasons have failed, causing more than 8 million people - almost half of the country's population – to experience acute food insecurity. __(2)__. More than 43,000 people are believed to have lost their lives, with half of the lives lost likely being children under five. The damage the drought has caused is far-reaching. __(3)__. Farmers have lost all their agricultural income, while pastoralists have lost more than 3 million livestock, impoverishing entire communities, and leaving them on the brink of famine. __(4)__. Some, like the pastoralists, may never be able to go back as their livelihoods have been irreversibly wiped out.",
+    "options": {},
+    "correct_answer": "4",
+    "explanation": "The sentence about people leaving homes and 1.3 million displaced fits at position 4, after mentioning communities on the brink of famine and before 'Some may never be able to go back as their livelihoods have been irreversibly wiped out.'"
+  },
+  {
+    "id": 200,
+    "topic": "Para Jumbles",
+    "subtopic": "Forecasting & Expertise",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. Part of the appeal of forecasting is not just that it seems to work, but that you don't seem to need specialized expertise to succeed at it.\n2. The tight connection between forecasting and building a model of the world helps explain why so much of the early interest in the idea came from the intelligence community.\n3. This was true even though the latter had access to classified intelligence.\n4. One frequently cited study found that accurate forecasters' predictions of geopolitical events, when aggregated using standard scientific methods, were more accurate than the forecasts of members of the US intelligence community who answered the same questions in a confidential prediction market.\n5. The aggregated opinions of non-experts doing forecasting have proven to be a better guide to the future than the aggregated opinions of experts.",
+    "options": {},
+    "correct_answer": "2",
+    "explanation": "Sentences 5→4→3→1 form a coherent paragraph about non-experts outperforming experts in forecasting. Sentence 2 about intelligence community interest introduces a different theme."
+  },
+  {
+    "id": 201,
+    "topic": "Para Jumbles",
+    "subtopic": "Cultivated Meat",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. The UK is a world leader in developing cultivated meat and the approval of a cultivated pet food is an important milestone.\n2. If we're to realise the full potential benefits of cultivated meat the government must invest in research and infrastructure.\n3. The first UK applications for cultivated meat produced for humans remain under assessment with the Food Standards Agency.\n4. The previous UK government had been looking at fast-tracking the approval of cultivated meat for human consumption.\n5. It underscores the potential for new innovation to help reduce the negative impacts of intensive animal agriculture.",
+    "options": {},
+    "correct_answer": "5",
+    "explanation": "Sentences 4→3→1→2 form a coherent paragraph about the UK's regulatory journey with cultivated meat. Sentence 5 about 'reducing negative impacts of intensive animal agriculture' introduces a tangential theme."
+  },
+  {
+    "id": 202,
+    "topic": "Sentence Placement",
+    "subtopic": "Chickens & Mica",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Yet each day the flock produced eggs with calcareous shells though they apparently had not ingested any calcium from land which was entirely lacking in limestone.\n\nParagraph: Early in this century a young Breton schoolboy who preparing himself for a scientific career began to notice a strange fact about hens in his father's poultry yard.__ (1) __. As they scratched the soil they constantly seemed to be pecking at specks of mica, a siliceous material dotting the ground. __ (2) __. No one could explain why the chickens selected the mica, or why each time a bird was killed for the family cooking pot no trace of the mica could be found in its gizzard. __ (3) __. It took Kervran many years to establish that the chickens were transmuting one element into another. __ (4) __.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about eggs with calcareous shells despite no calcium fits at position 1, establishing the strange observation before describing the hens' behaviour of pecking at mica."
+  },
+  {
+    "id": 203,
+    "topic": "Para Jumbles",
+    "subtopic": "Gender & Biology",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. No known real researcher of human behaviour would say that gender is all nature or all nurture.\n2. The evidence for a biological basis for gender certainly doesn't mean we should be complacent in the face of sexism.\n3. Many people are uncomfortable with the idea that gender is not purely a social construct.\n4. Despite this empirical truth, researchers who study the biological basis of gender often face political pushback.\n5. There's a political preference for gender to be only a reflection of social factors and so entirely malleable.",
+    "options": {},
+    "correct_answer": "2",
+    "explanation": "Sentences 1→3→5→4 form a coherent paragraph about the tension between biological evidence for gender and political resistance to it. Sentence 2 about not being complacent about sexism introduces a separate prescriptive point."
+  },
+  {
+    "id": 204,
+    "topic": "Sentence Placement",
+    "subtopic": "Night Owls & Brain Power",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Science has officially crowned us superior to our early-rising brethren.\n\nParagraph: My fellow night owls, grab a strong cup of coffee and gather around: I have great news. __(1)__. For a long time, our kind has been unfairly maligned. Stereotyped as lazy and undisciplined. Told we ought to be morning larks. Advised to go to bed early so we can wake before 5am and run a marathon before breakfast like all high-flyers seem to do. Now, however, we are having the last laugh. __(2)__. It may be a tad more complicated than that. A study published last week, which you may have already seen while scrolling at 1am, suggests that staying up late could be good for brain power. __(3)__. Is this study a thinly veiled PR exercise conducted by a caffeine-pill company? Nope, it's legit. __(4)__. Research led by academics at...",
+    "options": {},
+    "correct_answer": "2",
+    "explanation": "The sentence about science crowning night owls superior fits at position 2, right after 'we are having the last laugh' and before 'It may be a tad more complicated than that' which tempers the claim."
+  },
+  {
+    "id": 205,
+    "topic": "Sentence Placement",
+    "subtopic": "Productive Dualism",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Dualism was long held as the defining feature of developing countries in contrast to developed countries, where frontier technologies and high productivity were assumed to prevail.\n\nParagraph: __(1)__. At the core of development economics lies the idea of 'productive dualism': that poor countries' economies are split between a narrow 'modern' sector that uses advanced technologies and a larger 'traditional' sector characterized by very low productivity.__(2)__. While this distinction between developing and advanced economies may have made some sense in the 1950s and 1960s, it no longer appears to be very relevant. A combination of forces have produced a widening gap between the winners and those left behind.__(3)__. Convergence between poor and rich parts of the economy was arrested and regional disparities widened.__(4)__. As a result...",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence introducing dualism as a defining feature fits at position 1, providing the opening context before the paragraph elaborates on productive dualism at its core."
+  },
+  {
+    "id": 206,
+    "topic": "Sentence Placement",
+    "subtopic": "Arms & Conflict",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Beyond undermining the monopoly of the State on the use of force, armed conflict also creates an environment that can enable organized crime to prosper.\n\nParagraph: __(1)__. Linkages between illicit arms, organized crime, and armed conflict can reinforce one another while also escalating and prolonging violence and eroding governance.__(2)__. Financial gains from crime can lengthen or intensify armed conflicts by creating revenue streams for non-State armed groups (NSAGs).__(3)__. In this context, when hostilities cease and parties to a conflict move towards a peaceful resolution, the widespread availability of surplus arms and ammunition can contribute to a situation of 'criminalized peace' that obstructs sustainable peace building efforts. (4)__.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about armed conflict enabling organized crime fits at position 1, introducing the theme before the paragraph details the linkages between arms, crime, and conflict."
+  },
+  {
+    "id": 207,
+    "topic": "Para Jumbles",
+    "subtopic": "Soft Skills Hiring",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. Although hard skills have traditionally ruled the roost, some companies are moving away from choosing prospective hires based on technical abilities alone.\n2. Companies are shaking off the old definition of an ideal candidate and ditching the idea of looking for the singularly perfect candidate altogether.\n3. Now, some job descriptions are frequently asking for candidates to demonstrate soft skills, such as leadership or teamwork.\n4. That's not to say that practical know-how is no longer required - some jobs still call for highly specific expertise.\n5. The move towards prioritising soft skills \"is a natural response to three years of the pandemic\" says a senior recruiter at Cenlar FSB.",
+    "options": {},
+    "correct_answer": "5",
+    "explanation": "Sentences 1→2→3→4 form a coherent paragraph about the shift from hard skills to soft skills with a balanced caveat. Sentence 5 introduces a specific pandemic attribution and quote that disrupts the flow."
+  },
+  {
+    "id": 208,
+    "topic": "Sentence Placement",
+    "subtopic": "Secret Weddings",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Easing the anxiety and pressure of having a \"big day\" is part of the appeal for many couples who marry in secret.\n\nParagraph: Wedding season is upon us and – after two years of Covid chaos that saw nuptials scaled back – you may think the temptation would be to go all out. __(1)__. But instead of expanding the guest list, many couples are opting to have entirely secret ceremonies. With Covid case numbers remaining high and the cost of living crisis meaning that many couples are feeling the pinch, it's no wonder that some are less than eager to send out invites. __(2)__. Plus, it can't hurt that in celebrity circles getting married in secret is all the rage. __(3)__. \"I would definitely say that secret weddings are becoming more common,\" says Landis Bejar, the founder of a therapy practice, which specialises in helping brides and grooms manage wedding stress. \"People are looking for ways to get out of the spotlight and avoid the pomp and circumstance of weddings. __(4)__. They just want to get to the part where they are married.\"",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about easing anxiety of having a 'big day' fits at position 1, transitioning from 'temptation to go all out' to 'But instead... opting for secret ceremonies.'"
+  },
+  {
+    "id": 209,
+    "topic": "Sentence Placement",
+    "subtopic": "Aage Badhein App",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Most were first-time users of a tablet and a digital app.\n\nParagraph: Aage Badhein's USP lies in the ethnographic research that constituted the foundation of its development process. Customizations based on learning directly from potential users were critical to making this self-paced app suitable for both a literate and non-literate audience. __(1)__. The user interface caters to a Hindi-speaking audience who have minimal to no experience with digital services and devices. __(2)__. The content and functionality of the app are suitable for a wide audience. This includes youth preparing for an independent role in life or a student ready to create a strong foundation of financial management early in her life. __(3)__. Household members desirous of improving their family's financial strength to reach their aspirations can also benefit. We piloted Aage Badhein in early 2021 with over 400 women from rural areas. __(4)__. The digital solution generated a large amount of interest in the communities.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about most being first-time tablet/app users fits at position 1, connecting the ethnographic research with the design decisions for the non-literate audience described next."
+  },
+  {
+    "id": 210,
+    "topic": "Sentence Placement",
+    "subtopic": "Social Learning & Inheritance",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: When people socially learn from each other, they often learn without understanding why what they're copying—the beliefs and behaviours and technologies and know-how—works.\n\nParagraph: __(1)__. The dual-inheritance theory ....says…. that inheritance is itself an evolutionary system. It has variation. What makes us a new kind of animal, and so different and successful as a species, is we rely heavily on social learning, to the point where socially acquired information is effectively a second line of inheritance, the first being our genes.…__(2)__. People tend to home in on who seems to be the smartest or most successful person around, as well as what everybody seems to be doing—the majority of people have something worth learning. __(3)__. When you repeat this process over time, you can get, around the world, cultural packages— beliefs or behaviours or technology or other solutions—that are adapted to the local conditions. People have different psychologies, effectively. __(4)__.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about people learning without understanding why fits at position 1, introducing the key idea of social learning before the paragraph elaborates on dual-inheritance theory."
+  },
+  {
+    "id": 211,
+    "topic": "Sentence Placement",
+    "subtopic": "Return to Office Uncertainty",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: This has meant a lot of uncertainty around what a wide-scale return to office might look like in practice.\n\nParagraph: Bringing workers back to their desks has been a rocky road for employers and employees alike. The evolution of the pandemic has meant that best laid plans have often not materialised.__(1)__. The flow of workers back into offices has been more of a trickle than a steady stream. __(2)__. Yet while plenty of companies are still working through their new policies, some employees across the globe are now back at their desks, whether on a full-time or hybrid basis.__(3)__. That means we're beginning to get some clarity on what return-to-office means – what's working, as well as what has yet to be settled.__(4)__.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about uncertainty around return-to-office fits at position 1, connecting 'best laid plans have not materialised' with 'The flow of workers has been more of a trickle.'"
   }
 ]
