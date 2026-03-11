@@ -688,7 +688,7 @@ export default function PracticeLab() {
 
   const handleRetry = useCallback(() => {
     if (selectedChapter) {
-      setQuizQuestions(pickRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
+      setQuizQuestions(pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
     }
     setQuizAnswers({});
     setQuizTimeUsed(0);
