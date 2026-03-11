@@ -563,6 +563,8 @@ export default function BattleRoomPage() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
+  const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
+  const [phoneModalOpen, setPhoneModalOpen] = useState(false);
 
   const [room, setRoom] = useState<BattleRoom | null>(null);
   const [players, setPlayers] = useState<BattlePlayer[]>([]);
