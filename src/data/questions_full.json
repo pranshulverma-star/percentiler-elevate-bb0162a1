@@ -2772,8 +2772,8 @@
     "subtopic": "Satellites",
     "question": "What is the minimum possible number of satellites serving B exclusively?",
     "options": {"1": "100", "2": "200", "3": "500", "4": "250"},
-    "correct_answer": "3",
-    "explanation": "Using the constraints and the ratio 2:1:1, the minimum number of satellites exclusively serving B works out to 500.",
+    "correct_answer": "4",
+    "explanation": "Satellites exclusively serving B = x = 5y + 250. This is minimum when y = 0, giving x = 250.",
     "group_id": "cat2018-s1-di-satellites",
     "group_context": ""
   },
