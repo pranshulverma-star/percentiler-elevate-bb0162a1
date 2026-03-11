@@ -126,14 +126,10 @@ export default function ResultsView({
       const a = answers[q.id];
       if (a === undefined || a === null || a === "") {
         unanswered++;
-      } else if (q.type === "mcq") {
-        if (a === q.correctAnswer) correct++;
-        else incorrect++;
+      } else if (a === q.correctAnswer) {
+        correct++;
       } else {
-        const userStr = String(a).trim().toLowerCase();
-        const correctStr = (q.numericAnswer || "").trim().toLowerCase();
-        if (correctStr && userStr === correctStr) correct++;
-        else incorrect++;
+        incorrect++;
       }
     });
     return { correct, incorrect, unanswered };
