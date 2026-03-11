@@ -2689,8 +2689,8 @@
     "subtopic": "Woodland Canopy & Swifts",
     "question": "The four sentences (labelled 1, 2, 3, and 4) when properly sequenced, form a coherent paragraph. Decide on the proper order:\n\n1. The woodland's canopy receives most of the sunlight that falls on the trees.\n2. Swifts do not confine themselves to woodlands, but hunt wherever there are insects in the air.\n3. With their streamlined bodies, swifts are agile flyers, ideally adapted to twisting and turning through the air as they chase flying insects – the creatures that form their staple diet.\n4. Hundreds of thousands of insects fly in the sunshine up above the canopy, some falling prey to swifts and swallows.",
     "options": {"1": "1342", "2": "1432", "3": "3214", "4": "3142"},
-    "correct_answer": "1",
-    "explanation": "Canopy receives sunlight (1) → swifts chase insects (3) → insects above canopy are preyed on (4) → swifts hunt beyond woodlands (2). Sequence: 1-3-4-2."
+    "correct_answer": "2",
+    "explanation": "Statement 1 introduces the woodland canopy. Statement 4 describes insects above the canopy. Statement 3 introduces swifts chasing insects. Statement 2 says swifts hunt beyond woodlands. The right sequence is 1-4-3-2."
   },
   {
     "id": 248,
