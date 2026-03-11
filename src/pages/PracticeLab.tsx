@@ -251,10 +251,12 @@ function ChaptersView({
   section,
   onBack,
   onSelect,
+  onBattle,
 }: {
   section: SectionData;
   onBack: () => void;
   onSelect: (ch: Chapter) => void;
+  onBattle: (ch: Chapter) => void;
 }) {
   return (
     <motion.div {...fadeUp} className="space-y-6 max-w-4xl mx-auto">
