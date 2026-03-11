@@ -2319,5 +2319,86 @@
     "options": {},
     "correct_answer": "1",
     "explanation": "The sentence about uncertainty around return-to-office fits at position 1, connecting 'best laid plans have not materialised' with 'The flow of workers has been more of a trickle.'"
+  },
+  {
+    "id": 212,
+    "topic": "Sentence Placement",
+    "subtopic": "Hens & Mica",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Yet each day the flock produced eggs with calcareous shells though they apparently had not ingested any calcium from land which was entirely lacking in limestone.\n\nParagraph: Early in this century a young Breton schoolboy who preparing himself for a scientific career began to notice a strange fact about hens in his father's poultry yard. __(1)__. As they scratched the soil they constantly seemed to be pecking at specks of mica, a siliceous material dotting the ground. __(2)__. No one could explain why the chickens selected the mica, or why each time a bird was killed for the family cooking pot no trace of the mica could be found in its gizzard. __(3)__. It took Kervran many years to establish that the chickens were transmuting one element into another. __(4)__.",
+    "options": {"1": "4", "2": "3", "3": "2", "4": "1"},
+    "correct_answer": "4",
+    "explanation": "The sentence about hens producing eggs with calcareous shells despite no calcium fits at position 1, as it introduces the 'strange fact' about hens that the paragraph opens with."
+  },
+  {
+    "id": 213,
+    "topic": "Para Jumbles",
+    "subtopic": "Gender & Biology",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. No known real researcher of human behaviour would say that gender is all nature or all nurture.\n2. The evidence for a biological basis for gender certainly doesn't mean we should be complacent in the face of sexism.\n3. Many people are uncomfortable with the idea that gender is not purely a social construct.\n4. Despite this empirical truth, researchers who study the biological basis of gender often face political pushback.\n5. There's a political preference for gender to be only a reflection of social factors and so entirely malleable.",
+    "options": {},
+    "correct_answer": "2",
+    "explanation": "Sentences 1→4→3→5 form a coherent paragraph about the uncomfortable truth of biology in gender and political resistance. Sentence 2 about complacency and sexism is a tangential ethical point that doesn't fit the paragraph's focus on political pushback against biological research."
+  },
+  {
+    "id": 214,
+    "topic": "Sentence Placement",
+    "subtopic": "Night Owls",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Science has officially crowned us superior to our early-rising brethren.\n\nParagraph: My fellow night owls, grab a strong cup of coffee and gather around: I have great news. __(1)__. For a long time, our kind has been unfairly maligned. Stereotyped as lazy and undisciplined. Told we ought to be morning larks. Advised to go to bed early so we can wake before 5am and run a marathon before breakfast like all high-flyers seem to do. Now, however, we are having the last laugh. __(2)__. It may be a tad more complicated than that. A study published last week, which you may have already seen while scrolling at 1am, suggests that staying up late could be good for brain power. __(3)__. Is this study a thinly veiled PR exercise conducted by a caffeine-pill company? Nope, it's legit. __(4)__. Research led by academics at...",
+    "options": {"1": "4", "2": "3", "3": "2", "4": "1"},
+    "correct_answer": "4",
+    "explanation": "The sentence 'Science has officially crowned us superior' fits at position 1, right after 'great news' — it delivers the news that the paragraph then elaborates on."
+  },
+  {
+    "id": 215,
+    "topic": "Para Jumbles",
+    "subtopic": "Marxism & Lyric Poetry",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. Marxism has internal contradictions due to which one strand of Marxism sees no merit in lyric poetry while another appreciates the alternative modes of perception in poetry.\n2. The focus of lyric poetry as personal may not seem compatible with Marxism. However, it is possible to envisage lyric poetry as a symbol of resistance against an oppressive culture.\n3. The focus of lyric poetry is largely personal while that of Marxism is bringing change in society. Unless the difference is resolved, poetry will remain largely utopian.\n4. Marxism makes unreasonable demands on lyric poetry. However, lyric poetry has its own merits that are largely ignored by Marxism due to its personal nature.",
+    "options": {},
+    "correct_answer": "4",
+    "explanation": "Sentences 1→2→3 form a coherent paragraph exploring the tension between Marxism and lyric poetry from different angles. Sentence 4 is a simplistic restatement that doesn't add to the analytical progression."
+  },
+  {
+    "id": 216,
+    "topic": "Sentence Placement",
+    "subtopic": "Productive Dualism",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Dualism was long held as the defining feature of developing countries in contrast to developed countries, where frontier technologies and high productivity were assumed to prevail.\n\nParagraph: __(1)__. At the core of development economics lies the idea of 'productive dualism': that poor countries' economies are split between a narrow 'modern' sector that uses advanced technologies and a larger 'traditional' sector characterized by very low productivity. __(2)__. While this distinction between developing and advanced economies may have made some sense in the 1950s and 1960s, it no longer appears to be very relevant. A combination of forces have produced a widening gap between the winners and those left behind. __(3)__. Convergence between poor and rich parts of the economy was arrested and regional disparities widened. __(4)__.",
+    "options": {"1": "4", "2": "3", "3": "2", "4": "1"},
+    "correct_answer": "4",
+    "explanation": "The sentence about dualism being held as a defining feature of developing countries fits at position 1, introducing the concept before the paragraph elaborates on 'productive dualism'."
+  },
+  {
+    "id": 217,
+    "topic": "Sentence Placement",
+    "subtopic": "Armed Conflict & Crime",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Beyond undermining the monopoly of the State on the use of force, armed conflict also creates an environment that can enable organized crime to prosper.\n\nParagraph: __(1)__. Linkages between illicit arms, organized crime, and armed conflict can reinforce one another while also escalating and prolonging violence and eroding governance. __(2)__. Financial gains from crime can lengthen or intensify armed conflicts by creating revenue streams for non-State armed groups (NSAGs). __(3)__. In this context, when hostilities cease and parties to a conflict move towards a peaceful resolution, the widespread availability of surplus arms and ammunition can contribute to a situation of 'criminalized peace' that obstructs sustainable peace building efforts. (4)__.",
+    "options": {"1": "A", "2": "B", "3": "C", "4": "D"},
+    "correct_answer": "1",
+    "explanation": "The sentence about armed conflict enabling organized crime fits at position 1 (A), introducing the main thesis before the paragraph elaborates on the linkages."
+  },
+  {
+    "id": 218,
+    "topic": "Sentence Placement",
+    "subtopic": "Ghee & Slow Food",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: This was years in the making but fast-tracked during the pandemic, when \"people started being more mindful about their food\", he explained.\n\nParagraph: For millennia, ghee has been a venerated staple of the subcontinental diet, but it fell out of favour a few decades ago when saturated fats were largely considered to be unhealthy. __(1)__. But more recently, as the thinking around saturated fats is shifting globally, Indians are finding their own way back to this ingredient that is so integral to their cuisine. __(2)__. For Karmakar, a renewed interest in ghee is emblematic of a return-to-basics movement in India. __(3)__. This movement is also part of an overall trend towards \"slow food\". In keeping with the movement's philosophy, ghee can be produced locally (even at home) and has inextricable cultural ties. __(4)__. At a basic level, ghee is a type of clarified butter believed to have originated in India as a way to preserve butter from going rancid in the hot climate.",
+    "options": {"1": "1", "2": "2", "3": "3", "4": "4"},
+    "correct_answer": "2",
+    "explanation": "The sentence about being fast-tracked during the pandemic fits at position 2, connecting the shift in thinking about saturated fats with the renewed interest described by Karmakar."
+  },
+  {
+    "id": 219,
+    "topic": "Para Jumbles",
+    "subtopic": "Food & Neoliberal Context",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. Women may prioritize cooking because they feel they alone are responsible for mediating a toxic and unhealthy food system.\n2. Food is commonly framed through the lens of individual choice: you can choose to eat healthily.\n3. This is particularly so in a neoliberal context where the state has transferred the responsibility for food onto individual consumers.\n4. The individualized framing of choice appeals to a popular desire to experience agency, but draws away from the structural obstacles that stratify individual food choices.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "Sentences 2→3→4 form a coherent paragraph about food being framed as individual choice in a neoliberal context. Sentence 1 about women prioritizing cooking introduces a gender-specific angle that disrupts the paragraph's focus on structural vs individual framing."
+  },
+  {
+    "id": 220,
+    "topic": "Summary",
+    "subtopic": "Egalitarian Cities",
+    "question": "The passage given below is followed by four alternate summaries. Choose the option that best captures the essence of the passage.\n\nSeveral of the world's earliest cities were organised along egalitarian lines. In some regions, urban populations governed themselves for centuries without any indication of the temples and palaces that would later emerge; in others, temples and palaces never emerged at all, and there is simply no evidence of a class of administrators or any other sort of ruling stratum. It would seem that the mere fact of urban life does not, necessarily, imply any particular form of political organization, and never did. Far from resigning us to inequality, the picture that is now emerging of humanity's past may open our eyes to egalitarian possibilities we otherwise would have never considered.",
+    "options": {"1": "Contrary to our assumption that urban settlements have always involved hierarchical political and administrative structures, ancient cities were not organised in this way.", "2": "The lack of hierarchical administration in ancient cities can be deduced by the absence of religious and regal structures such as temples and palaces.", "3": "The history of ancient cities shows evidence of both egalitarian and hierarchical forms of social organization, casting doubt on urban life necessarily requiring a ruling class.", "4": "Evidence from the world's earliest cities shows that urban life need not involve hierarchical political structures, opening up egalitarian possibilities for our future."},
+    "correct_answer": "4",
+    "explanation": "Option 4 best captures both the historical evidence (earliest cities without hierarchical structures) and the forward-looking conclusion (opening egalitarian possibilities). Option 1 is too narrow, Option 2 focuses on method of deduction, Option 3 doesn't capture the forward-looking element."
   }
 ]
