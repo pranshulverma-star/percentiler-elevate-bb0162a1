@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen, Zap, ChevronRight, Lock, Trophy, TrendingUp, BarChart3, Flame, Shield, Star, Swords, Target, Crown, Users2 } from "lucide-react";
+import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -16,7 +16,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
-import ShareableResultCard from "@/components/ShareableResultCard";
 import ResultsView from "@/components/practice-lab/ResultsView";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
