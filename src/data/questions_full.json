@@ -2915,8 +2915,8 @@
     "subtopic": "Students & Institutes",
     "question": "Which subject does Amit major in?",
     "options": {"1": "Operations", "2": "Marketing", "3": "Cannot be determined uniquely from the given information", "4": "Finance"},
-    "correct_answer": "1",
-    "explanation": "Daisy and Amit are from the same institute. Since Barun is from Y and only one male majors in Operations (Barun), Amit must be from X. Through elimination of constraints, Amit majors in Operations.",
+    "correct_answer": "4",
+    "explanation": "Daisy and Amit are from the same institute (X). Chetan is from X and majors in Finance. From constraint 4, one female and two males major in Finance. Since Barun majors in Operations, Amit must major in Finance.",
     "group_id": "cat2018-s1-lr-students",
     "group_context": ""
   },
