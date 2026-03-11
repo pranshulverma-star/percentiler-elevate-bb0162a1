@@ -38,6 +38,7 @@ interface RawQuestion {
   explanation?: string;
   group_id?: string;
   group_context?: string;
+  group_image?: string;
 }
 
 function slugify(s: string) {
