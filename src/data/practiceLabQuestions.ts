@@ -7,6 +7,8 @@ export interface PracticeQuestion {
   options: string[];
   correctAnswer: number; // 0-based index
   explanation?: string;
+  group_id?: string;
+  group_context?: string;
 }
 
 export interface Chapter {
