@@ -9,6 +9,7 @@ export interface PracticeQuestion {
   explanation?: string;
   group_id?: string;
   group_context?: string;
+  group_image?: string;
 }
 
 export interface Chapter {
@@ -37,6 +38,7 @@ interface RawQuestion {
   explanation?: string;
   group_id?: string;
   group_context?: string;
+  group_image?: string;
 }
 
 function slugify(s: string) {
@@ -236,6 +238,7 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
         explanation: r.explanation,
         group_id: r.group_id,
         group_context: r.group_context,
+        group_image: r.group_image,
       };
     } else {
       // Convert numeric/open-ended to MCQ with generated options
@@ -259,6 +262,7 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
         explanation: r.explanation,
         group_id: r.group_id,
         group_context: r.group_context,
+        group_image: r.group_image,
       };
     }
 
