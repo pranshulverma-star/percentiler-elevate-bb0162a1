@@ -525,22 +525,32 @@ export default function BattleRoomPage() {
     setCountdown(3);
   }, [room]);
 
-  // Countdown effect
+  // Countdown effect — host broadcasts each tick to all players
   useEffect(() => {
     if (countdown === null) return;
     if (countdown <= -1) {
       // Countdown finished, actually start the battle
       setCountdown(null);
       if (room) {
-        (supabase.from("battle_rooms") as any)
-          .update({ status: "active", started_at: new Date().toISOString() })
-          .eq("id", room.id);
+        (async () => {
+          await (supabase.from("battle_rooms") as any)
+            .update({ status: "active", started_at: new Date().toISOString() })
+            .eq("id", room.id);
+        })();
       }
       return;
     }
+    // Host broadcasts countdown to other players
+    if (isHost && room) {
+      supabase.channel(`battle-room-${room.id}`).send({
+        type: "broadcast",
+        event: "countdown",
+        payload: { value: countdown },
+      });
+    }
     const timer = setTimeout(() => setCountdown(c => (c !== null ? c - 1 : null)), 1000);
     return () => clearTimeout(timer);
-  }, [countdown, room]);
+  }, [countdown, room, isHost]);
 
   // Player finishes quiz
   const handleFinishQuiz = useCallback(async (answers: Record<number, number | string | null>, timeUsed: number) => {
