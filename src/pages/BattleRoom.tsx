@@ -417,6 +417,7 @@ export default function BattleRoomPage() {
   const [players, setPlayers] = useState<BattlePlayer[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState<number | null>(null);
   const [myFinished, setMyFinished] = useState(false);
   const joinedRef = useRef(false);
 
@@ -497,13 +498,29 @@ export default function BattleRoomPage() {
     return () => { supabase.removeChannel(roomChannel); };
   }, [room?.id]);
 
-  // Host starts battle
+  // Host starts battle — trigger countdown
   const handleStart = useCallback(async () => {
     if (!room) return;
-    await (supabase.from("battle_rooms") as any)
-      .update({ status: "active", started_at: new Date().toISOString() })
-      .eq("id", room.id);
+    // Start countdown 3-2-1-GO
+    setCountdown(3);
   }, [room]);
+
+  // Countdown effect
+  useEffect(() => {
+    if (countdown === null) return;
+    if (countdown <= -1) {
+      // Countdown finished, actually start the battle
+      setCountdown(null);
+      if (room) {
+        (supabase.from("battle_rooms") as any)
+          .update({ status: "active", started_at: new Date().toISOString() })
+          .eq("id", room.id);
+      }
+      return;
+    }
+    const timer = setTimeout(() => setCountdown(c => (c !== null ? c - 1 : null)), 1000);
+    return () => clearTimeout(timer);
+  }, [countdown, room]);
 
   // Player finishes quiz
   const handleFinishQuiz = useCallback(async (answers: Record<number, number | string | null>, timeUsed: number) => {
@@ -588,7 +605,35 @@ export default function BattleRoomPage() {
       <main className="min-h-screen bg-background pt-4 pb-12 px-3 md:pt-6 md:pb-16 md:px-6 game-grid-bg">
         <div className="max-w-5xl mx-auto py-6 md:py-16">
           <AnimatePresence mode="wait">
-            {room.status === "waiting" && (
+            {/* Countdown overlay */}
+            {countdown !== null && (
+              <motion.div
+                key="countdown"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center bg-background/90 backdrop-blur-sm"
+              >
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={countdown}
+                    initial={{ scale: 0.3, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 2, opacity: 0 }}
+                    transition={{ duration: 0.4, ease: "backOut" }}
+                    className="text-center"
+                  >
+                    {countdown > 0 ? (
+                      <span className="text-8xl md:text-[12rem] font-black text-primary drop-shadow-lg">{countdown}</span>
+                    ) : (
+                      <span className="text-6xl md:text-9xl font-black text-primary tracking-tight">GO!</span>
+                    )}
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            )}
+
+            {room.status === "waiting" && countdown === null && (
               <BattleLobby key="lobby" room={room} players={players} isHost={isHost} onStart={handleStart} />
             )}
             {room.status === "active" && !myFinished && (
