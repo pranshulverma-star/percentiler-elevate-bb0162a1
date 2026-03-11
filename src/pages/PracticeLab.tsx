@@ -746,19 +746,19 @@ function ResultsView({
   const improvement = pastAttempts.length >= 2 ? pastAttempts[0].score_pct - pastAttempts[pastAttempts.length - 1].score_pct : 0;
 
   return (
-    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-5 md:space-y-8">
+    <motion.div {...fadeUp} className="max-w-2xl mx-auto px-1 space-y-4 md:space-y-8">
       {/* Victory/Defeat Card */}
-      <Card className="p-5 md:p-10 border text-center space-y-4 md:space-y-6 relative overflow-hidden">
+      <Card className="p-4 md:p-10 border text-center space-y-3 md:space-y-6 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-amber-500/5" />
         {isPerfect && <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,hsl(var(--primary)/0.1)_0%,transparent_70%)]" />}
         
-        <div className="relative z-10 space-y-3 md:space-y-5">
+        <div className="relative z-10 space-y-2 md:space-y-5">
           {/* Stars */}
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.4, ease: "backOut" }}
-            className="flex items-center justify-center gap-1.5 md:gap-2"
+            className="flex items-center justify-center gap-1 md:gap-2"
           >
             {[1, 2, 3].map((s) => (
               <motion.div
@@ -768,7 +768,7 @@ function ResultsView({
                 transition={{ delay: 0.3 + s * 0.15, duration: 0.4, ease: "backOut" }}
               >
                 <Star
-                  className={`w-8 h-8 md:w-12 md:h-12 ${
+                  className={`w-6 h-6 md:w-12 md:h-12 ${
                     s <= stars
                       ? "text-amber-400 fill-amber-400 drop-shadow-lg"
                       : "text-border"
@@ -780,7 +780,7 @@ function ResultsView({
 
           {/* Victory/Defeat text */}
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.8 }}>
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-2"
+            <div className="inline-flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-wider mb-1 md:mb-2"
               style={{
                 background: isVictory
                   ? "linear-gradient(135deg, hsl(var(--primary) / 0.15), hsl(45 100% 50% / 0.1))"
@@ -788,15 +788,15 @@ function ResultsView({
                 color: isVictory ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))",
               }}
             >
-              {isPerfect ? <Crown className="w-3.5 h-3.5" /> : isVictory ? <Trophy className="w-3.5 h-3.5" /> : <Shield className="w-3.5 h-3.5" />}
+              {isPerfect ? <Crown className="w-3 h-3" /> : isVictory ? <Trophy className="w-3 h-3" /> : <Shield className="w-3 h-3" />}
               {isPerfect ? "FLAWLESS VICTORY" : isVictory ? "MISSION COMPLETE" : "DEFEATED"}
             </div>
           </motion.div>
 
           {/* Score */}
           <div className="score-pop">
-            <div className="text-5xl md:text-8xl font-black text-foreground tracking-tighter">
-              {pct}<span className="text-2xl md:text-4xl text-muted-foreground">%</span>
+            <div className="text-4xl md:text-8xl font-black text-foreground tracking-tighter leading-none">
+              {pct}<span className="text-xl md:text-4xl text-muted-foreground">%</span>
             </div>
           </div>
 
@@ -805,35 +805,35 @@ function ResultsView({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1 }}
-            className="flex items-center justify-center gap-2"
+            className="flex items-center justify-center"
           >
-            <div className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full game-badge text-sm font-bold">
-              <Zap className="w-4 h-4" /> +{xpEarned} XP Earned
+            <div className="inline-flex items-center gap-1 md:gap-1.5 px-3 md:px-4 py-1.5 md:py-2 rounded-full game-badge text-xs md:text-sm font-bold">
+              <Zap className="w-3 h-3 md:w-4 md:h-4" /> +{xpEarned} XP
             </div>
           </motion.div>
 
-          {/* Stats row */}
-          <div className="flex items-center justify-center gap-4 md:gap-6 pt-1 md:pt-2">
-            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
-              <CheckCircle2 className="w-4 h-4 md:w-5 md:h-5 text-emerald-500" />
+          {/* Stats row — stacked tighter on mobile */}
+          <div className="flex items-center justify-center gap-3 md:gap-6 pt-1">
+            <div className="flex items-center gap-1 text-[11px] md:text-sm">
+              <CheckCircle2 className="w-3.5 h-3.5 md:w-5 md:h-5 text-emerald-500" />
               <span className="text-foreground font-bold">{correct}</span>
-              <span className="text-muted-foreground text-[10px] md:text-xs">correct</span>
+              <span className="text-muted-foreground text-[9px] md:text-xs">correct</span>
             </div>
-            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
-              <XCircle className="w-4 h-4 md:w-5 md:h-5 text-destructive" />
+            <div className="flex items-center gap-1 text-[11px] md:text-sm">
+              <XCircle className="w-3.5 h-3.5 md:w-5 md:h-5 text-destructive" />
               <span className="text-foreground font-bold">{incorrect}</span>
-              <span className="text-muted-foreground text-[10px] md:text-xs">wrong</span>
+              <span className="text-muted-foreground text-[9px] md:text-xs">wrong</span>
             </div>
-            <div className="flex items-center gap-1 md:gap-1.5 text-xs md:text-sm">
-              <MinusCircle className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground" />
+            <div className="flex items-center gap-1 text-[11px] md:text-sm">
+              <MinusCircle className="w-3.5 h-3.5 md:w-5 md:h-5 text-muted-foreground" />
               <span className="text-foreground font-bold">{unanswered}</span>
-              <span className="text-muted-foreground text-[10px] md:text-xs">skipped</span>
+              <span className="text-muted-foreground text-[9px] md:text-xs">skipped</span>
             </div>
           </div>
 
           {timeUsed > 0 && (
-            <p className="text-[11px] md:text-xs text-muted-foreground flex items-center justify-center gap-1">
-              <Clock className="w-3 h-3 md:w-3.5 md:h-3.5" /> {formatTime(timeUsed)}
+            <p className="text-[10px] md:text-xs text-muted-foreground flex items-center justify-center gap-1">
+              <Clock className="w-2.5 h-2.5 md:w-3.5 md:h-3.5" /> {formatTime(timeUsed)}
               {timeUsed < 600 && <span className="text-primary font-semibold ml-1">⚡ Speed Bonus!</span>}
             </p>
           )}
