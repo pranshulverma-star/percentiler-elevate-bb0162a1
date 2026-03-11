@@ -1894,5 +1894,201 @@
     "options": {"1": "10", "2": "12", "3": "5", "4": "14"},
     "correct_answer": "1",
     "explanation": "Using Venn diagram analysis for Europe with the given constraints about shared countries."
+  },
+
+  {
+    "id": 168,
+    "topic": "Reading Comprehension",
+    "subtopic": "Main Idea",
+    "group_id": "cat24-s1-rc-bandicoot",
+    "group_context": "They have a new nickname—a flattering one, this time. \"We call them ecosystem engineers,\" Pedler says.\n\nQ.1) Which one of the following statements provides a gist of this passage?\n\nThe passage discusses western barred bandicoots — once widespread, they were nearly wiped out by invasive species like foxes and cats introduced by British colonists. Rescuers now pin hopes on a remnant island population in the Wild Deserts sanctuary, where 'exclosures' bar invasive predators. A recent surge of rainfall has led to a bandicoot joey boom, raising the population to about 100. The bandicoots trap moisture and allow seed germination, helping restore cattle-damaged desert.",
+    "question": "Which one of the following statements provides a gist of this passage?",
+    "options": {"1": "The onslaught of animals such as cattle, rabbits and housecats, brought in by the British led to the extinction of the western barred bandicoot.", "2": "Marsupials are going extinct due to the colonial era transformation of the ecosystem which also destroyed natural vegetation.", "3": "A type of bandicoots was nearly wiped out by invasive species but rescuers now pin hopes on a remnant island population.", "4": "The negligent attitude of the British colonists towards these bandicoots evidenced by the names given to them led to their annihilation."},
+    "correct_answer": "3",
+    "explanation": "The passage traces the decline of western barred bandicoots due to invasive species and then describes rescue efforts using a remnant island population in the Wild Deserts sanctuary."
+  },
+  {
+    "id": 169,
+    "topic": "Reading Comprehension",
+    "subtopic": "Vocabulary in Context",
+    "group_id": "cat24-s1-rc-bandicoot",
+    "question": "The text uses the word 'exclosures' because Wild Deserts has adopted a measure of",
+    "options": {"1": "restoring cattle damaged deserts to green landscapes.", "2": "excluding animals to make the islands predator-free.", "3": "barring the entry of invasive species.", "4": "ridding the main desert of feral cats and large bilbies."},
+    "correct_answer": "3",
+    "explanation": "Exclosures are fenced areas that bar the entry of invasive species (predators), protecting the bandicoots inside."
+  },
+  {
+    "id": 170,
+    "topic": "Reading Comprehension",
+    "subtopic": "Detail",
+    "group_id": "cat24-s1-rc-bandicoot",
+    "question": "Which one of the following options does NOT represent the characteristics of the western barred bandicoot?",
+    "options": {"1": "Shallow diggers having an elongated muzzle", "2": "Smallest black striped marsupial that uses camouflage and dig", "3": "Long thin nose, black striped back, pouch for joeys", "4": "Look of a rat but with a baby pouch and a slender snout"},
+    "correct_answer": "1",
+    "explanation": "The passage describes bandicoots as having thin noses, striped backs, and pouches. 'Shallow diggers with elongated muzzle' is not consistent with the passage description."
+  },
+  {
+    "id": 171,
+    "topic": "Reading Comprehension",
+    "subtopic": "Inference",
+    "group_id": "cat24-s1-rc-bandicoot",
+    "question": "According to the text, the western barred bandicoots now have a flattering name because they have",
+    "options": {"1": "aided in altering an arid environment.", "2": "grown fivefold in terms of population.", "3": "led to a surge and increase of rainfall.", "4": "led a revival in preserving the species."},
+    "correct_answer": "1",
+    "explanation": "They are called 'ecosystem engineers' because they trap moisture and allow seed germination, helping restore the cattle-damaged desert — altering the arid environment."
+  },
+
+  {
+    "id": 172,
+    "topic": "Reading Comprehension",
+    "subtopic": "Author's Tone",
+    "group_id": "cat24-s1-rc-economics",
+    "group_context": "Oftentimes, when economists cross borders, they are less interested in learning from others than in invading their garden plots. Gary Becker, for instance, pioneered the idea of human capital. To do so, he famously tackled topics like crime and domesticity, applying methods honed in the study of markets to domains of nonmarket life. He projected economics outward into new realms. At the same time, he did not let other ways of thinking enter his own economic realm.\n\nTimes have changed for the once almighty discipline. Economics has been taken to task, within and beyond its ramparts. Some economists have reached out, imported, borrowed, and collaborated — been less imperial, more open. Consider Thomas Piketty and his outreach to historians. The booming field of behavioral economics — the fusion of economics and social psychology — is another case. Having spawned active subfields, like judgment, decisionmaking and a turn to experimentation, the field aims to go beyond the caricature of Rational Man to explain how humans make decisions.\n\nIt is important to underscore how this flips the way we think about economics. For generations, economists have presumed that people have interests — \"preferences,\" in the neoclassical argot — that get revealed in the course of peoples' choices. Interests come before actions and determine them.\n\nPsychologists take one look at this simple formulation and shake their heads. Increasingly, even some mainstream economists have to admit that homo economicus doesn't always behave like the textbook maximizer; irrational behavior can't simply be waved away as extraeconomic.\n\nAbove all, we need politics and institutions. Shiller connects perceptions of narratives to changes in behavior and thence to social outcomes. He completes a circle that was key to behavioral economics and brings in storytelling to make sense of how perceptions get framed. This cycle was once mediated or dominated by institutions: the political parties, lobby groups, and media organizations. Yet institutions have been stripped from Shiller's account, to reveal a bare dynamic of emotions and economics, without the intermediating place of politics.",
+    "question": "The author critiques Schiller's approach to behavioural economics for",
+    "options": {"1": "denigrating the role of institutions while creating a link between behavioural economics and perceptions.", "2": "linking emotions and rational behaviour without considering the mediation of social institutions.", "3": "ignoring the marginal role that media and politics play in influencing people's behaviour.", "4": "relying excessively on storytelling as the main influence on the formation of perceptions."},
+    "correct_answer": "1",
+    "explanation": "The passage says institutions have been 'stripped from Shiller's account' — he removes the intermediating role of institutions while connecting perceptions/narratives to economics."
+  },
+  {
+    "id": 173,
+    "topic": "Reading Comprehension",
+    "subtopic": "Inference",
+    "group_id": "cat24-s1-rc-economics",
+    "question": "\"Times have changed for the once almighty discipline.\" We can infer from this statement and the associated paragraph that the author is being",
+    "options": {"1": "disparaging of economists' inability to precisely predict market behaviour, and are now borrowing from other disciplines to remedy this.", "2": "sarcastic about how economists, who earlier shunned other disciplines, are now beginning to incorporate them in their analyses.", "3": "critical of economists' openly borrowing and collaborating across disciplines to explain how humans make decisions.", "4": "judgemental about the ability of economic tools to accurately manage crises leading to the downfall of this lofty science."},
+    "correct_answer": "2",
+    "explanation": "The phrase 'once almighty discipline' is sarcastic — economics was imperial (Becker invaded other fields without reciprocating), but now economists are borrowing from psychology, history, etc."
+  },
+  {
+    "id": 174,
+    "topic": "Reading Comprehension",
+    "subtopic": "Vocabulary in Context",
+    "group_id": "cat24-s1-rc-economics",
+    "question": "We can infer from the passage that the term \"homo economicus\" refers to someone who",
+    "options": {"1": "maximises their opportunities based on nonmarket choices.", "2": "believes in borrowing and collaborating with other disciplines in their work.", "3": "makes rational decisions based on their own preferences.", "4": "is not influenced by the preferences and choices of others."},
+    "correct_answer": "3",
+    "explanation": "The passage describes homo economicus as the 'textbook maximizer' who has 'preferences' that determine choices — i.e., someone who makes rational decisions based on their own preferences."
+  },
+  {
+    "id": 175,
+    "topic": "Reading Comprehension",
+    "subtopic": "Inference",
+    "group_id": "cat24-s1-rc-economics",
+    "question": "In the first paragraph the author is making the point that economists like Becker",
+    "options": {"1": "used economics to analyse non-market behaviour, without incorporating perspectives from other areas of inquiry.", "2": "tended to guard their discipline from poaching by academics from other subject areas.", "3": "benefitted from the application of their principles and concepts to non-economic phenomena.", "4": "had begun to borrow concepts from other disciplines but were averse to the latter applying economic principles."},
+    "correct_answer": "1",
+    "explanation": "Becker 'projected economics outward into new realms' (applied economics to non-market domains like crime) but 'did not let other ways of thinking enter his own economic realm' — one-way application."
+  },
+
+  {
+    "id": 176,
+    "topic": "Reading Comprehension",
+    "subtopic": "Inference",
+    "group_id": "cat24-s1-rc-streaming",
+    "group_context": "In the summer of 2022, subscribers to the US streaming service HBO MAX were alarmed to discover that dozens of the platform's offerings — from the Covid-themed heist thriller Locked Down to the recent remake of The Witches — had been quietly removed from the service. The news seemed like vindication to those who had long warned that streaming was more about controlling access to the cultural commons than expanding it, as did reports that Netflix had begun editing old episodes of Stranger Things to retroactively improve their visual effects.\n\nWhat's less clear is whether the commonly prescribed cure for these cultural ills — a return to the material pleasures of physical media — is the right one. While the makers of Blu-Ray discs claim they have a shelf life of 100 years, such statistics remain largely theoretical until they come to pass, and are dependent on storage conditions, not to mention the continued availability of playback equipment. The humble DVD has already proved far less resilient, with many early releases already beginning to deteriorate in quality. Digital movie purchases provide even less security. Any film \"bought\" on iTunes could disappear if you move to another territory with a different rights agreement and try to redownload it. It's a bold new frontier in the commodification of art: the birth of the product recall.\n\nAfter a man took to Twitter to bemoan losing access to Cars 2 after moving from Canada to Australia, Apple clarified that users who downloaded films to their devices would retain permanent access to those downloads, even if they relocated to a hemisphere where the content was subject to a different set of rights agreements. Thanks to the company's ironclad digital rights management technology, however, such files cannot be moved or backed up, locking you into watching with your Apple account.\n\nAnyone who does manage to acquire Digital Rights Management free (DRM-free) copies of their favourite films must nonetheless grapple with ever-changing file format standards, not to mention data decay — the gradual process by which electronic information slowly but surely corrupts. Only the regular migration of files from hard drive to hard drive can delay the inevitable, in a sisyphean battle against the ravages of digital time.\n\nIn a sense, none of this is new. Charlie Chaplin burned the negative of his 1926 film A Woman of the Sea as a tax write-off. Many more films have been lost through accident, negligence or plain indifference. During a heatwave in July 1937, a Fox film vault in New Jersey burned down, destroying a majority of the silent films produced by the studio.\n\nBack then, at least, cinema was defined by its ephemerality: the sense that a film was as good as gone once it left your local cinema. Today, with film studios keen to stress the breadth of their back catalogues (or to put in Hollywood terms, the value of their IPs), audiences may start to wonder why those same studios seem happy to set the vault alight themselves if it'll help next quarter's numbers.",
+    "question": "Which one of the following statements, if true, would best invalidate the main argument of the passage?",
+    "options": {"1": "Studios and streaming services have committed to giving customers perpetual and platform independent access to the original digital content they have paid for.", "2": "When moving to a different geographical location, customers can easily use Virtual Private Networks (VPNs) to bypass geo-blocking and regain access to their content on any streaming service.", "3": "Improved cloud storage services have made it possible for movie collections to now be preserved in perpetuity, without the need to keep migrating the files.", "4": "Recent research has irrefutably proven that Blu-Ray discs have a shelf life of at least 100 years."},
+    "correct_answer": "1",
+    "explanation": "The passage argues that digital access to art is precarious and controlled by corporations. If studios committed to perpetual, platform-independent access, this would invalidate the core concern."
+  },
+  {
+    "id": 177,
+    "topic": "Reading Comprehension",
+    "subtopic": "Purpose",
+    "group_id": "cat24-s1-rc-streaming",
+    "question": "\"Netflix had begun editing old episodes of Stranger Things to retroactively improve their visual effects.\" What is the purpose of this example used in the passage?",
+    "options": {"1": "To show that streaming services are controlling access to the cultural commons rather than expanding it.", "2": "To show a practice that justifies the fears of people who feel streaming services cannot be trusted to be custodians of cultural artefacts like film.", "3": "To show how unsubstantiated reports are leading to an increase in the level of distrust towards streaming services.", "4": "To show that art in the digital age, specifically film, is no longer sacrosanct, and may be changed to suit changing tastes or technology."},
+    "correct_answer": "4",
+    "explanation": "The example of Netflix editing old Stranger Things episodes illustrates that digital art can be retroactively altered — it is no longer sacrosanct or fixed."
+  },
+  {
+    "id": 178,
+    "topic": "Reading Comprehension",
+    "subtopic": "Main Idea",
+    "group_id": "cat24-s1-rc-streaming",
+    "question": "Which one of the following statements best captures the arguments made in the passage?",
+    "options": {"1": "As art is increasingly created, stored and distributed digitally, access to it is counterintuitively likely to be made more difficult by the rapid churn in technology and the whims of host platforms.", "2": "In the age of online subscription services, it is time to change our understanding of classic works of art being primarily immutable and easily available to the public.", "3": "Accepting retroactive changes to works of art is dangerous because it will encourage creators to not put enough effort into the original attempt, given that they can always edit or update their work later.", "4": "Works of art belong to the cultural commons and hence must remain available in perpetuity, irrespective of who pays for access to them."},
+    "correct_answer": "1",
+    "explanation": "The passage argues that despite digital distribution, access to art is becoming MORE precarious due to DRM, geo-blocking, data decay, and platform decisions."
+  },
+  {
+    "id": 179,
+    "topic": "Reading Comprehension",
+    "subtopic": "Inference",
+    "group_id": "cat24-s1-rc-streaming",
+    "question": "Which of the following statements is suggested by the sentence \"Back then, at least, cinema was defined by its ephemerality: the sense that a film was as good as gone once it left your local cinema\"?",
+    "options": {"1": "Presently, there is no reason why film studios should remove access to films once they have left the local cinema.", "2": "Around a century ago, people were more accepting of not having access to films once they left the local cinema.", "3": "Cinema is now no longer as ephemeral as it used to be earlier, because the technology used for creating and preserving films has improved manifold.", "4": "Today, films are expected to be available for a long time, since they are no longer tied solely to their stay at the local cinema."},
+    "correct_answer": "2",
+    "explanation": "The sentence contrasts past acceptance of cinema's ephemerality (films were gone once they left the theatre) with the modern expectation of permanence."
+  },
+
+  {
+    "id": 180,
+    "topic": "Reading Comprehension",
+    "subtopic": "Inference",
+    "group_id": "cat24-s1-rc-crafts",
+    "group_context": "[T]he idea of craftsmanship is not simply nostalgic. Crafts require distinct skills, an allround approach to work that involves the whole product, rather than individual parts, and an attitude that necessitates devotion to the job and a focus on the communal interest. The concept of craft emphasises the human touch and individual judgment.\n\nEssentially, the crafts concept seems to run against the preponderant ethos of management studies which, as the academics note, have long prioritised efficiency and consistency. Craft skills were portrayed as being primitive and traditionalist.\n\nThe contrast between artisanship and efficiency first came to the fore in the 19th century when British manufacturers suddenly faced competition from across the Atlantic as firms developed the \"American system\" using standardised parts... the worldwide success of the Singer sewing machine showed the potential of a mass-produced device. This process created its own reaction, first in the form of the Arts and Crafts movement of the late 19th century, and then again in the \"small is beautiful\" movement of the 1970s. A third crafts movement is emerging as people become aware of the environmental impact of conventional industry.\n\nThere are two potential markets for those who practise crafts. The first stems from the existence of consumers who are willing to pay a premium price for goods that are deemed to be of extra quality... The second market lies in those consumers who wish to use their purchases to support local workers, or to reduce their environmental impact.\n\nFor workers, the appeal of craftsmanship is that it allows them the autonomy to make creative choices, and thus makes a job far more satisfying. As a current example, the academics cite the \"agile\" manifesto in the software sector, an industry at the heart of technological change. The pioneers behind the original agile manifesto promised to prioritise \"individuals and interactions over processes and tools\".\n\nBut the broader question is whether crafts can create a lot more jobs than they do today. Demand for crafted products may rise but will it be easy to retrain workers in sectors that might get automated?\n\nHistory also suggests that the link between crafts and creativity is not automatic. Medieval craft guilds were monopolies which resisted new entrants. They were also highly hierarchical with young men required to spend long periods as apprentices and journeymen before they could set up on their own; by that time the innovative spirit may have been knocked out of them. Craft workers can thrive in the modern era, but only if they don't get too organised.",
+    "question": "We can infer from the passage that medieval crafts guilds resembled mass production in that both",
+    "options": {"1": "discouraged innovation by restricting entry through strict rules.", "2": "did not always employ egalitarian production processes.", "3": "did not necessarily promote creativity.", "4": "focused excessively on product quality."},
+    "correct_answer": "3",
+    "explanation": "Medieval guilds resisted new entrants and were hierarchical, potentially knocking out innovative spirit — like mass production, they did not necessarily promote creativity."
+  },
+  {
+    "id": 181,
+    "topic": "Reading Comprehension",
+    "subtopic": "Detail",
+    "group_id": "cat24-s1-rc-crafts",
+    "question": "Which one of the following statements is NOT inconsistent with the views stated in the passage?",
+    "options": {"1": "We need to support the crafts; only then can we retain the creativity intrinsic to their production.", "2": "The Arts and Crafts movement was initially inspired by the \"American system\" of production.", "3": "Creativity in the crafts could be stifled if the market for artisan goods becomes too organised.", "4": "The agile movement in software is a throwback to the tenets of the medieval crafts guilds."},
+    "correct_answer": "3",
+    "explanation": "The passage states 'Craft workers can thrive in the modern era, but only if they don't get too organised' — consistent with creativity being stifled by over-organisation."
+  },
+  {
+    "id": 182,
+    "topic": "Reading Comprehension",
+    "subtopic": "Inference",
+    "group_id": "cat24-s1-rc-crafts",
+    "question": "The author questions the ability of crafts to create substantial employment opportunities presently because",
+    "options": {"1": "the low scale of crafts production will not be able to absorb the mass of redundant labour.", "2": "regulatory requirements could make it difficult for small crafts outfits to compete.", "3": "workers made redundant by automation are unlikely to opt for crafts-related work.", "4": "crafts guilds tend to resist new entrants and are unlikely to accept large numbers of trainees."},
+    "correct_answer": "3",
+    "explanation": "The passage asks 'will it be easy to retrain workers in sectors that might get automated?' — questioning whether displaced workers would successfully transition to crafts."
+  },
+  {
+    "id": 183,
+    "topic": "Reading Comprehension",
+    "subtopic": "Detail",
+    "group_id": "cat24-s1-rc-crafts",
+    "question": "The most recent revival of interest in the crafts is a result of the emergence of all of the following EXCEPT:",
+    "options": {"1": "concerns about the environmental impact of mass production.", "2": "a niche market for discerning buyers of quality products.", "3": "support for individual creations as opposed to mass-produced objects.", "4": "a greater interest in buying locally produced goods."},
+    "correct_answer": "3",
+    "explanation": "The passage mentions environmental concerns, premium quality market, and supporting local workers as drivers. 'Support for individual creations vs mass-produced' is about the appeal to workers (autonomy/creativity), not a market driver for the revival."
+  },
+
+  {
+    "id": 184,
+    "topic": "Reading Comprehension",
+    "subtopic": "Summary",
+    "question": "The passage given below is followed by four alternate summaries. Choose the option that best captures the essence of the passage.\n\nScientific research shows that many animals are very intelligent and have sensory and motor abilities that dwarf ours. Dogs are able to detect diseases such as cancer and diabetes and warn humans of impending heart attacks and strokes. Elephants, whales, hippopotamuses, giraffes, and alligators use low-frequency sounds to communicate over long distances, often miles. Many animals also display wide-ranging emotions, including joy, happiness, empathy, compassion, grief, and even resentment and embarrassment. It's not surprising that animals share many emotions with us because we also share brain structures, located in the limbic system, that are the seat of our emotions.",
+    "options": {"1": "The advanced sensory and motor abilities of animals is the reason why they can display wide-ranging emotions.", "2": "The similarity in brain structure explains why animals show emotions which are typically associated with humans.", "3": "Animals can show emotions which are typically associated with humans.", "4": "Animals are more intelligent than us in sensing danger and detecting diseases."},
+    "correct_answer": "2",
+    "explanation": "The passage's key point is that animals share emotions with humans BECAUSE they share brain structures (limbic system). Option b captures both the fact and the causal explanation."
+  },
+  {
+    "id": 185,
+    "topic": "Reading Comprehension",
+    "subtopic": "Summary",
+    "question": "The passage given below is followed by four alternate summaries. Choose the option that best captures the essence of the passage.\n\nCertain codes may, of course, be so widely distributed in a specific language community or culture, and be learned at so early an age, that they appear not to be constructed — the effect of an articulation between sign and referent — but to be 'naturally' given. Simple visual signs appear to have achieved a 'near-universality' in this sense: though evidence remains that even apparently 'natural' visual codes are culture specific. However, this does not mean that no codes have intervened; rather, that the codes have been profoundly naturalized. The operation of naturalized codes reveals not the transparency and 'naturalness' of language but the depth, the habituation and the near-universality of the codes in use. They produce apparently 'natural' recognitions. This has the (ideological) effect of concealing the practices of coding which are present.",
+    "options": {"1": "All codes, linguistic and visual, have a natural origin but some are so widespread that they become universal. This is what hides the mechanism of coding behind signs.", "2": "Not all codes are natural but certain codes are naturalized and made to appear universal. Ideology aims to hide the mechanism of coding behind signs.", "3": "Language and visual signs are codes. However, some of the codes are so widespread that they not only seem naturally given but also hide the mechanism of coding behind the signs.", "4": "Learning linguistic and visual signs at an early age makes all such codes appear natural. This naturalization of codes is the effect of ideology."},
+    "correct_answer": "2",
+    "explanation": "The passage argues that codes are NOT naturally given but have been 'profoundly naturalized' to appear universal, and this conceals (ideologically) the coding practices — matching option b."
+  },
+  {
+    "id": 186,
+    "topic": "Reading Comprehension",
+    "subtopic": "Summary",
+    "question": "The passage given below is followed by four alternate summaries. Choose the option that best captures the essence of the passage.\n\nCartographers design and create maps to communicate information about phenomena located somewhere on our planet. In the past, cartographers did not worry too much about who was going to read their maps. Although some simple \"usability\" research was done — like comparing whether circle or bar symbols worked best — cartographers knew how to make maps. This has changed now, however, due to all kinds of societal and technological developments. Today, map readers are more demanding — mostly because of the tools they use to read maps. Cartographers, who are also influenced by these trends, are now more interested in seeing if their products are efficient, effective, and appreciated.",
+    "options": {"1": "New technological developments have prompted cartographers to experiment with their maps by applying these new innovations.", "2": "Today, cartographers also need to look into the usability of maps because of the new technological developments.", "3": "Maps are being used for a variety of reasons and therefore map readers have become more demanding.", "4": "Modern mapmakers evaluate a map's effectiveness efficiency and satisfaction of the user through a series of experiments."},
+    "correct_answer": "2",
+    "explanation": "The passage's core message is that societal/technological developments have made map readers more demanding, so cartographers now need to focus on usability — matching option b."
   }
 ]
