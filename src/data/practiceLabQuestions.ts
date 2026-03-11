@@ -212,7 +212,10 @@ function extractAnswerFromExplanation(explanation: string): string {
   return "";
 }
 
-function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false): Chapter[] {
+// Broad CAT topics that should be split by subtopic in QA
+const QA_BROAD_TOPICS = new Set(["Arithmetic", "Algebra", "Geometry", "Number Systems"]);
+
+function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroadTopics = false): Chapter[] {
   const topicMap = new Map<string, PracticeQuestion[]>();
 
   for (const r of raw) {
@@ -227,6 +230,8 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false): Chapter[
     if (isMcq) {
       const sortedKeys = optKeys.sort((a, b) => Number(a) - Number(b));
       const optionsArr = sortedKeys.map((k) => r.options[k]);
+      // Skip questions where any option is excessively long (likely explanation leakage)
+      if (optionsArr.some((o) => o.length > 120)) continue;
       const correctIdx = sortedKeys.indexOf(r.correct_answer);
 
       pq = {
@@ -245,7 +250,8 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false): Chapter[
         ? extractAnswerFromExplanation(r.explanation || "")
         : r.correct_answer;
 
-      if (!answerText) continue;
+      // Skip if answer is missing or too long (explanation leakage)
+      if (!answerText || answerText.length > 60) continue;
 
       const { options, correctIndex } = generateDistractors(answerText, r.id);
 
@@ -262,7 +268,15 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false): Chapter[
       };
     }
 
-    const key = useSubtopic ? (r.subtopic || r.topic) : r.topic;
+    // For QA: split broad topics (Arithmetic/Algebra/Geometry) into subtopics
+    let key: string;
+    if (useSubtopic) {
+      key = r.subtopic || r.topic;
+    } else if (splitBroadTopics && QA_BROAD_TOPICS.has(r.topic)) {
+      key = r.subtopic || r.topic;
+    } else {
+      key = r.topic;
+    }
     if (!topicMap.has(key)) topicMap.set(key, []);
     topicMap.get(key)!.push(pq);
   }
@@ -291,7 +305,7 @@ const qaRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "qa");
 const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "lrdi");
 const varcRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "varc");
 
-const qaChapters = buildChaptersFromRaw(qaRaw);
+const qaChapters = buildChaptersFromRaw(qaRaw, false, true);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
 const varcChapters = buildChaptersFromRaw(varcRaw);
 
