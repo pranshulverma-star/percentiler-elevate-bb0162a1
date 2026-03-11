@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
+import { pickGroupedRandom } from "@/lib/pickGroupedQuestions";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Clock, Copy, Share2, Users, Swords, Crown, Shield, Target, Trophy } from "lucide-react";
@@ -21,6 +22,7 @@ import ShareableResultCard from "@/components/ShareableResultCard";
 const QUIZ_DURATION = 900;
 const QUIZ_QUESTION_COUNT = 10;
 
+// pickRandom kept for non-question use
 function pickRandom<T>(arr: T[], count: number): T[] {
   const shuffled = [...arr].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, Math.min(count, shuffled.length));
@@ -247,6 +249,16 @@ function BattleQuiz({
       {/* Question */}
       <AnimatePresence mode="wait">
         <motion.div key={q.id} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }} transition={{ duration: 0.25 }}>
+          {/* Group context */}
+          {q.group_context && (
+            <Card className="p-4 md:p-6 border border-primary/20 bg-primary/[0.02] mb-3">
+              <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-2">📖 Passage / Set</p>
+              <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+                {q.group_context}
+              </div>
+            </Card>
+          )}
+
           <Card className="p-4 md:p-8 border space-y-4 md:space-y-6 relative overflow-hidden">
             <div className="absolute top-0 right-0">
               <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">
@@ -615,7 +627,7 @@ export default function BattleRoomPage() {
     const chapter = section?.chapters.find(ch => ch.slug === room.chapter_slug);
     if (!chapter || chapter.questions.length === 0) return;
 
-    const questions = pickRandom(chapter.questions, QUIZ_QUESTION_COUNT);
+    const questions = pickGroupedRandom(chapter.questions, QUIZ_QUESTION_COUNT);
     const newCode = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 

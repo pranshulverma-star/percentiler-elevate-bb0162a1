@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { pickGroupedRandom } from "@/lib/pickGroupedQuestions";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ const QUIZ_QUESTION_COUNT = 10;
 const XP_PER_CORRECT = 15;
 const XP_PER_SPEED_BONUS = 5;
 
+// pickRandom kept only for non-question use; questions use pickGroupedRandom
 function pickRandom<T>(arr: T[], count: number): T[] {
   const shuffled = [...arr].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, Math.min(count, shuffled.length));
@@ -503,6 +505,22 @@ function QuizView({
 
         {/* Main question area */}
         <div className="flex-1 min-w-0 space-y-4">
+          {/* Group Context (passage / set description) */}
+          {q.group_context && (
+            (() => {
+              const isFirstInGroup = currentIndex === 0 || questions[currentIndex - 1]?.group_id !== q.group_id;
+              const showContext = isFirstInGroup || true; // always show for current question's group
+              return showContext ? (
+                <Card className="p-4 md:p-6 border border-primary/20 bg-primary/[0.02]">
+                  <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-2">📖 Passage / Set</p>
+                  <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
+                    {q.group_context}
+                  </div>
+                </Card>
+              ) : null;
+            })()
+          )}
+
           {/* Question Card */}
           <AnimatePresence mode="wait">
             <motion.div
@@ -654,7 +672,7 @@ export default function PracticeLab() {
     const ch = pendingChapter.current;
     pendingChapter.current = null;
     setSelectedChapter(ch);
-    setQuizQuestions(pickRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
@@ -672,7 +690,7 @@ export default function PracticeLab() {
       return;
     }
     setSelectedChapter(ch);
-    setQuizQuestions(pickRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
@@ -686,7 +704,7 @@ export default function PracticeLab() {
 
   const handleRetry = useCallback(() => {
     if (selectedChapter) {
-      setQuizQuestions(pickRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
+      setQuizQuestions(pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
     }
     setQuizAnswers({});
     setQuizTimeUsed(0);
@@ -717,7 +735,7 @@ export default function PracticeLab() {
       return;
     }
     // Pick 10 questions and create a battle room
-    const questions = pickRandom(ch.questions, QUIZ_QUESTION_COUNT);
+    const questions = pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT);
     const code = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 

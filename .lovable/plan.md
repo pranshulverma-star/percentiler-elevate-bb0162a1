@@ -1,48 +1,37 @@
 
 
-## Plan: Support Grouped Questions (RC Passages, LR Sets)
+## Consolidate Phone Capture: Remove Duplicated Logic
 
 ### Problem
-Currently, `pickRandom()` shuffles individual questions. For RC passages (1 passage + 4 questions) or LR sets (1 set + 4 questions), the group must stay together.
+`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
 
-### Approach
+### What Changes
 
-**1. Add `group_id` to the data model**
-- Add optional `group_id?: string` and `group_context?: string` (the passage/set description or image) fields to `PracticeQuestion` interface
-- Questions sharing a `group_id` always appear together, with `group_context` displayed once above them
+**1. `src/components/LeadModalProvider.tsx`**
+- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
+- Replace it with a single `<PhoneCaptureModal>` component usage
+- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
+- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
 
-**2. Update `pickRandom()` in PracticeLab.tsx**
-- Group questions by `group_id` (ungrouped questions = group of 1)
-- Shuffle **groups**, not individual questions
-- Pick groups until we hit ~10 questions (may slightly exceed 10 to keep a set intact)
-- Within a group, preserve original order (Q1-Q4 stay sequential)
+**2. `src/components/PhoneCaptureModal.tsx`**
+- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
+- The component already supports custom `title` and `description`, so no changes needed there
 
-**3. Update Quiz UI in PracticeLab.tsx**
-- When rendering a question with `group_context`, show the passage/image above the question
-- For consecutive questions in the same group, show the context only once (sticky or collapsible)
+### Result
+- One single source of truth for phone capture logic
+- Future fixes (like the duplicate phone check) only need to be applied once
+- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
 
-**4. Data format when you upload the PDF**
-- I'll parse it and assign matching `group_id` values to questions that belong together
-- The passage text or set description goes into `group_context`
-- Images (if any) go into the existing `image` field
+### Technical Details
 
-### Example data structure
-```json
-{
-  "id": 118,
-  "group_id": "rc-set-1",
-  "group_context": "Read the following passage and answer questions 118-121...",
-  "question": "What is the main idea of the passage?",
-  "options": {"1": "Option A", "2": "Option B", "3": "Option C", "4": "Option D"},
-  "correct_answer": "2",
-  "topic": "Reading Comprehension",
-  "subtopic": "Main Idea"
-}
-```
+**`PhoneCaptureModal.tsx` changes:**
+- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
+- Add a name input field that renders when `showNameField` is true and no user name is available
+- Include the name in the upsert payload and persist to localStorage
 
-### Files to change
-- `src/data/practiceLabQuestions.ts` — add `group_id`, `group_context` to interface; pass through from JSON
-- `src/pages/PracticeLab.tsx` — rewrite `pickRandom` to shuffle groups; update quiz UI to render group context
-- `src/pages/BattleRoom.tsx` — same group-aware shuffle
-- `src/data/questions_full.json` — new grouped questions added after PDF parsing
+**`LeadModalProvider.tsx` changes:**
+- Remove ~60 lines of form state, validation, and submit logic
+- Remove the inline `<Dialog>` JSX (~30 lines)
+- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
+- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
 

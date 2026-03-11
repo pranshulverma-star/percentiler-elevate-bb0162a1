@@ -7,6 +7,8 @@ export interface PracticeQuestion {
   options: string[];
   correctAnswer: number; // 0-based index
   explanation?: string;
+  group_id?: string;
+  group_context?: string;
 }
 
 export interface Chapter {
@@ -33,6 +35,8 @@ interface RawQuestion {
   options: Record<string, string>;
   correct_answer: string;
   explanation?: string;
+  group_id?: string;
+  group_context?: string;
 }
 
 function slugify(s: string) {
@@ -230,6 +234,8 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
         options: optionsArr,
         correctAnswer: correctIdx >= 0 ? correctIdx : 0,
         explanation: r.explanation,
+        group_id: r.group_id,
+        group_context: r.group_context,
       };
     } else {
       // Convert numeric/open-ended to MCQ with generated options
@@ -251,6 +257,8 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
         options,
         correctAnswer: correctIndex,
         explanation: r.explanation,
+        group_id: r.group_id,
+        group_context: r.group_context,
       };
     }
 
