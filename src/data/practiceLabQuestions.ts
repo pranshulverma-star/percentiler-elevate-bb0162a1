@@ -278,8 +278,26 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
   }));
 }
 
+// ── Section routing by topic ────────────────────────────────────────────────
+
+const LRDI_TOPICS = new Set(["Logical Reasoning", "Data Interpretation"]);
+const VARC_TOPICS = new Set(["Reading Comprehension", "Para Jumbles", "Sentence Placement", "Summary"]);
+
+function getSectionForTopic(topic: string): "qa" | "lrdi" | "varc" {
+  if (LRDI_TOPICS.has(topic)) return "lrdi";
+  if (VARC_TOPICS.has(topic)) return "varc";
+  return "qa";
+}
+
 const rawData: RawQuestion[] = Array.isArray(rawQuestions) ? rawQuestions : ((rawQuestions as any).default ?? []);
-const qaChapters = buildChaptersFromRaw(rawData);
+
+const qaRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "qa");
+const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "lrdi");
+const varcRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "varc");
+
+const qaChapters = buildChaptersFromRaw(qaRaw);
+const lrdiChapters = buildChaptersFromRaw(lrdiRaw);
+const varcChapters = buildChaptersFromRaw(varcRaw);
 
 export const practiceLabSections: SectionData[] = [
   {
@@ -294,23 +312,13 @@ export const practiceLabSections: SectionData[] = [
     name: "Logical Reasoning & Data Interpretation",
     icon: "🧩",
     description: "Arrangements, Puzzles & Data Interpretation",
-    chapters: [
-      { slug: "arrangements", name: "Arrangements", questions: [] },
-      { slug: "puzzles", name: "Puzzles", questions: [] },
-      { slug: "data-interpretation", name: "Data Interpretation", questions: [] },
-      { slug: "logical-reasoning", name: "Logical Reasoning", questions: [] },
-    ],
+    chapters: lrdiChapters,
   },
   {
     id: "varc",
     name: "Verbal Ability & Reading Comprehension",
     icon: "📖",
     description: "Reading Comprehension, Para Jumbles & Grammar",
-    chapters: [
-      { slug: "reading-comprehension", name: "Reading Comprehension", questions: [] },
-      { slug: "para-jumbles", name: "Para Jumbles", questions: [] },
-      { slug: "sentence-correction", name: "Sentence Correction", questions: [] },
-      { slug: "critical-reasoning", name: "Critical Reasoning", questions: [] },
-    ],
+    chapters: varcChapters,
   },
 ];

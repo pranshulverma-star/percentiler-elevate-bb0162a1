@@ -2090,5 +2090,98 @@
     "options": {"1": "New technological developments have prompted cartographers to experiment with their maps by applying these new innovations.", "2": "Today, cartographers also need to look into the usability of maps because of the new technological developments.", "3": "Maps are being used for a variety of reasons and therefore map readers have become more demanding.", "4": "Modern mapmakers evaluate a map's effectiveness efficiency and satisfaction of the user through a series of experiments."},
     "correct_answer": "2",
     "explanation": "The passage's core message is that societal/technological developments have made map readers more demanding, so cartographers now need to focus on usability — matching option b."
+  },
+
+  {
+    "id": 187,
+    "topic": "Sentence Placement",
+    "subtopic": "Silk Roads",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Understanding central Asia's role helps developments make more sense not only across Asia but in Europe, the Americas and Africa.\n\nParagraph: The nations of the Silk Roads are sometimes called 'developing countries', but they are actually some of the world's most highly developed countries, the very crossroads of civilization, in advanced states of disrepair. (1) These countries lie at the centre of global affairs: they have since the beginning of history. Running across the spine of Asia, they form a web of connections fanning out in every direction, routes along which pilgrims and warriors, nomads and merchants have travelled, goods and produce have been bought and sold, and ideas exchanged, adapted and refined. (2) They have carried not only prosperity, but also death. (3) The Silk Roads are the world's central nervous system, connecting otherwise far-flung peoples and places. (4) It allows us to see patterns and links, causes and effects that remain invisible if one looks only at Europe, or North America.",
+    "options": {},
+    "correct_answer": "4",
+    "explanation": "The sentence about understanding central Asia's role making sense of developments fits best at position 4, just before the concluding thought about seeing patterns that remain invisible."
+  },
+  {
+    "id": 188,
+    "topic": "Sentence Placement",
+    "subtopic": "Brain Organization",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: The brain isn't organized the way you might set up your home office or bathroom medicine cabinet.\n\nParagraph: (1) You can't just put things anywhere you want to. The evolved architecture of the brain is haphazard and disjointed, and incorporates multiple systems, each of which has a mind of its own. (2) Evolution doesn't design things and it doesn't build systems — it settles on systems that, historically, conveyed a survival benefit. There is no overarching, grand planner engineering the systems so that they work harmoniously together. (3) The brain is more like a big, old house with piecemeal renovations done on every floor, and less like new construction.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence introduces the idea that the brain is not neatly organized, which naturally leads into 'You can't just put things anywhere you want to.'"
+  },
+  {
+    "id": 189,
+    "topic": "Para Jumbles",
+    "subtopic": "Animal Rights",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. Animals have an interest in fulfilling their basic needs, but also in avoiding suffering, and thus we ought to extend moral consideration.\n2. Singer viewed himself as a utilitarian, and presents a direct moral theory concerning animal rights, in contrast to indirect positions, such as welfarist views.\n3. He argued for extending moral consideration to animals because, similar to humans, animals have certain significant interests.\n4. The event that publicly announced animal rights as a legitimate issue within contemporary philosophy was Peter Singer's Animal Liberation text in 1975.\n5. As such, we ought to view their interests alongside and equal to human interests, which results in humans having direct moral duties towards animals.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "Sentences 4→2→3→5 form a coherent paragraph about Singer's philosophy. Sentence 1 makes a similar point to 3 but is standalone and redundant in this context."
+  },
+  {
+    "id": 190,
+    "topic": "Sentence Placement",
+    "subtopic": "Renaissance Music",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Comprehending a wide range of emotions, Renaissance music nevertheless portrayed all emotions in a balanced and moderate fashion.\n\nParagraph: A volume of translated Italian madrigals were published in London during the year of 1588. This sudden public interest facilitated a surge of English Madrigal writing as well as a spurt of other secular music writing and publication. (1) This music boom lasted for thirty years and was as much a golden age of music as British literature was with Shakespeare and Queen Elizabeth I. (2) The rebirth in both literature and music originated in Italy and migrated to England; the English madrigal became more humorous and lighter in England as compared to Italy. Renaissance music was mostly polyphonic in texture. (3) Extreme contrasts in dynamics, rhythm, and tone colour do not occur. (4) The rhythms in Renaissance music tend to have a smooth, soft flow instead of a sharp, well-defined pulse of accents.",
+    "options": {},
+    "correct_answer": "3",
+    "explanation": "The sentence about Renaissance music portraying emotions in a balanced fashion fits at position 3, before the statement about extreme contrasts not occurring — it provides the context for why contrasts are absent."
+  },
+  {
+    "id": 191,
+    "topic": "Para Jumbles",
+    "subtopic": "Urban Transport",
+    "question": "Five jumbled up sentences (labelled 1, 2, 3, 4 and 5), related to a topic, are given below. Four of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. Urbanites also have more and better options for getting around: Uber is ubiquitous; easy-to-rent dockless bicycles are spreading; battery-powered scooters will be next.\n2. When more people use buses or trains the service usually improves because public-transport agencies run more buses and trains.\n3. Worsening services on public transport, terrorist attacks in some urban metros and a rise in fares have been blamed for this trend.\n4. It seems more likely that public transport is being squeezed structurally as people's need to travel is diminishing as a result of smartphones, videoconferencing, online shopping and so on.\n5. There has been a puzzling decline in the use of urban public transport in many countries in the west, despite the growth in urban populations and rising employment.",
+    "options": {},
+    "correct_answer": "2",
+    "explanation": "Sentences 5→3→4→1 form a coherent paragraph about the decline of public transport. Sentence 2 (about improvement when more people use transit) is the opposite theme and doesn't fit."
+  },
+
+  {
+    "id": 192,
+    "topic": "Sentence Placement",
+    "subtopic": "Social Learning",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: When people socially learn from each other, they often learn without understanding why what they're copying — the beliefs and behaviours and technologies and know-how — works.\n\nParagraph: (1) The dual-inheritance theory says that inheritance is itself an evolutionary system. It has variation. What makes us a new kind of animal, and so different and successful as a species, is we rely heavily on social learning, to the point where socially acquired information is effectively a second line of inheritance, the first being our genes. (2) When you repeat this process over time, you can get, around the world, cultural packages — beliefs or behaviours or technology or other solutions — that are adapted to the local conditions. People have different psychologies, effectively. (3) People tend to home in on who seems to be the smartest or most successful person around, as well as what everybody seems to be doing — the majority of people have something worth learning. (4)",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about social learning without understanding why things work introduces the concept that the paragraph then expands on with dual-inheritance theory."
+  },
+  {
+    "id": 193,
+    "topic": "Sentence Placement",
+    "subtopic": "Return to Office",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: This has meant a lot of uncertainty around what a wide-scale return to office might look like in practice.\n\nParagraph: Bringing workers back to their desks has been a rocky road for employers and employees alike. The evolution of the pandemic has meant that best laid plans have often not materialised. (1) The flow of workers back into offices has been more of a trickle than a steady stream. (2) Yet while plenty of companies are still working through their new policies, some employees across the globe are now back at their desks, whether on a full-time or hybrid basis. (3) That means we're beginning to get some clarity on what return-to-office means — what's working, as well as what has yet to be settled. (4)",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about uncertainty fits after 'best laid plans have often not materialised' and before 'The flow of workers back has been more of a trickle' — connecting the failed plans to the slow return."
+  },
+  {
+    "id": 194,
+    "topic": "Sentence Placement",
+    "subtopic": "Aage Badhein App",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: Most were first-time users of a tablet and a digital app.\n\nParagraph: Aage Badhein's USP lies in the ethnographic research that constituted the foundation of its development process. Customizations based on learning directly from potential users were critical to making this self-paced app suitable for both a literate and non-literate audience. (1) The user interface caters to a Hindi-speaking audience who have minimal to no experience with digital services and devices. (2) The content and functionality of the app are suitable for a wide audience. This includes youth preparing for an independent role in life or a student ready to create a strong foundation of financial management early in her life. (3) Household members desirous of improving their family's financial strength to reach their aspirations can also benefit. We piloted Aage Badhein in early 2021 with over 400 women from rural areas. (4) The digital solution generated a large amount of interest in the communities.",
+    "options": {},
+    "correct_answer": "4",
+    "explanation": "The sentence about first-time tablet users fits at position 4, right after mentioning the pilot with 400 women from rural areas — describing who these pilot users were."
+  },
+  {
+    "id": 195,
+    "topic": "Sentence Placement",
+    "subtopic": "Ghee Revival",
+    "question": "There is a sentence that is missing in the paragraph below. Look at the paragraph and decide where (option 1, 2, 3, or 4) the following sentence would best fit.\n\nSentence: This was years in the making but fast-tracked during the pandemic, when \"people started being more mindful about their food\", he explained.\n\nParagraph: For millennia, ghee has been a venerated staple of the subcontinental diet, but it fell out of favour a few decades ago when saturated fats were largely considered to be unhealthy. (1) But more recently, as the thinking around saturated fats is shifting globally, Indians are finding their own way back to this ingredient that is so integral to their cuisine. (2) For Karmakar, a renewed interest in ghee is emblematic of a return-to-basics movement in India. (3) This movement is also part of an overall trend towards \"slow food\". In keeping with the movement's philosophy, ghee can be produced locally (even at home) and has inextricable cultural ties. (4) At a basic level, ghee is a type of clarified butter believed to have originated in India as a way to preserve butter from going rancid in the hot climate.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "The sentence about being fast-tracked during the pandemic fits at position 1, connecting the decline of ghee to its recent revival driven by pandemic-era food mindfulness."
+  },
+
+  {
+    "id": 196,
+    "topic": "Para Jumbles",
+    "subtopic": "Food & Individual Choice",
+    "question": "Four sentences are given below, related to a topic. Three of them can be put together to form a coherent paragraph. Identify the odd sentence and key in the number of that sentence as your answer.\n\n1. Women may prioritize cooking because they feel they alone are responsible for mediating a toxic and unhealthy food system.\n2. Food is commonly framed through the lens of individual choice: you can choose to eat healthily.\n3. This is particularly so in a neoliberal context where the state has transferred the responsibility for food onto individual consumers.\n4. The individualized framing of choice appeals to a popular desire to experience agency, but draws away from the structural obstacles that stratify individual food choices.",
+    "options": {},
+    "correct_answer": "1",
+    "explanation": "Sentences 2→3→4 form a coherent paragraph about food being framed as individual choice in a neoliberal context. Sentence 1 about women and cooking is the odd one out."
   }
 ]
