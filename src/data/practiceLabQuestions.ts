@@ -234,6 +234,8 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
         options: optionsArr,
         correctAnswer: correctIdx >= 0 ? correctIdx : 0,
         explanation: r.explanation,
+        group_id: r.group_id,
+        group_context: r.group_context,
       };
     } else {
       // Convert numeric/open-ended to MCQ with generated options
