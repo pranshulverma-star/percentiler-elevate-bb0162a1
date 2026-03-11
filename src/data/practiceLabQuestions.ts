@@ -262,6 +262,7 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
         explanation: r.explanation,
         group_id: r.group_id,
         group_context: r.group_context,
+        group_image: r.group_image,
       };
     }
 
