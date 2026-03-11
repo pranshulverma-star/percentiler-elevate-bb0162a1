@@ -383,6 +383,20 @@ function BattleResults({
   const ranked = [...players].sort((a, b) => b.score_pct - a.score_pct || a.time_used_seconds - b.time_used_seconds);
   const medalIcons = ["👑", "🥈", "🥉"];
   const myRank = ranked.findIndex(p => p.user_id === currentUserId);
+  const myPlayer = ranked.find(p => p.user_id === currentUserId);
+  const myAnswers = (myPlayer?.answers_json || {}) as Record<number, number | string | null>;
+  const [showReview, setShowReview] = useState(false);
+
+  // Compute analytics
+  const correct = myPlayer?.correct ?? 0;
+  const total = questions.length;
+  const pct = myPlayer?.score_pct ?? 0;
+  const timeUsed = myPlayer?.time_used_seconds ?? 0;
+  const incorrect = questions.filter(q => {
+    const a = myAnswers[q.id];
+    return a !== undefined && a !== null && a !== "" && a !== q.correctAnswer;
+  }).length;
+  const unanswered = total - correct - incorrect;
 
   return (
     <motion.div {...fadeUp} className="max-w-lg mx-auto px-1 space-y-4 md:space-y-6 text-center">
@@ -394,6 +408,7 @@ function BattleResults({
         {myRank === 0 && <p className="text-xs md:text-sm text-amber-400 font-bold">🎉 You won!</p>}
       </div>
 
+      {/* Leaderboard */}
       <Card className="p-3 md:p-5 border space-y-2 md:space-y-3">
         <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
           <Crown className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
@@ -427,9 +442,40 @@ function BattleResults({
         })}
       </Card>
 
+      {/* Performance Analytics */}
+      <div className="space-y-2 text-left">
+        <div className="flex items-center gap-2">
+          <BarChart3 className="w-4 h-4 text-primary" />
+          <h3 className="text-sm font-bold text-foreground">Your Performance</h3>
+        </div>
+        <div className="grid grid-cols-3 gap-2">
+          <Card className="p-3 border text-center">
+            <div className="flex items-center justify-center gap-1 mb-1">
+              <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+              <span className="text-[10px] font-bold text-foreground">Correct</span>
+            </div>
+            <span className="text-lg font-black text-emerald-500">{correct}</span>
+          </Card>
+          <Card className="p-3 border text-center">
+            <div className="flex items-center justify-center gap-1 mb-1">
+              <XCircle className="w-3 h-3 text-destructive" />
+              <span className="text-[10px] font-bold text-foreground">Wrong</span>
+            </div>
+            <span className="text-lg font-black text-destructive">{incorrect}</span>
+          </Card>
+          <Card className="p-3 border text-center">
+            <div className="flex items-center justify-center gap-1 mb-1">
+              <MinusCircle className="w-3 h-3 text-muted-foreground" />
+              <span className="text-[10px] font-bold text-foreground">Skipped</span>
+            </div>
+            <span className="text-lg font-black text-muted-foreground">{unanswered}</span>
+          </Card>
+        </div>
+      </div>
+
       {/* Shareable Card */}
       <ShareableResultCard
-        correct={ranked.find(p => p.user_id === currentUserId)?.correct ?? 0}
+        correct={correct}
         total={questions.length}
         leaderboard={ranked.map(p => ({
           name: p.display_name || "Anonymous",
@@ -448,6 +494,66 @@ function BattleResults({
           <ArrowLeft className="w-3.5 h-3.5" /> Back to Practice Lab
         </Button>
       </div>
+
+      {/* Review Answers Toggle */}
+      <div className="flex justify-center">
+        <Button
+          variant="ghost"
+          onClick={() => setShowReview(v => !v)}
+          className="gap-2 text-xs"
+          size="sm"
+        >
+          <BookOpen className="w-3.5 h-3.5" /> {showReview ? "Hide Review" : "Review Answers"}
+        </Button>
+      </div>
+
+      <AnimatePresence>
+        {showReview && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="space-y-3 overflow-hidden text-left"
+          >
+            {questions.map((q, i) => {
+              const userAnswer = myAnswers[q.id];
+              const isSkipped = userAnswer === undefined || userAnswer === null || userAnswer === "";
+              const isCorrect = userAnswer === q.correctAnswer;
+
+              return (
+                <Card key={q.id} className="p-4 border space-y-2">
+                  <div className="flex items-start gap-2">
+                    <div className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 ${
+                      isSkipped ? "bg-secondary" : isCorrect ? "bg-emerald-500/15" : "bg-destructive/15"
+                    }`}>
+                      {isSkipped ? <MinusCircle className="w-3 h-3 text-muted-foreground" /> :
+                       isCorrect ? <CheckCircle2 className="w-3 h-3 text-emerald-500" /> :
+                       <XCircle className="w-3 h-3 text-destructive" />}
+                    </div>
+                    <div className="flex-1 space-y-2">
+                      <p className="text-xs md:text-sm font-medium text-foreground">Q{i + 1}. {q.question}</p>
+                      <div className="space-y-1">
+                        {q.options.map((opt, idx) => {
+                          let cls = "text-xs px-2.5 py-1 rounded-lg ";
+                          if (idx === q.correctAnswer) cls += "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium";
+                          else if (idx === userAnswer && !isCorrect) cls += "bg-destructive/10 text-destructive line-through";
+                          else cls += "text-muted-foreground";
+                          return <div key={idx} className={cls}>{opt}</div>;
+                        })}
+                      </div>
+                      {q.explanation && (
+                        <p className="text-[10px] text-muted-foreground italic border-t border-border pt-2 mt-1">
+                          💡 {q.explanation}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
