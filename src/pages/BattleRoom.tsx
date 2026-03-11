@@ -579,6 +579,36 @@ export default function BattleRoomPage() {
     }
   }, [room, user]);
 
+  const handlePlayAgain = useCallback(async () => {
+    if (!room || !user) return;
+    // Find the chapter's questions from the sections data
+    const section = practiceLabSections.find(s => s.id === room.section_id);
+    const chapter = section?.chapters.find(ch => ch.slug === room.chapter_slug);
+    if (!chapter || chapter.questions.length === 0) return;
+
+    const questions = pickRandom(chapter.questions, QUIZ_QUESTION_COUNT);
+    const newCode = generateCode();
+    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
+
+    const { data: newRoom, error: err } = await (supabase.from("battle_rooms") as any).insert({
+      code: newCode,
+      host_user_id: user.id,
+      section_id: room.section_id,
+      chapter_slug: room.chapter_slug,
+      questions_json: questions,
+    }).select("id").single();
+
+    if (err || !newRoom) return;
+
+    await (supabase.from("battle_players") as any).insert({
+      room_id: newRoom.id,
+      user_id: user.id,
+      display_name: displayName,
+    });
+
+    navigate(`/practice-lab/battle/${newCode}`);
+  }, [room, user, navigate]);
+
   const handleExit = () => navigate("/practice-lab");
 
   // Loading / Error states
