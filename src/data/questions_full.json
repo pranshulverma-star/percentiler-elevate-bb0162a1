@@ -1573,7 +1573,7 @@
   },
   {
     "id": 136,
-    "topic": "Arithmetic",
+    "topic": "Algebra",
     "subtopic": "CAT 2024 Quant",
     "question": "A shop wants to sell a certain quantity (in kg) of grains. It sells half the quantity and an additional 3 kg of these grains to the first customer. Then, it sells half of the remaining quantity and an additional 3 kg of these grains to the second customer. Finally, when the shop sells half of the remaining quantity and an additional 3 kg of these grains to the third customer, there are no grains left. The initial quantity, in kg, of grains is",
     "options": {"1": "50", "2": "18", "3": "42", "4": "36"},
