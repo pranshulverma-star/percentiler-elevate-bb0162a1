@@ -257,6 +257,8 @@ function buildChaptersFromRaw(raw: RawQuestion[]): Chapter[] {
         options,
         correctAnswer: correctIndex,
         explanation: r.explanation,
+        group_id: r.group_id,
+        group_context: r.group_context,
       };
     }
 
