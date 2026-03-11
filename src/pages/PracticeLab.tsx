@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen, Zap, ChevronRight, Lock, Trophy, TrendingUp, BarChart3, Flame, Shield, Star, Swords, Target, Crown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, RotateCcw, BookOpen, Zap, ChevronRight, Lock, Trophy, TrendingUp, BarChart3, Flame, Shield, Star, Swords, Target, Crown, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -250,10 +251,12 @@ function ChaptersView({
   section,
   onBack,
   onSelect,
+  onBattle,
 }: {
   section: SectionData;
   onBack: () => void;
   onSelect: (ch: Chapter) => void;
+  onBattle: (ch: Chapter) => void;
 }) {
   return (
     <motion.div {...fadeUp} className="space-y-6 max-w-4xl mx-auto">
@@ -321,7 +324,16 @@ function ChaptersView({
                     </div>
                   </div>
                   {hasQuestions && (
-                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); onBattle(ch); }}
+                        className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center hover:bg-primary/20 transition-colors"
+                        title="Battle with friends"
+                      >
+                        <Users2 className="w-3.5 h-3.5 text-primary" />
+                      </button>
+                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    </div>
                   )}
                 </div>
               </div>
@@ -962,6 +974,7 @@ function ResultsView({
 
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function PracticeLab() {
+  const navigate = useNavigate();
   const [phase, setPhase] = useState<Phase>("sections");
   const [selectedSection, setSelectedSection] = useState<SectionData | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
@@ -970,7 +983,7 @@ export default function PracticeLab() {
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
 
-  const { isAuthenticated, loading: authLoading, signIn } = useAuth();
+  const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
 
   const pendingChapter = useRef<Chapter | null>(null);
@@ -1039,6 +1052,48 @@ export default function PracticeLab() {
     setPhase("sections");
   }, []);
 
+  // Generate a 6-char room code
+  function generateCode() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "";
+    for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    return code;
+  }
+
+  const handleBattle = useCallback(async (ch: Chapter) => {
+    if (!isAuthenticated || !user) {
+      pendingChapter.current = ch;
+      signIn(window.location.pathname);
+      return;
+    }
+    // Pick 10 questions and create a battle room
+    const questions = pickRandom(ch.questions, QUIZ_QUESTION_COUNT);
+    const code = generateCode();
+    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
+
+    const { data: room, error } = await (supabase.from("battle_rooms") as any).insert({
+      code,
+      host_user_id: user.id,
+      section_id: selectedSection?.id || "qa",
+      chapter_slug: ch.slug,
+      questions_json: questions,
+    }).select("id").single();
+
+    if (error || !room) {
+      console.error("Failed to create battle room:", error);
+      return;
+    }
+
+    // Auto-join as host
+    await (supabase.from("battle_players") as any).insert({
+      room_id: room.id,
+      user_id: user.id,
+      display_name: displayName,
+    });
+
+    navigate(`/practice-lab/battle/${code}`);
+  }, [isAuthenticated, user, signIn, selectedSection, navigate]);
+
   return (
     <>
       <SEO
@@ -1059,6 +1114,7 @@ export default function PracticeLab() {
                 section={selectedSection}
                 onBack={handleBackToSections}
                 onSelect={handleSelectChapter}
+                onBattle={handleBattle}
               />
             )}
             {phase === "quiz" && selectedChapter && quizQuestions.length > 0 && (

@@ -17,6 +17,7 @@
 /free-courses                       /index.html  200
 /test-series                        /index.html  200
 /practice-lab                       /index.html  200
+/practice-lab/battle/*              /index.html  200
 /dashboard                          /index.html  200
 /cat-coaching-comparison            /index.html  200
 /admin                              /index.html  200
