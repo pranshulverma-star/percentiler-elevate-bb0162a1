@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, Copy, Share2, Users, Swords, Crown, Shield, Star, Zap, Flame, Target, Trophy } from "lucide-react";
+import { ArrowLeft, Clock, Copy, Share2, Users, Swords, Crown, Shield, Target, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
