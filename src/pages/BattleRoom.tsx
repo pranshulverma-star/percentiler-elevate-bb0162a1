@@ -407,6 +407,17 @@ function BattleResults({
         })}
       </Card>
 
+      {/* Shareable Card */}
+      <ShareableResultCard
+        correct={ranked.find(p => p.user_id === currentUserId)?.correct ?? 0}
+        total={questions.length}
+        leaderboard={ranked.map(p => ({
+          name: p.display_name || "Anonymous",
+          score: p.score_pct,
+          isMe: p.user_id === currentUserId,
+        }))}
+      />
+
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         {onPlayAgain && (
           <Button onClick={onPlayAgain} className="gap-2 font-bold game-glow-pulse">
