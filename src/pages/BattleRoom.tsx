@@ -578,11 +578,7 @@ export default function BattleRoomPage() {
     questions.forEach(q => {
       const a = answers[q.id];
       if (a === undefined || a === null || a === "") return;
-      if (q.type === "mcq") {
-        if (a === q.correctAnswer) correct++;
-      } else {
-        if (String(a).trim().toLowerCase() === (q.numericAnswer || "").trim().toLowerCase()) correct++;
-      }
+      if (a === q.correctAnswer) correct++;
     });
 
     const pct = Math.round((correct / questions.length) * 100);
