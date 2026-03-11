@@ -2689,8 +2689,8 @@
     "subtopic": "Woodland Canopy & Swifts",
     "question": "The four sentences (labelled 1, 2, 3, and 4) when properly sequenced, form a coherent paragraph. Decide on the proper order:\n\n1. The woodland's canopy receives most of the sunlight that falls on the trees.\n2. Swifts do not confine themselves to woodlands, but hunt wherever there are insects in the air.\n3. With their streamlined bodies, swifts are agile flyers, ideally adapted to twisting and turning through the air as they chase flying insects – the creatures that form their staple diet.\n4. Hundreds of thousands of insects fly in the sunshine up above the canopy, some falling prey to swifts and swallows.",
     "options": {"1": "1342", "2": "1432", "3": "3214", "4": "3142"},
-    "correct_answer": "1",
-    "explanation": "Canopy receives sunlight (1) → swifts chase insects (3) → insects above canopy are preyed on (4) → swifts hunt beyond woodlands (2). Sequence: 1-3-4-2."
+    "correct_answer": "2",
+    "explanation": "Statement 1 introduces the woodland canopy. Statement 4 describes insects above the canopy. Statement 3 introduces swifts chasing insects. Statement 2 says swifts hunt beyond woodlands. The right sequence is 1-4-3-2."
   },
   {
     "id": 248,
@@ -2707,8 +2707,8 @@
     "subtopic": "Artificial Embryo Twinning",
     "question": "Choose the option that best captures the author's position.\n\nArtificial embryo twinning is a relatively low-tech way to make clones. As the name suggests, this technique mimics the natural process that creates identical twins. In nature, twins form very early in development when the embryo splits in two. Twinning happens in the first days after egg and sperm join, while the embryo is made of just a small number of unspecialized cells. Each half of the embryo continues dividing on its own, ultimately developing into separate, complete individuals. Since they developed from the same fertilized egg, the resulting individuals are genetically identical.",
     "options": {"1": "Artificial embryo twinning is low-tech and mimetic of the natural development of genetically identical twins from the embryo after fertilization.", "2": "Artificial embryo twinning is low-tech unlike the natural development of identical twins from the embryo after fertilization.", "3": "Artificial embryo twinning is just like the natural development of twins, where during fertilization twins are formed.", "4": "Artificial embryo twinning is low-tech and is close to the natural development of twins where the embryo splits into two identical twins."},
-    "correct_answer": "4",
-    "explanation": "Option 4 captures both key aspects: it's low-tech AND closely mimics the natural process where an embryo splits. Option 3 incorrectly says twins form 'during fertilization'."
+    "correct_answer": "1",
+    "explanation": "Option 1 captures both key aspects: it's low-tech and mimics ('mimetic of') the natural process of identical twin development after fertilization. Option 4 says 'close to' instead of 'mimics', which distorts the passage's explicit use of 'mimics'."
   },
   {
     "id": 250,
@@ -2716,8 +2716,8 @@
     "subtopic": "Landscape & Art History",
     "question": "Choose the option that best captures the author's position.\n\nThe conceptualization of landscape as a geometric object first occurred in Europe and is historically related to the European conceptualization of the organism, particularly the human body, as a geometric object with parts having a rational, three-dimensional organization and integration. The European idea of landscape appeared before the science of landscape emerged, and it is no coincidence that Renaissance artists such as Leonardo da Vinci, who studied the structure of the human body, also facilitated an understanding of the structure of landscape. Landscape which had been a subordinate background to religious or historical narratives, became an independent genre or subject of art by the end of sixteenth century or the beginning of the seventeenth century.",
     "options": {"1": "Landscape became a major subject of art at the turn of the sixteenth century.", "2": "The three-dimensional understanding of the organism in Europe led to a similar approach towards the understanding of landscape.", "3": "The study of landscape as an independent genre was aided by the Renaissance artists.", "4": "The Renaissance artists were responsible for the study of landscape as a subject of art."},
-    "correct_answer": "2",
-    "explanation": "The passage's central argument is that the European conceptualization of the human body as a 3D geometric object led to a similar conceptualization of landscape."
+    "correct_answer": "3",
+    "explanation": "Option 3 best captures the author's position. The passage says Renaissance artists 'facilitated an understanding of the structure of landscape' — option 3 uses 'aided by' which matches. Option 2 distorts by saying 'three-dimensional understanding' instead of 'geometric'. Option 4 says 'responsible' but the passage says 'facilitated'."
   },
   {
     "id": 251,
@@ -2743,8 +2743,8 @@
     "subtopic": "Bengal Displacement",
     "question": "Five sentences related to a topic are given below. Four can form a meaningful paragraph. Identify the odd one out:\n\n1. Displacement in Bengal is thus not very significant in view of its magnitude.\n2. A factor of displacement in Bengal is the shifting course of the Ganges leading to erosion of river banks.\n3. The nature of displacement in Bengal makes it an interesting case study.\n4. Since displacement due to erosion is well spread over a long period of time, it remains invisible.\n5. Rapid displacement would have helped sensitize the public to its human costs.",
     "options": {"1": "1", "2": "2", "3": "3", "4": "5"},
-    "correct_answer": "1",
-    "explanation": "Sentences 3, 2, 4, 5 form a coherent paragraph about Bengal's gradual displacement. Sentence 1 saying displacement is 'not very significant' contradicts the paragraph's point."
+    "correct_answer": "4",
+    "explanation": "Sentences 3, 2, 4, 1 form a coherent paragraph: nature of displacement is interesting (3) → river erosion causes it (2) → gradual so remains invisible (4) → rapid displacement would have sensitized public (1). Sentence 5 does not connect with any other sentence and is the odd one out."
   },
   {
     "id": 254,
