@@ -974,6 +974,7 @@ function ResultsView({
 
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function PracticeLab() {
+  const navigate = useNavigate();
   const [phase, setPhase] = useState<Phase>("sections");
   const [selectedSection, setSelectedSection] = useState<SectionData | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
@@ -982,7 +983,7 @@ export default function PracticeLab() {
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
 
-  const { isAuthenticated, loading: authLoading, signIn } = useAuth();
+  const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
 
   const pendingChapter = useRef<Chapter | null>(null);
