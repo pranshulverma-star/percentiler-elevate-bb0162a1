@@ -85,7 +85,6 @@ interface ResultsViewProps {
 // Mock leaderboard for social proof
 function generateLeaderboard(correct: number, total: number, timeUsed: number) {
   const names = ["Rahul Sharma", "Tanmay Verma", "Aryan Mehta", "Neha Gupta", "Simran Kaur", "Amit Das", "Priya Singh"];
-  const userPct = Math.round((correct / total) * 100);
   const entries: { name: string; score: number; time: number; isMe: boolean }[] = [];
 
   // Generate 2 entries above, user, then 2 below
