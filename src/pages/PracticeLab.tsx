@@ -1052,6 +1052,48 @@ export default function PracticeLab() {
     setPhase("sections");
   }, []);
 
+  // Generate a 6-char room code
+  function generateCode() {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let code = "";
+    for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+    return code;
+  }
+
+  const handleBattle = useCallback(async (ch: Chapter) => {
+    if (!isAuthenticated || !user) {
+      pendingChapter.current = ch;
+      signIn(window.location.pathname);
+      return;
+    }
+    // Pick 10 questions and create a battle room
+    const questions = pickRandom(ch.questions, QUIZ_QUESTION_COUNT);
+    const code = generateCode();
+    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
+
+    const { data: room, error } = await (supabase.from("battle_rooms") as any).insert({
+      code,
+      host_user_id: user.id,
+      section_id: selectedSection?.id || "qa",
+      chapter_slug: ch.slug,
+      questions_json: questions,
+    }).select("id").single();
+
+    if (error || !room) {
+      console.error("Failed to create battle room:", error);
+      return;
+    }
+
+    // Auto-join as host
+    await (supabase.from("battle_players") as any).insert({
+      room_id: room.id,
+      user_id: user.id,
+      display_name: displayName,
+    });
+
+    navigate(`/practice-lab/battle/${code}`);
+  }, [isAuthenticated, user, signIn, selectedSection, navigate]);
+
   return (
     <>
       <SEO
