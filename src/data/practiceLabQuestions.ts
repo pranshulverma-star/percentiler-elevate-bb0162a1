@@ -35,6 +35,8 @@ interface RawQuestion {
   options: Record<string, string>;
   correct_answer: string;
   explanation?: string;
+  group_id?: string;
+  group_context?: string;
 }
 
 function slugify(s: string) {
