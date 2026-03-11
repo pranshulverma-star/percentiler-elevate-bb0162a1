@@ -324,7 +324,16 @@ function ChaptersView({
                     </div>
                   </div>
                   {hasQuestions && (
-                    <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={(e) => { e.stopPropagation(); onBattle(ch); }}
+                        className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center hover:bg-primary/20 transition-colors"
+                        title="Battle with friends"
+                      >
+                        <Users2 className="w-3.5 h-3.5 text-primary" />
+                      </button>
+                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                    </div>
                   )}
                 </div>
               </div>
