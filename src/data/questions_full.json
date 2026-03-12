@@ -3392,8 +3392,8 @@
     "subtopic": "Time, Speed & Distance",
     "question": "The distance from A to B is 60 km. Partha and Narayan start from A at the same time and move towards B. Partha takes four hours more than Narayan to reach B. Moreover, Partha reaches the mid-point of A and B two hours before Narayan reaches B. The speed of Partha, in km per hour, is",
     "options": {"1": "4", "2": "6", "3": "5", "4": "3"},
-    "correct_answer": "2",
-    "explanation": "Let Partha's time = t_p, Narayan's time = t_n. t_p = t_n + 4. Partha reaches midpoint (30 km) at time t_p/2. Narayan reaches B at time t_n. t_p/2 = t_n - 2 → t_p = 2t_n - 4. So t_n + 4 = 2t_n - 4 → t_n = 8, t_p = 12. Speed of Partha = 60/12 = 5... but that's option 3. Let me recheck. Actually t_p/2 + 2 = t_n? 'Partha reaches midpoint 2 hours before Narayan reaches B'. Time for Partha to reach midpoint = 30/v_p = t_p/2. This happens 2 hours before t_n. t_p/2 = t_n - 2. t_p = 2t_n - 4. Also t_p = t_n + 4. t_n + 4 = 2t_n - 4 → t_n = 8, t_p = 12. Speed = 60/12 = 5. Answer is 5, option 3."
+    "correct_answer": "3",
+    "explanation": "Let Partha's time = t_p, Narayan's time = t_n. t_p = t_n + 4. Partha reaches midpoint at time t_p/2, which is 2 hours before Narayan reaches B: t_p/2 = t_n - 2 → t_p = 2t_n - 4. So t_n + 4 = 2t_n - 4 → t_n = 8, t_p = 12. Speed of Partha = 60/12 = 5 km/hr."
   },
   {
     "id": 319,
