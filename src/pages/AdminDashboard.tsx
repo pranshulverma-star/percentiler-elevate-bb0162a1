@@ -254,6 +254,7 @@ export default function AdminDashboard() {
             </TabsContent>
 
             <TabsContent value="users" className="space-y-4">
+              <AdminActiveUsers users={data.most_active_users || []} />
               <AdminLeadsTable leads={data.leads || []} />
               <AdminPlannerStats heatScores={data.heat_scores || []} />
             </TabsContent>
