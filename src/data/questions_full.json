@@ -3293,8 +3293,8 @@
     "subtopic": "Ratios & Proportions",
     "question": "Raju and Lalitha originally had marbles in the ratio 4:9. Then Lalitha gave some of her marbles to Raju. As a result, the ratio of the number of marbles with Raju to that with Lalitha became 5:6. What fraction of her original number of marbles was given by Lalitha to Raju?",
     "options": {"1": "1/4", "2": "7/33", "3": "1/5", "4": "6/19"},
-    "correct_answer": "1",
-    "explanation": "Let Raju = 4k, Lalitha = 9k. Lalitha gives x to Raju. (4k+x)/(9k-x) = 5/6. 24k + 6x = 45k - 5x. 11x = 21k. x = 21k/11. But total = 13k. New ratio: (4k+21k/11)/(9k-21k/11) = (65k/11)/(78k/11) = 65/78 = 5/6 ✓. Fraction = x/9k = 21k/(11×9k) = 21/99 = 7/33. Answer is 7/33 = option 2."
+    "correct_answer": "2",
+    "explanation": "Let Raju = 4x, Lalitha = 9x. Lalitha gives y marbles to Raju. (4x+y)/(9x-y) = 5/6. 24x + 6y = 45x - 5y. 11y = 21x. y/x = 21/11. Fraction of Lalitha's original = y/(9x) = 21/(11×9) = 21/99 = 7/33."
   },
   {
     "id": 308,
