@@ -1360,7 +1360,7 @@
     "explanation": "Compare effective work done per day of the cycle (including rest day): If A rests every 1 day (work 1, rest 1 pattern): Work per 2-day cycle = 1 unit. Rate = 1/2 = 0.5 units/day. If A rests every 2 days (work 2, rest 1 pattern): Work per 3-day cycle = 1 + 0.9 = 1.9 units. Rate = 1.9/3 ≈ 0.633 units/day. If A rests every 3 days (work 3, rest 1 pattern): Work per 4-day cycle = 1 + 0.9 + 0.81 = 2.71 units. Rate = 2.71/4 ≈ 0.678 units/day. If A rests every 4 days: Work = 1+0.9+0.81+0.729 = 3.439 per 5 days = 0.688 units/day. This keeps increasing but the question asks for integer consecutive days before rest that maximise efficiency in minimum time — the book's answer is (2) 2 days."
   },
   {
-    "id": 118,
+    "id": 321,
     "source_pages": "pg27-28",
     "topic": "Work & Time",
     "subtopic": "Challenge Problems #01",
