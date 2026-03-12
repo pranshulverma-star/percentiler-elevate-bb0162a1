@@ -417,6 +417,7 @@ const qaChapters = buildQAChapters(qaRaw);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
 const varcChapters = buildChaptersFromRaw(varcRaw);
 
+
 export const practiceLabSections: SectionData[] = [
   {
     id: "qa",
