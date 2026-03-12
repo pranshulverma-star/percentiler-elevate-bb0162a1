@@ -267,9 +267,13 @@ const subtopicToChapter: Record<string, string> = {
   // Algebra subtopics
   "Coordinate Geometry": "Geometry",
   "Linear Equations": "Simple Equations",
+  "Polynomials": "Simple Equations",
   "Quadratic Equations": "Quadratic Equations",
+  "Higher Degree Equations": "Quadratic Equations",
   "Progressions": "Sequence & Series",
   "Inequalities": "Modulus & Inequalities",
+  "Inequality": "Modulus & Inequalities",
+  "Binomial": "Permutation & Combination",
   "Indices & Surds": "Indices & Surds",
   "Surds": "Indices & Surds",
   "Surds & Indices": "Indices & Surds",
