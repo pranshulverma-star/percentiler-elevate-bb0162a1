@@ -384,6 +384,10 @@ function QuizView({
   const answeredCount = questions.filter((qq) => answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "").length;
   const timeProgress = (timeLeft / duration) * 100;
 
+  // Resolve group context: show on ALL questions in the group, not just the first
+  const groupContext = q.group_context
+    || (q.group_id ? questions.find((qq) => qq.group_id === q.group_id && qq.group_context)?.group_context : undefined);
+
   const handleSelect = (optIndex: number) => {
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
   };
