@@ -703,7 +703,7 @@ export default function PracticeLab() {
 
   const handleRetry = useCallback(() => {
     if (selectedChapter) {
-      setQuizQuestions(pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
+      setQuizQuestions(selectedSection?.id === "lrdi" ? pickOneSet(selectedChapter.questions) : pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
     }
     setQuizAnswers({});
     setQuizTimeUsed(0);
