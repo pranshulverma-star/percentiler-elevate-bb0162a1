@@ -370,7 +370,7 @@ function QuizView({
 
   useEffect(() => {
     if (timeLeft <= 0) {
-      onFinish(answers, QUIZ_DURATION);
+      onFinish(answers, duration);
       return;
     }
     const timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
