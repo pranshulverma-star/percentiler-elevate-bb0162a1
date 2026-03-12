@@ -10,7 +10,6 @@ export interface PracticeQuestion {
   explanation?: string;
   group_id?: string;
   group_context?: string;
-  group_image?: string;
   difficulty?: Difficulty;
   concept_tags?: string[];
   skill_tags?: string[];
@@ -227,8 +226,8 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
       continue;
     }
 
-    // Skip image-based questions (require visual reference that can't be rendered as text)
-    if (r.group_image) {
+    // Skip image-based questions (should no longer exist but keep as safety check)
+    if ((r as any).group_image) {
       continue;
     }
 
@@ -263,7 +262,6 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
         explanation: r.explanation,
         group_id: r.group_id,
         group_context: r.group_context,
-        group_image: r.group_image,
         difficulty,
         concept_tags,
         skill_tags,
@@ -287,7 +285,6 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
         explanation: r.explanation,
         group_id: r.group_id,
         group_context: r.group_context,
-        group_image: r.group_image,
         difficulty,
         concept_tags,
         skill_tags,
