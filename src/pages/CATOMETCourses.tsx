@@ -90,7 +90,7 @@ const courses = [
     iconBg: "bg-green-500/10",
     icon: Clock,
     language: "English + Hindi",
-    url: "https://online.percentilers.in/courses/CAT-2025-Guided-Recorded-Course",
+    url: "https://online.percentilers.in/courses/CAT-2026-Guided-Recorded-Course",
     highlights: [
       { icon: Clock, text: "Pre-Recorded Lectures – Learn Anytime" },
       { icon: Video, text: "2 Live Mentorship Sessions / Month" },
