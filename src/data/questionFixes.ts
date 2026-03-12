@@ -245,6 +245,7 @@ export const QA_CHAPTER_ORDER: string[] = [
 const subtopicToChapter: Record<string, string> = {
   // Arithmetic subtopics
   "Percentages": "Percentages",
+  "Percentage Calculations": "Percentages",
   "Ratios & Proportions": "Ratios, Proportions and Variation",
   "Averages": "Average and Alligation",
   "Replacement": "Average and Alligation",
@@ -254,6 +255,7 @@ const subtopicToChapter: Record<string, string> = {
   "Simple & Compound Interest": "SI-CI",
   "Simple Interest": "SI-CI",
   "Compound Interest": "SI-CI",
+  "Simple Interest / Compound Interest": "SI-CI",
   "Time, Speed & Distance": "TSD",
   "Speed, Distance & Time": "TSD",
   "Speed, Time & Distance": "TSD",
