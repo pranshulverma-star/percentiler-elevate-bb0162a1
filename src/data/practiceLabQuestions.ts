@@ -1,4 +1,5 @@
 import rawQuestions from "./questions_full.json";
+import { topicOverrides, getDifficulty, getConceptTags, getSkillTags, type Difficulty } from "./questionFixes";
 
 export interface PracticeQuestion {
   id: number;
@@ -10,6 +11,9 @@ export interface PracticeQuestion {
   group_id?: string;
   group_context?: string;
   group_image?: string;
+  difficulty?: Difficulty;
+  concept_tags?: string[];
+  skill_tags?: string[];
 }
 
 export interface Chapter {
@@ -222,10 +226,21 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
     if (/same as id\s*\d+|see id\s*\d+/i.test(r.question) || /see full explanation there/i.test(r.question)) {
       continue;
     }
+
+    // Apply topic/subtopic overrides from audit fixes
+    const override = topicOverrides[r.id];
+    const topic = override?.topic ?? r.topic;
+    const subtopic = override?.subtopic ?? r.subtopic;
+
     const optKeys = Object.keys(r.options);
     const isMcq = optKeys.length >= 2 && optKeys.every((k) => /^\d+$/.test(k));
 
     let pq: PracticeQuestion;
+
+    // Compute metadata tags
+    const difficulty = getDifficulty(r.id, subtopic);
+    const concept_tags = getConceptTags(topic, subtopic);
+    const skill_tags = getSkillTags(topic, subtopic);
 
     if (isMcq) {
       const sortedKeys = optKeys.sort((a, b) => Number(a) - Number(b));
@@ -244,6 +259,9 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
         group_id: r.group_id,
         group_context: r.group_context,
         group_image: r.group_image,
+        difficulty,
+        concept_tags,
+        skill_tags,
       };
     } else {
       const answerText = r.correct_answer === "Open-ended"
@@ -265,17 +283,20 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
         group_id: r.group_id,
         group_context: r.group_context,
         group_image: r.group_image,
+        difficulty,
+        concept_tags,
+        skill_tags,
       };
     }
 
     // For QA: split broad topics (Arithmetic/Algebra/Geometry) into subtopics
     let key: string;
     if (useSubtopic) {
-      key = r.subtopic || r.topic;
-    } else if (splitBroadTopics && QA_BROAD_TOPICS.has(r.topic)) {
-      key = r.subtopic || r.topic;
+      key = subtopic || topic;
+    } else if (splitBroadTopics && QA_BROAD_TOPICS.has(topic)) {
+      key = subtopic || topic;
     } else {
-      key = r.topic;
+      key = topic;
     }
     if (!topicMap.has(key)) topicMap.set(key, []);
     topicMap.get(key)!.push(pq);
@@ -299,11 +320,15 @@ function getSectionForTopic(topic: string): "qa" | "lrdi" | "varc" {
   return "qa";
 }
 
+function getEffectiveTopic(r: RawQuestion): string {
+  return topicOverrides[r.id]?.topic ?? r.topic;
+}
+
 const rawData: RawQuestion[] = Array.isArray(rawQuestions) ? rawQuestions : ((rawQuestions as any).default ?? []);
 
-const qaRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "qa");
-const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "lrdi");
-const varcRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "varc");
+const qaRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "qa");
+const lrdiRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "lrdi");
+const varcRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "varc");
 
 const qaChapters = buildChaptersFromRaw(qaRaw, false, true);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
