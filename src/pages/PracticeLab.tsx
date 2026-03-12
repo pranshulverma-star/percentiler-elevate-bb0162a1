@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { pickGroupedRandom } from "@/lib/pickGroupedQuestions";
+import { pickGroupedRandom, pickOneSet } from "@/lib/pickGroupedQuestions";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,8 @@ import ResultsView from "@/components/practice-lab/ResultsView";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
-const QUIZ_DURATION = 900;
+const QUIZ_DURATION_DEFAULT = 900; // 15 min
+const QUIZ_DURATION_LRDI = 720;    // 12 min
 const QUIZ_QUESTION_COUNT = 10;
 const XP_PER_CORRECT = 15;
 const XP_PER_SPEED_BONUS = 5;
@@ -111,7 +112,7 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
           Choose Your <span className="text-primary">Battle</span>
         </h1>
         <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
-          10 questions · 15 minutes · Earn XP
+          Timed quizzes · Earn XP
         </p>
 
         {/* Player rank bar */}
@@ -317,7 +318,7 @@ function ChaptersView({
                       <div className="flex items-center gap-2 mt-0.5">
                         {hasQuestions ? (
                           <>
-                            <span className="text-[10px] text-muted-foreground">{qCount} Qs · 15 min</span>
+                            <span className="text-[10px] text-muted-foreground">{qCount} Qs · {section.id === "lrdi" ? "12" : "15"} min</span>
                             <span className="text-[10px] font-semibold text-primary">+{qCount * XP_PER_CORRECT} XP</span>
                           </>
                         ) : (
@@ -352,22 +353,24 @@ function ChaptersView({
 function QuizView({
   chapter,
   questions,
+  duration,
   onFinish,
   onBack,
 }: {
   chapter: Chapter;
   questions: PracticeQuestion[];
+  duration: number;
   onFinish: (answers: Record<number, number | string | null>, timeUsed: number) => void;
   onBack: () => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
-  const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION);
+  const [timeLeft, setTimeLeft] = useState(duration);
   const [_streak] = useState(0);
 
   useEffect(() => {
     if (timeLeft <= 0) {
-      onFinish(answers, QUIZ_DURATION);
+      onFinish(answers, duration);
       return;
     }
     const timer = setInterval(() => setTimeLeft((t) => t - 1), 1000);
@@ -379,7 +382,7 @@ function QuizView({
   const isLowTime = timeLeft <= 120;
   const isCritical = timeLeft <= 60;
   const answeredCount = questions.filter((qq) => answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "").length;
-  const timeProgress = (timeLeft / QUIZ_DURATION) * 100;
+  const timeProgress = (timeLeft / duration) * 100;
 
   const handleSelect = (optIndex: number) => {
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
@@ -387,7 +390,7 @@ function QuizView({
 
 
   const handleSubmit = () => {
-    onFinish(answers, QUIZ_DURATION - timeLeft);
+    onFinish(answers, duration - timeLeft);
   };
 
   return (
@@ -668,7 +671,7 @@ export default function PracticeLab() {
     const ch = pendingChapter.current;
     pendingChapter.current = null;
     setSelectedChapter(ch);
-    setQuizQuestions(pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(selectedSection?.id === "lrdi" ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
@@ -686,11 +689,11 @@ export default function PracticeLab() {
       return;
     }
     setSelectedChapter(ch);
-    setQuizQuestions(pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(selectedSection?.id === "lrdi" ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
-  }, [isAuthenticated, hasPhone, signIn]);
+  }, [isAuthenticated, hasPhone, signIn, selectedSection]);
 
   const handleFinishQuiz = useCallback((answers: Record<number, number | string | null>, timeUsed: number) => {
     setQuizAnswers(answers);
@@ -700,12 +703,12 @@ export default function PracticeLab() {
 
   const handleRetry = useCallback(() => {
     if (selectedChapter) {
-      setQuizQuestions(pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
+      setQuizQuestions(selectedSection?.id === "lrdi" ? pickOneSet(selectedChapter.questions) : pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
     }
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
-  }, [selectedChapter]);
+  }, [selectedChapter, selectedSection]);
 
   const handleBackToChapters = useCallback(() => {
     setPhase("chapters");
@@ -786,6 +789,7 @@ export default function PracticeLab() {
                 key="quiz"
                 chapter={selectedChapter}
                 questions={quizQuestions}
+                duration={selectedSection?.id === "lrdi" ? QUIZ_DURATION_LRDI : QUIZ_DURATION_DEFAULT}
                 onFinish={handleFinishQuiz}
                 onBack={handleBackToChapters}
               />
