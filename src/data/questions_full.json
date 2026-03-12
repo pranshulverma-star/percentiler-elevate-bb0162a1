@@ -3320,8 +3320,8 @@
     "subtopic": "Circles",
     "question": "In a circle with center O and radius 1 cm, an arc AB makes an angle 60 degrees at O. Let R be the region bounded by the radii OA, OB and the arc AB. If C and D are two points on OA and OB, respectively, such that OC = OD and the area of triangle OCD is half that of R, then the length of OC, in cm, is",
     "options": {"1": "(π/(3√3))^(1/2)", "2": "(π/4)^(1/2)", "3": "(π/6)^(1/2)", "4": "(π/(4√3))^(1/2)"},
-    "correct_answer": "3",
-    "explanation": "Area of sector R = (60/360)π(1²) = π/6. Area of triangle OCD = (1/2)(OC)(OD)sin60° = (1/2)(OC²)(√3/2) = (√3/4)(OC²). Given: (√3/4)(OC²) = (1/2)(π/6) = π/12. OC² = 4π/(12√3) = π/(3√3). OC = (π/(3√3))^(1/2). That's option 1. Wait let me recheck. (√3/4)OC² = π/12 → OC² = 4π/(12√3) = π/(3√3). So answer is option 1."
+    "correct_answer": "1",
+    "explanation": "Area of sector R = (60/360)π(1²) = π/6. Area of triangle OCD = (1/2)(OC)(OD)sin60° = (√3/4)(OC²). Given: (√3/4)(OC²) = (1/2)(π/6) = π/12. OC² = 4π/(12√3) = π/(3√3). OC = (π/(3√3))^(1/2)."
   },
   {
     "id": 311,
