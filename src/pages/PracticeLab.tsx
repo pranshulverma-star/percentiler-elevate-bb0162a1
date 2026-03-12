@@ -693,7 +693,7 @@ export default function PracticeLab() {
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
-  }, [isAuthenticated, hasPhone, signIn]);
+  }, [isAuthenticated, hasPhone, signIn, selectedSection]);
 
   const handleFinishQuiz = useCallback((answers: Record<number, number | string | null>, timeUsed: number) => {
     setQuizAnswers(answers);
