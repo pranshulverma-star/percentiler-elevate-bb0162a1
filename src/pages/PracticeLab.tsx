@@ -112,7 +112,7 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
           Choose Your <span className="text-primary">Battle</span>
         </h1>
         <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
-          10 questions · 15 minutes · Earn XP
+          Timed quizzes · Earn XP
         </p>
 
         {/* Player rank bar */}
