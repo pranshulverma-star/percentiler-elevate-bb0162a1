@@ -1576,8 +1576,8 @@
   },
   {
     "id": 138,
-    "topic": "Combinatorics",
-    "subtopic": "CAT 2024 Quant",
+    "topic": "Number Systems",
+    "subtopic": "Permutations & Combinations",
     "question": "Consider two sets A = {2,3,5,7,11,13} and B = {1,8,27}. Let f be a function from A to B such that for every element b in B, there is at least one element a in A such that f(a) = b. Then, the total number of such functions f is",
     "options": {"1": "665", "2": "667", "3": "537", "4": "540"},
     "correct_answer": "4",
