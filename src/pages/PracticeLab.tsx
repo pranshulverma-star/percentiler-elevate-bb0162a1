@@ -789,6 +789,7 @@ export default function PracticeLab() {
                 key="quiz"
                 chapter={selectedChapter}
                 questions={quizQuestions}
+                duration={selectedSection?.id === "lrdi" ? QUIZ_DURATION_LRDI : QUIZ_DURATION_DEFAULT}
                 onFinish={handleFinishQuiz}
                 onBack={handleBackToChapters}
               />
