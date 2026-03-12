@@ -353,17 +353,19 @@ function ChaptersView({
 function QuizView({
   chapter,
   questions,
+  duration,
   onFinish,
   onBack,
 }: {
   chapter: Chapter;
   questions: PracticeQuestion[];
+  duration: number;
   onFinish: (answers: Record<number, number | string | null>, timeUsed: number) => void;
   onBack: () => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
-  const [timeLeft, setTimeLeft] = useState(QUIZ_DURATION);
+  const [timeLeft, setTimeLeft] = useState(duration);
   const [_streak] = useState(0);
 
   useEffect(() => {
