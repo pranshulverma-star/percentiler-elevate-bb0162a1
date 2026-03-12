@@ -273,6 +273,7 @@ const subtopicToChapter: Record<string, string> = {
   "Progressions": "Sequence & Series",
   "Inequalities": "Modulus & Inequalities",
   "Inequality": "Modulus & Inequalities",
+  "Modulus": "Modulus & Inequalities",
   "Binomial": "Permutation & Combination",
   "Indices & Surds": "Indices & Surds",
   "Surds": "Indices & Surds",
