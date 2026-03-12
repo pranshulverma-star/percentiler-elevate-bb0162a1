@@ -318,7 +318,7 @@ function ChaptersView({
                       <div className="flex items-center gap-2 mt-0.5">
                         {hasQuestions ? (
                           <>
-                            <span className="text-[10px] text-muted-foreground">{qCount} Qs · {section.id === "lrdi" ? "12" : "15"} min</span>
+                            <span className="text-[10px] text-muted-foreground">{section.id === "lrdi" ? "1 Set" : `${qCount} Qs`} · {section.id === "lrdi" ? "12" : "15"} min</span>
                             <span className="text-[10px] font-semibold text-primary">+{qCount * XP_PER_CORRECT} XP</span>
                           </>
                         ) : (
