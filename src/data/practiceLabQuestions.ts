@@ -226,8 +226,8 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
       continue;
     }
 
-    // Skip image-based questions (require visual reference that can't be rendered as text)
-    if (r.group_image) {
+    // Skip image-based questions (should no longer exist but keep as safety check)
+    if ((r as any).group_image) {
       continue;
     }
 
