@@ -708,7 +708,7 @@ export default function PracticeLab() {
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
-  }, [selectedChapter]);
+  }, [selectedChapter, selectedSection]);
 
   const handleBackToChapters = useCallback(() => {
     setPhase("chapters");
