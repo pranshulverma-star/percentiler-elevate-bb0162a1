@@ -223,6 +223,10 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
     if (/same as id\s*\d+|see id\s*\d+/i.test(r.question) || /see full explanation there/i.test(r.question)) {
       continue;
     }
+
+    // Apply topic normalization
+    const normalized = normalizeTopic(r.id, r.topic, r.subtopic);
+
     const optKeys = Object.keys(r.options);
     const isMcq = optKeys.length >= 2 && optKeys.every((k) => /^\d+$/.test(k));
 
@@ -269,14 +273,14 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
       };
     }
 
-    // For QA: split broad topics (Arithmetic/Algebra/Geometry) into subtopics
+    // Use normalized topic/subtopic for chapter grouping
     let key: string;
     if (useSubtopic) {
-      key = r.subtopic || r.topic;
-    } else if (splitBroadTopics && QA_BROAD_TOPICS.has(r.topic)) {
-      key = r.subtopic || r.topic;
+      key = normalized.subtopic || normalized.topic;
+    } else if (splitBroadTopics && QA_BROAD_TOPICS.has(normalized.topic)) {
+      key = normalized.subtopic || normalized.topic;
     } else {
-      key = r.topic;
+      key = normalized.topic;
     }
     if (!topicMap.has(key)) topicMap.set(key, []);
     topicMap.get(key)!.push(pq);
