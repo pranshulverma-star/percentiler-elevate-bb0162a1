@@ -414,7 +414,11 @@ const lrdiRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) =
 const varcRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "varc");
 
 const qaChapters = buildQAChapters(qaRaw);
-const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
+// Merge all LRDI questions into a single chapter
+const lrdiAllQuestions = buildChaptersFromRaw(lrdiRaw, true).flatMap(c => c.questions);
+const lrdiChapters: Chapter[] = lrdiAllQuestions.length > 0
+  ? [{ slug: "cat-lrdi-arena", name: "CAT LRDI Arena", questions: lrdiAllQuestions }]
+  : [];
 const varcChapters = buildChaptersFromRaw(varcRaw);
 
 
