@@ -320,11 +320,15 @@ function getSectionForTopic(topic: string): "qa" | "lrdi" | "varc" {
   return "qa";
 }
 
+function getEffectiveTopic(r: RawQuestion): string {
+  return topicOverrides[r.id]?.topic ?? r.topic;
+}
+
 const rawData: RawQuestion[] = Array.isArray(rawQuestions) ? rawQuestions : ((rawQuestions as any).default ?? []);
 
-const qaRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "qa");
-const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "lrdi");
-const varcRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "varc");
+const qaRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "qa");
+const lrdiRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "lrdi");
+const varcRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "varc");
 
 const qaChapters = buildChaptersFromRaw(qaRaw, false, true);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
