@@ -10,7 +10,6 @@ export interface PracticeQuestion {
   explanation?: string;
   group_id?: string;
   group_context?: string;
-  group_image?: string;
   difficulty?: Difficulty;
   concept_tags?: string[];
   skill_tags?: string[];
