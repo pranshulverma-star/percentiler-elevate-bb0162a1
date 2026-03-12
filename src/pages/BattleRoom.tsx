@@ -528,7 +528,7 @@ function BattleResults({
                        <XCircle className="w-3 h-3 text-destructive" />}
                     </div>
                     <div className="flex-1 space-y-2">
-                      <p className="text-xs md:text-sm font-medium text-foreground">Q{i + 1}. {q.question}</p>
+                      <p className="text-xs md:text-sm font-medium text-foreground whitespace-pre-line">Q{i + 1}. {q.question}</p>
                       <div className="space-y-1">
                         {q.options.map((opt, idx) => {
                           let cls = "text-xs px-2.5 py-1 rounded-lg ";
