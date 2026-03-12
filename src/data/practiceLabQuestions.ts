@@ -214,7 +214,7 @@ function extractAnswerFromExplanation(explanation: string): string {
 }
 
 // Broad CAT topics that should be split by subtopic in QA
-const QA_BROAD_TOPICS = new Set(["Arithmetic", "Algebra", "Geometry", "Number Systems"]);
+const QA_BROAD_TOPICS = new Set(["Arithmetic", "Algebra", "Geometry", "Number Systems", "Modern Maths"]);
 
 function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroadTopics = false): Chapter[] {
   const topicMap = new Map<string, PracticeQuestion[]>();
