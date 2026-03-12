@@ -10,6 +10,7 @@ import {
   LayoutDashboard, Users, FlaskConical, Swords, Megaphone
 } from "lucide-react";
 import AdminOverviewCards from "@/components/admin/AdminOverviewCards";
+import AdminActiveUsers from "@/components/admin/AdminActiveUsers";
 import AdminDailyChart from "@/components/admin/AdminDailyChart";
 import AdminLeadsTable from "@/components/admin/AdminLeadsTable";
 import AdminLeadSourcesChart from "@/components/admin/AdminLeadSourcesChart";
@@ -249,9 +250,11 @@ export default function AdminDashboard() {
                 bySection={data.practice_by_section || []}
                 scoreDistribution={data.score_distribution || []}
               />
+              <AdminActiveUsers users={data.most_active_users || []} />
             </TabsContent>
 
             <TabsContent value="users" className="space-y-4">
+              <AdminActiveUsers users={data.most_active_users || []} />
               <AdminLeadsTable leads={data.leads || []} />
               <AdminPlannerStats heatScores={data.heat_scores || []} />
             </TabsContent>

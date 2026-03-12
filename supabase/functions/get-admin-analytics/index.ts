@@ -246,6 +246,54 @@ Deno.serve(async (req) => {
       .map(([source, count]) => ({ source, count }))
       .sort((a, b) => b.count - a.count);
 
+    // ── Most Active Users ──
+    // Aggregate activity: quizzes + battles per user_id, resolve name/email from leads
+    const userActivity: Record<string, { quizzes: number; battles: number; totalScore: number; name: string; email: string }> = {};
+    
+    // Build a user_id → lead info map
+    const userIdToLead: Record<string, { name: string; email: string }> = {};
+    for (const l of leads) {
+      if (l.user_id) {
+        userIdToLead[l.user_id] = { name: l.name || "", email: l.email || "" };
+      }
+    }
+
+    for (const p of practiceAttempts) {
+      const uid = p.user_id;
+      if (!userActivity[uid]) {
+        const info = userIdToLead[uid] || { name: "", email: "" };
+        userActivity[uid] = { quizzes: 0, battles: 0, totalScore: 0, name: info.name, email: info.email };
+      }
+      userActivity[uid].quizzes++;
+      userActivity[uid].totalScore += p.score_pct || 0;
+    }
+
+    for (const bp of battlePlayers) {
+      const uid = bp.user_id;
+      if (!userActivity[uid]) {
+        const info = userIdToLead[uid] || { name: "", email: "" };
+        userActivity[uid] = { quizzes: 0, battles: 0, totalScore: 0, name: info.name, email: info.email };
+      }
+      userActivity[uid].battles++;
+      // Use display_name as fallback
+      if (!userActivity[uid].name && bp.display_name) {
+        userActivity[uid].name = bp.display_name;
+      }
+    }
+
+    const mostActiveUsers = Object.entries(userActivity)
+      .map(([uid, d]) => ({
+        user_id: uid,
+        name: d.name,
+        email: d.email,
+        quizzes: d.quizzes,
+        battles: d.battles,
+        total_actions: d.quizzes + d.battles,
+        avg_score: d.quizzes ? Math.round(d.totalScore / d.quizzes) : 0,
+      }))
+      .sort((a, b) => b.total_actions - a.total_actions)
+      .slice(0, 25);
+
     return new Response(
       JSON.stringify({
         summary: {
@@ -278,6 +326,7 @@ Deno.serve(async (req) => {
         battle_rooms: fBattleRooms.slice(0, 100),
         battles_by_status: battlesByStatus,
         top_battlers: topBattlers,
+        most_active_users: mostActiveUsers,
         campaign_pipeline: pipelineMap,
         campaigns: campaigns.slice(0, 200),
         webinar,
