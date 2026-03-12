@@ -3702,5 +3702,176 @@
     "options": {},
     "correct_answer": "3",
     "explanation": "Ways = (number of odd factors of n) – 1. 1000 = 2³ × 5³. Odd factors from 5³: 4. Ways = 4–1 = 3."
+  },
+  {
+    "id": 371,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "Find the least number which when divided by 6, 15 and 17 always leaves a remainder 1, but when divided by 7 leaves no remainder.",
+    "options": { "1": "211", "2": "511", "3": "1021", "4": "86" },
+    "correct_answer": "2",
+    "explanation": "The smallest number leaving remainder 1 when divided by 6, 15 and 17 is LCM(6,15,17) + 1 = 510 + 1 = 511. Check: 511/7 = 73 exactly ✓."
+  },
+  {
+    "id": 372,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "The least number which on division by 35 leaves remainder 25, on division by 45 leaves remainder 35, and on division by 55 leaves remainder 45 is:",
+    "options": { "1": "2515", "2": "3455", "3": "2875", "4": "2785" },
+    "correct_answer": "2",
+    "explanation": "Difference between each divisor and remainder is constant: 35–25=45–35=55–45=10. Required number = LCM(35,45,55) – 10 = 3465 – 10 = 3455."
+  },
+  {
+    "id": 373,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "A is the set of positive integers such that when divided by 2, 3, 4, 5, 6 leaves the remainders 1, 2, 3, 4, 5 respectively. How many integers between 0 and 100 belong to set A? [CAT 1998]",
+    "options": { "1": "0", "2": "1", "3": "2", "4": "None of these" },
+    "correct_answer": "2",
+    "explanation": "(Divisor – remainder) = 1 for all. Numbers of the form LCM(2,3,4,5,6)×n – 1 = 60n – 1. Between 0 and 100: n=1 → 59. Only 1 value."
+  },
+  {
+    "id": 374,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "At a bookstore, 'MODERN BOOK STORE' is flashed using neon lights at intervals of 1½s, 4⅛s and 5¼s respectively, and each word is put off after a second. The least time after which the full name can be read again is:",
+    "options": { "1": "49.5 s", "2": "72.5 s", "3": "1744.5 s", "4": "855 s" },
+    "correct_answer": "2",
+    "explanation": "Convert: 3/2, 33/8, 21/4. LCM of fractions = LCM(numerators)/HCF(denominators). Result = 72.5 s."
+  },
+  {
+    "id": 375,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "The LCM of two numbers is 168 and their HCF is 28. If the sum of the numbers is 140, then the numbers are:",
+    "options": { "1": "106 and 34", "2": "56 and 28", "3": "112 and 28", "4": "84 and 56" },
+    "correct_answer": "4",
+    "explanation": "Let numbers = 28X and 28Y, gcd(X,Y)=1. 28(X+Y)=140 → X+Y=5. LCM = 28XY = 168 → XY=6. X=3, Y=2. Numbers = 84 and 56."
+  },
+  {
+    "id": 376,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "The HCF of two natural numbers is 119 and their sum is 833. What are the numbers if they differ by the minimum possible amount?",
+    "options": { "1": "357 and 476", "2": "119 and 714", "3": "238 and 545", "4": "119 and 545" },
+    "correct_answer": "1",
+    "explanation": "Numbers = 119u and 119v, gcd(u,v)=1. u+v = 7. Closest coprime pair: (3,4). Numbers = 357 and 476."
+  },
+  {
+    "id": 377,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "The sum of two numbers is 462 and their HCF is 22. What is the maximum possible number of pairs that satisfy these conditions?",
+    "options": { "1": "3", "2": "2", "3": "8", "4": "6" },
+    "correct_answer": "4",
+    "explanation": "Numbers = 22x and 22y, gcd(x,y)=1. x+y = 21. Coprime pairs summing to 21: (1,20),(2,19),(4,17),(5,16),(8,13),(10,11) → 6 pairs."
+  },
+  {
+    "id": 378,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "Let ab and ba be two-digit numbers where a and b are distinct digits. The difference of ab and ba equals the HCF of ab and ba. What is a + b?",
+    "options": { "1": "6", "2": "7", "3": "8", "4": "9" },
+    "correct_answer": "4",
+    "explanation": "Difference = 9|a–b|. This must divide both numbers. Valid case: 54 and 45 → 54–45=9, HCF=9 ✓. a+b = 9."
+  },
+  {
+    "id": 379,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "LCM of two numbers is ab³ where a and b are primes. One number is b³. Which of the following cannot be the other number?",
+    "options": { "1": "ab³", "2": "ab", "3": "ab²", "4": "None of these" },
+    "correct_answer": "4",
+    "explanation": "LCM(b³, ab³)=ab³ ✓. LCM(b³, ab)=ab³ ✓. LCM(b³, ab²)=ab³ ✓. All options work. Answer: None of these."
+  },
+  {
+    "id": 380,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "If (x – m) is the HCF of (x² – bx + a) and (x² + cx – d), then the value of m is:",
+    "options": { "1": "(d–a)/(c–b)", "2": "(b+c)/(a+d)", "3": "(b+c)/(c–d)", "4": "(a+d)/(b+c)" },
+    "correct_answer": "4",
+    "explanation": "x=m is a root of both. Subtract: a+d = (b+c)m → m = (a+d)/(b+c)."
+  },
+  {
+    "id": 381,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "VP (HR) visits every 3rd day, VP (Operations) every 4th day, VP (Sales) every 6th day. CEO last met all on Jan 3, 2012 and is on leave Jan 5–28. When is the next CEO meeting?",
+    "options": { "1": "February 6, 2012", "2": "February 7, 2012", "3": "February 8, 2012", "4": "February 9, 2012" },
+    "correct_answer": "3",
+    "explanation": "LCM(3,4,6)=12. Meetings from Jan 3: Jan 15, Jan 27, Feb 8. CEO on leave until Jan 28, so next meeting = February 8."
+  },
+  {
+    "id": 382,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "The LCM of three positive integers X, Y and Z is 1192. Find the total number of ordered triplets (X, Y, Z).",
+    "options": { "1": "400", "2": "361", "3": "289", "4": "225" },
+    "correct_answer": "2",
+    "explanation": "For each prime with max power 2: ordered triplets where max=2 = 3³ – 2³ = 19. Two such primes → 19×19 = 361."
+  },
+  {
+    "id": 383,
+    "topic": "Number System",
+    "subtopic": "LCM & HCF",
+    "question": "For two positive integers a and b, h(a,b) = GCF(a,b). For a set of n positive integers, what is the minimum number of times h must be used to compute the GCF of all elements? [CAT 1999]",
+    "options": { "1": "n/2", "2": "n–1", "3": "n", "4": "None of these" },
+    "correct_answer": "2",
+    "explanation": "Each call reduces count by 1. Starting with n numbers → n–1 applications needed."
+  },
+  {
+    "id": 384,
+    "topic": "Number System",
+    "subtopic": "Factorial",
+    "question": "If n is an odd natural number and n! ends with 32 zeros, how many values of n are possible?",
+    "options": { "1": "2", "2": "3", "3": "1", "4": "4" },
+    "correct_answer": "1",
+    "explanation": "Trailing zeros = power of 5 in n!. n=130 gives 32 zeros. n=131,132,133,134 also give 32. Odd values: 131 and 133 → 2 values."
+  },
+  {
+    "id": 385,
+    "topic": "Number System",
+    "subtopic": "Factorial",
+    "question": "The number of positive integers n in the range 2 < n < 20 such that (n–1)! is not divisible by n is:",
+    "options": { "1": "7", "2": "8", "3": "9", "4": "10" },
+    "correct_answer": "2",
+    "explanation": "By Wilson's theorem, (n–1)! is NOT divisible by n when n is prime. Primes in (2,20): 3,5,7,11,13,17,19 (7). Also n=4: 3!=6 not divisible by 4. Total = 8."
+  },
+  {
+    "id": 386,
+    "topic": "Number System",
+    "subtopic": "Factorial",
+    "question": "How many real values of n are there such that n! is a perfect square?",
+    "options": { "1": "1", "2": "2", "3": "3", "4": "More than 3" },
+    "correct_answer": "2",
+    "explanation": "0!=1² ✓ and 1!=1² ✓. For n≥2, Bertrand's postulate guarantees a prime appearing odd times in n!. Only 2 values."
+  },
+  {
+    "id": 387,
+    "topic": "Number System",
+    "subtopic": "Factorial",
+    "question": "What is the highest power of 3 in 87! – 60!?",
+    "options": { "1": "28", "2": "42", "3": "14", "4": "27" },
+    "correct_answer": "1",
+    "explanation": "87!–60! = 60!(87×86×…×61 – 1). The bracket is not divisible by 3. Power of 3 in 60! = 20+6+2 = 28."
+  },
+  {
+    "id": 388,
+    "topic": "Number System",
+    "subtopic": "Factorial",
+    "question": "For how many positive integers V less than 15 is V! + (V+1)! + (V+2)! an integral multiple of 36?",
+    "options": { "1": "12", "2": "11", "3": "9", "4": "10" },
+    "correct_answer": "4",
+    "explanation": "V!+(V+1)!+(V+2)! = V!(V+2)². Check divisibility by 36 for V=1 to 14. Works for V=4,6,7,8,9,10,11,12,13,14 → 10 values."
+  },
+  {
+    "id": 389,
+    "topic": "Number System",
+    "subtopic": "Factorial",
+    "question": "If p = 1! + (2×2!) + (3×3!) + … + (10×10!), then p+2 when divided by 11! leaves a remainder of:",
+    "options": { "1": "10", "2": "0", "3": "7", "4": "1" },
+    "correct_answer": "4",
+    "explanation": "Telescoping: k×k! = (k+1)!–k!. Sum = 11!–1. So p+2 = 11!+1. Remainder when divided by 11! = 1."
   }
 ]
