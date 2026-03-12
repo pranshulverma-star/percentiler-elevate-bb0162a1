@@ -1666,8 +1666,8 @@
   },
   {
     "id": 148,
-    "topic": "Speed, Time & Distance",
-    "subtopic": "CAT 2024 Quant",
+    "topic": "Speed, Distance & Time",
+    "subtopic": "Speed, Distance & Time",
     "question": "Two places A and B are 45 kms apart and connected by a straight road. Anil goes from A to B while Sunil goes from B to A. Starting at the same time, they cross each other in exactly 1 hour 30 minutes. If Anil reaches B exactly 1 hour 15 minutes after Sunil reaches A, the speed of Anil, in km per hour, is",
     "options": {"1": "18", "2": "14", "3": "12", "4": "16"},
     "correct_answer": "3",
