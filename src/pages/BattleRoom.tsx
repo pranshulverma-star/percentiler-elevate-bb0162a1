@@ -274,7 +274,7 @@ function BattleQuiz({
               <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                 <span className="text-[11px] font-bold text-primary">{currentIndex + 1}</span>
               </div>
-              <p className="text-sm md:text-lg font-medium text-foreground leading-relaxed">{q.question}</p>
+              <p className="text-sm md:text-lg font-medium text-foreground leading-relaxed whitespace-pre-line">{q.question}</p>
             </div>
 
             {q.type === "mcq" ? (
