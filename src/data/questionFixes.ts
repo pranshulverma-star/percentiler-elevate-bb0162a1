@@ -272,6 +272,8 @@ const subtopicToChapter: Record<string, string> = {
   "Inequalities": "Modulus & Inequalities",
   "Indices & Surds": "Indices & Surds",
   "Surds": "Indices & Surds",
+  "Surds & Indices": "Indices & Surds",
+  "Classification of Numbers": "Number System",
   "Logarithms": "Logs",
   "Functions": "Functions",
   // Geometry subtopics

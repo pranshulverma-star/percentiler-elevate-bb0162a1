@@ -3252,5 +3252,275 @@
     "options": {"1": "20", "2": "16", "3": "22", "4": "18"},
     "correct_answer": "1",
     "explanation": "Let A take 'a' days alone, B takes 1.25a days. A's rate = 1/a, B's rate = 1/(1.25a) = 4/(5a). A works alone for half: time = a/2 days. Then A+B work 4 days: (1/a + 4/5a)×4 = (9/5a)×4 = 36/5a. Then B alone finishes 5%: 0.05 = (4/5a)×t → t = 0.25a/4 = a/16. Total work: 0.5 + 36/(5a) + 0.05 = 1 → 36/(5a) = 0.45 → a = 36/(5×0.45) = 16. B takes 1.25×16 = 20 days."
+  },
+  {
+    "id": 321,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "If n³ is odd for n > 1, then which of the following is true?\nI. n⁴ is even.\nII. n² is even.\nIII. (n – 1)(n + 1) is even.\nIV. n is odd.",
+    "options": {"1": "Only I", "2": "Only IV", "3": "III and IV", "4": "Only III"},
+    "correct_answer": "3",
+    "explanation": "Since n³ = n × n × n is odd, n must be odd (product of even number gives even; product of odd numbers is odd). By same logic, n² and n⁴ are also odd. Now (n–1)(n+1) = n² – 1 = odd – 1 = even. So both III and IV are true."
+  },
+  {
+    "id": 322,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "If n = 1 + x, where x is the product of four consecutive positive integers, then which of the following is/are true? [CAT 1999]\nA. n is odd\nB. n is prime\nC. n is a perfect square",
+    "options": {"1": "A and C only", "2": "A and B only", "3": "A only", "4": "None of these"},
+    "correct_answer": "1",
+    "explanation": "Let the four consecutive integers be (x–1), x, (x+1), (x+2). Their product = (x²+x–1)² – 1. So n = 1 + (x²+x–1)² – 1 = (x²+x–1)², a perfect square. Since it is a perfect square greater than 1, it is not prime. Also n = (x²+x–1)² is always odd since x²+x–1 is always odd. So A and C are true."
+  },
+  {
+    "id": 323,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "Let x, y and z be distinct integers, that are odd and positive. Which one of the following statements cannot be true? [CAT 2000]",
+    "options": {"1": "xyz² is odd", "2": "(x – y)² – z is odd", "3": "(x + y – z)²(x + y) is even", "4": "(x – y)(y + z)(x + y – z) is odd"},
+    "correct_answer": "4",
+    "explanation": "x, y, z are all odd. So (x–y) = odd–odd = even; (y+z) = odd+odd = even; (x+y–z) = odd+odd–odd = odd. Product = even × even × odd = even. This can never be odd. So option (4) cannot be true."
+  },
+  {
+    "id": 324,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "If x and y are integers such that x > y > 0, how many integers are there between x and y, excluding x and y?",
+    "options": {"1": "x – y", "2": "x – y – 1", "3": "x + y", "4": "x + y – 1"},
+    "correct_answer": "2",
+    "explanation": "The number of integers strictly between two integers is always one less than their absolute difference. Example: between 3 and 1 (excluding both), there is only 1 integer (which is 2) = 3 – 1 – 1 = 1. So the answer is x – y – 1."
+  },
+  {
+    "id": 325,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "When you reverse the digits of the number 13, the number increases by 18. How many other two-digit numbers increase by 18 when their digits are reversed?",
+    "options": {},
+    "correct_answer": "6",
+    "explanation": "Let the two-digit number be XY = 10X + Y. Reversed = 10Y + X. Increase = 9(Y – X) = 18, so Y – X = 2. Valid pairs (X,Y): (1,3),(2,4),(3,5),(4,6),(5,7),(6,8),(7,9) — 7 numbers total. Excluding 13, there are 6 other numbers."
+  },
+  {
+    "id": 326,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "Consider four-digit numbers for which the first two digits are equal and the last two digits are also equal. How many such numbers are perfect squares?",
+    "options": {"1": "3", "2": "2", "3": "0", "4": "1"},
+    "correct_answer": "4",
+    "explanation": "Such a number is of the form aabb = 11 × (100a + b). For aabb to be a perfect square, 100a + b must be a multiple of 11. Testing values: a=7, b=4 gives 700+4=704=64×11, and 7744=88². This is the only valid pair. So exactly 1 such perfect square exists."
+  },
+  {
+    "id": 327,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "Prashant typed a 4-digit number on his calculator. He multiplied it by 12. He added 39 to it. He subtracted 36 dozens from that number and then multiplied the resultant by 24. The number he got was 25x2536. He cannot see digit x. What could digit x be?",
+    "options": {"1": "2", "2": "4", "3": "6", "4": "5"},
+    "correct_answer": "2",
+    "explanation": "Let the 4-digit number be N. Result = [(12N + 39) – 432] × 24 = 24(12N – 393) = 288N – 9432. The result is divisible by 9. Digit sum of 25x2536 = 2+5+x+2+5+3+6 = 23+x. For divisibility by 9: 23+x ≡ 0 (mod 9) → x = 4. Only option (2) satisfies."
+  },
+  {
+    "id": 328,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "Let x, y and z be distinct positive integers satisfying x < y < z and x + y + z = k. What is the smallest value of k that does not determine x, y and z uniquely?",
+    "options": {"1": "9", "2": "7", "3": "10", "4": "8"},
+    "correct_answer": "4",
+    "explanation": "k=6: only (1,2,3). k=7: only (1,2,4). k=8: both (1,2,5) and (1,3,4) work. So k=8 is the smallest value with multiple solutions."
+  },
+  {
+    "id": 329,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "If cb × c × 3 = ccc, then what is the value of b × c?",
+    "options": {},
+    "correct_answer": "21",
+    "explanation": "ccc = 111 × c = 3 × 37 × c. So cb × c × 3 = 3 × 37 × c → cb = 37. Therefore c = 3, b = 7. So b × c = 3 × 7 = 21."
+  },
+  {
+    "id": 330,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "Two prime numbers P1, P2 (P1 < P2) are called twin primes if they differ by 2. If P1 and P2 are twin primes with P2 > 23, then which of the following numbers would always divide P1 + P2?",
+    "options": {"1": "12", "2": "8", "3": "24", "4": "16"},
+    "correct_answer": "1",
+    "explanation": "For twin primes greater than 5, P1 is of the form 6K–1 and P2 = 6K+1. So P1 + P2 = 12K. Therefore 12 always divides P1 + P2."
+  },
+  {
+    "id": 331,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "The product of two positive real numbers is 1. Their sum is:",
+    "options": {"1": "≥ 1", "2": "≥ 2", "3": "≤ –1", "4": "≤ –2"},
+    "correct_answer": "2",
+    "explanation": "Let the two numbers be x and y with xy = 1. By AM-GM: (x+y)/2 ≥ √(xy) = 1. Therefore x + y ≥ 2."
+  },
+  {
+    "id": 332,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "All the two-digit natural numbers that have their unit's digit greater than their ten's digit are selected. If all these numbers are written one after the other in a series, how many digits are there in the resulting number?",
+    "options": {},
+    "correct_answer": "72",
+    "explanation": "Unit digit cannot be 0 or 1. When unit digit=2: 1 number. When unit digit=3: 2 numbers. ... When unit digit=9: 8 numbers. Total numbers = 1+2+...+8 = 36. Each is 2-digit, so total digits = 36 × 2 = 72."
+  },
+  {
+    "id": 333,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "The sequence 2, 3, 5, 6, 7, 10, … consists of all natural numbers that are neither perfect squares nor perfect cubes. Find the 76th term of this sequence.",
+    "options": {"1": "89", "2": "87", "3": "86", "4": "88"},
+    "correct_answer": "2",
+    "explanation": "From 1 to 87: perfect squares = 1,4,9,16,25,36,49,64,81 (9 numbers); perfect cubes = 1,8,27,64 (4 numbers); overlap (both square and cube) = 1,64 (2 numbers). Removed = 9+4–2 = 11. Numbers remaining up to 87 = 87–11 = 76. So 87 is the 76th term."
+  },
+  {
+    "id": 334,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "P denotes the sum of two three-digit numbers such that P is 606. How many of the 10 digits from 0 to 9 cannot appear as the last digit of the product of these two three-digit numbers?",
+    "options": {"1": "4", "2": "3", "3": "5", "4": "2"},
+    "correct_answer": "1",
+    "explanation": "Last digit of sum = 6. Possible unit digit pairs: (0,6),(1,5),(2,4),(3,3),(7,9),(8,8). Last digits of products: 0, 5, 8, 9, 3, 4. Possible set = {0,3,4,5,8,9}. Cannot appear: {1,2,6,7} → 4 digits."
+  },
+  {
+    "id": 335,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "When a natural number p is multiplied by 4, it gives a perfect cube and when it is multiplied by 9, it gives a perfect square. Find the minimum possible value of the expression p² – 16p + 1.",
+    "options": {"1": "8", "2": "12", "3": "16", "4": "None of these"},
+    "correct_answer": "4",
+    "explanation": "9p is a perfect square → p must be a perfect square. 4p is a perfect cube → minimum p satisfying both = 16 (since 4×16=64=4³ and 9×16=144=12²). p²–16p+1 at p=16 = 256–256+1 = 1. Answer is 1, which is none of the listed options."
+  },
+  {
+    "id": 336,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "A three-digit number is such that its hundreds digit is equal to the product of the other two digits which are prime. Also, the absolute difference between the number and the number formed by its digits in reverse order is 297. Then the tens digit of the number is:",
+    "options": {"1": "2", "2": "3", "3": "7", "4": "4"},
+    "correct_answer": "1",
+    "explanation": "The two prime digits (units and tens) can only be 2 or 3. Their product = 6 = hundreds digit. Possible numbers: 623 or 632. |623–326|=297. |632–236|=396. So the number is 623 and tens digit = 2."
+  },
+  {
+    "id": 337,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "When a certain two-digit number is added to another two-digit number having the same digits in reverse order, the sum is a perfect square. How many such two-digit numbers are there?",
+    "options": {"1": "4", "2": "6", "3": "8", "4": "10"},
+    "correct_answer": "3",
+    "explanation": "Let number = 10a+b. Sum with reverse = 11(a+b). For perfect square: 11(a+b) must be a perfect square → (a+b) must be a multiple of 11. Maximum a+b = 18, so a+b = 11. Digit pairs: (2,9),(3,8),(4,7),(5,6),(6,5),(7,4),(8,3),(9,2) → 8 numbers."
+  },
+  {
+    "id": 338,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "A and B play 'Dingo' where each player must choose a positive integer less than the previous but at least half of it. The player who chooses 1 loses. A starts with 2021. Which integer should B choose to ensure victory?",
+    "options": {"1": "1025", "2": "1011", "3": "2049", "4": "1535"},
+    "correct_answer": "4",
+    "explanation": "Work backwards to find winning positions. Picking 2 is a winning move (forces opponent to pick 1). Winning sequence built as 2n+1 from 2: 2→5→11→23→47→95→191→383→767→1535. B should pick 1535 to put A in a losing position."
+  },
+  {
+    "id": 339,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "Each of 20 persons in a row is assigned seats 1–20. Every round, persons on prime-numbered seats are removed and seats are renumbered from 1. Repeat until 3 remain. What is the original seat number of the person on seat 3 at the end?",
+    "options": {"1": "8", "2": "14", "3": "16", "4": "18"},
+    "correct_answer": "3",
+    "explanation": "Round 1: Remove prime seats {2,3,5,7,11,13,17,19}. Remaining original seats: 1,4,6,8,9,10,12,14,15,16,18,20 (renumbered 1–12). Round 2: Remove prime seats {2,3,5,7,11}. Remaining original seats: 1,8,10,14,15,16,20 (renumbered 1–7). Round 3: Remove prime seats {2,3,5,7}. Remaining original seats: 1,14,16 (3 people). Seat 3 → original seat 16."
+  },
+  {
+    "id": 340,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "When digits of three-digit number N are reversed we get M. Which statements are always correct about S = N + M?\nA. At most two of S's three digits can be even.\nB. S cannot be prime.\nC. Each digit of S is greater than 2.",
+    "options": {"1": "A & B", "2": "B & C", "3": "A & C", "4": "None of these"},
+    "correct_answer": "4",
+    "explanation": "N=abc, M=cba, S has digits (a+c), 2b, (a+c). S=383 (a=3,b=8,c=3) is prime → B is false. Tens digit 2b can be 0 → C is false. A is also not always true. All three statements can be violated, so none are always correct."
+  },
+  {
+    "id": 341,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "If u, v, w and m are natural numbers such that uᵐ + vᵐ = wᵐ, then which one of the following is true? [CAT 2002]",
+    "options": {"1": "m ≥ min(u, v, w)", "2": "m ≥ max(u, v, w)", "3": "m < min(u, v, w)", "4": "None of these"},
+    "correct_answer": "4",
+    "explanation": "Testing: 3²+4²=5² → m=2, min=3 → m < min. But 1¹+2¹=3¹ → m=1, min=1 → m = min, not strictly less. No single option always holds. Answer: None of these."
+  },
+  {
+    "id": 342,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "The product of three positive integers is 6 times their sum. One of these integers is the sum of the other two. If the product is P, find the sum of all distinct possible values of P.",
+    "options": {},
+    "correct_answer": "336",
+    "explanation": "Let numbers be K, L, K+L. Sum = 2(K+L). Product = KL(K+L) = 6×2(K+L) = 12(K+L) → KL = 12. Factor pairs: {1,12},{2,6},{3,4}. Products: 1×12×13=156, 2×6×8=96, 3×4×7=84. Sum = 156+96+84 = 336."
+  },
+  {
+    "id": 343,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "Let D = 0.a₁a₂a₃ a₁a₂a₃ … (recurring). Digits a₁ and a₂ are between 0 and 9, at most one is zero. Which number necessarily produces an integer when multiplied by D?",
+    "options": {"1": "1800", "2": "1080", "3": "1998", "4": "2898"},
+    "correct_answer": "3",
+    "explanation": "D = a₁a₂a₃ / 999. For D × N to be an integer, N must be a multiple of 999. 999 = 3³ × 37. Only 1998 = 2 × 999 among the options is a multiple of 999."
+  },
+  {
+    "id": 344,
+    "topic": "Number System",
+    "subtopic": "Surds & Indices",
+    "question": "Which among 2^(1/2), 3^(1/3), 4^(1/4), 6^(1/6) and 12^(1/12) is the largest?",
+    "options": {"1": "2^(1/2)", "2": "3^(1/3)", "3": "4^(1/4)", "4": "6^(1/6)"},
+    "correct_answer": "2",
+    "explanation": "LCM(2,3,4,6,12) = 12. Raise each to the 12th power: 2⁶=64, 3⁴=81, 4³=64, 6²=36, 12¹=12. Largest is 81 → 3^(1/3)."
+  },
+  {
+    "id": 345,
+    "topic": "Number System",
+    "subtopic": "Surds & Indices",
+    "question": "Find the value of √(8 + 2√7).",
+    "options": {},
+    "correct_answer": "1 + √7",
+    "explanation": "Assume √(8 + 2√7) = √a + √b. Then a+b = 8 and ab = 7. So a=1, b=7. Therefore √(8 + 2√7) = 1 + √7."
+  },
+  {
+    "id": 346,
+    "topic": "Number System",
+    "subtopic": "Surds & Indices",
+    "question": "Given 3^(x²–xy) / 3^(y³–y⁻³) × 3³ = 81 and 3^(x/3) / 3^(x/y–2) = 256. Find the value of xy.",
+    "options": {"1": "0", "2": "–2", "3": "4", "4": "None of these"},
+    "correct_answer": "1",
+    "explanation": "Interpreting the equations: x³+y³ = 8 and x²+y²+xy = 4. Testing x=2, y=0: 8+0=8 and 4+0+0=4. So xy = 0."
+  },
+  {
+    "id": 347,
+    "topic": "Number System",
+    "subtopic": "Surds & Indices",
+    "question": "Three consecutive positive integers are raised to the 1st, 2nd and 3rd powers respectively and added. The sum is a perfect square whose square root equals the sum of the three integers. Which best describes the minimum m of these integers?",
+    "options": {"1": "1 ≤ m ≤ 3", "2": "4 ≤ m ≤ 6", "3": "7 ≤ m ≤ 9", "4": "10 ≤ m ≤ 12"},
+    "correct_answer": "1",
+    "explanation": "Let integers be n–1, n, n+1. Sum = (n–1) + n² + (n+1)³. Square root condition: this sum = (3n)². Expanding and simplifying gives n²–5n+4=0 → n=1 or n=4. Since integers must be positive, n=4. Three integers are 3,4,5. Minimum m = 3, so 1 ≤ m ≤ 3."
+  },
+  {
+    "id": 348,
+    "topic": "Number System",
+    "subtopic": "Surds & Indices",
+    "question": "How many integral values of x are possible for which (2⁷⁰ + 2^1039 + 2ˣ) equals the square of a whole number?",
+    "options": {"1": "0", "2": "1", "3": "2", "4": "3"},
+    "correct_answer": "2",
+    "explanation": "Factor 2⁷⁰: 2⁷⁰(1 + 2⁹⁶⁹ + 2^(x–70)). Since 2⁷⁰ = (2³⁵)², we need 1 + 2⁹⁶⁹ + 2^(x–70) to be a perfect square. Setting equal to (2n+1)² and simplifying: only one case yields an integer solution x = 2006."
+  },
+  {
+    "id": 349,
+    "topic": "Number System",
+    "subtopic": "Surds & Indices",
+    "question": "Find the value of (3^(n+2) + 3^(n–1)) / (3^(n+5) + 3^(n+2)).",
+    "options": {"1": "1/3", "2": "1/27", "3": "(n–1)/(n+1)", "4": "1/9"},
+    "correct_answer": "2",
+    "explanation": "Numerator = 3^(n–1)(3³ + 1) = 3^(n–1) × 28. Denominator = 3^(n+2)(3³ + 1) = 3^(n+2) × 28. Ratio = 3^(n–1) / 3^(n+2) = 3^(–3) = 1/27."
+  },
+  {
+    "id": 350,
+    "topic": "Number System",
+    "subtopic": "Classification of Numbers",
+    "question": "Suppose n is an integer such that the sum of digits of n is 2, and 10¹⁰ < n < 10¹¹. The number of different values of n is:",
+    "options": {},
+    "correct_answer": "11",
+    "explanation": "n is an 11-digit number with digit sum = 2. Case 1 — two 1s, rest 0s: first digit must be 1; second 1 can go in any of the 10 remaining positions → 10 numbers. Case 2 — one 2, rest 0s: n = 20000000000 → 1 number. Total = 10 + 1 = 11."
   }
 ]
