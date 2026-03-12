@@ -3356,8 +3356,8 @@
     "subtopic": "Percentages",
     "question": "In an examination, the maximum possible score is N while the pass mark is 45% of N. A candidate obtains 36 marks, but falls short of the pass mark by 68%. Which one of the following is then correct?",
     "options": {"1": "N ≤ 200", "2": "243 ≤ N ≤ 252", "3": "N ≥ 253", "4": "201 ≤ N ≤ 242"},
-    "correct_answer": "3",
-    "explanation": "Candidate got 36 and fell short by 68%. So 36 = pass mark × (1 - 0.68) = 0.32 × pass mark. Pass mark = 36/0.32 = 112.5. Pass mark = 0.45N = 112.5. N = 112.5/0.45 = 250. So 243 ≤ 250 ≤ 252. Answer is option 2. Wait, but 'falls short of pass mark by 68%' could mean 36 is 68% short, i.e., 36 = (1-0.68) × pass = 0.32 × pass. Pass = 112.5 = 0.45N → N = 250. Option 2: 243 ≤ N ≤ 252. 250 is in this range."
+    "correct_answer": "2",
+    "explanation": "Candidate got 36 marks, falls short of pass mark by 68%. So 36 = 0.32 × pass mark. Pass mark = 112.5. Pass mark = 0.45N → N = 112.5/0.45 = 250. 243 ≤ 250 ≤ 252, so option 2."
   },
   {
     "id": 315,
