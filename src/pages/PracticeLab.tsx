@@ -435,92 +435,134 @@ function QuizView({
         />
       </div>
 
-      <div className="flex gap-5">
-        {/* Left Question Palette — HUD style */}
-        <div className="hidden md:block w-52 shrink-0">
-          <div className="game-card rounded-xl p-4 sticky top-24 space-y-4">
-            {/* Mini scoreboard */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-1.5">
-                <Shield className="w-4 h-4 text-primary" />
-                <span className="text-xs font-bold text-foreground uppercase tracking-wider">Mission</span>
-              </div>
-              <span className="text-[10px] font-mono text-primary font-bold">{answeredCount}/{questions.length}</span>
-            </div>
+      {/* Horizontal Question Palette — scrollable single line */}
+      <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2 scrollbar-thin">
+        <div className="flex items-center gap-1.5 shrink-0 mr-1">
+          <Shield className="w-3.5 h-3.5 text-primary" />
+          <span className="text-[10px] font-bold text-muted-foreground">{answeredCount}/{questions.length}</span>
+        </div>
+        {questions.map((qq, i) => {
+          const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
+          const isCurrent = i === currentIndex;
+          return (
+            <button
+              key={i}
+              onClick={() => setCurrentIndex(i)}
+              className={`relative w-8 h-8 rounded-lg text-[11px] font-bold transition-all duration-200 border shrink-0
+                ${isCurrent
+                  ? "border-primary bg-primary text-primary-foreground shadow-md game-glow"
+                  : isAnswered
+                    ? "border-primary/40 bg-primary/15 text-primary"
+                    : "border-border text-muted-foreground hover:border-muted-foreground/60 hover:bg-secondary"
+                }`}
+            >
+              {i + 1}
+              {isAnswered && !isCurrent && (
+                <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary" />
+              )}
+            </button>
+          );
+        })}
+        <Button onClick={handleSubmit} size="sm" className="shrink-0 ml-auto font-bold gap-1.5 game-glow-pulse">
+          <Swords className="w-3.5 h-3.5" /> Finish
+        </Button>
+      </div>
 
-            {/* Question grid */}
-            <div className="grid grid-cols-5 gap-2">
-              {questions.map((qq, i) => {
-                const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
-                const isCurrent = i === currentIndex;
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentIndex(i)}
-                    className={`relative w-8 h-8 rounded-lg text-[11px] font-bold transition-all duration-200 border
-                      ${isCurrent
-                        ? "border-primary bg-primary text-primary-foreground shadow-md game-glow"
-                        : isAnswered
-                          ? "border-primary/40 bg-primary/15 text-primary"
-                          : "border-border text-muted-foreground hover:border-muted-foreground/60 hover:bg-secondary"
-                      }`}
+      {/* Main content area — split layout for grouped questions */}
+      {q.group_context ? (
+        /* Grouped layout: context on top (mobile) / left (desktop), questions on right */
+        <div className="flex flex-col md:flex-row gap-4 md:gap-5">
+          {/* Left: Group context (passage / set instructions) */}
+          <div className="md:w-1/2 md:shrink-0">
+            <Card className="p-4 md:p-6 border border-primary/20 bg-primary/[0.02] md:sticky md:top-24 h-fit">
+              <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-2">📖 Passage / Set</p>
+              <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap max-h-[50vh] md:max-h-[65vh] overflow-y-auto">
+                {q.group_context}
+              </div>
+            </Card>
+          </div>
+
+          {/* Right: Question + options */}
+          <div className="flex-1 min-w-0 space-y-4">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={q.id}
+                initial={{ opacity: 0, x: 30, scale: 0.98 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -30, scale: 0.98 }}
+                transition={{ duration: 0.25 }}
+              >
+                <Card className="p-4 md:p-6 border space-y-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0">
+                    <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
+                      Q{currentIndex + 1}/{questions.length}
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-2 md:gap-3 pt-1">
+                    <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
+                      <span className="text-[11px] font-bold text-primary">{currentIndex + 1}</span>
+                    </div>
+                    <p className="text-sm md:text-base font-medium text-foreground leading-relaxed whitespace-pre-line">
+                      {q.question}
+                    </p>
+                  </div>
+
+                  <RadioGroup
+                    value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
+                    onValueChange={(v) => handleSelect(Number(v))}
+                    className="space-y-2"
                   >
-                    {i + 1}
-                    {isAnswered && !isCurrent && (
-                      <div className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary" />
-                    )}
-                  </button>
-                );
-              })}
-            </div>
+                    {q.options.map((opt, idx) => {
+                      const optLabels = ["A", "B", "C", "D"];
+                      return (
+                        <Label
+                          key={idx}
+                          htmlFor={`opt-${q.id}-${idx}`}
+                          className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all duration-200
+                            ${answers[q.id] === idx
+                              ? "border-primary bg-primary/5 shadow-sm game-glow"
+                              : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
+                            }`}
+                        >
+                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-bold shrink-0 transition-colors
+                            ${answers[q.id] === idx
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-secondary text-muted-foreground border border-border"
+                            }`}
+                          >
+                            {optLabels[idx]}
+                          </div>
+                          <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} className="sr-only" />
+                          <span className="text-sm text-foreground">{opt}</span>
+                        </Label>
+                      );
+                    })}
+                  </RadioGroup>
+                </Card>
+              </motion.div>
+            </AnimatePresence>
 
-            {/* Legend */}
-            <div className="space-y-1.5 pt-2 border-t border-border/50">
-              <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                <span className="w-3.5 h-3.5 rounded bg-primary/15 border border-primary/40 flex items-center justify-center">
-                  <div className="w-1.5 h-1.5 rounded-full bg-primary" />
-                </span>
-                Answered
-              </div>
-              <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                <span className="w-3.5 h-3.5 rounded border border-border" />
-                Unanswered
-              </div>
-              <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
-                <span className="w-3.5 h-3.5 rounded bg-primary border border-primary game-glow" />
-                Current
-              </div>
+            {/* Navigation */}
+            <div className="flex items-center justify-between">
+              <Button variant="ghost" size="sm" disabled={currentIndex === 0} onClick={() => setCurrentIndex((i) => i - 1)}>
+                ← Previous
+              </Button>
+              {isLast ? (
+                <Button onClick={handleSubmit} className="px-6 gap-1.5 font-bold game-glow-pulse">
+                  <Swords className="w-4 h-4" /> Finish Battle
+                </Button>
+              ) : (
+                <Button variant="outline" onClick={() => setCurrentIndex((i) => i + 1)}>
+                  Next →
+                </Button>
+              )}
             </div>
-
-            {/* XP preview */}
-            <div className="pt-2 border-t border-border/50 space-y-1">
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
-                <Zap className="w-3 h-3 text-primary" />
-                <span>Potential XP: <strong className="text-primary">{questions.length * XP_PER_CORRECT}</strong></span>
-              </div>
-            </div>
-
-            <Button onClick={handleSubmit} size="sm" className="w-full font-bold gap-1.5 game-glow-pulse">
-              <Swords className="w-3.5 h-3.5" /> Finish Battle
-            </Button>
           </div>
         </div>
-
-        {/* Main question area */}
-        <div className="flex-1 min-w-0 space-y-4">
-          {/* Group Context (passage / set description) */}
-          {q.group_context && (
-            <Card className="p-4 md:p-6 border border-primary/20 bg-primary/[0.02]">
-              <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-2">📖 Passage / Set</p>
-              {q.group_context && (
-                <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
-                  {q.group_context}
-                </div>
-              )}
-            </Card>
-          )}
-
-          {/* Question Card */}
+      ) : (
+        /* Non-grouped: single column layout */
+        <div className="max-w-3xl mx-auto space-y-4">
           <AnimatePresence mode="wait">
             <motion.div
               key={q.id}
@@ -530,7 +572,6 @@ function QuizView({
               transition={{ duration: 0.25 }}
             >
               <Card className="p-4 md:p-8 border space-y-4 md:space-y-6 relative overflow-hidden">
-                {/* Question number badge */}
                 <div className="absolute top-0 right-0">
                   <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
                     Q{currentIndex + 1}/{questions.length}
@@ -547,92 +588,57 @@ function QuizView({
                 </div>
 
                 <RadioGroup
-                    value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
-                    onValueChange={(v) => handleSelect(Number(v))}
-                    className="space-y-2 md:space-y-2.5"
-                  >
-                    {q.options.map((opt, idx) => {
-                      const optLabels = ["A", "B", "C", "D"];
-                      return (
-                        <Label
-                          key={idx}
-                          htmlFor={`opt-${q.id}-${idx}`}
-                          className={`flex items-center gap-2.5 md:gap-3 p-3 md:p-4 rounded-xl border cursor-pointer transition-all duration-200
-                            ${answers[q.id] === idx
-                              ? "border-primary bg-primary/5 shadow-sm game-glow"
-                              : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
-                            }`}
+                  value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
+                  onValueChange={(v) => handleSelect(Number(v))}
+                  className="space-y-2 md:space-y-2.5"
+                >
+                  {q.options.map((opt, idx) => {
+                    const optLabels = ["A", "B", "C", "D"];
+                    return (
+                      <Label
+                        key={idx}
+                        htmlFor={`opt-${q.id}-${idx}`}
+                        className={`flex items-center gap-2.5 md:gap-3 p-3 md:p-4 rounded-xl border cursor-pointer transition-all duration-200
+                          ${answers[q.id] === idx
+                            ? "border-primary bg-primary/5 shadow-sm game-glow"
+                            : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
+                          }`}
+                      >
+                        <div className={`w-6 h-6 md:w-7 md:h-7 rounded-lg flex items-center justify-center text-[11px] md:text-xs font-bold shrink-0 transition-colors
+                          ${answers[q.id] === idx
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-secondary text-muted-foreground border border-border"
+                          }`}
                         >
-                          <div className={`w-6 h-6 md:w-7 md:h-7 rounded-lg flex items-center justify-center text-[11px] md:text-xs font-bold shrink-0 transition-colors
-                            ${answers[q.id] === idx
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-secondary text-muted-foreground border border-border"
-                            }`}
-                          >
-                            {optLabels[idx]}
-                          </div>
-                          <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} className="sr-only" />
-                          <span className="text-sm text-foreground">{opt}</span>
-                        </Label>
-                      );
-                    })}
-                  </RadioGroup>
+                          {optLabels[idx]}
+                        </div>
+                        <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} className="sr-only" />
+                        <span className="text-sm text-foreground">{opt}</span>
+                      </Label>
+                    );
+                  })}
+                </RadioGroup>
               </Card>
             </motion.div>
           </AnimatePresence>
 
           {/* Navigation */}
           <div className="flex items-center justify-between">
-            <Button
-              variant="ghost"
-              size="sm"
-              disabled={currentIndex === 0}
-              onClick={() => setCurrentIndex((i) => i - 1)}
-            >
+            <Button variant="ghost" size="sm" disabled={currentIndex === 0} onClick={() => setCurrentIndex((i) => i - 1)}>
               ← Previous
             </Button>
-
             {isLast ? (
               <Button onClick={handleSubmit} className="px-6 gap-1.5 font-bold game-glow-pulse">
                 <Swords className="w-4 h-4" /> Finish Battle
               </Button>
             ) : (
-              <Button
-                variant="outline"
-                onClick={() => setCurrentIndex((i) => i + 1)}
-              >
+              <Button variant="outline" onClick={() => setCurrentIndex((i) => i + 1)}>
                 Next →
               </Button>
             )}
           </div>
-
-          {/* Mobile question pills — compact scrollable strip */}
-          <div className="flex gap-1.5 justify-center flex-wrap pt-1 pb-2 md:hidden">
-            {questions.map((qq, i) => {
-              const isAnswered = answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "";
-              return (
-                <button
-                  key={i}
-                  onClick={() => setCurrentIndex(i)}
-                  className={`relative w-8 h-8 rounded-lg text-[11px] font-bold transition-all border
-                    ${i === currentIndex
-                      ? "border-primary bg-primary text-primary-foreground game-glow"
-                      : isAnswered
-                        ? "border-primary/40 bg-primary/15 text-primary"
-                        : "border-border text-muted-foreground"
-                    }`}
-                >
-                  {i + 1}
-                </button>
-              );
-            })}
-            {/* Mobile submit */}
-            <Button onClick={handleSubmit} size="sm" className="w-full mt-2 font-bold gap-1.5 game-glow-pulse md:hidden">
-              <Swords className="w-3.5 h-3.5" /> Finish Battle
-            </Button>
-          </div>
         </div>
-      </div>
+      )}
     </motion.div>
   );
 }
