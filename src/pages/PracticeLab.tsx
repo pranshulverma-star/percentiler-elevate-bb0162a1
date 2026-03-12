@@ -390,7 +390,7 @@ function QuizView({
 
 
   const handleSubmit = () => {
-    onFinish(answers, QUIZ_DURATION - timeLeft);
+    onFinish(answers, duration - timeLeft);
   };
 
   return (
