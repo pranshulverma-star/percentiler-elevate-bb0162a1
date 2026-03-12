@@ -250,6 +250,7 @@ export default function AdminDashboard() {
                 bySection={data.practice_by_section || []}
                 scoreDistribution={data.score_distribution || []}
               />
+              <AdminActiveUsers users={data.most_active_users || []} />
             </TabsContent>
 
             <TabsContent value="users" className="space-y-4">
