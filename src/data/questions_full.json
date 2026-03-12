@@ -3522,5 +3522,185 @@
     "options": {},
     "correct_answer": "11",
     "explanation": "n is an 11-digit number with digit sum = 2. Case 1 — two 1s, rest 0s: first digit must be 1; second 1 can go in any of the 10 remaining positions → 10 numbers. Case 2 — one 2, rest 0s: n = 20000000000 → 1 number. Total = 10 + 1 = 11."
+  },
+  {
+    "id": 351,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Consider N = 2⁵ × 3⁴ × 5³. What is the total number of factors of N?",
+    "options": { "1": "100", "2": "110", "3": "120", "4": "130" },
+    "correct_answer": "3",
+    "explanation": "Total factors = (5+1)(4+1)(3+1) = 6×5×4 = 120."
+  },
+  {
+    "id": 352,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Consider N = 2⁵ × 3⁴ × 5³. How many factors of N are odd?",
+    "options": { "1": "15", "2": "20", "3": "24", "4": "30" },
+    "correct_answer": "2",
+    "explanation": "Odd factors exclude all powers of 2, so only 2⁰ is allowed: 1×(4+1)×(3+1) = 1×5×4 = 20."
+  },
+  {
+    "id": 353,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Consider N = 2⁵ × 3⁴ × 5³. How many factors of N are even?",
+    "options": {},
+    "correct_answer": "100",
+    "explanation": "Even factors = total – odd = 120 – 20 = 100."
+  },
+  {
+    "id": 354,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Consider N = 2⁵ × 3⁴ × 5³. How many factors of N are perfect squares?",
+    "options": { "1": "12", "2": "15", "3": "18", "4": "24" },
+    "correct_answer": "3",
+    "explanation": "Perfect squares need even powers only. 2→(0,2,4): 3 choices, 3→(0,2,4): 3 choices, 5→(0,2): 2 choices. Total = 3×3×2 = 18."
+  },
+  {
+    "id": 355,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Consider N = 2⁵ × 3⁴ × 5³. How many factors of N are perfect cubes?",
+    "options": { "1": "4", "2": "6", "3": "8", "4": "10" },
+    "correct_answer": "3",
+    "explanation": "Perfect cubes need powers divisible by 3. 2→(0,3): 2 choices, 3→(0,3): 2 choices, 5→(0,3): 2 choices. Total = 2×2×2 = 8."
+  },
+  {
+    "id": 356,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Consider N = 2⁵ × 3⁴ × 5³. What is the sum of all factors of N?",
+    "options": {},
+    "correct_answer": "1189188",
+    "explanation": "Sum = (2⁰+2¹+…+2⁵)(3⁰+…+3⁴)(5⁰+5¹+5²+5³) = 63×121×156 = 1,189,188."
+  },
+  {
+    "id": 357,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Consider N = 3² × 6² × 5⁴ = 2² × 3⁴ × 5⁴. In how many ways can N be written as a product of two natural numbers?",
+    "options": { "1": "36", "2": "37", "3": "38", "4": "40" },
+    "correct_answer": "3",
+    "explanation": "Total factors = (2+1)(4+1)(4+1) = 75. N is a perfect square. Unordered pairs = (75–1)/2 + 1 = 38."
+  },
+  {
+    "id": 358,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Consider N = 2² × 3⁴ × 5⁴. In how many ways can N be written as a product of two coprime natural numbers?",
+    "options": { "1": "2", "2": "4", "3": "6", "4": "8" },
+    "correct_answer": "2",
+    "explanation": "Coprime pairs = 2^(P–1) where P = number of distinct primes = 3. So 2^(3–1) = 4 ways."
+  },
+  {
+    "id": 359,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Find all the prime factors of 660.",
+    "options": { "1": "2, 3, 5 and 13", "2": "3, 5, 7 and 13", "3": "2, 3, 5 and 11", "4": "2, 3, 5 and 7" },
+    "correct_answer": "3",
+    "explanation": "660 = 2² × 3 × 5 × 11. Prime factors are 2, 3, 5 and 11."
+  },
+  {
+    "id": 360,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "How many factors of 350 are even?",
+    "options": {},
+    "correct_answer": "6",
+    "explanation": "350 = 2 × 5² × 7. Total factors = 12. Odd factors = 6. Even factors = 12 – 6 = 6."
+  },
+  {
+    "id": 361,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "How many factors of 464 are divisible by 4?",
+    "options": {},
+    "correct_answer": "6",
+    "explanation": "464 = 2⁴ × 29. Factor must include at least 2². Allowed powers of 2: (2,3,4) → 3 choices. Powers of 29: (0,1) → 2 choices. Total = 3×2 = 6."
+  },
+  {
+    "id": 362,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "How many factors of 1296 have exactly three factors?",
+    "options": { "1": "1", "2": "2", "3": "3", "4": "4" },
+    "correct_answer": "2",
+    "explanation": "1296 = 2⁴ × 3⁴. A number has exactly 3 factors only if it is of form p² (factors: 1, p, p²). Factors of 1296 of this form: 2²=4 and 3²=9. Answer = 2."
+  },
+  {
+    "id": 363,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Which of the following numbers has exactly eight factors?",
+    "options": { "1": "999", "2": "1001", "3": "1010", "4": "All of these" },
+    "correct_answer": "4",
+    "explanation": "999 = 3³×37 → 8 factors. 1001 = 7×11×13 → 8 factors. 1010 = 2×5×101 → 8 factors. All three have exactly 8 factors."
+  },
+  {
+    "id": 364,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "If n is an integer, for how many values of n will the expression (16n² + 7n + 6) / n be an integer?",
+    "options": { "1": "2", "2": "3", "3": "4", "4": "5" },
+    "correct_answer": "3",
+    "explanation": "(16n² + 7n + 6)/n = 16n + 7 + 6/n. For the expression to be an integer, 6/n must be an integer. So n must be a factor of 6: n ∈ {1, 2, 3, 6} → 4 values."
+  },
+  {
+    "id": 365,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Find the sum of all natural numbers from 1 to 100 that are neither a multiple of 2 nor a multiple of 5.",
+    "options": { "1": "2000", "2": "2275", "3": "2515", "4": "2845" },
+    "correct_answer": "1",
+    "explanation": "Sum(1–100) = 5050. Sum(multiples of 2) = 2550. Sum(multiples of 5) = 1050. Sum(multiples of 10) = 550. By inclusion-exclusion: 5050 – 2550 – 1050 + 550 = 2000."
+  },
+  {
+    "id": 366,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "A two-digit number has exactly 3 factors, excluding 1 and the number itself. What is the sum of all such numbers?",
+    "options": { "1": "97", "2": "96", "3": "359", "4": "1020" },
+    "correct_answer": "1",
+    "explanation": "Total factors including 1 and itself = 5. A number with exactly 5 factors must be of form p⁴. Two-digit p⁴: 2⁴=16, 3⁴=81. Sum = 16+81 = 97."
+  },
+  {
+    "id": 367,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "A 'Pure Factor' of a natural number n is a factor of n which has only one prime factor. What is the sum of all pure factors of 3000?",
+    "options": { "1": "167", "2": "172", "3": "169", "4": "140" },
+    "correct_answer": "2",
+    "explanation": "3000 = 2³×3×5³. Pure factors: 2,4,8 (powers of 2); 3 (power of 3); 5,25,125 (powers of 5). Sum = 2+4+8+3+5+25+125 = 172."
+  },
+  {
+    "id": 368,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "Nₓ is a family of natural numbers each having exactly 24 factors, arranged in ascending order. What is the digital sum (repeated digit-sum until single digit) of the smallest such number N₁?",
+    "options": { "1": "9", "2": "6", "3": "1", "4": "3" },
+    "correct_answer": "1",
+    "explanation": "Smallest number with 24 factors: 24 = 4×3×2 → N = 2³×3²×5 = 360. Verify: (3+1)(2+1)(1+1) = 24. Digital sum of 360 = 3+6+0 = 9."
+  },
+  {
+    "id": 369,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "If 94/27 = a + 1/(b + 1/c), where a, b and c are positive integers, find a + b + c.",
+    "options": { "1": "18", "2": "20", "3": "12", "4": "15" },
+    "correct_answer": "1",
+    "explanation": "94/27 = 3 remainder 13 → a=3, remaining = 13/27. 13/27 = 1/(27/13) = 1/(2 + 1/13) → b=2, c=13. Therefore a+b+c = 3+2+13 = 18."
+  },
+  {
+    "id": 370,
+    "topic": "Number System",
+    "subtopic": "Factors",
+    "question": "In how many ways can 1000 be written as a sum of two or more consecutive natural numbers?",
+    "options": {},
+    "correct_answer": "3",
+    "explanation": "Ways = (number of odd factors of n) – 1. 1000 = 2³ × 5³. Odd factors from 5³: 4. Ways = 4–1 = 3."
   }
 ]
