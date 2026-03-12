@@ -6069,5 +6069,239 @@
     "options": { "1": "100% in option A", "2": "36% in option B and 64% in option C", "3": "64% in option B and 36% in option C", "4": "1/3 in each of the three options", "5": "30% in A, 32% in B and 38% in C" },
     "correct_answer": "2",
     "explanation": "Only 36% in B + 64% in C gives identical return (0.2%) whether the market rises or falls, guaranteeing maximum assured return."
+  },
+  {
+    "id": 634,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "If all the sides of a cuboid are increased by 20%, then by what percentage does its volume increase?",
+    "options": { "1": "20%", "2": "44%", "3": "60%", "4": "72.8%" },
+    "correct_answer": "4",
+    "explanation": "New volume = 1.2x × 1.2y × 1.2z = 1.728xyz. Percentage increase = 72.8%."
+  },
+  {
+    "id": 635,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "Gun powder contains 75% nitre, 10% sulphur and the rest is charcoal by weight. If quantity of gunpowder is 24 kg, what is the weight of charcoal?",
+    "options": { "1": "3.6 kg", "2": "4.5 kg", "3": "5 kg", "4": "5.5 kg" },
+    "correct_answer": "1",
+    "explanation": "Charcoal = 100 - 75 - 10 = 15%. Weight = 15% of 24 = 3.6 kg."
+  },
+  {
+    "id": 636,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "In an election between two candidates, the candidate who gets 30% of the votes polled is defeated by 15,000 votes. The number of votes polled in favour of the winning candidate is",
+    "options": { "1": "11,250", "2": "15,000", "3": "26,250", "4": "37,500" },
+    "correct_answer": "3",
+    "explanation": "30% + 15000 = 70% ⇒ 40% of total = 15000 ⇒ total = 37500. Winning votes = 70% of 37500 = 26250."
+  },
+  {
+    "id": 637,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "If the side of a square is increased by 30%, what is the percentage increase in its area?",
+    "options": { "1": "9%", "2": "30%", "3": "60%", "4": "69%" },
+    "correct_answer": "4",
+    "explanation": "Using a + b + ab/100 = 30 + 30 + (30×30)/100 = 69%."
+  },
+  {
+    "id": 638,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "A vendor sells 30% of his fruits and throws away 40% of the rest. Next day he sells 50% of the remainder and throws away the rest. What percent of the fruits does the vendor throw?",
+    "options": { "1": "51%", "2": "49%", "3": "63%", "4": "72%" },
+    "correct_answer": "2",
+    "explanation": "Start 100. Sell 30 → 70 left. Throw 40% of 70 = 28. Left = 42. Sell 50% of 42 = 21. Throw 21. Total thrown = 28 + 21 = 49%."
+  },
+  {
+    "id": 639,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "If the price of a bicycle is increased by 9.09%, then by 8.33% and then by 7.7%, the price becomes Rs. 1,274. What is the original price?",
+    "options": { "1": "Rs. 999", "2": "Rs. 1,001", "3": "Rs. 1,100", "4": "Rs. 1,150" },
+    "correct_answer": "2",
+    "explanation": "9.09% = 1/11, 8.33% = 1/12, 7.7% = 1/13. So x × (12/11) × (13/12) × (14/13) = 1274 ⇒ x × 14/11 = 1274 ⇒ x = 1001."
+  },
+  {
+    "id": 640,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "Vaibhav writes CAT with 4 equal-length passages having 5, 8, 8 and 6 questions. He answers exactly 12 questions in the time he takes to read one passage. By what rate should Vaibhav increase his reading speed to cut total time by 10%?",
+    "options": { "1": "20%", "2": "18.5%", "3": "25%", "4": "9.8%" },
+    "correct_answer": "2",
+    "explanation": "Time per question = t. Reading = 48t, answering = 27t, total = 75t. 10% less = 67.5t. Answering stays at 27t, so reading time = 40.5t for 4 passages = 10.125t each. Speed increase = 12t/10.125t - 1 = 18.5%."
+  },
+  {
+    "id": 641,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "The price per unit of an article decreases by 4%, and the consumption decreases by 8%. The expenditure would decrease by",
+    "options": { "1": "12%", "2": "12.32%", "3": "11.68%", "4": "4.32%" },
+    "correct_answer": "3",
+    "explanation": "New expenditure = 0.96 × 0.92 = 0.8832. Decrease = (1 - 0.8832) × 100 = 11.68%."
+  },
+  {
+    "id": 642,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "In a class, 70% of students are boys and 14% play cricket. If 10% of boys play cricket, what percentage of cricket players are boys?",
+    "options": { "1": "80%", "2": "70%", "3": "60%", "4": "50%" },
+    "correct_answer": "4",
+    "explanation": "Boys who play cricket = 70% × 10% = 7% of class. Total cricket players = 14%. So % of cricket players who are boys = 7/14 × 100 = 50%."
+  },
+  {
+    "id": 643,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "In a stockpile from machines M1 (40%), M2 (30%), M3 (30%): M1 has 3% defective, M2 has 1% defective, M3 has 5% defective. What is the overall percentage of defective products?",
+    "options": { "1": "3%", "2": "5%", "3": "30%", "4": "32.7%" },
+    "correct_answer": "1",
+    "explanation": "Defectives = 3% × 40% + 1% × 30% + 5% × 30% = 1.2 + 0.3 + 1.5 = 3% of total."
+  },
+  {
+    "id": 644,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "Rejection rate was 4% for first quarter and 8% for second quarter. Monthly rejection rate was 7%. What is the ratio of first to second quarter production?",
+    "options": { "1": "1 : 3", "2": "2 : 1", "3": "1 : 1", "4": "1 : 2" },
+    "correct_answer": "1",
+    "explanation": "7(x + y) = 4x + 8y ⇒ 3x = y ⇒ x : y = 1 : 3."
+  },
+  {
+    "id": 645,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "Prices of houses A and B were in ratio 4:5 last year. A increased by 25% and B increased by Rs. 50,000. New ratio is 9:10. What was the price of A last year?",
+    "options": { "1": "Rs. 3,60,000", "2": "Rs. 4,50,000", "3": "Rs. 4,80,000", "4": "Rs. 5,00,000" },
+    "correct_answer": "1",
+    "explanation": "Let A = 4x, B = 5x. New A = 5x, new B = 5x + 50000. 5x/(5x+50000) = 9/10 ⇒ x = 90000. A = 4×90000 = Rs. 3,60,000."
+  },
+  {
+    "id": 646,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "A candidate scores 39% of max marks and fails by 58 marks. Another scores 55% and gets 22 marks more than passing. Find maximum marks.",
+    "options": { "1": "450", "2": "650", "3": "500", "4": "550" },
+    "correct_answer": "3",
+    "explanation": "0.39x + 58 = 0.55x - 22 ⇒ 0.16x = 80 ⇒ x = 500."
+  },
+  {
+    "id": 647,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "Two lumps weighing 20 kg together: first has 75% gold and 31.25 gm silver/kg, second has 85% gold and 30 gm silver/kg. Total silver = 617.5 gm. If melted together, percentage of gold is",
+    "options": { "1": "75%", "2": "87%", "3": "15.6%", "4": "78%" },
+    "correct_answer": "4",
+    "explanation": "31.25x + 30(20-x) = 617.5 ⇒ x = 14 kg. Total gold = 75%(14) + 85%(6) = 10.5 + 5.1 = 15.6 kg. % gold = 15.6/20 × 100 = 78%."
+  },
+  {
+    "id": 648,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "37% of population is married, 76% of married people work, 54% of unmarried people work. Total working people = 1,24,280. Find total population.",
+    "options": { "1": "90,000", "2": "2,00,000", "3": "1,80,000", "4": "2,16,000" },
+    "correct_answer": "2",
+    "explanation": "Workers = 0.37x × 0.76 + 0.63x × 0.54 = 0.2812x + 0.3402x = 0.6214x = 124280 ⇒ x = 2,00,000."
+  },
+  {
+    "id": 649,
+    "topic": "Arithmetic",
+    "subtopic": "Percentage Calculations",
+    "question": "Alloy A (silver + copper) mixed with 15 kg pure silver forms alloy B (90% silver). Alloy A mixed with 10 kg of 90% silver alloy forms alloy C (84% silver). Find % of silver in A.",
+    "options": { "1": "80%", "2": "90%", "3": "75%", "4": "85%" },
+    "correct_answer": "1",
+    "explanation": "Let A have x kg silver and y kg copper. From B: (x+15)/(x+y+15) = 0.9 ⇒ x - 9y = -15. From C: (x+9)/(x+y+10) = 0.84 ⇒ 4x - 21y = -15. Solving: x=12, y=3. Silver % = 12/15 × 100 = 80%."
+  },
+  {
+    "id": 650,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "A sum compounded annually becomes Rs. 625 in 2 years and Rs. 675 in 3 years. The rate of interest per annum is",
+    "options": { "1": "7%", "2": "10%", "3": "5%", "4": "8%" },
+    "correct_answer": "4",
+    "explanation": "Interest from year 2 to year 3 = 675 - 625 = Rs. 50 on principal Rs. 625. Rate = 50/625 × 100 = 8%."
+  },
+  {
+    "id": 651,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "Difference between CI and SI for 2 years is Rs. 160. Total SI is Rs. 2,880. Find the rate of interest.",
+    "options": { "1": "5/9 %", "2": "12½%", "3": "11 1/9%", "4": "9%" },
+    "correct_answer": "3",
+    "explanation": "SI for 1 year = 1440. Difference = SI on first year's SI ⇒ 160 = 1440 × r/100 ⇒ r = 160×100/1440 = 100/9 = 11 1/9%."
+  },
+  {
+    "id": 652,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "After how many years would the amount on a loan be twice the principal, if lent at 20% CI compounded half-yearly?",
+    "options": { "1": "8 years", "2": "6 years", "3": "4 years", "4": "None of these" },
+    "correct_answer": "3",
+    "explanation": "2 = (1.1)^(2t). (1.1)^8 ≈ 2.14. So 2t ≈ 8 ⇒ t ≈ 4 years."
+  },
+  {
+    "id": 653,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "If the difference between CI and SI at end of 2 years is Rs. 100 at 5% per annum, what is the principal?",
+    "options": { "1": "Rs. 50,000", "2": "Rs. 40,000", "3": "Rs. 10,000", "4": "None of these" },
+    "correct_answer": "2",
+    "explanation": "CI - SI = P(r/100)² ⇒ 100 = P(5/100)² = P/400 ⇒ P = Rs. 40,000."
+  },
+  {
+    "id": 654,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "CI on a sum for 2 years at 10% p.a. is Rs. 420. SI on the same sum at same rate and time will be",
+    "options": { "1": "Rs. 350", "2": "Rs. 375", "3": "Rs. 400", "4": "None of these" },
+    "correct_answer": "3",
+    "explanation": "CI = P[(1.1)² - 1] = P × 0.21 = 420 ⇒ P = 2000. SI = 2000 × 10% × 2 = Rs. 400."
+  },
+  {
+    "id": 655,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "Narayan and Murthy invest at 6% and 7% SI. Together they receive Rs. 354 in 2 years. One-fourth of Narayan's investment equals one-fifth of Murthy's. Find total investment.",
+    "options": { "1": "Rs. 2,746.5", "2": "Rs. 2,600", "3": "Rs. 2,700", "4": "Rs. 2,880" },
+    "correct_answer": "3",
+    "explanation": "N:M = 4:5 (from 1/4 N = 1/5 M). Let N=4x, M=5x. SI for 2 years = (4x×6/100 + 5x×7/100)×2 = 354. Solving: x=300. Total = 9x = Rs. 2,700."
+  },
+  {
+    "id": 656,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "A sum compounded annually becomes Rs. 1,440 after 2 years and Rs. 1,728 after 3 years. Find the rate r.",
+    "options": { "1": "5%", "2": "10%", "3": "15%", "4": "20%" },
+    "correct_answer": "4",
+    "explanation": "Interest from year 2 to 3 = 1728 - 1440 = 288 on Rs. 1440. Rate = 288/1440 × 100 = 20%."
+  },
+  {
+    "id": 657,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "Rs. 2,189 is divided into three parts such that their amounts after 1, 2 and 3 years at 4% SI are equal. The smallest part is",
+    "options": { "1": "Rs. 389", "2": "Rs. 756", "3": "Rs. 703", "4": "Rs. 352" },
+    "correct_answer": "3",
+    "explanation": "1.04a = 1.08b = 1.12c. So a:b:c = 1/1.04 : 1/1.08 : 1/1.12. Solving with a+b+c=2189 gives c (smallest) = 703."
+  },
+  {
+    "id": 658,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "Rohit invests at 20% CI p.a. for 2 years. He receives Rs. 200 at end of year 1 and Rs. 400 at end of year 2. What should he invest?",
+    "options": { "1": "Rs. 500", "2": "Rs. 1400/3", "3": "Rs. 4000/9", "4": "None of these" },
+    "correct_answer": "3",
+    "explanation": "After year 1: balance = 1.2C - 200. After year 2: 1.2(1.2C - 200) = 400 ⇒ 1.44C = 640 ⇒ C = 4000/9."
+  },
+  {
+    "id": 659,
+    "topic": "Arithmetic",
+    "subtopic": "Simple Interest / Compound Interest",
+    "question": "Rs. 5,000 is invested for 2 years at 10% CI — one compounded annually, other half-yearly. Find the difference in amounts.",
+    "options": { "1": "Rs. 26.50", "2": "Rs. 27.50", "3": "Rs. 25.50", "4": "Rs. 24.50" },
+    "correct_answer": "2",
+    "explanation": "Annual: 5000(1.1)² = 6050. Half-yearly: 5000(1.05)⁴ = 5000×1.2155 = 6077.50. Difference = Rs. 27.50."
   }
 ]
