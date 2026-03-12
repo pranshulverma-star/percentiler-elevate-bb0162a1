@@ -227,6 +227,11 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
       continue;
     }
 
+    // Skip image-based questions (require visual reference that can't be rendered as text)
+    if (r.group_image) {
+      continue;
+    }
+
     // Apply topic/subtopic overrides from audit fixes
     const override = topicOverrides[r.id];
     const topic = override?.topic ?? r.topic;
