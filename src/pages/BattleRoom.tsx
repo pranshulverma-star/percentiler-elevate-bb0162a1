@@ -274,7 +274,7 @@ function BattleQuiz({
               <div className="w-7 h-7 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
                 <span className="text-[11px] font-bold text-primary">{currentIndex + 1}</span>
               </div>
-              <p className="text-sm md:text-lg font-medium text-foreground leading-relaxed">{q.question}</p>
+              <p className="text-sm md:text-lg font-medium text-foreground leading-relaxed whitespace-pre-line">{q.question}</p>
             </div>
 
             {q.type === "mcq" ? (
@@ -528,7 +528,7 @@ function BattleResults({
                        <XCircle className="w-3 h-3 text-destructive" />}
                     </div>
                     <div className="flex-1 space-y-2">
-                      <p className="text-xs md:text-sm font-medium text-foreground">Q{i + 1}. {q.question}</p>
+                      <p className="text-xs md:text-sm font-medium text-foreground whitespace-pre-line">Q{i + 1}. {q.question}</p>
                       <div className="space-y-1">
                         {q.options.map((opt, idx) => {
                           let cls = "text-xs px-2.5 py-1 rounded-lg ";
