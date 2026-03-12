@@ -1648,8 +1648,8 @@
   },
   {
     "id": 146,
-    "topic": "Progressions",
-    "subtopic": "CAT 2024 Quant",
+    "topic": "Algebra",
+    "subtopic": "Progressions",
     "question": "Suppose x₁, x₂, x₃, …, x₁₀₀ are in arithmetic progression such that x₅ = −4 and 2x₆ + 2x₉ = x₁₁ + x₁₃. Then, x₁₀₀ equals",
     "options": {"1": "-196", "2": "206", "3": "204", "4": "-194"},
     "correct_answer": "4",
