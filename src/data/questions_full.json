@@ -3212,8 +3212,8 @@
     "subtopic": "Logarithms",
     "question": "If x is a positive quantity such that 2^x = 3^(log₅ 2), then x is equal to",
     "options": {"1": "1 + log₃(5/3)", "2": "log₅ 8", "3": "1 + log₅(3/5)", "4": "log₅ 9"},
-    "correct_answer": "4",
-    "explanation": "Taking log₂ of both sides: x = log₅2 × log₂3 = log₅3 × (log₂3/log₂5) ... Actually: 2^x = 3^(log₅2). Take log base 2: x = log₅2 × log₂3. log₅2 × log₂3 = (ln2/ln5)(ln3/ln2) = ln3/ln5 = log₅3. But that's not an option. Let me re-examine: 2^x = 3^(log₅2). Take log base 5: x·log₅2 = log₅2 · log₅3. So x = log₅3... Hmm. Actually x·log₅2 = log₅2 · log₅3 means x = log₅3. But log₅9 = 2log₅3. Let me reread the question. The image shows 2^x = 3^(log₅ 2). Take log: x ln2 = log₅2 · ln3 = (ln2/ln5)·ln3. So x = ln3/ln5 = log₅3. Hmm, none match exactly. Unless the exponent is different. Looking more carefully at the image, it might be 2^x = 3^(log₅ 2). Let me try log₅ 8 = log₅ 2³ = 3log₅2. And log₅ 9 = 2log₅3. Given the standard CAT answer for this, it's log₅ 8. Actually re-deriving: 2^x = 3^(log₅ 2). Let a = log₅ 2. Then 2^x = 3^a. x = a · log₂ 3. Now log₅ 8 = 3a. And a·log₂3 = (log2/log5)(log3/log2) = log3/log5 = log₅3. So x = log₅3. Hmm, but if the question is actually 2^x = 3^(log₃ 2), then x = log₃2 · log₂3 = 1. Not matching either. The standard CAT 2018 answer for Q78 is log₅ 8. Let me accept that."
+    "correct_answer": "3",
+    "explanation": "2^x = 3^(log₅ 2). Taking log base 5: x·log₅2 = log₅2·log₅3. So x = log₅3. Now log₅3 = log₅(3×5/5) = log₅(5×3/5) = log₅5 + log₅(3/5) = 1 + log₅(3/5). Answer is option 3."
   },
   {
     "id": 299,
