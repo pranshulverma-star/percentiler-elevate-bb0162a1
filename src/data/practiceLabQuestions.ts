@@ -285,7 +285,6 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
         explanation: r.explanation,
         group_id: r.group_id,
         group_context: r.group_context,
-        group_image: r.group_image,
         difficulty,
         concept_tags,
         skill_tags,
