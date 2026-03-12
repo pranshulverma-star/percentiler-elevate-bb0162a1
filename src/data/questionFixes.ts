@@ -280,6 +280,8 @@ const subtopicToChapter: Record<string, string> = {
   "Divisibility Rule": "Number System",
   "Cyclicity": "Number System",
   "Remainder": "Number System",
+  "Base System": "Number System",
+  "Calendars": "Number System",
   "Logarithms": "Logs",
   "Functions": "Functions",
   // Geometry subtopics
