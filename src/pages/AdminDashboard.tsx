@@ -10,6 +10,7 @@ import {
   LayoutDashboard, Users, FlaskConical, Swords, Megaphone
 } from "lucide-react";
 import AdminOverviewCards from "@/components/admin/AdminOverviewCards";
+import AdminActiveUsers from "@/components/admin/AdminActiveUsers";
 import AdminDailyChart from "@/components/admin/AdminDailyChart";
 import AdminLeadsTable from "@/components/admin/AdminLeadsTable";
 import AdminLeadSourcesChart from "@/components/admin/AdminLeadSourcesChart";
