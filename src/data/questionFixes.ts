@@ -44,7 +44,7 @@ export const topicOverrides: Record<number, TopicOverride> = {
   139: { subtopic: "Profit & Loss" },
   143: { subtopic: "Triangles" },
   144: { subtopic: "Quadratic Equations" },
-  145: { subtopic: "Percentages" },
+  145: { topic: "Arithmetic", subtopic: "Percentages" },
   147: { subtopic: "Replacement" },
   149: { subtopic: "Remainders" },
 
@@ -208,4 +208,110 @@ export function getSkillTags(topic: string, subtopic: string): string[] {
 
   const merged = [...new Set([...base, ...extras])];
   return merged.slice(0, 4);
+}
+
+// ── QA Chapter Mapping ─────────────────────────────────────────────────────
+// Maps every QA question to one of the official syllabus chapters.
+
+/** Ordered list of QA chapters as they should appear in the UI. */
+export const QA_CHAPTER_ORDER: string[] = [
+  // Arithmetic
+  "Percentages",
+  "Ratios, Proportions and Variation",
+  "Average and Alligation",
+  "Profit & Loss",
+  "SI-CI",
+  "TSD",
+  "T&W",
+  // Number System
+  "Number System",
+  // Geometry
+  "Geometry",
+  // Algebra
+  "Simple Equations",
+  "Quadratic Equations",
+  "Sequence & Series",
+  "Modulus & Inequalities",
+  "Max/Min",
+  // Modern Maths
+  "Permutation & Combination",
+  "Probability",
+  "Functions",
+  "Indices & Surds",
+  "Logs",
+];
+
+/** Subtopic → chapter mapping (checked first, most specific). */
+const subtopicToChapter: Record<string, string> = {
+  // Arithmetic subtopics
+  "Percentages": "Percentages",
+  "Ratios & Proportions": "Ratios, Proportions and Variation",
+  "Averages": "Average and Alligation",
+  "Replacement": "Average and Alligation",
+  "Mixtures & Alligations": "Average and Alligation",
+  "Profit & Loss": "Profit & Loss",
+  "Profit, Loss & Discounts": "Profit & Loss",
+  "Simple & Compound Interest": "SI-CI",
+  "Simple Interest": "SI-CI",
+  "Compound Interest": "SI-CI",
+  "Time, Speed & Distance": "TSD",
+  "Speed, Distance & Time": "TSD",
+  "Speed, Time & Distance": "TSD",
+  "Pipes & Cisterns": "T&W",
+  "Work & Time": "T&W",
+  "Time & Work": "T&W",
+  // Number System subtopics
+  "Number Theory": "Number System",
+  "Remainders": "Number System",
+  "Indices & Powers": "Number System",
+  // Algebra subtopics
+  "Coordinate Geometry": "Geometry",
+  "Linear Equations": "Simple Equations",
+  "Quadratic Equations": "Quadratic Equations",
+  "Progressions": "Sequence & Series",
+  "Inequalities": "Modulus & Inequalities",
+  "Indices & Surds": "Indices & Surds",
+  "Surds": "Indices & Surds",
+  "Logarithms": "Logs",
+  "Functions": "Functions",
+  // Geometry subtopics
+  "Triangles": "Geometry",
+  "Circles": "Geometry",
+  "Quadrilaterals": "Geometry",
+  "Mensuration": "Geometry",
+  // Modern Maths subtopics
+  "Permutations & Combinations": "Permutation & Combination",
+  "Permutation & Combination": "Permutation & Combination",
+  "Set Theory": "Permutation & Combination",
+  "Probability": "Probability",
+};
+
+/** Topic-level fallback mapping (used when subtopic doesn't match). */
+const topicToChapter: Record<string, string> = {
+  "Mixtures & Alligations": "Average and Alligation",
+  "Averages": "Average and Alligation",
+  "Profit, Loss & Discounts": "Profit & Loss",
+  "Speed, Distance & Time": "TSD",
+  "Speed, Time & Distance": "TSD",
+  "Work & Time": "T&W",
+  "Inequalities": "Modulus & Inequalities",
+  "Number Systems": "Number System",
+  "Geometry": "Geometry",
+  "Algebra": "Simple Equations",
+  "Arithmetic": "Percentages", // fallback for unmapped Arithmetic subtopics
+};
+
+/**
+ * Given the effective topic & subtopic (after overrides), return the
+ * canonical QA chapter name the question should appear under.
+ */
+export function getQAChapter(topic: string, subtopic: string): string {
+  // 1. Try subtopic first (most specific)
+  if (subtopicToChapter[subtopic]) return subtopicToChapter[subtopic];
+
+  // 2. Fall back to topic
+  if (topicToChapter[topic]) return topicToChapter[topic];
+
+  // 3. Ultimate fallback
+  return "Number System";
 }
