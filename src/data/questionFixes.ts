@@ -277,6 +277,8 @@ const subtopicToChapter: Record<string, string> = {
   "Factors": "Number System",
   "LCM & HCF": "Number System",
   "Factorial": "Number System",
+  "Divisibility Rule": "Number System",
+  "Cyclicity": "Number System",
   "Logarithms": "Logs",
   "Functions": "Functions",
   // Geometry subtopics
