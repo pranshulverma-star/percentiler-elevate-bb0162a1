@@ -1,4 +1,5 @@
 import rawQuestions from "./questions_full.json";
+import { normalizeTopic } from "./topicNormalization";
 
 export interface PracticeQuestion {
   id: number;
@@ -213,7 +214,7 @@ function extractAnswerFromExplanation(explanation: string): string {
 }
 
 // Broad CAT topics that should be split by subtopic in QA
-const QA_BROAD_TOPICS = new Set(["Arithmetic", "Algebra", "Geometry", "Number Systems"]);
+const QA_BROAD_TOPICS = new Set(["Arithmetic", "Algebra", "Geometry", "Number Systems", "Modern Maths"]);
 
 function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroadTopics = false): Chapter[] {
   const topicMap = new Map<string, PracticeQuestion[]>();
@@ -222,6 +223,10 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
     if (/same as id\s*\d+|see id\s*\d+/i.test(r.question) || /see full explanation there/i.test(r.question)) {
       continue;
     }
+
+    // Apply topic normalization
+    const normalized = normalizeTopic(r.id, r.topic, r.subtopic);
+
     const optKeys = Object.keys(r.options);
     const isMcq = optKeys.length >= 2 && optKeys.every((k) => /^\d+$/.test(k));
 
@@ -268,14 +273,14 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
       };
     }
 
-    // For QA: split broad topics (Arithmetic/Algebra/Geometry) into subtopics
+    // Use normalized topic/subtopic for chapter grouping
     let key: string;
     if (useSubtopic) {
-      key = r.subtopic || r.topic;
-    } else if (splitBroadTopics && QA_BROAD_TOPICS.has(r.topic)) {
-      key = r.subtopic || r.topic;
+      key = normalized.subtopic || normalized.topic;
+    } else if (splitBroadTopics && QA_BROAD_TOPICS.has(normalized.topic)) {
+      key = normalized.subtopic || normalized.topic;
     } else {
-      key = r.topic;
+      key = normalized.topic;
     }
     if (!topicMap.has(key)) topicMap.set(key, []);
     topicMap.get(key)!.push(pq);
@@ -293,17 +298,19 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
 const LRDI_TOPICS = new Set(["Logical Reasoning", "Data Interpretation"]);
 const VARC_TOPICS = new Set(["Reading Comprehension", "Para Jumbles", "Sentence Placement", "Summary"]);
 
-function getSectionForTopic(topic: string): "qa" | "lrdi" | "varc" {
-  if (LRDI_TOPICS.has(topic)) return "lrdi";
-  if (VARC_TOPICS.has(topic)) return "varc";
+function getSectionForTopic(id: number, rawTopic: string, rawSubtopic: string): "qa" | "lrdi" | "varc" {
+  // Check raw topic first for section routing (LRDI/VARC don't need normalization for routing)
+  if (LRDI_TOPICS.has(rawTopic)) return "lrdi";
+  if (VARC_TOPICS.has(rawTopic)) return "varc";
+  // Everything else is QA (normalization handles topic/subtopic within QA)
   return "qa";
 }
 
 const rawData: RawQuestion[] = Array.isArray(rawQuestions) ? rawQuestions : ((rawQuestions as any).default ?? []);
 
-const qaRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "qa");
-const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "lrdi");
-const varcRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "varc");
+const qaRaw = rawData.filter((r) => getSectionForTopic(r.id, r.topic, r.subtopic) === "qa");
+const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.id, r.topic, r.subtopic) === "lrdi");
+const varcRaw = rawData.filter((r) => getSectionForTopic(r.id, r.topic, r.subtopic) === "varc");
 
 const qaChapters = buildChaptersFromRaw(qaRaw, false, true);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
