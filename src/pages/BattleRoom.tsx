@@ -364,6 +364,43 @@ function WaitingOverlay({ finishedCount, totalCount }: { finishedCount: number; 
 }
 
 // ─── Battle Results ─────────────────────────────────────────────────────────
+
+function estimatePercentile(correct: number, total: number): number {
+  if (total === 0) return 0;
+  const ratio = correct / total;
+  const mean = 0.45;
+  const sd = 0.18;
+  const z = (ratio - mean) / sd;
+  const cdf = 1 / (1 + Math.exp(-1.7 * z));
+  const percentile = Math.min(99.8, Math.max(1, cdf * 100));
+  return Math.round(percentile * 10) / 10;
+}
+
+function estimateRank(percentile: number, totalStudents: number): number {
+  return Math.max(1, Math.round(totalStudents * (1 - percentile / 100)));
+}
+
+function getInsightText(correct: number, total: number): string {
+  const pct = correct / total;
+  if (pct >= 0.9) return `Scoring ${correct}+ here correlates with 99+ percentile in CAT.`;
+  if (pct >= 0.7) return `Scoring ${correct}+ here correlates with 90+ percentile in CAT.`;
+  if (pct >= 0.5) return `Scoring ${correct}+ here correlates with 80+ percentile in CAT.`;
+  return `Focus on weak areas to boost your CAT percentile significantly.`;
+}
+
+function getDifficultyLabel(correct: number, total: number): { label: string; color: string } {
+  const pct = correct / total;
+  if (pct >= 0.8) return { label: "Easy", color: "text-emerald-500" };
+  if (pct >= 0.5) return { label: "Medium", color: "text-amber-500" };
+  return { label: "Hard", color: "text-destructive" };
+}
+
+function formatTimeLong(seconds: number) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}m ${s.toString().padStart(2, "0")}s`;
+}
+
 function BattleResults({
   players,
   questions,
@@ -394,22 +431,101 @@ function BattleResults({
     return a !== undefined && a !== null && a !== "" && a !== q.correctAnswer;
   }).length;
   const unanswered = total - correct - incorrect;
+  const percentile = estimatePercentile(correct, total);
+  const totalStudents = 1327;
+  const rank = estimateRank(percentile, totalStudents);
+  const avgTimePerQ = total > 0 ? Math.round(timeUsed / total) : 0;
+  const difficulty = getDifficultyLabel(correct, total);
 
   return (
-    <motion.div {...fadeUp} className="max-w-lg mx-auto px-1 space-y-4 md:space-y-6 text-center">
-      <div className="space-y-1.5 md:space-y-2">
-        <motion.div initial={{ scale: 0.5 }} animate={{ scale: 1 }} transition={{ ease: "backOut" }}>
-          <Trophy className="w-8 h-8 md:w-12 md:h-12 text-amber-400 mx-auto" />
-        </motion.div>
-        <h1 className="text-xl md:text-4xl font-black text-foreground">Battle <span className="text-primary">Results</span></h1>
-        {myRank === 0 && <p className="text-xs md:text-sm text-amber-400 font-bold">🎉 You won!</p>}
-      </div>
+    <motion.div {...fadeUp} className="max-w-2xl mx-auto px-1 space-y-4">
+      {/* ─── 1. Hero Card with Score + Percentile ─── */}
+      <Card className="p-4 md:p-6 border relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-amber-500/3" />
+        <div className="relative z-10 space-y-4">
+          <div className="flex items-center gap-2">
+            <Trophy className="w-5 h-5 text-amber-400" />
+            <span className="font-bold text-foreground text-sm md:text-base">Battle Completed</span>
+            {myRank === 0 && <Badge className="ml-auto text-[9px] bg-amber-500/15 text-amber-500 border-amber-500/30">🎉 Winner!</Badge>}
+          </div>
 
-      {/* Leaderboard */}
+          {/* Score + Percentile + Time row */}
+          <div className="grid grid-cols-3 gap-3 items-center">
+            <div>
+              <div className="text-2xl md:text-4xl font-black text-foreground leading-none">
+                {correct}<span className="text-sm md:text-lg text-muted-foreground font-medium">/{total}</span>
+              </div>
+              <div className="text-[10px] md:text-xs text-muted-foreground mt-0.5">
+                Accuracy: <span className="text-primary font-bold">{pct}%</span>
+              </div>
+            </div>
+            <div className="text-center">
+              <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.3, ease: "backOut" }}
+                className="text-3xl md:text-5xl font-black text-foreground leading-none"
+              >
+                {percentile}<span className="text-xs md:text-sm text-muted-foreground font-medium">%</span>
+              </motion.div>
+              <div className="text-[9px] md:text-[10px] text-muted-foreground mt-0.5 uppercase tracking-wider">Est. Percentile</div>
+            </div>
+            <div className="text-right">
+              <div className="text-[10px] md:text-xs text-muted-foreground">Time Taken</div>
+              <div className="text-lg md:text-2xl font-black text-foreground leading-tight">{formatTimeLong(timeUsed)}</div>
+            </div>
+          </div>
+
+          {/* Percentile bar */}
+          <div className="space-y-1.5">
+            <div className="flex justify-between text-[8px] md:text-[9px] text-muted-foreground/60 font-mono">
+              <span>0%ile</span>
+              <span>99.8%ile</span>
+            </div>
+            <div className="relative h-2.5 md:h-3 rounded-full bg-secondary overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${Math.min(100, (percentile / 99.8) * 100)}%` }}
+                transition={{ delay: 0.4, duration: 1, ease: "easeOut" }}
+                className="absolute inset-y-0 left-0 rounded-full"
+                style={{ background: "linear-gradient(90deg, hsl(var(--primary) / 0.6), hsl(var(--primary)), hsl(25 100% 50%))" }}
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1.4 }}
+                className="absolute -top-5 md:-top-6 flex flex-col items-center"
+                style={{ left: `${Math.min(93, (percentile / 99.8) * 100)}%` }}
+              >
+                <span className="text-[8px] md:text-[9px] font-bold bg-primary text-primary-foreground px-1.5 py-0.5 rounded-full">YOU</span>
+                <div className="w-0 h-0 border-l-[4px] border-r-[4px] border-t-[4px] border-transparent border-t-primary" />
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.4 }}
+                className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 border-background bg-primary shadow-lg"
+                style={{ left: `${Math.min(95, (percentile / 99.8) * 100)}%` }}
+              />
+            </div>
+            <div className="flex items-center justify-center gap-2 text-[10px] md:text-xs text-muted-foreground">
+              <span>Rank: <span className="font-bold text-foreground">#{rank}</span></span>
+              <span className="text-muted-foreground/40">·</span>
+              <span>{totalStudents.toLocaleString()} students</span>
+            </div>
+          </div>
+
+          <div className="text-center text-[10px] md:text-xs text-muted-foreground border-t border-border/50 pt-3">
+            {getInsightText(correct, total)}
+          </div>
+        </div>
+      </Card>
+
+      {/* ─── 2. Battle Leaderboard ─── */}
       <Card className="p-3 md:p-5 border space-y-2 md:space-y-3">
         <div className="flex items-center gap-1.5 md:gap-2 mb-1 md:mb-2">
           <Crown className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
-          <span className="text-xs md:text-sm font-bold text-foreground">Leaderboard</span>
+          <span className="text-xs md:text-sm font-bold text-foreground">Battle Leaderboard</span>
         </div>
         {ranked.map((p, i) => {
           const isMe = p.user_id === currentUserId;
@@ -439,33 +555,75 @@ function BattleResults({
         })}
       </Card>
 
-      {/* Performance Analytics */}
-      <div className="space-y-2 text-left">
+      {/* ─── 3. Performance Breakdown ─── */}
+      <div className="space-y-2">
         <div className="flex items-center gap-2">
           <BarChart3 className="w-4 h-4 text-primary" />
-          <h3 className="text-sm font-bold text-foreground">Your Performance</h3>
+          <h3 className="text-sm md:text-base font-bold text-foreground">Performance Breakdown</h3>
         </div>
-        <div className="grid grid-cols-3 gap-2">
-          <Card className="p-3 border text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-              <span className="text-[10px] font-bold text-foreground">Correct</span>
+        <div className="grid grid-cols-3 gap-2 md:gap-3">
+          {/* Accuracy */}
+          <Card className="p-3 md:p-4 border space-y-2">
+            <div className="flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+              <span className="text-[11px] md:text-xs font-bold text-foreground">Accuracy</span>
             </div>
-            <span className="text-lg font-black text-emerald-500">{correct}</span>
+            <div className="space-y-1 text-[10px] md:text-xs">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Correct</span>
+                <Badge variant="secondary" className="text-[9px] px-1.5 py-0 bg-emerald-500/10 text-emerald-600 border-0">{correct}</Badge>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Incorrect</span>
+                <Badge variant="secondary" className="text-[9px] px-1.5 py-0 bg-destructive/10 text-destructive border-0">{incorrect}</Badge>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Skipped</span>
+                <Badge variant="secondary" className="text-[9px] px-1.5 py-0">{unanswered}</Badge>
+              </div>
+              <div className="border-t border-border/50 pt-1 mt-1">
+                <span className="text-muted-foreground">Accuracy: </span>
+                <span className="font-bold text-primary">{pct}%</span>
+              </div>
+            </div>
           </Card>
-          <Card className="p-3 border text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <XCircle className="w-3 h-3 text-destructive" />
-              <span className="text-[10px] font-bold text-foreground">Wrong</span>
+
+          {/* Speed */}
+          <Card className="p-3 md:p-4 border space-y-2">
+            <div className="flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-primary" />
+              <span className="text-[11px] md:text-xs font-bold text-foreground">Speed</span>
             </div>
-            <span className="text-lg font-black text-destructive">{incorrect}</span>
+            <div className="space-y-1">
+              <div className="text-[10px] text-muted-foreground">Avg Time/Question</div>
+              <div className="text-lg md:text-xl font-black text-foreground leading-tight">{formatTimeLong(avgTimePerQ)}</div>
+              <div className="border-t border-border/50 pt-1 mt-1">
+                <span className="text-[10px] md:text-xs text-muted-foreground">Total: </span>
+                <span className="text-[10px] md:text-xs font-bold text-primary">{formatTimeLong(timeUsed)}</span>
+              </div>
+            </div>
           </Card>
-          <Card className="p-3 border text-center">
-            <div className="flex items-center justify-center gap-1 mb-1">
-              <MinusCircle className="w-3 h-3 text-muted-foreground" />
-              <span className="text-[10px] font-bold text-foreground">Skipped</span>
+
+          {/* Difficulty */}
+          <Card className="p-3 md:p-4 border space-y-2">
+            <div className="flex items-center gap-1.5">
+              <Target className="w-3.5 h-3.5 text-amber-500" />
+              <span className="text-[11px] md:text-xs font-bold text-foreground">Difficulty</span>
             </div>
-            <span className="text-lg font-black text-muted-foreground">{unanswered}</span>
+            <div className="space-y-1 text-[10px] md:text-xs">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Quiz Level</span>
+                <span className={`font-bold ${difficulty.color}`}>{difficulty.label}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Your Rank</span>
+                <span className="font-black text-foreground">#{myRank + 1}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Players</span>
+                <span className="font-bold text-foreground">{players.length}</span>
+              </div>
+            </div>
           </Card>
         </div>
       </div>
