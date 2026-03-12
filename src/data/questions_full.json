@@ -6060,5 +6060,14 @@
     "options": { "1": "0.25%", "2": "0.10%", "3": "0.20%", "4": "0.15%", "5": "0.30%" },
     "correct_answer": "3",
     "explanation": "36% in B and 64% in C: rise=0.2%, fall=0.2%. Guaranteed 0.20%."
+  },
+  {
+    "id": 633,
+    "topic": "Algebra",
+    "subtopic": "Max/Min",
+    "question": "To maximize guaranteed return, Shabnam's strategy should be",
+    "options": { "1": "100% in option A", "2": "36% in option B and 64% in option C", "3": "64% in option B and 36% in option C", "4": "1/3 in each of the three options", "5": "30% in A, 32% in B and 38% in C" },
+    "correct_answer": "2",
+    "explanation": "Only 36% in B + 64% in C gives identical return (0.2%) whether the market rises or falls, guaranteeing maximum assured return."
   }
 ]
