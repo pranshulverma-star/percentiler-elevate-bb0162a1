@@ -298,17 +298,19 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
 const LRDI_TOPICS = new Set(["Logical Reasoning", "Data Interpretation"]);
 const VARC_TOPICS = new Set(["Reading Comprehension", "Para Jumbles", "Sentence Placement", "Summary"]);
 
-function getSectionForTopic(topic: string): "qa" | "lrdi" | "varc" {
-  if (LRDI_TOPICS.has(topic)) return "lrdi";
-  if (VARC_TOPICS.has(topic)) return "varc";
+function getSectionForTopic(id: number, rawTopic: string, rawSubtopic: string): "qa" | "lrdi" | "varc" {
+  // Check raw topic first for section routing (LRDI/VARC don't need normalization for routing)
+  if (LRDI_TOPICS.has(rawTopic)) return "lrdi";
+  if (VARC_TOPICS.has(rawTopic)) return "varc";
+  // Everything else is QA (normalization handles topic/subtopic within QA)
   return "qa";
 }
 
 const rawData: RawQuestion[] = Array.isArray(rawQuestions) ? rawQuestions : ((rawQuestions as any).default ?? []);
 
-const qaRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "qa");
-const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "lrdi");
-const varcRaw = rawData.filter((r) => getSectionForTopic(r.topic) === "varc");
+const qaRaw = rawData.filter((r) => getSectionForTopic(r.id, r.topic, r.subtopic) === "qa");
+const lrdiRaw = rawData.filter((r) => getSectionForTopic(r.id, r.topic, r.subtopic) === "lrdi");
+const varcRaw = rawData.filter((r) => getSectionForTopic(r.id, r.topic, r.subtopic) === "varc");
 
 const qaChapters = buildChaptersFromRaw(qaRaw, false, true);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
