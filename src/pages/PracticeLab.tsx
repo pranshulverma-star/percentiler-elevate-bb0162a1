@@ -382,7 +382,7 @@ function QuizView({
   const isLowTime = timeLeft <= 120;
   const isCritical = timeLeft <= 60;
   const answeredCount = questions.filter((qq) => answers[qq.id] !== undefined && answers[qq.id] !== null && answers[qq.id] !== "").length;
-  const timeProgress = (timeLeft / QUIZ_DURATION) * 100;
+  const timeProgress = (timeLeft / duration) * 100;
 
   const handleSelect = (optIndex: number) => {
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
