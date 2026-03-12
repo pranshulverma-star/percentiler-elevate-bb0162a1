@@ -506,12 +506,9 @@ function QuizView({
         {/* Main question area */}
         <div className="flex-1 min-w-0 space-y-4">
           {/* Group Context (passage / set description) */}
-          {(q.group_context || q.group_image) && (
+          {q.group_context && (
             <Card className="p-4 md:p-6 border border-primary/20 bg-primary/[0.02]">
               <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-2">📖 Passage / Set</p>
-              {q.group_image && (
-                <img src={q.group_image} alt="Question context" className="w-full rounded-lg mb-3 max-h-72 object-contain" />
-              )}
               {q.group_context && (
                 <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto">
                   {q.group_context}
