@@ -1603,8 +1603,8 @@
   },
   {
     "id": 141,
-    "topic": "Simple Interest",
-    "subtopic": "CAT 2024 Quant",
+    "topic": "Arithmetic",
+    "subtopic": "Simple & Compound Interest",
     "question": "An amount of Rs 10000 is deposited in bank A for a certain number of years at a simple interest of 5% per annum. On maturity, the total amount received is deposited in bank B for another 5 years at a simple interest of 6% per annum. If the interests received from bank A and bank B are in the ratio 10:13, then the investment period, in years, in bank A is",
     "options": {"1": "6", "2": "4", "3": "3", "4": "5"},
     "correct_answer": "1",
