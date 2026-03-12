@@ -286,7 +286,7 @@ function ChaptersView({
       <div className="grid gap-3 sm:grid-cols-2">
         {section.chapters.map((ch, i) => {
           const hasQuestions = ch.questions.length > 0;
-          const qCount = Math.min(ch.questions.length, QUIZ_QUESTION_COUNT);
+          const qCount = section.id === "lrdi" ? ch.questions.length : Math.min(ch.questions.length, QUIZ_QUESTION_COUNT);
           return (
             <motion.div
               key={ch.slug}
