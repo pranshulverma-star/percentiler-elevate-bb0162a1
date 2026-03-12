@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { pickGroupedRandom } from "@/lib/pickGroupedQuestions";
+import { pickGroupedRandom, pickOneSet } from "@/lib/pickGroupedQuestions";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
