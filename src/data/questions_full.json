@@ -1375,21 +1375,6 @@
     "explanation": "2M + 3W = 1/20 per day. 3M + W > 1/20 (takes less than 20 days means their rate > 1/20). From the inequality: 3M + W > 2M + 3W → M > 2W → man is more efficient than woman. Now 1M + 5W: Since M > 2W, substituting lower bound M = 2W: 1M + 5W = 2W + 5W = 7W. And 2M + 3W = 4W + 3W = 7W = 1/20. So 1M + 5W = 1/20 when M = 2W exactly. But since M > 2W (strictly), 1M + 5W > 7W = 1/20... wait: 1M + 5W where M > 2W does not necessarily give > 1/20. Let M = 2W + ε. 1M + 5W = 2W + ε + 5W = 7W + ε > 7W = 1/20 if M = 2W exactly gives 7W = 1/20. So rate > 1/20 → less than 20 days. This contradicts the book answer. The book says (3) more than 20 days — since 1M+5W vs 2M+3W: (2M+3W) − (1M+5W) = M − 2W > 0 (since M > 2W). So 2M+3W > 1M+5W. Rate of (1M+5W) < rate of (2M+3W) = 1/20. So (1M+5W) takes MORE than 20 days. Ans.(3)"
   },
   {
-    "id": 119,
-    "source_pages": "pg29-30",
-    "topic": "Work & Time",
-    "subtopic": "Challenge Problems #02",
-    "question": "3 men and 4 women can do a work exactly in 5 days. 4 men and 2 women can complete the work on fifth day. Then 2 men and 6 women can complete the same work on: (Q. code - 110606001)",
-    "options": {
-      "1": "4th day",
-      "2": "5th day",
-      "3": "6th day",
-      "4": "cannot be determined"
-    },
-    "correct_answer": "2",
-    "explanation": "Already solved in id 94. 3M+4W = 1/5, 4M+2W = 1/5. Solving: M = 2W. 2M+6W = 4W+6W = 10W. Since 10W = 1/5 per day, they take 5 days. Completes on 5th day."
-  },
-  {
     "id": 118,
     "topic": "Logical Reasoning",
     "subtopic": "Elections & Campaigns",
