@@ -6303,5 +6303,653 @@
     "options": { "1": "Rs. 26.50", "2": "Rs. 27.50", "3": "Rs. 25.50", "4": "Rs. 24.50" },
     "correct_answer": "2",
     "explanation": "Annual: 5000(1.1)² = 6050. Half-yearly: 5000(1.05)⁴ = 5000×1.2155 = 6077.50. Difference = Rs. 27.50."
+  },
+  {
+    "id": 660,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "If a/b = 1/3, b/c = 2, c/d = 1/2, d/e = 3 and e/f = 1/4, then what is the value of abc/def?",
+    "options": { "1": "3/8", "2": "27/8", "3": "3/4", "4": "27/4" },
+    "correct_answer": "1",
+    "explanation": "From chain ratios: a:b:c:d:e:f = 2:6:3:6:2:8. So abc/def = (2×6×3)/(6×2×8) = 36/96 = 3/8."
+  },
+  {
+    "id": 661,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "If a – b : b – c : c – d = 1 : 2 : 3, then what is the ratio of (a + d) : c?",
+    "options": { "1": "1 : 2", "2": "2 : 1", "3": "3 : 1", "4": "None of these" },
+    "correct_answer": "2",
+    "explanation": "Let a–b=x, b–c=2x, c–d=3x. Then c=3x+d, b=5x+d, a=6x+d. (a+d)/c = (6x+2d)/(3x+d) = 2."
+  },
+  {
+    "id": 662,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "If a/2 = b/3 = c/5 and b/3 = c/5 = d/6, then what is the value of (3a+2b+4c+d)/(3d+4c)?",
+    "options": { "1": "19/6", "2": "38", "3": "1", "4": "2" },
+    "correct_answer": "3",
+    "explanation": "Setting all equal to k: a=2k, b=3k, c=5k, d=6k. Numerator = 6k+6k+20k+6k = 38k. Denominator = 18k+20k = 38k. Ratio = 1."
+  },
+  {
+    "id": 663,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "If a/2 = b/3 = c/4 = (2a–3b+5c)/k, where a, b and c are not zero, then k is",
+    "options": { "1": "15", "2": "17", "3": "13", "4": "Cannot be determined" },
+    "correct_answer": "1",
+    "explanation": "Let each ratio = λ. Then a=2λ, b=3λ, c=4λ. k = (2×2λ – 3×3λ + 5×4λ)/λ = (4–9+20) = 15."
+  },
+  {
+    "id": 664,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Monthly incomes of X and Y are in ratio 1:3 and expenses in ratio 19:40. X saves Rs.18,860 less than Y and together they save Rs.36,020. Incomes of X and Y are:",
+    "options": { "1": "Rs.10,480 and Rs.31,440", "2": "Rs.9,000 and Rs.27,000", "3": "Rs.14,200 and Rs.42,600", "4": "Rs.18,000 and Rs.31,440" },
+    "correct_answer": "1",
+    "explanation": "Let income X=p, Y=3p; expenses X=19q, Y=40q. Total savings: 4p–59q=36020. Diff: 2p–21q=18860. Solving: p=10480."
+  },
+  {
+    "id": 665,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Ratio of first to second class fare is 3:1 and ratio of passengers is 1:27. If Rs.2,700 is collected as total fare, amount collected from first class passengers is",
+    "options": { "1": "Rs.300", "2": "Rs.729", "3": "Rs.270", "4": "Rs.96.42" },
+    "correct_answer": "3",
+    "explanation": "Amount ratio = (3×1):(1×27) = 1:9. First class = (1/10)×2700 = Rs.270."
+  },
+  {
+    "id": 666,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Present age ratio of mother to daughter is 9:4. Ten years ago ratio was 7:2. Present ages are:",
+    "options": { "1": "54 years, 24 years", "2": "45 years, 20 years", "3": "54 years, 28 years", "4": "36 years, 16 years" },
+    "correct_answer": "2",
+    "explanation": "Let ages = 9x and 4x. (9x–10)/(4x–10) = 7/2 ⇒ 18x–20 = 28x–70 ⇒ x=5. Ages: 45 and 20."
+  },
+  {
+    "id": 667,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Ratio of present ages of Chinta and Mani is 14:19. Average age of Suknaya, Chinta and Mani is 43 years. Ratio of Suknaya to Chinta is 5:7. Present age of Mani is",
+    "options": { "1": "28", "2": "42", "3": "57", "4": "56" },
+    "correct_answer": "3",
+    "explanation": "Suknaya:Chinta = 5:7 = 10:14. Combined ratio S:C:M = 10:14:19. Sum = 43×3 = 129. Each part = 3. Mani = 19×3 = 57."
+  },
+  {
+    "id": 668,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Ratio of chocolates with Munni and Chameli is 3:2. Chameli has 5 less than Sheela, who has 3 more than Munni. Total chocolates with all three is",
+    "options": { "1": "19", "2": "20", "3": "23", "4": "24" },
+    "correct_answer": "1",
+    "explanation": "m:c = 3:2. s = c+5, s = m+3 ⇒ m–c=2. With m=3k, c=2k: 3k–2k=2 ⇒ k=2 but ratio check gives c=4, m=6, s=9. Total=19."
+  },
+  {
+    "id": 669,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "In an organisation, male to female ratio is 4:3. Males increase by 10% and females by 20%. New ratio is",
+    "options": { "1": "11:9", "2": "10:9", "3": "11:8", "4": "3:2" },
+    "correct_answer": "1",
+    "explanation": "New ratio = (4×1.1):(3×1.2) = 4.4:3.6 = 11:9."
+  },
+  {
+    "id": 670,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Two alloys have copper:zinc = 4:1 and 1:3. 10 kg of first, 16 kg of second and some pure copper are melted. Resultant alloy has copper:zinc = 3:2. Weight of new alloy is",
+    "options": { "1": "45", "2": "40", "3": "35", "4": "50" },
+    "correct_answer": "3",
+    "explanation": "Copper in alloys = (4/5)×10 + (1/4)×16 = 8+4 = 12. Zinc = 2+12 = 14. Let pure copper added = x. (12+x)/14 = 3/2 ⇒ x=9. Total = 10+16+9 = 35 kg."
+  },
+  {
+    "id": 671,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Three brands mixed in ratio 3:4:5 cost Rs.20/L and in ratio 4:5:6 cost Rs.25/L. Cost of mixture in ratio 6:7:8 is",
+    "options": { "1": "Rs.30.7", "2": "Rs.30.5", "3": "Rs.29.5", "4": "Rs.29.7" },
+    "correct_answer": "1",
+    "explanation": "3a+4b+5c=240 and 4a+5b+6c=375. (6a+7b+8c)/21 = [3(375)–2(240)]/21 = (1125–480)/21 = 645/21 ≈ Rs.30.7."
+  },
+  {
+    "id": 672,
+    "topic": "Arithmetic",
+    "subtopic": "Direct/Inverse Proportions",
+    "question": "Value of a diamond is directly proportional to square of its weight. A 4 kg diamond breaks and total value decreases by 37.5%. Weights of the two pieces are:",
+    "options": { "1": "2 kg, 2 kg", "2": "2.5 kg, 1.5 kg", "3": "3 kg, 1 kg", "4": "None of these" },
+    "correct_answer": "3",
+    "explanation": "v₁=16k. After break: kx²+k(4–x)²=62.5% of 16k ⇒ 2x²–8x+8=10 ⇒ x=1 or 3. Parts: 1 kg and 3 kg."
+  },
+  {
+    "id": 673,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Father:Son = 3:2 and Son:Mother = 5:6. Daughter weighs 35 kg = half of father's weight. Mother's weight is",
+    "options": { "1": "42 kg", "2": "56 kg", "3": "46.6 kg", "4": "Cannot be determined" },
+    "correct_answer": "2",
+    "explanation": "F:S:M = 15:10:12. Father = 70 kg. Mother = (12/15)×70 = 56 kg."
+  },
+  {
+    "id": 674,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Income ratio of Aishwarya, Babita, Charu = 7:9:12 and expenditure ratio = 8:9:15. Aishwarya saves one-fourth of her income. Ratio of savings is",
+    "options": { "1": "56:99:69", "2": "69:56:99", "3": "99:56:69", "4": "99:69:56" },
+    "correct_answer": "1",
+    "explanation": "7x–8y = 7x/4 ⇒ 21x=32y ⇒ x=32y/21. Savings: A=7x/4, B=9x–9y=33y/7, C=12x–15y=23y/7. Ratio = 56:99:69."
+  },
+  {
+    "id": 675,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Harsha:Mandar salaries last year = 3:5. Individual last year to present year ratios = 2:3 and 4:5. Combined present salary = Rs.86,000. Present salary of Harsha is",
+    "options": { "1": "Rs.38,000", "2": "Rs.24,000", "3": "Rs.39,000", "4": "Rs.36,000" },
+    "correct_answer": "4",
+    "explanation": "Last year: 3x and 5x. Present: (3/2)×3x=4.5x and (5/4)×5x=6.25x. Ratio = 18:25. Harsha = (18/43)×86000 = Rs.36,000."
+  },
+  {
+    "id": 676,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "A seller has boxes. First customer buys half the boxes plus half a box. Second customer buys half the remainder plus half a box. Seller is left with nothing. How many boxes did the seller start with?",
+    "options": { "1": "2", "2": "3", "3": "4", "4": "3.5" },
+    "correct_answer": "2",
+    "explanation": "Let boxes = x. After 1st customer: x–(x/2+1/2) = (x–1)/2. After 2nd: (x–1)/2 – ((x–1)/4+1/2) = (x–3)/4 = 0 ⇒ x=3."
+  },
+  {
+    "id": 677,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "Batch A:B in January = 2:3 and February = 5:8. Growth rates from Feb to March are double and triple those from Jan to Feb. Feb:Jan total ratio = 26:5. Ratio of A:B in March is",
+    "options": { "1": "25:64", "2": "25:84", "3": "45:112", "4": "35:92" },
+    "correct_answer": "3",
+    "explanation": "Jan: 2x, 3x. Feb: 5y, 8y. 13y:5x = 26:5 ⇒ y=2x. Feb: 10x, 16x. Growth rates: A=400%, B=1300/3%. March: 90x, 224x. Ratio = 45:112."
+  },
+  {
+    "id": 678,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "CP of mango = 2× apple. SP of mango = 3× apple. Selling apple at 2×CP gives 150% profit overall. Ratio of mangoes to apples is",
+    "options": { "1": "3:5", "2": "3:4", "3": "1:2", "4": "2:3" },
+    "correct_answer": "3",
+    "explanation": "Let apple CP=x. Total CP=Ax+2Mx. Total SP=2Ax+6Mx = (5/2)(Ax+2Mx) ⇒ 4Ax+12Mx=5Ax+10Mx ⇒ 2Mx=Ax ⇒ M:A=1:2."
+  },
+  {
+    "id": 679,
+    "topic": "Arithmetic",
+    "subtopic": "Direct/Inverse Proportions",
+    "question": "Total expenses of a boarding house are partly fixed and partly varying with boarders. Average cost is Rs.700 for 25 boarders and Rs.600 for 50 boarders. Average cost for 100 boarders is (CAT 1999)",
+    "options": { "1": "550", "2": "580", "3": "540", "4": "570" },
+    "correct_answer": "1",
+    "explanation": "x+25y=17500 and x+50y=30000. Solving: x=5000, y=500. For 100: (5000+50000)/100 = Rs.550."
+  },
+  {
+    "id": 680,
+    "topic": "Arithmetic",
+    "subtopic": "Direct/Inverse Proportions",
+    "question": "A∝B, B∝1/C, C∝D², D∝E^(1/3). As A increases, E",
+    "options": { "1": "increases", "2": "decreases", "3": "remains constant", "4": "doubles" },
+    "correct_answer": "2",
+    "explanation": "A∝B∝1/C∝1/D²∝1/E^(2/3). So as A increases, E decreases."
+  },
+  {
+    "id": 681,
+    "topic": "Arithmetic",
+    "subtopic": "Direct/Inverse Proportions",
+    "question": "Height of Santosh is directly proportional to square root of his age. He is 4 ft tall at age 9. Height at age 16 is",
+    "options": { "1": "5 ft 4 inches", "2": "5 ft 2 inches", "3": "5 ft", "4": "5 ft 3 inches" },
+    "correct_answer": "1",
+    "explanation": "H = K√A. 4 = K√9 ⇒ K = 4/3. At A=16: H = (4/3)×4 = 16/3 ft = 5 ft 4 inches."
+  },
+  {
+    "id": 682,
+    "topic": "Arithmetic",
+    "subtopic": "Direct/Inverse Proportions",
+    "question": "Pressure ∝ Temperature and ∝ 1/Volume. Initial: P=150 Pa, V=20 m³, T=100°K. Final: V=8 m³, P=150 Pa. Final temperature is",
+    "options": { "1": "80°K", "2": "50°K", "3": "40°K", "4": "45°K" },
+    "correct_answer": "3",
+    "explanation": "P₁V₁/T₁ = P₂V₂/T₂ ⇒ (150×20)/100 = (150×8)/T₂ ⇒ T₂ = 40°K."
+  },
+  {
+    "id": 683,
+    "topic": "Arithmetic",
+    "subtopic": "Ratio and Proportions",
+    "question": "A can has liquids A and B in ratio 7:5. 9L is drawn and refilled with B. New ratio A:B = 7:9. Initial litres of liquid A was",
+    "options": { "1": "21 L", "2": "31 L", "3": "80 L", "4": "85 L" },
+    "correct_answer": "1",
+    "explanation": "Let total = x. A remaining = 7(x–9)/12 = 7x/16 ⇒ 9/x = 3/4 ⇒ x=36L. A = (7/12)×36 = 21 L."
+  },
+  {
+    "id": 684,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Average age of a group of 23 persons increases by 4 months when a person of 20 years is replaced by a new person. Age of the new person is",
+    "options": { "1": "28 years", "2": "27 years 8 months", "3": "27 years", "4": "26 years 6 months" },
+    "correct_answer": "2",
+    "explanation": "Increase = 23 × (4/12) = 23/3 months. New age = 20 + 23/3 = 83/3 years = 27 years 8 months."
+  },
+  {
+    "id": 685,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Average height of 13 people reduces by 2 cm when a person of 184 cm is replaced by a new person. Height of the new person is",
+    "options": { "1": "154 cm", "2": "159 cm", "3": "197 cm", "4": "158 cm" },
+    "correct_answer": "4",
+    "explanation": "Total decrease = 13×2 = 26 cm. New height = 184 – 26 = 158 cm."
+  },
+  {
+    "id": 686,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "24 students have average marks of 89 (max 100). If 3 students leave, maximum increase in average is",
+    "options": { "1": "10.7", "2": "10.5", "3": "11.2", "4": "11" },
+    "correct_answer": "4",
+    "explanation": "Max average for 21 students = 100. Max increase = 100 – 89 = 11."
+  },
+  {
+    "id": 687,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Five boxes are weighed in pairs giving: 110,112,113,114,115,116,117,118,120,121 kg. Weight of the heaviest box is",
+    "options": { "1": "60 kg", "2": "65 kg", "3": "64 kg", "4": "62 kg" },
+    "correct_answer": "3",
+    "explanation": "Sum of all pairwise weights = 4×(sum of all boxes). Sum of pairs = 1156. Sum of boxes = 289. Testing heaviest = 64: others are 59,54,58,56 — all pairs check out."
+  },
+  {
+    "id": 688,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "One of 40 boys (100 kg) goes away and a new boy joins. Average weight increases by 0.25 kg. Weight of new boy is",
+    "options": { "1": "98.5 kg", "2": "110 kg", "3": "105 kg", "4": "99 kg" },
+    "correct_answer": "2",
+    "explanation": "New weight = 100 + 40×0.25 = 100 + 10 = 110 kg."
+  },
+  {
+    "id": 689,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Average scores in classes X, Y, Z are 83, 76, 85. Average of X+Y = 79 and Y+Z = 81. Average of all three classes is",
+    "options": { "1": "81", "2": "81.5", "3": "82", "4": "84.5" },
+    "correct_answer": "2",
+    "explanation": "From X+Y avg=79: 4a=3b. From Y+Z avg=81: 4c=5b. So b=4a/3, c=5a/3. Overall avg = (83a+76b+85c)/(a+b+c) = 978/12 = 81.5."
+  },
+  {
+    "id": 690,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Average rainfall Mon–Wed = 4.3 cm, Fri–Sun = 3.9 cm, whole week = 3.7 cm. Rainfall on Thursday is",
+    "options": { "1": "1.4 cm", "2": "1.3 cm", "3": "1.2 cm", "4": "1.1 cm" },
+    "correct_answer": "2",
+    "explanation": "Weekly total = 25.9. Mon–Wed = 12.9. Fri–Sun = 11.7. Thursday = 25.9–12.9–11.7 = 1.3 cm."
+  },
+  {
+    "id": 691,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Train's average speed was 63 km/h for 5 hours, 58 km/h for 3 hours, and 72 km/h for 2 hours. Average speed for entire journey is",
+    "options": { "1": "65 km/hr", "2": "63.3 km/hr", "3": "60 km/hr", "4": "64.33 km/hr" },
+    "correct_answer": "2",
+    "explanation": "Total distance = 63×5+58×3+72×2 = 315+174+144 = 633 km. Total time = 10 hrs. Average = 63.3 km/hr."
+  },
+  {
+    "id": 692,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Passed candidates average 60 marks; failed average 25 marks. Overall average is more than 43 but not more than 49. The pass fraction that is NEVER possible is",
+    "options": { "1": "3/5", "2": "4/7", "3": "18/35", "4": "24/35" },
+    "correct_answer": "3",
+    "explanation": "43 < (60p+25f)/(p+f) ≤ 49. Simplifying: 18/35 < p/(p+f) ≤ 24/35. So exactly 18/35 can never be achieved."
+  },
+  {
+    "id": 693,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Class of 60 students, average age 12 years. Girls increase by 3/4 and boys decrease by half; total unchanged; average age becomes 13.5. Average age of boys is",
+    "options": { "1": "8 years", "2": "10 years", "3": "12 years", "4": "Cannot be determined" },
+    "correct_answer": "2",
+    "explanation": "b+g=60, b/2+7g/4=60 ⇒ b=36, g=24. 36x+24y=720 and 18x+42y=810. Solving: x=10 (boys), y=15 (girls)."
+  },
+  {
+    "id": 694,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Average age of students in an institute = 15. Then 10 students of average age 12 join and new average = 14.8. Initial number of students was",
+    "options": { "1": "140", "2": "120", "3": "150", "4": "None of these" },
+    "correct_answer": "1",
+    "explanation": "15x + 120 = 14.8(x+10) ⇒ 0.2x = 28 ⇒ x = 140."
+  },
+  {
+    "id": 695,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Monthly salaries of A and B are in ratio 3:5. After Rs.250 increment each, ratio becomes 2:3. Original salaries were",
+    "options": { "1": "Rs.850 & Rs.1,275", "2": "Rs.700 & Rs.1,050", "3": "Rs.750 & Rs.1,250", "4": "Rs.650 & Rs.975" },
+    "correct_answer": "3",
+    "explanation": "(3x+250)/(5x+250) = 2/3 ⇒ 9x+750 = 10x+500 ⇒ x=250. A=750, B=1250."
+  },
+  {
+    "id": 696,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "5 VPs: mean = Rs.5L, median = Rs.5L, only mode = Rs.8L. Sum of highest and lowest salaries (in Rs. lakh) is (XAT 2012)",
+    "options": { "1": "9", "2": "10", "3": "11", "4": "12" },
+    "correct_answer": "1",
+    "explanation": "Median c=5; mode 8L appears at least twice ⇒ d=e=8. Sum=25 ⇒ a+b=4. Mode unique ⇒ a≠b ⇒ a=1, b=3. Highest+Lowest = 8+1=9."
+  },
+  {
+    "id": 697,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Ramu's marks in 6 papers (max 50 each) are in proportion 8:9:10:13:14:15. He fails to get 50% of total. Minimum additional marks needed is",
+    "options": { "1": "81", "2": "57", "3": "12", "4": "18" },
+    "correct_answer": "3",
+    "explanation": "Case b: marks=16,18,20,26,28,30 (total=138). Required=150. Additional needed=12. This is minimum across valid cases."
+  },
+  {
+    "id": 698,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "Average of 7 consecutive natural numbers is K. Average of next 7 consecutive natural numbers is",
+    "options": { "1": "K", "2": "K+7", "3": "K+1", "4": "K+49" },
+    "correct_answer": "2",
+    "explanation": "If first set starts at x: K = x+3. Next set starts at x+7: average = x+10 = K+7."
+  },
+  {
+    "id": 699,
+    "topic": "Arithmetic",
+    "subtopic": "Partnership",
+    "question": "A, B, C invest in ratio 3:6:7. Total investment Rs.80,000. Profit = 40% of investment. Sum of B and C's share in profit is",
+    "options": { "1": "Rs.18,000", "2": "Rs.26,000", "3": "Rs.26,500", "4": "Rs.24,000" },
+    "correct_answer": "2",
+    "explanation": "Profit = 0.40×80000 = 32000. B = (6/16)×32000 = 12000. C = (7/16)×32000 = 14000. Sum = Rs.26,000."
+  },
+  {
+    "id": 700,
+    "topic": "Arithmetic",
+    "subtopic": "Partnership",
+    "question": "A, B, C invest Rs.2,000, Rs.5,000, Rs.4,000. Net profit = Rs.1,210 divided proportionally. Shares of A, B, C are",
+    "options": { "1": "Rs.220, Rs.550, Rs.420", "2": "Rs.220, Rs.450, Rs.440", "3": "Rs.220, Rs.550, Rs.440", "4": "Rs.210, Rs.450, Rs.440" },
+    "correct_answer": "3",
+    "explanation": "Ratio = 2:5:4. A = (2/11)×1210=220, B = (5/11)×1210=550, C = (4/11)×1210=440."
+  },
+  {
+    "id": 701,
+    "topic": "Arithmetic",
+    "subtopic": "Partnership",
+    "question": "X, Y, Z are partners with total capital Rs.3,300. Profit Rs.1,500 is divided proportionally. X gets Rs.450 and Y gets Rs.550. Z's capital is",
+    "options": { "1": "Rs.910", "2": "Rs.1,100", "3": "Rs.1,110", "4": "None of these" },
+    "correct_answer": "2",
+    "explanation": "Z's profit = 1500–450–550 = 500. Capital ratio = 450:550:500 = 9:11:10. Z = (10/30)×3300 = Rs.1,100."
+  },
+  {
+    "id": 702,
+    "topic": "Arithmetic",
+    "subtopic": "Average",
+    "question": "A is the average of n consecutive odd numbers starting with x. B is the average of n consecutive odd numbers starting with x+4. Value of (B–A) is",
+    "options": { "1": "always 4", "2": "depends on x", "3": "depends on n", "4": "always a multiple of 4" },
+    "correct_answer": "1",
+    "explanation": "A = x+(n–1). B = (x+4)+(n–1). B–A = 4 regardless of x or n."
+  },
+  {
+    "id": 703,
+    "topic": "Arithmetic",
+    "subtopic": "Partnership",
+    "question": "A, B, C invest in ratio 1/2:1/3:1/4 for time ratio 1:1/2:1/4. If A's share = Rs.30,000, find B's share.",
+    "options": { "1": "Rs.10,000", "2": "Rs.20,000", "3": "Rs.15,000", "4": "Rs.25,000" },
+    "correct_answer": "1",
+    "explanation": "Investment ratio = 6:4:3. Time ratio = 4:2:1. Profit ratio = 24:8:3. B's share = (8/35)×30000×(35/24) = Rs.10,000."
+  },
+  {
+    "id": 704,
+    "topic": "Arithmetic",
+    "subtopic": "Partnership",
+    "question": "A starts business with Rs.4,500. B joins later with Rs.5,400. Profit ratio at year end = 2:1. B joined after how many months?",
+    "options": { "1": "5 months", "2": "4 months", "3": "6 months", "4": "7 months" },
+    "correct_answer": "4",
+    "explanation": "4500×12 : 5400×n = 2:1 ⇒ 54000 : 5400n = 2:1 ⇒ n=5. B invested for 5 months ⇒ joined after 12–5=7 months."
+  },
+  {
+    "id": 705,
+    "topic": "Arithmetic",
+    "subtopic": "Partnership",
+    "question": "A/B = B/C = C/D = 1/3 in profit sharing. Total profit = Rs.4,00,000. Share of C is",
+    "options": { "1": "Rs.1,12,500", "2": "Rs.1,37,500", "3": "Rs.90,000", "4": "Rs.2,70,000" },
+    "correct_answer": "3",
+    "explanation": "Let D=27x. C=9x, B=3x, A=x. Total=40x=4,00,000 ⇒ x=10,000. C=9×10,000=Rs.90,000."
+  },
+  {
+    "id": 706,
+    "topic": "Arithmetic",
+    "subtopic": "Partnership",
+    "question": "Ajay starts with Rs.28,000 (12 months). Boman joins after 5 months with Rs.40,000 (7 months). Chirag joins after 7 months with Rs.56,000 (5 months). Total profit = Rs.32,000. Boman's share is",
+    "options": { "1": "Rs.12,000", "2": "Rs.8,000", "3": "Rs.14,000", "4": "Rs.10,000" },
+    "correct_answer": "4",
+    "explanation": "Ratio = 28000×12 : 40000×7 : 56000×5 = 336000:280000:280000 = 6:5:5. Boman = (5/16)×32000 = Rs.10,000."
+  },
+  {
+    "id": 707,
+    "topic": "Arithmetic",
+    "subtopic": "Partnership",
+    "question": "Abhishek (Rs.1 cr) and Rani (Rs.2 cr) each withdraw 1/4 of investment after each of first two quarters. Susmita (Rs.50L) and Randeep (Rs.1 cr) join at mid-year; Randeep withdraws after 3 months. Total profit = Rs.41L. Combined share of Abhishek and Rani is",
+    "options": { "1": "Rs.22 lakh", "2": "Rs.33 lakh", "3": "Rs.8 lakh", "4": "Rs.30 lakh" },
+    "correct_answer": "2",
+    "explanation": "Abhishek: 100×3+75×3+50×6=825. Rani: 200×3+150×3+100×6=1650. Susmita: 50×6=300. Randeep: 100×3=300. Ratio=11:22:4:4. (11+22)/41×41=Rs.33L."
+  },
+  {
+    "id": 708,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "In 120 L mixture (milk:water = 2:3), 30 L is replaced by 18 L milk and 12 L water. New ratio of milk to water is",
+    "options": { "1": "7:9", "2": "9:11", "3": "2:3", "4": "11:9" },
+    "correct_answer": "2",
+    "explanation": "After drawing 30L: milk=36L, water=54L. Add 18L milk and 12L water: milk=54, water=66. Ratio = 9:11."
+  },
+  {
+    "id": 709,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "In what ratio should 30% Phenyl Alcohol be mixed with 60% to get 50% solution?",
+    "options": { "1": "1:2", "2": "2:1", "3": "1:3", "4": "3:1" },
+    "correct_answer": "1",
+    "explanation": "By alligation: (60–50):(50–30) = 10:20 = 1:2."
+  },
+  {
+    "id": 710,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Liquids A and B mixed in ratio 3:2, sold at Rs.11/L at 10% profit. First costs Rs.2 more than second. Cost of first liquid per litre is",
+    "options": { "1": "10.8", "2": "8.8", "3": "18.8", "4": "5" },
+    "correct_answer": "1",
+    "explanation": "CP of mixture = 11/1.1 = Rs.10. Let B=x, A=x+2. By alligation: 3(x+2)+2x=5×10 ⇒ 5x+6=50 ⇒ x=8.8. A=10.8."
+  },
+  {
+    "id": 711,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "In 105 L mixture (milk:water = 8:7), some mixture is removed with 14 L water. Then 5 L water added. New ratio of milk to water is",
+    "options": { "1": "19:20", "2": "4:5", "3": "1:1", "4": "2:3" },
+    "correct_answer": "3",
+    "explanation": "14L water in 8:7 ratio ⇒ 16L milk also removed. Remaining: milk=40, water=35. Add 5L water: 40:40 = 1:1."
+  },
+  {
+    "id": 712,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Milkman mixes 20L water with 80L milk. Sells 1/4 of mixture and replenishes with water. Current ratio of water to milk is",
+    "options": { "1": "2:3", "2": "1:2", "3": "1:3", "4": "3:4" },
+    "correct_answer": "1",
+    "explanation": "After selling 25L: milk=60, water=15. Add 25L water: milk=60, water=40. W:M = 40:60 = 2:3."
+  },
+  {
+    "id": 713,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Gold is 18× and copper is 8× the weight of water. Ratio of copper to gold to make mixture 15× as heavy as water is",
+    "options": { "1": "3:2", "2": "7:3", "3": "3:7", "4": "2:3" },
+    "correct_answer": "3",
+    "explanation": "By alligation: (18–15):(15–8) = 3:7. Copper:Gold = 3:7."
+  },
+  {
+    "id": 714,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Two iron alloys: 6 kg and 12 kg. Equal pieces cut from each; piece from first mixed with leftover of second and vice versa. Iron % becomes equal in both. Weight of each cut piece is",
+    "options": { "1": "4 kg", "2": "3.5 kg", "3": "3 kg", "4": "None of these" },
+    "correct_answer": "1",
+    "explanation": "Setting final % equal: x(12–3w) = y(12–3w). Since x≠y, 12–3w=0 ⇒ w=4 kg."
+  },
+  {
+    "id": 715,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Container full of alcohol. When 1/4 empty, filled with water. When 1/2 empty, filled with water. When 3/4 empty, filled with water. Percentage of alcohol now is",
+    "options": { "1": "37.5%", "2": "11.75%", "3": "9.375%", "4": "14.375%" },
+    "correct_answer": "3",
+    "explanation": "Alcohol fraction = (3/4)×(1/2)×(1/4) = 3/32. Percentage = 9.375%."
+  },
+  {
+    "id": 716,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Two alloys with copper:aluminium = 7:2 and 7:11. Equal quantities melted to form third alloy. Copper:aluminium in new alloy is",
+    "options": { "1": "3:4", "2": "5:3", "3": "7:3", "4": "7:5" },
+    "correct_answer": "4",
+    "explanation": "Let each alloy = 1 unit. Copper = 7/9 + 7/18 = 14/18+7/18 = 21/18. Aluminium = 2/9+11/18 = 15/18. Ratio = 21:15 = 7:5."
+  },
+  {
+    "id": 717,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Copper-zinc alloy has 82% copper. After adding 18 kg zinc, copper reduces to 70%. Copper and zinc in new alloy are",
+    "options": { "1": "Copper 88 kg, zinc 35 kg", "2": "Copper 86.1 kg, zinc 36.9 kg", "3": "Copper 80.5 kg, zinc 42.5 kg", "4": "Copper 70 kg, zinc 30 kg" },
+    "correct_answer": "2",
+    "explanation": "Let original alloy = x. 0.82x/(x+18)=0.70 ⇒ 0.12x=12.6 ⇒ x=105. New alloy=123. Copper=70%×123=86.1, Zinc=36.9."
+  },
+  {
+    "id": 718,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Beaker A has methanol:ethanol:phenyl = 1:3:2 and B has 2:1:5. Parts from A and B are mixed in C. Which ratio of methanol:phenyl:ethanol is NOT possible in C?",
+    "options": { "1": "10:23:15", "2": "7:15:16", "3": "6:13:13", "4": "9:20:18" },
+    "correct_answer": "4",
+    "explanation": "Ratio = (4x+6y):(8x+15y):(12x+3y). Testing all options: x=1/8, y=1/15 gives 9:20:17, not 9:20:18. Option 4 is impossible."
+  },
+  {
+    "id": 719,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Concentrations CA > CB > CC in containers A,B,C are in AP. Which statements are true?\nI. If VA:VB:VC=1:1:1, milk volumes are in AP.\nII. If milk amounts are in AP, volumes are all equal.\nIII. There exist situations when combined concentration is independent of VB.",
+    "options": { "1": "Statements I and II are correct", "2": "Statements I and III are correct", "3": "Statements II and III are correct", "4": "Only statement II is correct" },
+    "correct_answer": "2",
+    "explanation": "I: True — equal volumes × AP concentrations = AP milk amounts. II: False — milk in AP with CD=0 doesn't require equal volumes. III: True — if VA=VB, combined mix of A+B+C has concentration independent of VB."
+  },
+  {
+    "id": 720,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Three vessels have sugar solutions in AP (common difference 5 kg). All same sugar concentration. Difference between concentration (%) and minimum volume = 8. Total sugar = 5.4 L. Quantities in three vessels are",
+    "options": { "1": "5 kg, 10 kg and 15 kg", "2": "6 kg, 11 kg and 16 kg", "3": "7 kg, 12 kg and 17 kg", "4": "8 kg, 13 kg and 18 kg" },
+    "correct_answer": "3",
+    "explanation": "Let min volume=a, concentration=b%. b–a=8. Sugar total=(a+a+5+a+10)×b/100=5.4. Also b=a+8. Solving: a=7, b=15. Volumes: 7,12,17."
+  },
+  {
+    "id": 721,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Pipes X (acid+water mix) and Y (pure water) fill bucket in 1 hr at 8% acid concentration. If Y is closed after 30 min, acid concentration = 10% after 1 hr. Ratio of acid to water in pipe X is",
+    "options": { "1": "13:2", "2": "2:15", "3": "3:20", "4": "2:13" },
+    "correct_answer": "4",
+    "explanation": "Let a=acid from X, w₂=water from X, w₁=water from Y. Eq1: a/(a+w₁+w₂)=8/100. Eq2: a/(a+w₂/2+w₁/2+w₂/2... gives a:w₂=8:52=2:13."
+  },
+  {
+    "id": 722,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "A0 has 1L alcohol. In each operation, half of A0 is equally distributed among A1,...,An and A0 is refilled with water. Final concentration of alcohol in A1 after infinite operations is approximately",
+    "options": { "1": "62%", "2": "66%", "3": "75%", "4": "80%" },
+    "correct_answer": "2",
+    "explanation": "Alcohol in A1 = 1/2 + 1/8 + 1/32 + ... = (1/2)/(1–1/4) = 2/3. Total in A1 after infinite ops = 1. Concentration = (2/3)/1 ≈ 67% ≈ 66%."
+  },
+  {
+    "id": 723,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Ramu (5L), Kamu (10L, milk:water=2:3), Namu (15L, milk:water=1:4) mix solutions. Sold at Rs.20/L; Ramu gets Rs.2.5 per litre sold. Milk:water in Ramu's solution was",
+    "options": { "1": "1:4", "2": "2:3", "3": "1:5", "4": "3:5" },
+    "correct_answer": "1",
+    "explanation": "Ramu's share = 2.5/20 = 1/8 of milk. Total milk = Kamu's 4L + Namu's 3L + Ramu's = 8L. Ramu's milk = 1L in 5L ⇒ milk:water = 1:4."
+  },
+  {
+    "id": 724,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Two jars have milk:water = 5:4 and 2:1. To fill a 30L jar with milk:water = 1:1, volume from first jar is",
+    "options": { "1": "7.5 L", "2": "15 L", "3": "22.5 L", "4": "Impossible situation" },
+    "correct_answer": "4",
+    "explanation": "Both jars have >50% milk concentration. A 1:1 (50%) target requires a source with <50% milk, which doesn't exist here. Impossible."
+  },
+  {
+    "id": 725,
+    "topic": "Arithmetic",
+    "subtopic": "Replacement",
+    "question": "Vessel has 180 L wine. 60 L is taken out and replaced with water each day for 3 days. Wine remaining at end of 3 days is",
+    "options": { "1": "160/3 L", "2": "20/3 L", "3": "80 L", "4": "35 L" },
+    "correct_answer": "1",
+    "explanation": "Remaining = 180 × (2/3)³ = 180 × 8/27 = 160/3 L."
+  },
+  {
+    "id": 726,
+    "topic": "Arithmetic",
+    "subtopic": "Replacement",
+    "question": "20 L pure milk. 20% is taken out 3 times and replaced with water each time. Final ratio of milk to water is",
+    "options": { "1": "1:5", "2": "12:38", "3": "488:512", "4": "512:488" },
+    "correct_answer": "4",
+    "explanation": "Milk remaining = 20×(0.8)³ = 20×0.512 = 10.24L. Water = 9.76L. Ratio = 10.24:9.76 = 512:488."
+  },
+  {
+    "id": 727,
+    "topic": "Arithmetic",
+    "subtopic": "Replacement",
+    "question": "Two vessels of alcohol: first has 'a' L removed and replaced with water twice; second has '2a' L removed and replaced twice. Final alcohol ratio = 25:16. What fraction of vessel volume is 'a'?",
+    "options": { "1": "1/4", "2": "5/6", "3": "2/3", "4": "1/6" },
+    "correct_answer": "4",
+    "explanation": "Vessel capacity = x. Vessel1: (1–a/x)². Vessel2: (1–2a/x)². Ratio: [(x–a)/(x–2a)]² = 25/16 ⇒ (x–a)/(x–2a) = 5/4 ⇒ a = x/6."
+  },
+  {
+    "id": 728,
+    "topic": "Arithmetic",
+    "subtopic": "Replacement",
+    "question": "Beaker has milk:water = 5:3. Removing 6L mixture and replacing with pure water makes ratio 1:1. Initial amount of milk was",
+    "options": { "1": "18.75 L", "2": "16.25 L", "3": "20 L", "4": "18 L" },
+    "correct_answer": "1",
+    "explanation": "Let total = x. Milk after removal = 5x/8 – 6×(5/8) = 5x/8 – 15/4 = x/2 (since ratio becomes 1:1). ⇒ x=30. Milk = 5/8×30 = 18.75 L."
+  },
+  {
+    "id": 729,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Product M = X:Y = 5:4. X = A:B = 1:3. Y = B:C = 2:1. 864 units of M mixed with water; final B concentration = 50%. Water added is",
+    "options": { "1": "328 units", "2": "368 units", "3": "392 units", "4": "616 units" },
+    "correct_answer": "2",
+    "explanation": "B in M = (5/9)×(3/4) + (4/9)×(2/3) = 15/36+8/36 = 77/108. In 864 units: B = 77×8 = 616. For 50% concentration: total = 1232. Water = 1232–864 = 368."
+  },
+  {
+    "id": 730,
+    "topic": "Arithmetic",
+    "subtopic": "Replacement",
+    "question": "Container has 80 L milk. 8 L taken out and replaced with water. Process repeated once. Milk remaining is",
+    "options": { "1": "64.8 L", "2": "62.8 L", "3": "62 L", "4": "64 L" },
+    "correct_answer": "1",
+    "explanation": "Milk = 80 × (1 – 8/80)² = 80 × (0.9)² = 80 × 0.81 = 64.8 L."
+  },
+  {
+    "id": 731,
+    "topic": "Arithmetic",
+    "subtopic": "Mixtures and Alligation",
+    "question": "Cylindrical container is 4/7 full. x litres removed makes it 1/4 full. Adding 35 L makes it 1/2 full. Values of x and capacity are",
+    "options": { "1": "45 L and 210 L", "2": "25 L and 140 L", "3": "45 L and 140 L", "4": "40 L and 210 L" },
+    "correct_answer": "3",
+    "explanation": "From 1/4 to 1/2 needs 35L ⇒ 1/4 of capacity = 35 ⇒ capacity = 140L. x = (4/7–1/4)×140 = (16–7)/28×140 = 45 L."
   }
 ]
