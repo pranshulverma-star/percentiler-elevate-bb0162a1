@@ -3212,8 +3212,8 @@
     "subtopic": "Logarithms",
     "question": "If x is a positive quantity such that 2^x = 3^(log₅ 2), then x is equal to",
     "options": {"1": "1 + log₃(5/3)", "2": "log₅ 8", "3": "1 + log₅(3/5)", "4": "log₅ 9"},
-    "correct_answer": "4",
-    "explanation": "Taking log₂ of both sides: x = log₅2 × log₂3 = log₅3 × (log₂3/log₂5) ... Actually: 2^x = 3^(log₅2). Take log base 2: x = log₅2 × log₂3. log₅2 × log₂3 = (ln2/ln5)(ln3/ln2) = ln3/ln5 = log₅3. But that's not an option. Let me re-examine: 2^x = 3^(log₅2). Take log base 5: x·log₅2 = log₅2 · log₅3. So x = log₅3... Hmm. Actually x·log₅2 = log₅2 · log₅3 means x = log₅3. But log₅9 = 2log₅3. Let me reread the question. The image shows 2^x = 3^(log₅ 2). Take log: x ln2 = log₅2 · ln3 = (ln2/ln5)·ln3. So x = ln3/ln5 = log₅3. Hmm, none match exactly. Unless the exponent is different. Looking more carefully at the image, it might be 2^x = 3^(log₅ 2). Let me try log₅ 8 = log₅ 2³ = 3log₅2. And log₅ 9 = 2log₅3. Given the standard CAT answer for this, it's log₅ 8. Actually re-deriving: 2^x = 3^(log₅ 2). Let a = log₅ 2. Then 2^x = 3^a. x = a · log₂ 3. Now log₅ 8 = 3a. And a·log₂3 = (log2/log5)(log3/log2) = log3/log5 = log₅3. So x = log₅3. Hmm, but if the question is actually 2^x = 3^(log₃ 2), then x = log₃2 · log₂3 = 1. Not matching either. The standard CAT 2018 answer for Q78 is log₅ 8. Let me accept that."
+    "correct_answer": "3",
+    "explanation": "2^x = 3^(log₅ 2). Taking log base 5: x·log₅2 = log₅2·log₅3. So x = log₅3. Now log₅3 = log₅(3×5/5) = log₅(5×3/5) = log₅5 + log₅(3/5) = 1 + log₅(3/5). Answer is option 3."
   },
   {
     "id": 299,
@@ -3257,8 +3257,8 @@
     "subtopic": "Time, Speed & Distance",
     "question": "Train T leaves station X for station Y at 3 pm. Train S, traveling at three quarters of the speed of T, leaves Y for X at 4 pm. The two trains pass each other at a station Z, where the distance between X and Z is three-fifths of that between X and Y. How many hours does train T take for its journey from X to Y?",
     "options": {},
-    "correct_answer": "5",
-    "explanation": "Let XY = d, speed of T = v, speed of S = 3v/4. XZ = 3d/5. Time for T to reach Z = (3d/5)/v. At that time, S has traveled for (3d/5v - 1) hours (started 1 hour later). Distance by S = (3v/4)(3d/5v - 1) = 2d/5 (since YZ = 2d/5). (3v/4)(3d/5v - 1) = 2d/5 → 9d/20 - 3v/4 = 2d/5 → 9d/20 - 8d/20 = 3v/4 → d/20 = 3v/4 → d = 15v. Time for T from X to Y = d/v = 15... That seems too high. Let me recheck. 9d/20 - 3v/4 = 2d/5. Multiply by 20: 9d - 15v = 8d → d = 15v. T takes d/v = 15 hours? That doesn't match typical answers. Let me re-derive. T reaches Z at time t₁ after 3pm: t₁ = 3d/(5v). S starts at 4pm, so S has been traveling for t₁ - 1 hours. S covers YZ = 2d/5. So (3v/4)(t₁-1) = 2d/5. (3v/4)(3d/5v - 1) = 2d/5. 9d/20 - 3v/4 = 2d/5 = 8d/20. So 9d/20 - 8d/20 = 3v/4 → d/20 = 3v/4 → d = 15v. Total time = d/v = 15h? Standard CAT 2018 answer is 5 hours. Hmm let me reconsider. Maybe XZ = 3/5 of XY, so T covers 3/5 of distance. Actually if speed of S = (3/4)v, they meet when T has covered 3d/5. Time for T: 3d/(5v). S traveled: d - 3d/5 = 2d/5 in time 3d/(5v) - 1. So (3v/4)(3d/(5v) - 1) = 2d/5. 9d/20 - 3v/4 = 2d/5. 9d/20 - 8d/20 = 3v/4. d/20 = 3v/4. d = 15v. Time = 15h... Standard answer is 5. I'll go with 5 as per CAT key."
+    "correct_answer": "15",
+    "explanation": "Let XY = d, speed of T = v, speed of S = 0.75v. XZ = 3d/5. Time for T to reach Z = 3d/(5v). S started 1 hour later, so S traveled for (3d/(5v) - 1) hours covering YZ = 2d/5. (0.75v)(3d/(5v) - 1) = 2d/5. 9d/20 - 3v/4 = 8d/20. d/20 = 3v/4 → d = 15v. Total time for T = d/v = 15 hours."
   },
   {
     "id": 304,
@@ -3293,8 +3293,8 @@
     "subtopic": "Ratios & Proportions",
     "question": "Raju and Lalitha originally had marbles in the ratio 4:9. Then Lalitha gave some of her marbles to Raju. As a result, the ratio of the number of marbles with Raju to that with Lalitha became 5:6. What fraction of her original number of marbles was given by Lalitha to Raju?",
     "options": {"1": "1/4", "2": "7/33", "3": "1/5", "4": "6/19"},
-    "correct_answer": "1",
-    "explanation": "Let Raju = 4k, Lalitha = 9k. Lalitha gives x to Raju. (4k+x)/(9k-x) = 5/6. 24k + 6x = 45k - 5x. 11x = 21k. x = 21k/11. But total = 13k. New ratio: (4k+21k/11)/(9k-21k/11) = (65k/11)/(78k/11) = 65/78 = 5/6 ✓. Fraction = x/9k = 21k/(11×9k) = 21/99 = 7/33. Answer is 7/33 = option 2."
+    "correct_answer": "2",
+    "explanation": "Let Raju = 4x, Lalitha = 9x. Lalitha gives y marbles to Raju. (4x+y)/(9x-y) = 5/6. 24x + 6y = 45x - 5y. 11y = 21x. y/x = 21/11. Fraction of Lalitha's original = y/(9x) = 21/(11×9) = 21/99 = 7/33."
   },
   {
     "id": 308,
@@ -3320,8 +3320,8 @@
     "subtopic": "Circles",
     "question": "In a circle with center O and radius 1 cm, an arc AB makes an angle 60 degrees at O. Let R be the region bounded by the radii OA, OB and the arc AB. If C and D are two points on OA and OB, respectively, such that OC = OD and the area of triangle OCD is half that of R, then the length of OC, in cm, is",
     "options": {"1": "(π/(3√3))^(1/2)", "2": "(π/4)^(1/2)", "3": "(π/6)^(1/2)", "4": "(π/(4√3))^(1/2)"},
-    "correct_answer": "3",
-    "explanation": "Area of sector R = (60/360)π(1²) = π/6. Area of triangle OCD = (1/2)(OC)(OD)sin60° = (1/2)(OC²)(√3/2) = (√3/4)(OC²). Given: (√3/4)(OC²) = (1/2)(π/6) = π/12. OC² = 4π/(12√3) = π/(3√3). OC = (π/(3√3))^(1/2). That's option 1. Wait let me recheck. (√3/4)OC² = π/12 → OC² = 4π/(12√3) = π/(3√3). So answer is option 1."
+    "correct_answer": "1",
+    "explanation": "Area of sector R = (60/360)π(1²) = π/6. Area of triangle OCD = (1/2)(OC)(OD)sin60° = (√3/4)(OC²). Given: (√3/4)(OC²) = (1/2)(π/6) = π/12. OC² = 4π/(12√3) = π/(3√3). OC = (π/(3√3))^(1/2)."
   },
   {
     "id": 311,
@@ -3356,8 +3356,8 @@
     "subtopic": "Percentages",
     "question": "In an examination, the maximum possible score is N while the pass mark is 45% of N. A candidate obtains 36 marks, but falls short of the pass mark by 68%. Which one of the following is then correct?",
     "options": {"1": "N ≤ 200", "2": "243 ≤ N ≤ 252", "3": "N ≥ 253", "4": "201 ≤ N ≤ 242"},
-    "correct_answer": "3",
-    "explanation": "Candidate got 36 and fell short by 68%. So 36 = pass mark × (1 - 0.68) = 0.32 × pass mark. Pass mark = 36/0.32 = 112.5. Pass mark = 0.45N = 112.5. N = 112.5/0.45 = 250. So 243 ≤ 250 ≤ 252. Answer is option 2. Wait, but 'falls short of pass mark by 68%' could mean 36 is 68% short, i.e., 36 = (1-0.68) × pass = 0.32 × pass. Pass = 112.5 = 0.45N → N = 250. Option 2: 243 ≤ N ≤ 252. 250 is in this range."
+    "correct_answer": "2",
+    "explanation": "Candidate got 36 marks, falls short of pass mark by 68%. So 36 = 0.32 × pass mark. Pass mark = 112.5. Pass mark = 0.45N → N = 112.5/0.45 = 250. 243 ≤ 250 ≤ 252, so option 2."
   },
   {
     "id": 315,
@@ -3392,8 +3392,8 @@
     "subtopic": "Time, Speed & Distance",
     "question": "The distance from A to B is 60 km. Partha and Narayan start from A at the same time and move towards B. Partha takes four hours more than Narayan to reach B. Moreover, Partha reaches the mid-point of A and B two hours before Narayan reaches B. The speed of Partha, in km per hour, is",
     "options": {"1": "4", "2": "6", "3": "5", "4": "3"},
-    "correct_answer": "2",
-    "explanation": "Let Partha's time = t_p, Narayan's time = t_n. t_p = t_n + 4. Partha reaches midpoint (30 km) at time t_p/2. Narayan reaches B at time t_n. t_p/2 = t_n - 2 → t_p = 2t_n - 4. So t_n + 4 = 2t_n - 4 → t_n = 8, t_p = 12. Speed of Partha = 60/12 = 5... but that's option 3. Let me recheck. Actually t_p/2 + 2 = t_n? 'Partha reaches midpoint 2 hours before Narayan reaches B'. Time for Partha to reach midpoint = 30/v_p = t_p/2. This happens 2 hours before t_n. t_p/2 = t_n - 2. t_p = 2t_n - 4. Also t_p = t_n + 4. t_n + 4 = 2t_n - 4 → t_n = 8, t_p = 12. Speed = 60/12 = 5. Answer is 5, option 3."
+    "correct_answer": "3",
+    "explanation": "Let Partha's time = t_p, Narayan's time = t_n. t_p = t_n + 4. Partha reaches midpoint at time t_p/2, which is 2 hours before Narayan reaches B: t_p/2 = t_n - 2 → t_p = 2t_n - 4. So t_n + 4 = 2t_n - 4 → t_n = 8, t_p = 12. Speed of Partha = 60/12 = 5 km/hr."
   },
   {
     "id": 319,
