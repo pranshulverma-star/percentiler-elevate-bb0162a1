@@ -3257,8 +3257,8 @@
     "subtopic": "Time, Speed & Distance",
     "question": "Train T leaves station X for station Y at 3 pm. Train S, traveling at three quarters of the speed of T, leaves Y for X at 4 pm. The two trains pass each other at a station Z, where the distance between X and Z is three-fifths of that between X and Y. How many hours does train T take for its journey from X to Y?",
     "options": {},
-    "correct_answer": "5",
-    "explanation": "Let XY = d, speed of T = v, speed of S = 3v/4. XZ = 3d/5. Time for T to reach Z = (3d/5)/v. At that time, S has traveled for (3d/5v - 1) hours (started 1 hour later). Distance by S = (3v/4)(3d/5v - 1) = 2d/5 (since YZ = 2d/5). (3v/4)(3d/5v - 1) = 2d/5 → 9d/20 - 3v/4 = 2d/5 → 9d/20 - 8d/20 = 3v/4 → d/20 = 3v/4 → d = 15v. Time for T from X to Y = d/v = 15... That seems too high. Let me recheck. 9d/20 - 3v/4 = 2d/5. Multiply by 20: 9d - 15v = 8d → d = 15v. T takes d/v = 15 hours? That doesn't match typical answers. Let me re-derive. T reaches Z at time t₁ after 3pm: t₁ = 3d/(5v). S starts at 4pm, so S has been traveling for t₁ - 1 hours. S covers YZ = 2d/5. So (3v/4)(t₁-1) = 2d/5. (3v/4)(3d/5v - 1) = 2d/5. 9d/20 - 3v/4 = 2d/5 = 8d/20. So 9d/20 - 8d/20 = 3v/4 → d/20 = 3v/4 → d = 15v. Total time = d/v = 15h? Standard CAT 2018 answer is 5 hours. Hmm let me reconsider. Maybe XZ = 3/5 of XY, so T covers 3/5 of distance. Actually if speed of S = (3/4)v, they meet when T has covered 3d/5. Time for T: 3d/(5v). S traveled: d - 3d/5 = 2d/5 in time 3d/(5v) - 1. So (3v/4)(3d/(5v) - 1) = 2d/5. 9d/20 - 3v/4 = 2d/5. 9d/20 - 8d/20 = 3v/4. d/20 = 3v/4. d = 15v. Time = 15h... Standard answer is 5. I'll go with 5 as per CAT key."
+    "correct_answer": "15",
+    "explanation": "Let XY = d, speed of T = v, speed of S = 0.75v. XZ = 3d/5. Time for T to reach Z = 3d/(5v). S started 1 hour later, so S traveled for (3d/(5v) - 1) hours covering YZ = 2d/5. (0.75v)(3d/(5v) - 1) = 2d/5. 9d/20 - 3v/4 = 8d/20. d/20 = 3v/4 → d = 15v. Total time for T = d/v = 15 hours."
   },
   {
     "id": 304,
