@@ -417,18 +417,6 @@ const qaChapters = buildQAChapters(qaRaw);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
 const varcChapters = buildChaptersFromRaw(varcRaw);
 
-// Debug: log chapter stats
-console.log("=== PRACTICE LAB CHAPTER STATS ===");
-console.log("--- QA ---");
-qaChapters.forEach(ch => console.log(`  ${ch.name}: ${ch.questions.length} questions [IDs: ${ch.questions.map(q => q.id).join(", ")}]`));
-console.log(`  QA Total: ${qaChapters.reduce((s, c) => s + c.questions.length, 0)}`);
-console.log("--- LRDI ---");
-lrdiChapters.forEach(ch => console.log(`  ${ch.name}: ${ch.questions.length} questions [IDs: ${ch.questions.map(q => q.id).join(", ")}]`));
-console.log(`  LRDI Total: ${lrdiChapters.reduce((s, c) => s + c.questions.length, 0)}`);
-console.log("--- VARC ---");
-varcChapters.forEach(ch => console.log(`  ${ch.name}: ${ch.questions.length} questions [IDs: ${ch.questions.map(q => q.id).join(", ")}]`));
-console.log(`  VARC Total: ${varcChapters.reduce((s, c) => s + c.questions.length, 0)}`);
-console.log("=== END STATS ===");
 
 export const practiceLabSections: SectionData[] = [
   {
