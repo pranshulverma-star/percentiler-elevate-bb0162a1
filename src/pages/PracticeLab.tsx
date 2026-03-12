@@ -473,7 +473,7 @@ function QuizView({
       </div>
 
       {/* Main content area — split layout for grouped questions */}
-      {q.group_context ? (
+      {groupContext ? (
         /* Grouped layout: context on top (mobile) / left (desktop), questions on right */
         <div className="flex flex-col md:flex-row gap-4 md:gap-5">
           {/* Left: Group context (passage / set instructions) */}
@@ -481,7 +481,7 @@ function QuizView({
             <Card className="p-4 md:p-6 border border-primary/20 bg-primary/[0.02] md:sticky md:top-24 h-fit">
               <p className="text-[10px] uppercase tracking-wider text-primary font-bold mb-2">📖 Passage / Set</p>
               <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap max-h-[50vh] md:max-h-[65vh] overflow-y-auto">
-                {q.group_context}
+                {groupContext}
               </div>
             </Card>
           </div>
