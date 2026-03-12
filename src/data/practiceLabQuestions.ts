@@ -1,5 +1,5 @@
 import rawQuestions from "./questions_full.json";
-import { topicOverrides, getDifficulty, getConceptTags, getSkillTags, type Difficulty } from "./questionFixes";
+import { topicOverrides, getDifficulty, getConceptTags, getSkillTags, getQAChapter, QA_CHAPTER_ORDER, type Difficulty } from "./questionFixes";
 
 export interface PracticeQuestion {
   id: number;
@@ -311,6 +311,87 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
   }));
 }
 
+/** Build QA chapters using the official syllabus chapter mapping. */
+function buildQAChapters(raw: RawQuestion[]): Chapter[] {
+  const chapterMap = new Map<string, PracticeQuestion[]>();
+
+  for (const r of raw) {
+    if (/same as id\s*\d+|see id\s*\d+/i.test(r.question) || /see full explanation there/i.test(r.question)) {
+      continue;
+    }
+    if ((r as any).group_image) continue;
+
+    const override = topicOverrides[r.id];
+    const topic = override?.topic ?? r.topic;
+    const subtopic = override?.subtopic ?? r.subtopic;
+
+    const optKeys = Object.keys(r.options);
+    const isMcq = optKeys.length >= 2 && optKeys.every((k) => /^\d+$/.test(k));
+
+    const difficulty = getDifficulty(r.id, subtopic);
+    const concept_tags = getConceptTags(topic, subtopic);
+    const skill_tags = getSkillTags(topic, subtopic);
+
+    let pq: PracticeQuestion;
+
+    if (isMcq) {
+      const sortedKeys = optKeys.sort((a, b) => Number(a) - Number(b));
+      const optionsArr = sortedKeys.map((k) => r.options[k]);
+      if (optionsArr.some((o) => o.length > 120)) continue;
+      const correctIdx = sortedKeys.indexOf(r.correct_answer);
+
+      pq = {
+        id: r.id,
+        question: r.question,
+        type: "mcq",
+        options: optionsArr,
+        correctAnswer: correctIdx >= 0 ? correctIdx : 0,
+        explanation: r.explanation,
+        group_id: r.group_id,
+        group_context: r.group_context,
+        difficulty,
+        concept_tags,
+        skill_tags,
+      };
+    } else {
+      const answerText = r.correct_answer === "Open-ended"
+        ? extractAnswerFromExplanation(r.explanation || "")
+        : r.correct_answer;
+      if (!answerText || answerText.length > 60) continue;
+
+      const { options, correctIndex } = generateDistractors(answerText, r.id);
+
+      pq = {
+        id: r.id,
+        question: r.question,
+        type: "mcq",
+        options,
+        correctAnswer: correctIndex,
+        explanation: r.explanation,
+        group_id: r.group_id,
+        group_context: r.group_context,
+        difficulty,
+        concept_tags,
+        skill_tags,
+      };
+    }
+
+    // Use the official chapter mapping
+    const chapterName = getQAChapter(topic, subtopic);
+    if (!chapterMap.has(chapterName)) chapterMap.set(chapterName, []);
+    chapterMap.get(chapterName)!.push(pq);
+  }
+
+  // Return chapters in official syllabus order, skipping empty ones
+  return QA_CHAPTER_ORDER
+    .filter((name) => chapterMap.has(name))
+    .map((name) => ({
+      slug: slugify(name),
+      name,
+      questions: chapterMap.get(name)!,
+    }));
+}
+
 // ── Section routing by topic ────────────────────────────────────────────────
 
 const LRDI_TOPICS = new Set(["Logical Reasoning", "Data Interpretation"]);
@@ -332,7 +413,7 @@ const qaRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) ===
 const lrdiRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "lrdi");
 const varcRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "varc");
 
-const qaChapters = buildChaptersFromRaw(qaRaw, false, true);
+const qaChapters = buildQAChapters(qaRaw);
 const lrdiChapters = buildChaptersFromRaw(lrdiRaw, true);
 const varcChapters = buildChaptersFromRaw(varcRaw);
 
