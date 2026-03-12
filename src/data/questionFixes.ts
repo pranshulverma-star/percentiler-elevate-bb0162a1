@@ -322,6 +322,9 @@ const topicToChapter: Record<string, string> = {
   "Geometry": "Geometry",
   "Algebra": "Simple Equations",
   "Arithmetic": "Percentages", // fallback for unmapped Arithmetic subtopics
+  "Indices and Surds": "Indices & Surds",
+  "Permutation and Combination": "Permutation & Combination",
+  "Probability": "Probability",
 };
 
 /**

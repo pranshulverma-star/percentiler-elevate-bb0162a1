@@ -6951,5 +6951,842 @@
     "options": { "1": "45 L and 210 L", "2": "25 L and 140 L", "3": "45 L and 140 L", "4": "40 L and 210 L" },
     "correct_answer": "3",
     "explanation": "From 1/4 to 1/2 needs 35L ⇒ 1/4 of capacity = 35 ⇒ capacity = 140L. x = (4/7–1/4)×140 = (16–7)/28×140 = 45 L."
+  },
+  {
+    "id": 732,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Simplification",
+    "question": "Simplify: [(81)^(4a)]^a - [27^(8b)]^a · [(243)(9²)]^(b²)",
+    "options": { "1": "(729)^(a+b)", "2": "9^(3a+b-3a-b)", "3": "(81)^((a+b)²)", "4": "3^((4a+3b)²)" },
+    "correct_answer": "4",
+    "explanation": "Convert all bases to powers of 3: 81=3⁴, 27=3³, 243=3⁵, 9=3². Simplify each term using power rules and combine exponents. The expression reduces to 3^((4a+3b)²)."
+  },
+  {
+    "id": 733,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Relations between exponents",
+    "question": "If 5^x = (0.125)^y = 10^(3z), then what is the relation between x, y and z, given that they are non-zero real numbers?",
+    "options": { "1": "1/x + 1/y + 1/z = 1", "2": "3/x = 1/y + 1/z", "3": "1/z - 1/y - 1/x = 1", "4": "xyz = 1" },
+    "correct_answer": "2",
+    "explanation": "Let 5^x = (0.125)^y = 10^(3z) = k. Then 5 = k^(1/x), 0.125 = k^(1/y), 10 = k^(1/(3z)). Working through log relationships yields 3/x = 1/y + 1/z."
+  },
+  {
+    "id": 734,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Exponent manipulation",
+    "question": "If a is positive and not equal to 1 and a^(-x³) = p, a^(-y³) = q, a^(-z³) = r and x + y + z = 0, for what value of a will xyz be equal to -1/3?",
+    "options": { "1": "p + q + r", "2": "pqr", "3": "³√3 pqr", "4": "1/pqr" },
+    "correct_answer": "2",
+    "explanation": "pqr = a^(-(x³+y³+z³)). Using identity x³+y³+z³ = 3xyz when x+y+z=0: pqr = a^(-3xyz). For xyz = -1/3: pqr = a^1 = a. Hence a = pqr."
+  },
+  {
+    "id": 735,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Solving equations",
+    "question": "Solve for x and y: 3.5^x + 2^(y+2) = 107, 5^(x+1) + 8.2^y = 189",
+    "options": { "1": "3, 2", "2": "5, 7", "3": "7, 5", "4": "2, 3" },
+    "correct_answer": "4",
+    "explanation": "Try x=2, y=3: Eq1: 3×25 + 2^5 = 75+32=107 ✓. Eq2: 5³ + 8×8 = 125+64 = 189 ✓. Hence x=2, y=3."
+  },
+  {
+    "id": 736,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Solving equations",
+    "question": "If (3^(x+1)) + (4^(y-1)) = 73 and 4(3^x) + 3(4^(y/2)) = 60, find x + y.",
+    "options": { "1": "5", "2": "4", "3": "-1", "4": "-2" },
+    "correct_answer": "1",
+    "explanation": "Let a = 3^x and b = 4^(y/2). By substitution or trial: x=3, y=2. x+y=5."
+  },
+  {
+    "id": 737,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Simplification",
+    "question": "If [(2^a)^b · (2^b)^c · (2^c)^a] / [(4^a)^b · (4^b)^c · (4^c)^a] = 8, which of the following is a possible value of a + b + c?",
+    "options": { "1": "-3", "2": "1", "3": "2", "4": "-2" },
+    "correct_answer": "1",
+    "explanation": "Numerator = 2^(ab+bc+ca). Denominator = 2^(2(ab+bc+ca)). Expression = 2^(-(ab+bc+ca)) = 8 = 2³. So ab+bc+ca = -3. If a=b=c=-1: a+b+c = -3."
+  },
+  {
+    "id": 738,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Algebraic simplification",
+    "question": "Evaluate: 1/(1 + m^(xy-yz) + m^(xy-zx)) + 1/(1 + m^(yz-zx) + m^(yz-xy)) + 1/(1 + m^(zx-xy) + m^(zx-yz))",
+    "options": { "1": "1/3", "2": "1/2", "3": "1", "4": "2" },
+    "correct_answer": "3",
+    "explanation": "Let m^xy = a, m^yz = b, m^zx = c. The three fractions become symmetric. Multiplying and adding gives (bc + ac + ab)/(bc+ac+ab) = 1."
+  },
+  {
+    "id": 739,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Exponential relations",
+    "question": "If x^y = y^z = z^x = k, which of the following is equal to k?",
+    "options": { "1": "k = (xyz)^xyz", "2": "k = (xyz)^(xy+yz+zx)", "3": "k = X^y + Y^z + Z^x / xyz", "4": "k = (xyz)^((xyz)/(xy+yz+zx))" },
+    "correct_answer": "4",
+    "explanation": "x = k^(1/y), y = k^(1/z), z = k^(1/x). Then xyz = k^((xy+yz+zx)/(xyz)). Therefore k = (xyz)^(xyz/(xy+yz+zx))."
+  },
+  {
+    "id": 740,
+    "topic": "Indices and Surds",
+    "subtopic": "Laws of Indices - Constraint-based reasoning",
+    "question": "If a^a × b^b × c^c = a^b × b^c × c^a = a^c × b^a × c^b and a, b, c are positive integers greater than 1, then which of the following can NOT be true for any of the possible values of a, b, c?",
+    "options": { "1": "abc = 8", "2": "a + b + c = 8", "3": "abc = 27", "4": "a + b + c = 27" },
+    "correct_answer": "2",
+    "explanation": "All three expressions being equal implies a = b = c. With a, b, c > 1 and integers, minimum is a=b=c=2 giving a+b+c=6. Next is 9. So a+b+c=8 is impossible."
+  },
+  {
+    "id": 741,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Continued fractions",
+    "question": "If x = 2 / (2 + 2/(2 + 2/(2 + 2/...∞))), find x.",
+    "options": { "1": "2 - √2", "2": "1/(2√3)", "3": "-1 + √3", "4": "-1 + √2" },
+    "correct_answer": "3",
+    "explanation": "Since the expression is infinite, x = 2/(2 + x). So x(2+x) = 2, x² + 2x - 2 = 0. x = -1 + √3 (positive root)."
+  },
+  {
+    "id": 742,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Comparison and ordering",
+    "question": "Arrange a, b, c in ascending order, where a = 9^11 + 3^12; b = 81^7 + 7^12 and c = 27^8 + 5^12",
+    "options": { "1": "a, c, b", "2": "a, b, c", "3": "b, c, a", "4": "d, b, a" },
+    "correct_answer": "1",
+    "explanation": "a = 3^22 + 3^12, b = 3^28 + 7^12, c = 3^24 + 5^12. Dominant terms: a ~ 3^22, c ~ 3^24, b ~ 3^28. So a < c < b."
+  },
+  {
+    "id": 743,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Comparison and ordering",
+    "question": "Arrange the following numbers in ascending order: 3^(1/5), 4^(1/6), 5^(1/7), 6^(1/8)",
+    "options": { "1": "3^(1/5), 6^(1/8), 5^(1/7), 4^(1/6)", "2": "3^(1/5), 5^(1/7), 6^(1/8), 4^(1/6)", "3": "3^(1/5), 6^(1/8), 4^(1/6), 5^(1/7)", "4": "4^(1/6), 3^(1/5), 5^(1/7), 6^(1/8)" },
+    "correct_answer": "1",
+    "explanation": "Raise all to LCM of 5,6,7,8=840 and compare. Ascending: 3^(1/5) < 6^(1/8) < 5^(1/7) < 4^(1/6)."
+  },
+  {
+    "id": 744,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Comparison and ordering",
+    "question": "The ascending order of 16^(7/12), 81^(3/8), 625^(2/3) is ___.",
+    "options": { "1": "16^(7/12), 81^(3/8), 625^(2/3)", "2": "16^(7/12), 625^(2/3), 81^(3/8)", "3": "625^(2/3), 16^(7/12), 81^(3/8)", "4": "81^(3/8), 16^(7/12), 625^(2/3)" },
+    "correct_answer": "1",
+    "explanation": "16^(7/12) = 2^(7/3) ≈ 5.04; 81^(3/8) = 3^(3/2) ≈ 5.196; 625^(2/3) = 5^(8/3) ≈ 14.62. Ascending: 16^(7/12) < 81^(3/8) < 625^(2/3)."
+  },
+  {
+    "id": 745,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Exponent with conditions",
+    "question": "If p² + q² + r² = 1, what is the value of (^(-pq)√a) × (^(-qr)√(a^p)) × (^(-pr)√(a^q))?",
+    "options": { "1": "1/(a)^(1/pqr)", "2": "(a)^(1/pqr)", "3": "1/(a)^(pqr)", "4": "(a)^(pqr)" },
+    "correct_answer": "1",
+    "explanation": "Combining fractional exponents using p²+q²+r²=1, the combined exponent reduces to -1/pqr. Result is 1/a^(1/pqr)."
+  },
+  {
+    "id": 746,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Algebraic simplification",
+    "question": "Simplify: (a/(√b - √c) + a/(√b + √c))²",
+    "options": { "1": "2a²c/(b-c)²", "2": "(b-c)²/(4a²b)", "3": "4a²b/(b-c)²", "4": "2a²/(b² + c² - a²)" },
+    "correct_answer": "3",
+    "explanation": "a/(√b-√c) + a/(√b+√c) = a[2√b/(b-c)]. Squaring: [2a√b/(b-c)]² = 4a²b/(b-c)²."
+  },
+  {
+    "id": 747,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Substitution and simplification",
+    "question": "If 2√2 + 3 = x, what is the value of (11 + 4√6)/(2√2 - √3) in terms of x?",
+    "options": { "1": "x²/√2", "2": "x³", "3": "x³/8", "4": "x³/5" },
+    "correct_answer": "4",
+    "explanation": "Given x = 2√2 + 3. The numerator 11 + 4√6 = (2√2 + √3)². After simplification, the expression equals x³/5."
+  },
+  {
+    "id": 748,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Comparison",
+    "question": "Which of the following is the greatest?",
+    "options": { "1": "16 × ⁵√81", "2": "5 × ⁴√27", "3": "12 × ⁶√243", "4": "8 × ³√9" },
+    "correct_answer": "1",
+    "explanation": "A = 16×81^(1/5) ≈ 38.5; B ≈ 11.4; C ≈ 30; D ≈ 16.6. Greatest is A."
+  },
+  {
+    "id": 749,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Algebraic identities",
+    "question": "If a = √5 + 2, then a² - 1/a² is equal to ________.",
+    "options": { "1": "18", "2": "0", "3": "8√5", "4": "-8√5" },
+    "correct_answer": "3",
+    "explanation": "a = √5 + 2, 1/a = √5-2. a² = 9+4√5, 1/a² = 9-4√5. a² - 1/a² = 8√5."
+  },
+  {
+    "id": 750,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Substitution and simplification",
+    "question": "If x = 5 - √21, find the value of √x / √(32 - 2x - √21).",
+    "options": { "1": "(√7 - √3)/2", "2": "(√7 - √3)/√3", "3": "(√7 - √3)/√2", "4": "(√7 - √3)/3" },
+    "correct_answer": "3",
+    "explanation": "5 - √21 = (√7-√3)²/2. √x = (√7-√3)/√2. Similarly simplify denominator. Answer = (√7-√3)/√2."
+  },
+  {
+    "id": 751,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Comparison and ordering",
+    "question": "Arrange a, b, c and d in descending order if a = √13 + √9, b = √19 + √3, c = √17 + √5, d = √12 + √10.",
+    "options": { "1": "b, c, a, d", "2": "d, b, a, c", "3": "d, b, c, a", "4": "d, a, c, b" },
+    "correct_answer": "4",
+    "explanation": "a ≈ 6.606; b ≈ 6.091; c ≈ 6.359; d ≈ 6.626. Descending: d > a > c > b."
+  },
+  {
+    "id": 752,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Nested surd simplification",
+    "question": "Find the value of √(16 + 2√55).",
+    "options": { "1": "1 + √15", "2": "√10 + √5 + 5", "3": "1 + 2√5 + √15", "4": "√11 + √5" },
+    "correct_answer": "4",
+    "explanation": "√(a + 2√b) = √x + √y where x+y=16 and xy=55. t²-16t+55=0: t=11 or t=5. Answer = √11 + √5."
+  },
+  {
+    "id": 753,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Algebraic simplification",
+    "question": "Simplify: √(a + b + c + 2√(ac + bc)).",
+    "options": { "1": "a + b + c", "2": "√a + √b + √c", "3": "√(ab + bc)", "4": "√(abc)" },
+    "correct_answer": "2",
+    "explanation": "The expression factors as (√a+√b+√c)². The answer is √a + √b + √c."
+  },
+  {
+    "id": 754,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Nested surd simplification",
+    "question": "Find the square root of 23 + 4√10 - 10√2 - 8√5.",
+    "options": { "1": "√5 + √10 - √8", "2": "√10 + √8 - √5", "3": "√8 + √5 + √10", "4": "√5 + √8 - √10" },
+    "correct_answer": "4",
+    "explanation": "(√5 + √8 - √10)² = 5 + 8 + 10 + 2(2√10 - 5√2 - 4√5) = 23 + 4√10 - 10√2 - 8√5 ✓."
+  },
+  {
+    "id": 755,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Infinite nested radicals",
+    "question": "If √(x√(x√(x......∞))) = 11^x, what is the value of (⁴√x)?",
+    "options": { "1": "11", "2": "³√11", "3": "√11", "4": "1" },
+    "correct_answer": "1",
+    "explanation": "The infinite nested radical = x^1 via geometric series. Solving gives ⁴√x = 11."
+  },
+  {
+    "id": 756,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Infinite continued fractions",
+    "question": "If x = √(6 / (4 + √(6 / (2 + √(6 / (4 + 6/(2+...∞))))))), find the value of x.",
+    "options": { "1": "(9 + √33)/2", "2": "1", "3": "(9 - √43)/2", "4": "(9 - √33)/4" },
+    "correct_answer": "2",
+    "explanation": "The pattern repeats with period 2. Setting up the self-referential equation and solving yields x = 1."
+  },
+  {
+    "id": 757,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Rationalization",
+    "question": "Find the value of: 1/(√5 + √(11-2√30)) - 1/(√3 - √(10+2√21))",
+    "options": { "1": "(6√7 - 7√6)/42", "2": "(7√6 + 6√7)/42", "3": "(7√7 - 6√6)/42", "4": "(7√7 + 6√6)/42" },
+    "correct_answer": "2",
+    "explanation": "Denest: √(11-2√30) = √6 - √5, √(10+2√21) = √7+√3. Result: 1/√6 + 1/√7 = (7√6+6√7)/42."
+  },
+  {
+    "id": 758,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Telescoping sums",
+    "question": "If 1/(√x + √(x+1)) + 1/(√(x+1) + √(x+2)) + ... + 1/(√(x+98) + √(x+99)) = 9, which of the following is a possible value of x?",
+    "options": { "1": "2", "2": "1", "3": "4", "4": "3" },
+    "correct_answer": "2",
+    "explanation": "Rationalizing telescopes to √(x+99) - √x = 9. Squaring: 18√x = 18, so x = 1."
+  },
+  {
+    "id": 759,
+    "topic": "Indices and Surds",
+    "subtopic": "Surds - Conjugate rationalization",
+    "question": "Find the value of x² - 3xy + y², if x = (√19 + ³√2)/(√19 - ³√2) and y = (√9 - ³√2)/(√19 + ³√2)",
+    "options": { "1": "5466", "2": "5471", "3": "5476", "4": "5481" },
+    "correct_answer": "2",
+    "explanation": "Compute x+y and xy first after rationalizing. x²-3xy+y² = (x+y)² - 5xy evaluates to 5471."
+  },
+  {
+    "id": 760,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Flag/Coloring problems",
+    "question": "A new flag is to be designed with six vertical stripes using some or all of the colours yellow, green, blue and red. Then, the number of ways this can be done so that no two adjacent stripes have the same colour is",
+    "options": { "1": "12 × 81", "2": "16 × 192", "3": "20 × 125", "4": "24 × 216" },
+    "correct_answer": "1",
+    "explanation": "First stripe: 4 choices. Each subsequent: 3 choices. Total = 4 × 3^5 = 972 = 12 × 81."
+  },
+  {
+    "id": 761,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Geometric Progressions in number formation",
+    "question": "How many five digit numbers are there such that the digits at hundreds' place, unit place and ten-thousand's place form a Geometric Progression, not necessarily in the same order?",
+    "options": { "1": "3300", "2": "2700", "3": "1300", "4": "1700" },
+    "correct_answer": "1",
+    "explanation": "9 constant GPs × 100 + 4 non-constant GPs × 6 × 100 = 900 + 2400 = 3300."
+  },
+  {
+    "id": 762,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Digit counting",
+    "question": "If I write all the numbers from 100 to 1000, for how many times I will have to write the digit 2?",
+    "options": { "1": "100", "2": "280", "3": "900", "4": "480" },
+    "correct_answer": "2",
+    "explanation": "Hundreds place: 100. Tens place: 90. Units place: 90. Total = 280."
+  },
+  {
+    "id": 763,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Queue arrangements with constraints",
+    "question": "Let n be the number of ways in which 5 men and 6 women can stand in a queue such that all the women stand consecutively. Let m be the number of ways in which the same 11 persons can stand in a queue such that exactly 5 women stand consecutively. The value of m/n is",
+    "options": { "1": "5", "2": "6", "3": "5/6", "4": "6/5" },
+    "correct_answer": "1",
+    "explanation": "n = 6! × 6!. m = 6 × 5! × 6! × 5. m/n = 5."
+  },
+  {
+    "id": 764,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Row arrangements",
+    "question": "5 boys and 5 girls are to be arranged in a row. Find the difference between the number of possible arrangements when no two girls are sitting together, and when boys and girls are alternate.",
+    "options": { "1": "0", "2": "(5!)²", "3": "4 × (5!)²", "4": "5!" },
+    "correct_answer": "3",
+    "explanation": "Alternate: 2 × 5! × 5!. No two girls together: 6 × 5! × 5!. Difference = 4×(5!)²."
+  },
+  {
+    "id": 765,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Palindromes",
+    "question": "A palindrome is a number that reads the same from left to right as it does from right to left. How many six digit palindromes are there which are even?",
+    "options": { "1": "900", "2": "500", "3": "9 × 10⁵", "4": "400" },
+    "correct_answer": "4",
+    "explanation": "Form abccba. For even: a ∈ {2,4,6,8} (4 choices), b: 10, c: 10. Total = 400."
+  },
+  {
+    "id": 766,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Staircase/step counting",
+    "question": "In a staircase, there are 4 steps. A person can take 1 step, 2 steps, 3 steps or 4 steps. In how many ways can he reach the top?",
+    "options": { "1": "8", "2": "6", "3": "4", "4": "3" },
+    "correct_answer": "1",
+    "explanation": "{4}=1; {3,1}=2; {2,2}=1; {2,1,1}=3; {1,1,1,1}=1. Total = 8."
+  },
+  {
+    "id": 767,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Selection with identical elements",
+    "question": "There are 5 Eclairs, 4 KitKat, 3 Melodies and 7 more chocolates in which all are distinct. Find the number of ways in which a child can select one or more chocolates?",
+    "options": { "1": "7679", "2": "15360", "3": "7680", "4": "15359" },
+    "correct_answer": "4",
+    "explanation": "Identical: 6×5×4=120. Distinct: 2⁷=128. Total including null = 120×128=15360. Subtract 1 = 15359."
+  },
+  {
+    "id": 768,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Number formation with repetition",
+    "question": "How many four digit numbers can be formed with the digits 0, 1, 2 and 7 so that at least one of the digits is repeated?",
+    "options": { "1": "192", "2": "96", "3": "144", "4": "174" },
+    "correct_answer": "4",
+    "explanation": "Total with repetition: 3×4×4×4 = 192. No repetition: 3×3×2×1 = 18. At least one repeated = 174."
+  },
+  {
+    "id": 769,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Distribution in identical containers",
+    "question": "In how many ways can 6 identical balls be placed in 3 identical baskets such that no box is empty?",
+    "options": { "1": "2", "2": "3", "3": "6", "4": "10" },
+    "correct_answer": "2",
+    "explanation": "Partitions of 6 into 3 positive parts: (1,2,3), (2,2,2), (1,1,4) → 3 partitions."
+  },
+  {
+    "id": 770,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Selection with repeated elements",
+    "question": "There are 9 elements given as AABBBCCCC. In how many ways any 7 elements can be chosen?",
+    "options": { "1": "20", "2": "11", "3": "10", "4": "6" },
+    "correct_answer": "4",
+    "explanation": "Selecting 7 ≡ rejecting 2 from AABBBCCCC. Possible rejections: AA, AB, AC, BB, BC, CC → 6 ways."
+  },
+  {
+    "id": 771,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Committee selection with restrictions",
+    "question": "There are 4 married couples in a club. The number of ways of choosing a committee of 3 members so that no couple appears in the committee is",
+    "options": { "1": "4", "2": "8", "3": "16", "4": "32" },
+    "correct_answer": "4",
+    "explanation": "Total ⁸C₃ = 56. With at least one couple: 4×6 = 24. Valid = 56 - 24 = 32."
+  },
+  {
+    "id": 772,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Binary matrix counting",
+    "question": "How many distinct 5×5 tables are there such that each entry is either 0 or 1 and each row sum and each column sum is 4?",
+    "options": { "1": "64", "2": "32", "3": "120", "4": "96" },
+    "correct_answer": "3",
+    "explanation": "Each row has one 0. Pattern of 0s = permutation matrix of 0s: 5! = 120."
+  },
+  {
+    "id": 773,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Average-based pair selection",
+    "question": "How many sets of two distinct numbers can be formed using the numbers between 0 and 180 (both inclusive) so that their average is 60?",
+    "options": { "1": "180", "2": "603", "3": "60", "4": "None of these" },
+    "correct_answer": "3",
+    "explanation": "a + b = 120, 0 ≤ a < b ≤ 180. a ∈ {0,...,59} → 60 pairs."
+  },
+  {
+    "id": 774,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Ordered arrangement with relative order constraint",
+    "question": "In how many ways can 8 distinct fruits (including Apple, Banana and Mango) be kept in a row such that apple always comes before banana, and banana always comes before mango?",
+    "options": { "1": "8! - 7", "2": "5!", "3": "8!/3!", "4": "None of these" },
+    "correct_answer": "3",
+    "explanation": "Only 1 of 3! relative orderings is valid. Valid = 8!/3!."
+  },
+  {
+    "id": 775,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Series/tournament arrangements",
+    "question": "India and South Africa play one-day international cricket series until one team wins 4 matches. No match ends in a draw. Find in how many ways the series can be won?",
+    "options": { "1": "24", "2": "35", "3": "70", "4": "120" },
+    "correct_answer": "3",
+    "explanation": "Each team wins in 35 ways. Total = 70."
+  },
+  {
+    "id": 776,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Number formation with repeated digits",
+    "question": "In how many ways three digit numbers be formed choosing the digits from 1, 1, 2, 3, 4?",
+    "options": { "1": "⁵P₃/2!", "2": "⁴P₃", "3": "4³", "4": "⁴P₃ + 3C1 × 3!/2!" },
+    "correct_answer": "4",
+    "explanation": "All distinct: ⁴P₃ = 24. Two 1s used: 3 × 3!/2! = 9. Total = 33."
+  },
+  {
+    "id": 777,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Derangements",
+    "question": "In how many ways can 8 letters be put in 8 differently addressed envelopes such that exactly 5 letters go into wrong envelopes?",
+    "options": { "1": "⁸C₅ × 44", "2": "9!", "3": "44", "4": "55" },
+    "correct_answer": "1",
+    "explanation": "Choose 3 correct: ⁸C₃. Derange remaining 5: D(5)=44. Total = ⁸C₃ × 44 = ⁸C₅ × 44."
+  },
+  {
+    "id": 778,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Book selection counting",
+    "question": "A student is allowed to select at most n books from a collection of (2n+1) distinct books. If the total number of ways in which she can select at least one book is 255, find the value of n.",
+    "options": { "1": "1", "2": "3", "3": "4", "4": "6" },
+    "correct_answer": "3",
+    "explanation": "Using symmetry of binomial coefficients: 2^(2n) = 256 → n=4."
+  },
+  {
+    "id": 779,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Distribution with distinct amounts",
+    "question": "In how many ways can we distribute 92 identical chocolates among 12 boys such that each one gets at least two chocolates, but distinct number of chocolates?",
+    "options": { "1": "2 × 12!", "2": "12!", "3": "⁶⁸C₁₁", "4": "12! × 3" },
+    "correct_answer": "1",
+    "explanation": "Min distinct from 2: 2+3+...+13=90. 2 extra gives 2 valid configurations, each in 12! ways. Total = 2 × 12!."
+  },
+  {
+    "id": 780,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Non-consecutive selection",
+    "question": "12 persons are sitting in a row. Find the number of ways of selecting 5 persons such that no two of them are consecutive.",
+    "options": { "1": "40", "2": "56", "3": "80", "4": "None of these" },
+    "correct_answer": "2",
+    "explanation": "C(n-r+1, r) = C(8,5) = 56."
+  },
+  {
+    "id": 781,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Number theory based counting",
+    "question": "In how many ways three numbers can be selected from a set of 43 consecutive natural numbers such that their sum will be a multiple of 3?",
+    "options": { "1": "455", "2": "4123", "3": "1183", "4": "2940" },
+    "correct_answer": "2",
+    "explanation": "15 are ≡0, 14 are ≡1, 14 are ≡2 (mod 3). ¹⁵C₃ + ¹⁴C₃ + ¹⁴C₃ + 15×14×14 = 4123."
+  },
+  {
+    "id": 782,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Arithmetic progressions in number sets",
+    "question": "What is(are) the possible number of way(s) to select three numbers from the first 15 natural numbers such that the selected numbers are in arithmetic progression?",
+    "options": { "1": "1", "2": "52", "3": "72", "4": "152" },
+    "correct_answer": "3",
+    "explanation": "Sum over d=1 to 7 of (15-2d) counting methods give 72 APs."
+  },
+  {
+    "id": 783,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Word arrangements - vowels together",
+    "question": "If the letters of the word SWARNALI are arranged in every possible order, for how many times will all the vowels appear together?",
+    "options": { "1": "8! - 3!", "2": "3 × 6!", "3": "6!", "4": "3! × 6!" },
+    "correct_answer": "2",
+    "explanation": "Vowels AAI as block: 6 units × 6!. Internal: 3!/2! = 3. Total = 3 × 6!."
+  },
+  {
+    "id": 784,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Word arrangements - no two alike together",
+    "question": "In how many arrangements of the word SLEEPLESS, will no two S appear together?",
+    "options": { "1": "2100", "2": "⁷C₃", "3": "6!/(2!3!)", "4": "9!/(2!3!3!)" },
+    "correct_answer": "1",
+    "explanation": "Non-S letters: 6!/(3!2!) = 60 ways. Place 3 S's in 7 gaps: ⁷C₃=35. Total = 35 × 60 = 2100."
+  },
+  {
+    "id": 785,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Selection with identical elements",
+    "question": "In how many ways can a maximum of two fruits can be chosen out of 3 apples, 2 oranges, 2 mangoes and 1 peach?",
+    "options": { "1": "14", "2": "15", "3": "16", "4": "17" },
+    "correct_answer": "1",
+    "explanation": "0: 1 way. 1: 4 ways. 2 identical: 3 ways. 2 different: 6 ways. Total = 14."
+  },
+  {
+    "id": 786,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Polygon diagonals",
+    "question": "In which regular polygon, the number of diagonals is double the number of sides?",
+    "options": { "1": "Square", "2": "Pentagon", "3": "Octagon", "4": "Heptagon" },
+    "correct_answer": "4",
+    "explanation": "n(n-3)/2 = 2n → n = 7. Heptagon."
+  },
+  {
+    "id": 787,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Circular arrangement with restrictions",
+    "question": "In how many ways can 4 boys and 4 girls be made to sit around a circular table if no two boys sit adjacent to each other?",
+    "options": { "1": "8!", "2": "36", "3": "7!", "4": "144" },
+    "correct_answer": "4",
+    "explanation": "Boys circular: 3! = 6. Girls in 4 gaps: 4! = 24. Total = 144."
+  },
+  {
+    "id": 788,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Circular arrangement - song pairs",
+    "question": "15 students are sitting on a circular chair. Every student sings a song with every other student except the adjacent ones. Each song is of two minutes. How long will this chorus be, if there is no time gap between the songs of two pairs?",
+    "options": { "1": "90", "2": "120", "3": "180", "4": "150" },
+    "correct_answer": "3",
+    "explanation": "Pairs = diagonals of 15-gon = ¹⁵C₂ - 15 = 90. Time = 90 × 2 = 180 min."
+  },
+  {
+    "id": 789,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Grid/lattice path counting",
+    "question": "There are m horizontal parallel lines and n vertical parallel lines in a plane. How many quadrilaterals (rectangles and squares) can be drawn with the help of these lines?",
+    "options": { "1": "m²n²", "2": "mn", "3": "mn(m-1)(n-1)/4", "4": "mn/4" },
+    "correct_answer": "3",
+    "explanation": "ᵐC₂ × ⁿC₂ = m(m-1)/2 × n(n-1)/2 = mn(m-1)(n-1)/4."
+  },
+  {
+    "id": 790,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Rectangular table seating",
+    "question": "In how many ways can 10 persons be seated around a rectangular table with 10 chairs arranged symmetrically (5 on each long side)?",
+    "options": { "1": "5 × 9!", "2": "9!", "3": "10!", "4": "2 × 9!" },
+    "correct_answer": "1",
+    "explanation": "Rectangular table: 5 distinguishable positions. Fix 1 person: 5 × 9!."
+  },
+  {
+    "id": 791,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Coloring with symmetry (3D)",
+    "question": "In how many ways can a cube, placed inside a spherical room, be colored with six distinct colors such that each face of the cube is colored with one of the six paints?",
+    "options": { "1": "120", "2": "30", "3": "6!", "4": "1" },
+    "correct_answer": "2",
+    "explanation": "Fix one face. Opposite: 5 choices. Remaining 4 faces circular: 3! = 6. Total = 5 × 6 = 30."
+  },
+  {
+    "id": 792,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Height counting with cuboids",
+    "question": "How many different heights can be achieved by arranging ten identical cuboids, having dimension 5cm × 3cm × 2cm, on the top of each other?",
+    "options": { "1": "10! × 3", "2": "3¹⁰", "3": "31", "4": "30" },
+    "correct_answer": "4",
+    "explanation": "Each cuboid contributes 2, 3, or 5 cm. Min 20, max 50. One impossible value (49). Total = 30."
+  },
+  {
+    "id": 793,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Points of intersection and quadrilaterals",
+    "question": "There are n straight lines in a plane, no two of which are parallel and no three passes through the same point. If the points of intersections of these lines are joined, what would be the maximum number of quadrilaterals that can be formed?",
+    "options": { "1": "²⁸C₄", "2": "⁵⁶C₄", "3": "²⁴C₄", "4": "None of these" },
+    "correct_answer": "1",
+    "explanation": "For n=8 lines: ⁸C₂ = 28 intersection points. Max quadrilaterals = ²⁸C₄."
+  },
+  {
+    "id": 794,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Hexagon diagonals intersection",
+    "question": "The diagonals of a convex hexagon intersect at n distinct points inside the hexagon. What is the maximum value n can take?",
+    "options": { "1": "8", "2": "12", "3": "15", "4": "18" },
+    "correct_answer": "3",
+    "explanation": "Each set of 4 vertices determines one interior intersection: ⁶C₄ = 15."
+  },
+  {
+    "id": 795,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Card distribution (circular)",
+    "question": "Find the number of ways in which a pack of 52 playing cards can be divided equally among four persons sitting around a circular table.",
+    "options": { "1": "52! × 3! / (4! × (13!)⁴)", "2": "52! / (4! × (13!)⁴)", "3": "52! / (13!)⁴", "4": "52! × 3! / (13!)⁴" },
+    "correct_answer": "3",
+    "explanation": "Persons are distinct (by position). Distribution = 52!/(13!)⁴."
+  },
+  {
+    "id": 796,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Card division into sets",
+    "question": "In how many ways can a pack of 52 cards be divided into 4 sets, 3 of them having 16 cards each and the fourth one just 4 cards?",
+    "options": { "1": "52! / ((16!)³ × 3!)", "2": "(1/4) × 52! / ((16!)³ × 3!)", "3": "52! / ((16!)³ × 4! × 4)", "4": "(1/2) × 52! / ((16!)³ × 3!)" },
+    "correct_answer": "2",
+    "explanation": "Separate 4 cards: ⁵²C₄. Divide 48 into 3 identical groups of 16: 48!/((16!)³ × 3!). Total = (1/4) × 52!/((16!)³ × 3!)."
+  },
+  {
+    "id": 797,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Rings on fingers",
+    "question": "In how many different ways 3 distinct rings be worn in 5 fingers of a hand?",
+    "options": { "1": "3! × 5!", "2": "5³", "3": "3⁵", "4": "210" },
+    "correct_answer": "4",
+    "explanation": "Positions: 5 × 6 × 7 = 210 (each new ring adds a position above/below)."
+  },
+  {
+    "id": 798,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Stars and bars",
+    "question": "What is the total number of ways of selecting 20 balls from an infinite number of Blue, Green and Yellow balls, if each ball of same colour are identical?",
+    "options": { "1": "3²⁰", "2": "20³", "3": "²²C₂", "4": "Cannot be determined" },
+    "correct_answer": "3",
+    "explanation": "x + y + z = 20, non-negative integers. Solutions = ²²C₂ = 231."
+  },
+  {
+    "id": 799,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Multinomial expansion terms",
+    "question": "Find the total number of terms in the expansion of (a + b + c + d + e)²⁰.",
+    "options": { "1": "²⁴P₄", "2": "5²⁰", "3": "²⁴C₄", "4": "²⁵C₄" },
+    "correct_answer": "3",
+    "explanation": "Terms = C(20+5-1, 5-1) = ²⁴C₄."
+  },
+  {
+    "id": 800,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Distribution with lower bounds",
+    "question": "In how many ways can 8 identical pens be distributed among Amal, Bimal and Kamal so that Amal gets at least 1 pen, Bimal gets at least 2 pens, and Kamal gets at least 3 pens? [CAT 2017]",
+    "options": { "1": "5", "2": "6", "3": "7", "4": "8" },
+    "correct_answer": "2",
+    "explanation": "After subtracting minimums: A'+B'+K' = 2. Solutions = ⁴C₂ = 6."
+  },
+  {
+    "id": 801,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Non-consecutive station stops",
+    "question": "A train is going from Delhi to Dhanbad, and there are 11 intermediate stations in the route. Find the number of ways in which the train can be made to stop at 4 intermediate stations such that no two stations are consecutive (Consider Delhi and Dhanbad as stations)?",
+    "options": { "1": "15", "2": "14", "3": "30", "4": "28" },
+    "correct_answer": "1",
+    "explanation": "Non-consecutive from 11 with endpoint constraints: ⁶C₄ = 15."
+  },
+  {
+    "id": 802,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Integer solutions with upper bound",
+    "question": "Anuj appeared for the CAT having three papers VARC, LRDI and QA each of maximum 100 marks. His scores are integers. In how many ways can he score less than 60 marks?",
+    "options": { "1": "⁶²C₂", "2": "⁶⁴C₃", "3": "⁶³C₃", "4": "None of these" },
+    "correct_answer": "3",
+    "explanation": "a+b+c ≤ 59 with slack variable: solutions = ⁶³C₃."
+  },
+  {
+    "id": 803,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Exact score distribution",
+    "question": "In how many ways can Anuj score exactly 240 marks across 3 papers (VARC, LRDI, QA) each of max 100 marks?",
+    "options": { "1": "⁶²C₂", "2": "⁶⁴C₂", "3": "63", "4": "Cannot be determined" },
+    "correct_answer": "1",
+    "explanation": "By complement: a'+b'+c' = 60 where a'=100-a. Solutions = ⁶²C₂."
+  },
+  {
+    "id": 804,
+    "topic": "Permutation and Combination",
+    "subtopic": "P&C - Exact score with upper bound",
+    "question": "In how many ways can Anuj score exactly 140 marks across 3 papers (VARC, LRDI, QA) each of max 100 marks?",
+    "options": { "1": "¹⁴⁰C₂", "2": "¹⁴²C₂", "3": "7551", "4": "Cannot be determined" },
+    "correct_answer": "3",
+    "explanation": "¹⁴²C₂ - 3×⁴¹C₂ = 10011 - 2460 = 7551 by inclusion-exclusion."
+  },
+  {
+    "id": 805,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Conditional Probability",
+    "question": "A box contains 6 red balls, 7 green balls and 5 blue balls. Each ball is of a different size. The probability that the red ball selected is the smallest red ball is: (CAT 1993)",
+    "options": { "1": "1/18", "2": "1/3", "3": "1/6", "4": "2/3" },
+    "correct_answer": "3",
+    "explanation": "Given red ball is selected, P(smallest red) = 1/6."
+  },
+  {
+    "id": 806,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Independent Events",
+    "question": "Don usually rejects 40% of the projects he evaluates while Ron accepts only 40% of the projects he evaluates. When a student gets his project evaluated from both professors, what is the probability of getting a rejection from both?",
+    "options": { "1": "0.5", "2": "0.8", "3": "0.24", "4": "0.6" },
+    "correct_answer": "3",
+    "explanation": "P(Don rejects) = 0.4. P(Ron rejects) = 0.6. P(both reject) = 0.4 × 0.6 = 0.24."
+  },
+  {
+    "id": 807,
+    "topic": "Probability",
+    "subtopic": "Bayes' Theorem",
+    "question": "Bag I contains 3 red and 4 black balls while bag II contains 5 red and 6 black balls. One ball is drawn at random from one of the bags and it was found to be red. Find the probability that it was drawn from bag II.",
+    "options": { "1": "2/3", "2": "32/41", "3": "35/68", "4": "1/5" },
+    "correct_answer": "3",
+    "explanation": "By Bayes' theorem: P(Bag II|red) = (5/11 × 1/2) / (3/7 × 1/2 + 5/11 × 1/2) = 35/68."
+  },
+  {
+    "id": 808,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Circular arrangements",
+    "question": "7 people were sitting around a circular table. What is the probability of 2 of them always being next to each other?",
+    "options": { "1": "0.33", "2": "0.1", "3": "0.167", "4": "None of these" },
+    "correct_answer": "1",
+    "explanation": "Total = 6!. Favorable: 5!×2. P = 2/6 = 1/3 ≈ 0.33."
+  },
+  {
+    "id": 809,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Number Theory",
+    "question": "Out of 2n consecutive integers, if (n+1) integers are selected at random, what is the probability that the HCF of selected numbers is 1?",
+    "options": { "1": "1", "2": "1/(n+1)", "3": "1/2", "4": "1/(n+2)" },
+    "correct_answer": "1",
+    "explanation": "By pigeonhole, n+1 selections from 2n consecutive must include two consecutive (coprime) integers. P=1."
+  },
+  {
+    "id": 810,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Complementary counting",
+    "question": "Ramesh has two packs of 6 cards each (values 1-6). He draws 4 cards from shuffled 12 cards. What is the probability that at least one pair will have the same value?",
+    "options": { "1": "18/35", "2": "17/33", "3": "14/37", "4": "16/33" },
+    "correct_answer": "2",
+    "explanation": "P(no pair) = 16/33. P(at least one pair) = 1 - 16/33 = 17/33."
+  },
+  {
+    "id": 811,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Complementary counting",
+    "question": "You buy 20 eggs of which 2 are rotten. You randomly pick 4 eggs. What is the probability of the preparation turning out uneatable (at least 1 rotten egg)?",
+    "options": { "1": "0.368", "2": "0.5", "3": "0.116", "4": "None of these" },
+    "correct_answer": "1",
+    "explanation": "P(all good) = ¹⁸C₄/²⁰C₄ ≈ 0.632. P(at least 1 rotten) = 0.368."
+  },
+  {
+    "id": 812,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Divisibility",
+    "question": "If a 4 digit number is formed with digits 1, 2, 3 and 5 (no repetition). What is the probability that the number is divisible by 25? (CAT 1995)",
+    "options": { "1": "1/12", "2": "1/24", "3": "1/6", "4": "1/18" },
+    "correct_answer": "1",
+    "explanation": "Total = 4! = 24. Only '25' ending works: 2 arrangements. P = 2/24 = 1/12."
+  },
+  {
+    "id": 813,
+    "topic": "Probability",
+    "subtopic": "Geometric Probability",
+    "question": "A chord AB of a circle subtends an angle 60° on the centre of the circle. If any point C is taken randomly on circumference of the circle, then what is the probability that centre of the circle lies inside the triangle ABC?",
+    "options": { "1": "1/4", "2": "1/6", "3": "1/9", "4": "Cannot be determined" },
+    "correct_answer": "2",
+    "explanation": "Centre inside ABC requires C on minor arc (60°/360° = 1/6 of circle). P = 1/6."
+  },
+  {
+    "id": 814,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Minimum draws",
+    "question": "A bag contains 6 red marbles and 4 blue marbles. If a marble is drawn with replacement, what is the minimum number of draws required so that probability of drawing at least one blue ball is more than 0.7?",
+    "options": { "1": "6", "2": "4", "3": "3", "4": "2" },
+    "correct_answer": "3",
+    "explanation": "(0.6)³ = 0.216 < 0.3. Minimum n = 3."
+  },
+  {
+    "id": 815,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Binomial",
+    "question": "If friends make seven decisions by coin toss (H=right, T=left), what is the probability that they took exactly four lefts?",
+    "options": { "1": "1/16", "2": "1/32", "3": "21/25", "4": "35/128" },
+    "correct_answer": "4",
+    "explanation": "P = ⁷C₄ × (1/2)⁷ = 35/128."
+  },
+  {
+    "id": 816,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Biased die",
+    "question": "In a defective 6-faced die, P(odd) = 2×P(even). All even numbers equally likely, all odd numbers equally likely. Find the probability of getting a 2-digit prime number on adding 2 successive throws.",
+    "options": { "1": "2/81", "2": "4/81", "3": "1/3", "4": "1/9" },
+    "correct_answer": "2",
+    "explanation": "P(even)=1/9, P(odd)=2/9. Only 2-digit prime sum is 11=5+6. P = 2×(2/9)(1/9) = 4/81."
+  },
+  {
+    "id": 817,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Complement with independent events",
+    "question": "Ramesh orders a birthday gift from retailers A, B, C and D with delivery probabilities 0.6, 0.8, 0.9 and 0.5 respectively. He orders from all four. What is the probability that his friend receives the gift in time?",
+    "options": { "1": "0.004", "2": "0.006", "3": "0.216", "4": "0.994", "5": "0.996" },
+    "correct_answer": "5",
+    "explanation": "P(none delivers) = 0.4 × 0.2 × 0.1 × 0.5 = 0.004. P(at least one) = 0.996."
+  },
+  {
+    "id": 818,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - System of equations",
+    "question": "Aditya has 18 red and blue marbles in two bags (each bag has both colors). P(both red) = 5/16. What is P(both blue)?",
+    "options": { "1": "1/16", "2": "2/16", "3": "3/16", "4": "4/16", "5": "None of the above" },
+    "correct_answer": "3",
+    "explanation": "By trial: bag I (5R,5B), bag II (5R,3B). P(both blue) = (5/10)×(3/8) = 3/16."
+  },
+  {
+    "id": 819,
+    "topic": "Probability",
+    "subtopic": "Geometric Probability",
+    "question": "A coin of radius 3 cm is randomly dropped on a square floor with square tiles of side 10 cm each. What is the probability that the coin will land completely within a tile?",
+    "options": { "1": "0.91", "2": "0.5", "3": "0.49", "4": "0.36", "5": "0.16" },
+    "correct_answer": "5",
+    "explanation": "Centre must be 3cm from edges. Valid area = 4×4 = 16. Total = 100. P = 0.16."
+  },
+  {
+    "id": 820,
+    "topic": "Probability",
+    "subtopic": "Binomial Distribution",
+    "question": "Find the probability that in 10 throws of a fair die a score which is a multiple of 3 will be obtained in at least 8 of the throws.",
+    "options": { "1": "201/3¹⁰", "2": "2/3", "3": "1/100", "4": "1/(8×9×10)" },
+    "correct_answer": "1",
+    "explanation": "P(multiple of 3) = 1/3. P(X≥8) = [¹⁰C₈×4 + ¹⁰C₉×2 + 1]/3¹⁰ = 201/3¹⁰."
+  },
+  {
+    "id": 821,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Independent events",
+    "question": "P(major crime, northern) = 0.418, P(minor crime, northern) = 0.612; P(major crime, southern) = 0.355, P(minor crime, southern) = 0.520. What is P(no crime of either type in either neighbourhood)?",
+    "options": { "1": "0.069", "2": "0.225", "3": "0.690", "4": "0.775", "5": "None of the above" },
+    "correct_answer": "1",
+    "explanation": "P(no crime) = (1-0.418)(1-0.612)(1-0.355)(1-0.520) ≈ 0.069."
+  },
+  {
+    "id": 822,
+    "topic": "Probability",
+    "subtopic": "Conditional Probability - Total Probability",
+    "question": "60% of packets produced at fast speed, rest at normal. Fast speed packets are twice as likely damaged as normal. P(randomly selected packet is damaged) = 0.112. What is P(packet not damaged at normal speed)?",
+    "options": { "1": "0.81", "2": "0.93", "3": "0.75", "4": "0.60", "5": "None of the above" },
+    "correct_answer": "2",
+    "explanation": "1.6x = 0.112 → x = 0.07. P(not damaged | normal) = 1 - 0.07 = 0.93."
+  },
+  {
+    "id": 823,
+    "topic": "Probability",
+    "subtopic": "Classical Probability - Sequential events",
+    "question": "4 machines, 2 faulty. Mechanic checks at random, 6 min per machine, must leave in 12 min. What is P(mechanic catches the bus)?",
+    "options": { "1": "0", "2": "1/6", "3": "1/4", "4": "1/3", "5": "1" },
+    "correct_answer": "4",
+    "explanation": "Can check 2. Both faulty: 1/6. Both working: 1/6. Total = 1/3."
+  },
+  {
+    "id": 824,
+    "topic": "Probability",
+    "subtopic": "Geometric Probability",
+    "question": "A rectangle is drawn such that none of its sides has length greater than 'a'. All lengths are equally likely. The probability that the rectangle has its diagonal greater than 'a' is",
+    "options": { "1": "1", "2": "π/4", "3": "1 - π/4", "4": "Cannot be determined" },
+    "correct_answer": "3",
+    "explanation": "x²+y² > a² outside quarter circle. P = 1 - πa²/4 / a² = 1 - π/4."
   }
 ]
