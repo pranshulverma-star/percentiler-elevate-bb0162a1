@@ -671,7 +671,7 @@ export default function PracticeLab() {
     const ch = pendingChapter.current;
     pendingChapter.current = null;
     setSelectedChapter(ch);
-    setQuizQuestions(pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(selectedSection?.id === "lrdi" ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
