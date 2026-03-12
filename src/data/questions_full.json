@@ -3873,5 +3873,221 @@
     "options": { "1": "10", "2": "0", "3": "7", "4": "1" },
     "correct_answer": "4",
     "explanation": "Telescoping: k×k! = (k+1)!–k!. Sum = 11!–1. So p+2 = 11!+1. Remainder when divided by 11! = 1."
+  },
+  {
+    "id": 390,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "Let N = 72³ – 55³ – 17³. N is divisible by [CAT 2000]",
+    "options": { "1": "both 7 and 13", "2": "both 3 and 13", "3": "both 17 and 7", "4": "both 3 and 17" },
+    "correct_answer": "4",
+    "explanation": "If a+b+c=0, then a³+b³+c³=3abc. Here 72+(–55)+(–17)=0. So N = 3×72×55×17. Divisible by both 3 and 17."
+  },
+  {
+    "id": 391,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "What least value must be assigned to 'a' such that the number '235a791' is divisible by 11?",
+    "options": { "1": "3", "2": "2", "3": "4", "4": "6" },
+    "correct_answer": "1",
+    "explanation": "Odd positions: 2+5+7+1=15. Even positions: 3+a+9=12+a. |15–(12+a)|=|3–a| must be 0 or 11. Minimum a=3."
+  },
+  {
+    "id": 392,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "Find single digit natural number x if 8x01 is divisible by 9.",
+    "options": { "1": "1", "2": "4", "3": "3", "4": "9" },
+    "correct_answer": "4",
+    "explanation": "Sum of digits = 8+x+0+1 = 9+x. For divisibility by 9, x must be 9."
+  },
+  {
+    "id": 393,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "2^(3n) – 1 for all natural numbers n is always divisible by",
+    "options": { "1": "2", "2": "3", "3": "5", "4": "7" },
+    "correct_answer": "4",
+    "explanation": "2^(3n) – 1 = 8ⁿ – 1. Using xⁿ–1 divisible by x–1: 8ⁿ–1 is divisible by 7."
+  },
+  {
+    "id": 394,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "If n is any positive integer, then n³ – n is",
+    "options": { "1": "always divisible by 12", "2": "never divisible by 12", "3": "always divisible by 6", "4": "never divisible by 6" },
+    "correct_answer": "3",
+    "explanation": "n³–n = (n–1)n(n+1), product of 3 consecutive integers, always divisible by 3!=6."
+  },
+  {
+    "id": 395,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "If n is a positive integer, then (4^5)ⁿ – (5^4)ⁿ is always divisible by",
+    "options": { "1": "17", "2": "113", "3": "133", "4": "13" },
+    "correct_answer": "3",
+    "explanation": "4⁵=1024, 5⁴=625. aⁿ–bⁿ divisible by a–b: 1024–625=399=3×133. Divisible by 133."
+  },
+  {
+    "id": 396,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "How many three-digit numbers are there such that (I) all are divisible by 55, and (II) the difference between the digits in the hundred's and ten's place is one more than the digit in the unit's place?",
+    "options": { "1": "5", "2": "8", "3": "3", "4": "4" },
+    "correct_answer": "4",
+    "explanation": "Three-digit multiples of 55 satisfying |hundred's–ten's|=unit's+1: 605, 715, 825, 935. Four numbers."
+  },
+  {
+    "id": 397,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "A is a 4-digit positive integer and B is formed by reversing the digits of A. If A–B > 0 and is divisible by 45, find the number of possible values of A.",
+    "options": { "1": "248", "2": "400", "3": "512", "4": "805" },
+    "correct_answer": "4",
+    "explanation": "A–B=999(a–d)+90(b–c). For div by 45: a–d must be 0 or 5. Case a–d=5: 400 values. Case a–d=0, b>c: 405 values. Total=805."
+  },
+  {
+    "id": 398,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "7⁶ⁿ – 6⁶ⁿ, where n is an integer > 0, is divisible by [CAT 2002]",
+    "options": { "1": "13", "2": "127", "3": "559", "4": "More than one of the above" },
+    "correct_answer": "4",
+    "explanation": "Rewrite as (7⁶)ⁿ–(6⁶)ⁿ = (343)²ⁿ–(216)²ⁿ. Divisible by 343–216=127, 343+216=559, and 7+6=13. All three work."
+  },
+  {
+    "id": 399,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "Let N = (666)² + (aaa)², where aaa is a three-digit natural number. N is definitely divisible by which of the following numbers?",
+    "options": { "1": "222", "2": "444", "3": "12321", "4": "666" },
+    "correct_answer": "3",
+    "explanation": "666=111×6, aaa=111×a. N=111²(36+a²)=12321(36+a²). Always divisible by 12321."
+  },
+  {
+    "id": 400,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "If n is a natural number greater than 2, then n⁵ – 5n³ + 4n is always divisible by which of the following?",
+    "options": { "1": "36", "2": "25", "3": "124", "4": "120" },
+    "correct_answer": "4",
+    "explanation": "n⁵–5n³+4n = (n–2)(n–1)n(n+1)(n+2), product of 5 consecutive integers, always divisible by 5!=120."
+  },
+  {
+    "id": 401,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "The sum of four consecutive two-digit odd numbers, when divided by 10, becomes a perfect square. Which of the following can possibly be one of these four numbers?",
+    "options": { "1": "21", "2": "25", "3": "41", "4": "67" },
+    "correct_answer": "3",
+    "explanation": "Sum=4n+12. For n=37: numbers 37,39,41,43, sum=160, 160/10=16=4². So 41 is possible."
+  },
+  {
+    "id": 402,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "Let k be a positive integer such that k–4 is divisible by 5. The smallest integer n > 2 such that n² + k is divisible by 5 is",
+    "options": { "1": "4", "2": "19", "3": "24", "4": "5" },
+    "correct_answer": "1",
+    "explanation": "k≡4 (mod 5). Need n²≡1 (mod 5). n≡1 or 4 (mod 5). Smallest n>2: n=4."
+  },
+  {
+    "id": 403,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "Every integer of the form (n³–n)(n–2), for n=3,4,5,… is",
+    "options": { "1": "divisible by 6 but not always by 12", "2": "divisible by 12 but not always by 24", "3": "divisible by 24 but not always by 48", "4": "divisible by 9" },
+    "correct_answer": "3",
+    "explanation": "(n³–n)(n–2) = (n–2)(n–1)n(n+1), product of 4 consecutive integers, divisible by 4!=24 but not always 48."
+  },
+  {
+    "id": 404,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "If X is the smallest number divisible by both 6 and 5, find the maximum possible power of 10 that completely divides the product of the first 20 multiples of X.",
+    "options": { "1": "23", "2": "24", "3": "25", "4": "26" },
+    "correct_answer": "2",
+    "explanation": "X=LCM(6,5)=30. Product = 30²⁰×20!. Factors of 10: 20 from 30²⁰ + 4 from 20! = 24."
+  },
+  {
+    "id": 405,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "If V = 3^(2n+2) – 8n – 9, where n is a natural number, then V is always divisible by",
+    "options": { "1": "128", "2": "192", "3": "64", "4": "56" },
+    "correct_answer": "3",
+    "explanation": "Expand 9×(1+8)ⁿ using binomial theorem; collecting terms shows 64 is always a factor."
+  },
+  {
+    "id": 406,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "Numbers from 1 to m are written one after another as 1234567…m. The resulting number is divisible by 3 if m is of the form (n is a natural number): I. 3n, II. 3n–1, III. 3n–2",
+    "options": { "1": "I only", "2": "I or II only", "3": "I or III only", "4": "II or III only" },
+    "correct_answer": "2",
+    "explanation": "Digit sum of 1 to m: complete triples of consecutive integers have sum divisible by 3. Valid forms: m=3n or m=3n–1."
+  },
+  {
+    "id": 407,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "The digits of a three-digit number A are written in reverse order to form B. If B > A and B–A is perfectly divisible by 7, then which of the following is necessarily true?",
+    "options": { "1": "100 < A < 299", "2": "107 < A < 300", "3": "112 < A < 311", "4": "118 < A < 317" },
+    "correct_answer": "2",
+    "explanation": "B–A=99(c–a). For 7|(c–a) with single digits and c>a: c–a=7. Possible A ranges from 108 to 299, so 107<A<300."
+  },
+  {
+    "id": 408,
+    "topic": "Number System",
+    "subtopic": "Divisibility Rule",
+    "question": "A says 'It is a two-digit number.' B says 'It is a divisor of 120.' C says 'It is not 120.' D says 'It is divisible by 30.' If at least one person is lying, which of the following is NOT a possibility for the only person lying?",
+    "options": { "1": "A and C", "2": "B", "3": "C", "4": "D" },
+    "correct_answer": "3",
+    "explanation": "If C alone lies, the number is 120. But then A's statement (two-digit) is also false. So C cannot be the only liar."
+  },
+  {
+    "id": 409,
+    "topic": "Number System",
+    "subtopic": "Cyclicity",
+    "question": "The unit's digit of 1⁵ + 3⁵ + 5⁵ + 7⁵ + … + 99⁵ is",
+    "options": { "1": "0", "2": "5", "3": "3", "4": "9" },
+    "correct_answer": "1",
+    "explanation": "Group odd numbers in sets of 5 by unit digit (1,3,5,7,9). Each group's fifth powers sum to unit digit 5. 10 groups × 5 = 50, unit digit 0."
+  },
+  {
+    "id": 410,
+    "topic": "Number System",
+    "subtopic": "Cyclicity",
+    "question": "What is the 12th digit from the left of (6007)³?",
+    "options": { "1": "0", "2": "1", "3": "2", "4": "3" },
+    "correct_answer": "4",
+    "explanation": "6007³ has 12 digits (since 6000³=216×10⁹). 12th digit = units digit = units digit of 7³ = 3."
+  },
+  {
+    "id": 411,
+    "topic": "Number System",
+    "subtopic": "Cyclicity",
+    "question": "What are the last two digits of 7^2008?",
+    "options": { "1": "21", "2": "61", "3": "01", "4": "41" },
+    "correct_answer": "3",
+    "explanation": "Last two digits of 7ⁿ cycle with period 4. 2008 mod 4 = 0 → same as 7⁴ = 2401 → last two digits 01."
+  },
+  {
+    "id": 412,
+    "topic": "Number System",
+    "subtopic": "Cyclicity",
+    "question": "The rightmost non-zero digit of the number 30^2720 is",
+    "options": { "1": "1", "2": "3", "3": "7", "4": "9" },
+    "correct_answer": "1",
+    "explanation": "30^2720 = 3^2720 × 10^2720. Rightmost non-zero digit = units digit of 3^2720. Cyclicity of 3 is 4: 2720 mod 4 = 0 → units digit 1."
+  },
+  {
+    "id": 413,
+    "topic": "Number System",
+    "subtopic": "Cyclicity",
+    "question": "If P and Q are natural numbers less than 10 and not necessarily distinct, how many ordered pairs (P, Q) are there such that the unit's digits of P^P and Q^Q are the same?",
+    "options": { "1": "12", "2": "15", "3": "10", "4": "14" },
+    "correct_answer": "2",
+    "explanation": "Unit digits of n^n for n=1–9: 1,4,7,6,5,6,3,6,9. Only 4,6,8 share unit digit 6. P=Q: 9 pairs. P≠Q same digit: 6 pairs. Total=15."
   }
 ]
