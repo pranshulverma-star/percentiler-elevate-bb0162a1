@@ -1,4 +1,5 @@
 import rawQuestions from "./questions_full.json";
+import { normalizeTopic } from "./topicNormalization";
 
 export interface PracticeQuestion {
   id: number;
