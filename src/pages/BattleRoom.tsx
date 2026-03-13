@@ -803,23 +803,25 @@ export default function BattleRoomPage() {
     fetchAndJoin();
   }, [isAuthenticated, user, code]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Realtime subscriptions
+  // Realtime subscriptions + polling fallback
   useEffect(() => {
     if (!room?.id) return;
+    let isActive = true;
+    const roomId = room.id;
 
     const roomChannel = supabase
-      .channel(`battle-room-${room.id}`)
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "battle_rooms", filter: `id=eq.${room.id}` },
+      .channel(`battle-room-${roomId}`)
+      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "battle_rooms", filter: `id=eq.${roomId}` },
         (payload: any) => {
           console.log("[Battle] Room update:", payload.new?.status);
-          if (payload.new) setRoom(payload.new as BattleRoom);
+          if (payload.new) setRoom(prev => prev ? { ...prev, ...payload.new } as BattleRoom : prev);
         })
-      .on("postgres_changes", { event: "*", schema: "public", table: "battle_players", filter: `room_id=eq.${room.id}` },
+      .on("postgres_changes", { event: "*", schema: "public", table: "battle_players", filter: `room_id=eq.${roomId}` },
         async (payload: any) => {
           console.log("[Battle] Players change:", payload.eventType);
           const { data } = await (supabase.from("battle_players") as any)
-            .select("*").eq("room_id", room.id).order("joined_at", { ascending: true });
-          if (data) setPlayers(data);
+            .select("*").eq("room_id", roomId).order("joined_at", { ascending: true });
+          if (data && isActive) setPlayers(data);
         })
       .on("broadcast", { event: "countdown" }, (payload: any) => {
         if (payload.payload?.value !== undefined) {
@@ -830,7 +832,28 @@ export default function BattleRoomPage() {
         console.log("[Battle] Channel status:", status, err);
       });
 
-    return () => { supabase.removeChannel(roomChannel); };
+    // Polling fallback — covers silent realtime failures
+    const poll = async () => {
+      if (!isActive) return;
+      try {
+        const [roomRes, playersRes] = await Promise.all([
+          (supabase.from("battle_rooms") as any).select("*").eq("id", roomId).single(),
+          (supabase.from("battle_players") as any).select("*").eq("room_id", roomId).order("joined_at", { ascending: true }),
+        ]);
+        if (roomRes.data && isActive) setRoom(prev => prev ? { ...prev, ...roomRes.data } as BattleRoom : prev);
+        if (playersRes.data && isActive) setPlayers(playersRes.data);
+      } catch (e) {
+        console.warn("[Battle] Poll error:", e);
+      }
+    };
+
+    const pollId = setInterval(poll, 3000);
+
+    return () => {
+      isActive = false;
+      clearInterval(pollId);
+      supabase.removeChannel(roomChannel);
+    };
   }, [room?.id]);
 
   // Host starts battle — trigger countdown
