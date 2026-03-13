@@ -9,6 +9,7 @@ import DashboardMission from "@/components/dashboard/DashboardMission";
 import DashboardProgress from "@/components/dashboard/DashboardProgress";
 import DashboardLevelUp from "@/components/dashboard/DashboardLevelUp";
 import DashboardExplore from "@/components/dashboard/DashboardExplore";
+import WorkshopRecommendation, { getWeakSectionWorkshop } from "@/components/WorkshopRecommendation";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 
