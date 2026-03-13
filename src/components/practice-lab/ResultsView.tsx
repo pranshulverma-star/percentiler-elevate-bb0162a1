@@ -186,6 +186,7 @@ export default function ResultsView({
           answers_json: answers,
         });
       }
+      // Fetch personal history
       const { data } = await (supabase.from("practice_lab_attempts") as any)
         .select("score_pct, correct, total_questions, time_used_seconds, created_at")
         .eq("user_id", user.id)
@@ -194,6 +195,38 @@ export default function ResultsView({
         .order("created_at", { ascending: false })
         .limit(10);
       setPastAttempts(data || []);
+
+      // Fetch leaderboard — top 10 scores for this chapter across all users
+      const { data: lbData } = await (supabase.from("practice_lab_attempts") as any)
+        .select("user_id, score_pct")
+        .eq("section_id", sectionId)
+        .eq("chapter_slug", chapterSlug)
+        .order("score_pct", { ascending: false })
+        .limit(50);
+
+      if (lbData) {
+        // Deduplicate: best score per user
+        const bestByUser: Record<string, number> = {};
+        for (const row of lbData) {
+          if (!bestByUser[row.user_id] || row.score_pct > bestByUser[row.user_id]) {
+            bestByUser[row.user_id] = row.score_pct;
+          }
+        }
+        const sorted = Object.entries(bestByUser)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([uid, score]) => ({
+            name: uid === user.id ? (user.user_metadata?.name || user.email?.split("@")[0] || "You") : `Student ${uid.slice(0, 4)}`,
+            score,
+            isMe: uid === user.id,
+          }));
+        // Ensure current user is in leaderboard
+        if (!sorted.some((s) => s.isMe)) {
+          sorted.push({ name: user.user_metadata?.name || user.email?.split("@")[0] || "You", score: pct, isMe: true });
+          sorted.sort((a, b) => b.score - a.score);
+        }
+        setLeaderboard(sorted.slice(0, 5));
+      }
     };
     saveAndFetch();
   }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
