@@ -18,6 +18,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Catch OAuth error fragments and redirect to friendly error page
+    const hash = window.location.hash;
+    if (hash.includes("error=") || hash.includes("error_description=")) {
+      const errorPage = `/auth/error${hash}`;
+      window.location.replace(errorPage);
+      return;
+    }
+
     let isMounted = true;
     let resolved = false;
 

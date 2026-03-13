@@ -49,6 +49,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const Contact = lazy(() => import("./pages/Contact"));
+const AuthError = lazy(() => import("./pages/AuthError"));
 
 
 const queryClient = new QueryClient();
@@ -104,6 +105,7 @@ const App = () => (
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/cat-coaching-comparison" element={<CATCoachingComparison />} />
                   <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/auth/error" element={<AuthError />} />
                   <Route path="*" element={<NotFoundRedirect />} />
                 </Routes>
               </Suspense>
