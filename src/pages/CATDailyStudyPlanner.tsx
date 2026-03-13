@@ -298,7 +298,14 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
 }
 // ─── Day Label Map ───
 
-const DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const CALENDAR_DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+function getCalendarDayName(startDate: string, dayIndex: number): string {
+  const [y, m, d] = startDate.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  date.setDate(date.getDate() + dayIndex);
+  return CALENDAR_DAY_NAMES[date.getDay()];
+}
 
 const SUBJECT_ICON: Record<string, React.ReactNode> = {
   QA: <Calculator className="h-4 w-4 text-primary" />,
