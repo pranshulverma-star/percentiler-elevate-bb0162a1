@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, GraduationCap, ClipboardCheck, ArrowRight } from "lucide-react";
+import { CalendarDays, GraduationCap, ClipboardCheck, ArrowRight, LayoutDashboard } from "lucide-react";
 import { motion } from "framer-motion";
 
 
