@@ -953,6 +953,7 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
                       completed={false}
                       loading={false}
                       onComplete={() => {}}
+                      dayName={getCalendarDayName(leadData.startDate, currentTask.dayIndex)}
                     />
                   </div>
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/60 rounded-2xl backdrop-blur-[2px]">
