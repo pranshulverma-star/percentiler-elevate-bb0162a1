@@ -413,7 +413,8 @@ const rawData: RawQuestion[] = [...(Array.isArray(rawQuestions) ? rawQuestions :
 
 const qaRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "qa");
 const lrdiRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "lrdi");
-const varcRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "varc");
+const PJ_TOPICS = new Set(["Para Jumbles", "Sentence Placement", "Summary"]);
+const varcRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "varc" && !PJ_TOPICS.has(getEffectiveTopic(r)));
 
 const qaChapters = buildQAChapters(qaRaw);
 // Merge all LRDI questions into a single chapter
