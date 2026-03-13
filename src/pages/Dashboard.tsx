@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import Navbar from "@/components/Navbar";
 import DashboardHero from "@/components/dashboard/DashboardHero";
+import DashboardLeaderboard from "@/components/dashboard/DashboardLeaderboard";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import DashboardMission from "@/components/dashboard/DashboardMission";
 import DashboardProgress from "@/components/dashboard/DashboardProgress";
