@@ -3,16 +3,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import Navbar from "@/components/Navbar";
-import DashboardProfile from "@/components/dashboard/DashboardProfile";
-import DashboardPlanner from "@/components/dashboard/DashboardPlanner";
-import DashboardMasterclass from "@/components/dashboard/DashboardMasterclass";
-import DashboardCallCTA from "@/components/dashboard/DashboardCallCTA";
-import DashboardPracticeLab from "@/components/dashboard/DashboardPracticeLab";
-import DashboardStreaks from "@/components/dashboard/DashboardStreaks";
-import DashboardCourses from "@/components/dashboard/DashboardCourses";
-import { Button } from "@/components/ui/button";
-import { LogOut } from "lucide-react";
+import DashboardHero from "@/components/dashboard/DashboardHero";
+import DashboardStats from "@/components/dashboard/DashboardStats";
+import DashboardMission from "@/components/dashboard/DashboardMission";
+import DashboardProgress from "@/components/dashboard/DashboardProgress";
+import DashboardLevelUp from "@/components/dashboard/DashboardLevelUp";
+import DashboardExplore from "@/components/dashboard/DashboardExplore";
 import SEO from "@/components/SEO";
+import { motion } from "framer-motion";
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
@@ -105,7 +103,6 @@ export default function Dashboard() {
     const attempts = data || [];
     setPracticeAttempts(attempts.slice(0, 20));
 
-    // Compute streaks from attempts
     setLoadingStreaks(true);
     if (attempts.length > 0) {
       const streaks = computeStreaks(attempts);
@@ -129,45 +126,92 @@ export default function Dashboard() {
   const converted = !!campaign?.converted_at;
   const mentorshipActive = !!campaign?.mentorship_active;
 
+  const stageVariants = {
+    hidden: { opacity: 0, y: 24 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.1, duration: 0.4, ease: [0, 0, 0.2, 1] as const },
+    }),
+  };
+
   return (
     <>
       <SEO title="Dashboard | Percentilers" description="Your personalized CAT preparation dashboard" canonical="https://percentilers.in/dashboard" />
       <Navbar />
       <main className="min-h-screen bg-background pt-4 pb-16">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-foreground">
-                Hey {firstName} 👋
-              </h1>
-              <p className="text-sm text-muted-foreground mt-1">Your CAT prep journey at a glance</p>
-            </div>
-            <Button variant="ghost" size="sm" onClick={signOut} className="text-muted-foreground">
-              <LogOut className="h-4 w-4 mr-1" /> Sign out
-            </Button>
-          </div>
+        <div className="container mx-auto px-4 max-w-lg">
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Profile & Call CTA */}
-            <DashboardProfile lead={lead} loading={loadingLead} onPhoneUpdated={() => { fetchLead(); refetchPhone(); fetchCampaign(); }} />
-            <DashboardCallCTA campaign={campaign} loading={loadingCampaign} />
+          {/* Hero */}
+          <motion.div custom={0} initial="hidden" animate="visible" variants={stageVariants}>
+            <DashboardHero
+              firstName={firstName}
+              lead={lead}
+              loadingLead={loadingLead}
+              streakData={streakData}
+              onSignOut={signOut}
+              onPhoneUpdated={() => { fetchLead(); refetchPhone(); fetchCampaign(); }}
+            />
+          </motion.div>
 
-            {/* Performance Streaks - full width */}
-            <DashboardStreaks data={streakData} loading={loadingStreaks} />
+          {/* Journey stages with connectors */}
+          <div className="relative mt-6">
+            {/* Vertical connector line */}
+            <div className="absolute left-5 top-0 bottom-0 w-px bg-border hidden md:block" />
 
-            {/* Planner & Masterclass */}
-            <DashboardPlanner data={plannerData} loading={loadingPlanner} />
-            <DashboardMasterclass engagement={engagement} loading={loadingMasterclass} />
+            {/* Stage 1: Stats */}
+            <motion.div custom={1} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
+              <StageLabel number={1} label="YOUR STATS" />
+              <DashboardStats streakData={streakData} loading={loadingStreaks} />
+            </motion.div>
 
-            {/* Practice Lab */}
-            <DashboardPracticeLab attempts={practiceAttempts} loading={loadingPractice} />
+            {/* Stage 2: Today's Mission */}
+            <motion.div custom={2} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
+              <StageLabel number={2} label="TODAY'S MISSION" />
+              <DashboardMission engagement={engagement} loadingMasterclass={loadingMasterclass} />
+            </motion.div>
 
-            {/* Course, Mentorship, Test Series cards */}
-            <DashboardCourses converted={converted} mentorshipActive={mentorshipActive} />
+            {/* Stage 3: Progress */}
+            <motion.div custom={3} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
+              <StageLabel number={3} label="PROGRESS" />
+              <DashboardProgress
+                plannerData={plannerData}
+                loadingPlanner={loadingPlanner}
+                practiceAttempts={practiceAttempts}
+                loadingPractice={loadingPractice}
+              />
+            </motion.div>
+
+            {/* Stage 4: Level Up */}
+            <motion.div custom={4} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
+              <StageLabel number={4} label="LEVEL UP" />
+              <DashboardLevelUp
+                campaign={campaign}
+                loadingCampaign={loadingCampaign}
+                practiceAttempts={practiceAttempts}
+              />
+            </motion.div>
+
+            {/* Stage 5: Explore */}
+            <motion.div custom={5} initial="hidden" animate="visible" variants={stageVariants} className="relative">
+              <StageLabel number={5} label="EXPLORE" />
+              <DashboardExplore converted={converted} mentorshipActive={mentorshipActive} />
+            </motion.div>
           </div>
         </div>
       </main>
     </>
+  );
+}
+
+function StageLabel({ number, label }: { number: number; label: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-3 md:ml-0">
+      <div className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/20">
+        <span className="text-xs font-bold text-primary">{number}</span>
+      </div>
+      <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground">{label}</span>
+    </div>
   );
 }
 
@@ -183,20 +227,13 @@ function getWeekStart(): string {
 function computeStreaks(attempts: any[]) {
   const totalQuizzes = attempts.length;
   const avgAccuracy = Math.round(attempts.reduce((s: number, a: any) => s + a.score_pct, 0) / totalQuizzes);
-
-  // Get unique dates (sorted desc)
   const dates = [...new Set(attempts.map((a: any) => a.created_at.split("T")[0]))].sort().reverse();
-
-  // Current streak: consecutive days from today/yesterday
   const today = new Date().toISOString().split("T")[0];
   let currentStreak = 0;
   let checkDate = new Date();
-  
-  // Start from today, if no activity today, start from yesterday
   if (dates[0] !== today) {
     checkDate.setDate(checkDate.getDate() - 1);
   }
-  
   for (let i = 0; i < 365; i++) {
     const dateStr = checkDate.toISOString().split("T")[0];
     if (dates.includes(dateStr)) {
@@ -206,8 +243,6 @@ function computeStreaks(attempts: any[]) {
       break;
     }
   }
-
-  // Longest streak
   let longestStreak = 0;
   let tempStreak = 1;
   const sortedDates = [...dates].sort();
@@ -223,8 +258,6 @@ function computeStreaks(attempts: any[]) {
     }
   }
   longestStreak = Math.max(longestStreak, tempStreak);
-
-  // Weekly activity (Mon-Sun)
   const weekStart = getWeekStart();
   const weeklyActivity: boolean[] = [];
   for (let i = 0; i < 7; i++) {
@@ -233,8 +266,6 @@ function computeStreaks(attempts: any[]) {
     const ds = d.toISOString().split("T")[0];
     weeklyActivity.push(dates.includes(ds));
   }
-
-  // Trend: compare last 5 vs previous 5
   let recentTrend: "up" | "down" | "stable" = "stable";
   if (attempts.length >= 10) {
     const recent5 = attempts.slice(0, 5).reduce((s: number, a: any) => s + a.score_pct, 0) / 5;
@@ -242,6 +273,5 @@ function computeStreaks(attempts: any[]) {
     if (recent5 > prev5 + 5) recentTrend = "up";
     else if (recent5 < prev5 - 5) recentTrend = "down";
   }
-
   return { currentStreak, longestStreak, totalQuizzes, avgAccuracy, weeklyActivity, recentTrend };
 }
