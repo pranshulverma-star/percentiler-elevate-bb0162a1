@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { pickGroupedRandom, pickOneSet } from "@/lib/pickGroupedQuestions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { generateTodaysBattle, getTodaysSectionIndex } from "@/lib/todaysBattle";
 import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -94,7 +95,13 @@ function XPBar({ current, max, label, className = "" }: { current: number; max: 
 }
 
 // ─── Section Cards (Level Select) ───────────────────────────────────────────
-function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
+function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData) => void; onTodaysBattle: () => void }) {
+  const sectionLabels = [
+    { tag: "QA Mix · 10 Qs · 15 min" },
+    { tag: "1 LRDI Set · 12 min" },
+    { tag: "1 RC + 1 PJ · 15 min" },
+  ];
+  const todayIdx = getTodaysSectionIndex();
   const sectionThemes = [
     { gradient: "from-orange-500/15 to-amber-500/5", icon: "⚔️", subtitle: "Quantitative Arena" },
     { gradient: "from-blue-500/15 to-indigo-500/5", icon: "🧩", subtitle: "Logic Battleground" },
@@ -137,6 +144,37 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
           <XPBar current={totalXP} max={getRank(totalXP).next || totalXP} label="Rank Progress" />
         </motion.div>
       </div>
+
+      {/* Today's Battle Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.4 }}
+        className="max-w-4xl mx-auto"
+      >
+        <div
+          className="game-card rounded-xl cursor-pointer overflow-hidden border-primary/30 hover:border-primary/50 transition-all"
+          onClick={onTodaysBattle}
+        >
+          <div className="h-1 bg-gradient-to-r from-primary via-amber-400 to-primary" />
+          <div className="p-4 md:p-6 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-2xl shrink-0">
+              <Swords className="w-6 h-6 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base md:text-lg font-bold text-foreground flex items-center gap-2">
+                Today's Battle <Zap className="w-4 h-4 text-primary" />
+              </h2>
+              <p className="text-xs md:text-sm text-muted-foreground">
+                {practiceLabSections[todayIdx].icon} {practiceLabSections[todayIdx].name} · {sectionLabels[todayIdx].tag}
+              </p>
+            </div>
+            <Button size="sm" className="shrink-0">
+              Start <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+            </Button>
+          </div>
+        </div>
+      </motion.div>
 
       {/* Section Cards — Game Style */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-5 max-w-4xl mx-auto">
@@ -199,7 +237,7 @@ function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
       <div className="max-w-2xl mx-auto space-y-3 md:space-y-4">
         <div className="flex items-center gap-2">
           <Crown className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-          <h2 className="text-base md:text-xl font-bold text-foreground tracking-tight">Arena Leaderboard</h2>
+          <h2 className="text-base md:text-xl font-bold text-foreground tracking-tight">Daily Leaderboard</h2>
           <Badge variant="secondary" className="text-[10px] ml-auto">This Week</Badge>
         </div>
         <Card className="border overflow-hidden">
@@ -691,6 +729,7 @@ function QuizView({
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function PracticeLab() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [phase, setPhase] = useState<Phase>("sections");
   const [selectedSection, setSelectedSection] = useState<SectionData | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
@@ -698,6 +737,7 @@ export default function PracticeLab() {
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number | string | null>>({});
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
+  const [battleDuration, setBattleDuration] = useState<number | null>(null);
 
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
@@ -708,6 +748,42 @@ export default function PracticeLab() {
     setSelectedSection(s);
     setPhase("chapters");
   }, []);
+
+  // Today's Battle handler
+  const handleTodaysBattle = useCallback(() => {
+    const battle = generateTodaysBattle();
+    if (battle.questions.length === 0) return;
+
+    if (!isAuthenticated) {
+      pendingChapter.current = battle.chapter;
+      signIn(window.location.pathname + "?daily=true");
+      return;
+    }
+    if (!hasPhone) {
+      pendingChapter.current = battle.chapter;
+      setPhoneModalOpen(true);
+      return;
+    }
+
+    const section = practiceLabSections.find(s => s.id === battle.sectionId) || null;
+    setSelectedSection(section);
+    setSelectedChapter(battle.chapter);
+    setQuizQuestions(battle.questions);
+    setBattleDuration(battle.duration);
+    setQuizAnswers({});
+    setQuizTimeUsed(0);
+    setPhase("quiz");
+  }, [isAuthenticated, hasPhone, signIn]);
+
+  // Auto-start today's battle if ?daily=true
+  const dailyTriggered = useRef(false);
+  useEffect(() => {
+    if (dailyTriggered.current) return;
+    if (searchParams.get("daily") !== "true") return;
+    if (authLoading || phoneLoading) return;
+    dailyTriggered.current = true;
+    handleTodaysBattle();
+  }, [searchParams, authLoading, phoneLoading, handleTodaysBattle]);
 
   useEffect(() => {
     if (!pendingChapter.current) return;
@@ -822,7 +898,7 @@ export default function PracticeLab() {
         <div className="max-w-5xl mx-auto py-6 md:py-16">
           <AnimatePresence mode="wait">
             {phase === "sections" && (
-              <SectionsView key="sections" onSelect={handleSelectSection} />
+              <SectionsView key="sections" onSelect={handleSelectSection} onTodaysBattle={handleTodaysBattle} />
             )}
             {phase === "chapters" && selectedSection && (
               <ChaptersView
@@ -838,7 +914,7 @@ export default function PracticeLab() {
                 key="quiz"
                 chapter={selectedChapter}
                 questions={quizQuestions}
-                duration={selectedChapter && ONE_SET_SLUGS.has(selectedChapter.slug) ? QUIZ_DURATION_SHORT : QUIZ_DURATION_DEFAULT}
+                duration={battleDuration || (selectedChapter && ONE_SET_SLUGS.has(selectedChapter.slug) ? QUIZ_DURATION_SHORT : QUIZ_DURATION_DEFAULT)}
                 onFinish={handleFinishQuiz}
                 onBack={handleBackToChapters}
               />

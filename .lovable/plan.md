@@ -1,47 +1,37 @@
 
 
-## Plan: Today's Battle Card + Daily Leaderboard
+## Consolidate Phone Capture: Remove Duplicated Logic
 
-### What we're building
+### Problem
+`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
 
-1. **"Today's Battle" card** on the Practice Lab sections page — a prominent card that randomly picks a section and generates a quiz with section-specific rules.
-2. **Rename "Arena Leaderboard"** to **"Daily Leaderboard"** on the Practice Lab page.
-3. **"Today's Battle" card** on the User Dashboard page.
+### What Changes
 
-### Quiz generation rules for Today's Battle
+**1. `src/components/LeadModalProvider.tsx`**
+- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
+- Replace it with a single `<PhoneCaptureModal>` component usage
+- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
+- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
 
-| Section | Questions | Time |
-|---------|-----------|------|
-| QA | 10 random Qs, mixed topics | 15 min |
-| LRDI | 1 set from any topic | 12 min |
-| VARC | 1 RC passage + 1 PJ/OSO question (from Para Jumbles chapter) | 15 min |
+**2. `src/components/PhoneCaptureModal.tsx`**
+- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
+- The component already supports custom `title` and `description`, so no changes needed there
 
-For VARC: combine questions from the RC chapter (1 full set via `pickOneSet`) plus 1 random PJ/OSO question from the Para Jumbles chapter. Total time 15 min.
+### Result
+- One single source of truth for phone capture logic
+- Future fixes (like the duplicate phone check) only need to be applied once
+- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
 
-### Changes
+### Technical Details
 
-**1. `src/pages/PracticeLab.tsx`**
-- Add a `generateTodaysBattle()` function that:
-  - Uses today's date as a seed to deterministically pick the same section for all users on a given day
-  - QA: picks 10 mixed-topic questions across all QA chapters using `pickGroupedRandom`
-  - LRDI: picks 1 set using `pickOneSet` from the LRDI chapter
-  - VARC: picks 1 RC set via `pickOneSet` from RC chapter + 1 random PJ question from Para Jumbles chapter
-  - Returns `{ section, chapter (virtual), questions, duration }`
-- Add a **"Today's Battle"** card in `SectionsView` above the section grid — styled with a gradient border and a daily challenge theme
-- Clicking it triggers the quiz directly (same auth/phone gate flow)
-- Rename leaderboard heading from "Arena Leaderboard" to "Daily Leaderboard"
+**`PhoneCaptureModal.tsx` changes:**
+- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
+- Add a name input field that renders when `showNameField` is true and no user name is available
+- Include the name in the upsert payload and persist to localStorage
 
-**2. `src/components/dashboard/DashboardTodaysBattle.tsx`** (new file)
-- A compact card with a "Today's Battle" theme, showing the section picked for today
-- "Start Battle" button links to `/practice-lab` with a query param `?daily=true`
-
-**3. `src/pages/Dashboard.tsx`**
-- Import and render `DashboardTodaysBattle` as a new stage between "Today's Mission" and "Progress"
-
-### Technical details
-
-- The daily section selection uses `new Date().toDateString()` hashed to pick a consistent section per day
-- The virtual chapter created for "Today's Battle" has slug `"todays-battle"` and a combined name like "Today's Battle — VARC"
-- For results saving, `section_id` and `chapter_slug` will use the actual section and `"todays-battle"` slug
-- VARC special case: merges RC set questions + 1 PJ question into a single quiz array
+**`LeadModalProvider.tsx` changes:**
+- Remove ~60 lines of form state, validation, and submit logic
+- Remove the inline `<Dialog>` JSX (~30 lines)
+- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
+- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
 
