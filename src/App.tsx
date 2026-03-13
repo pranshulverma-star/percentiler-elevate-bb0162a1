@@ -105,6 +105,7 @@ const App = () => (
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/cat-coaching-comparison" element={<CATCoachingComparison />} />
                   <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/auth/error" element={<AuthError />} />
                   <Route path="*" element={<NotFoundRedirect />} />
                 </Routes>
               </Suspense>
