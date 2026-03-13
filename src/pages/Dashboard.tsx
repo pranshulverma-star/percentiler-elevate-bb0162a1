@@ -179,9 +179,9 @@ export default function Dashboard() {
               <DashboardMission engagement={engagement} loadingMasterclass={loadingMasterclass} />
             </motion.div>
 
-            {/* Stage 3: Progress */}
-            <motion.div custom={3} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={3} label="PROGRESS" />
+            {/* Stage 4: Progress */}
+            <motion.div custom={4} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
+              <StageLabel number={4} label="PROGRESS" />
               <DashboardProgress
                 plannerData={plannerData}
                 loadingPlanner={loadingPlanner}
