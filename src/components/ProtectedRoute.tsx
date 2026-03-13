@@ -29,6 +29,7 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
   const { isAuthenticated, user, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
   const signInTriggered = useRef(false);
+  const [authBootstrapTimedOut, setAuthBootstrapTimedOut] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
 
   const isStandalone =
@@ -53,13 +54,48 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     sessionStorage.removeItem("pending_gate_source");
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    if (!authLoading) {
+      setAuthBootstrapTimedOut(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setAuthBootstrapTimedOut(true), 2500);
+    return () => window.clearTimeout(timer);
+  }, [authLoading]);
+
   // --- Render decision tree ---
 
-  // Still loading auth
-  if (authLoading) {
+  if (authLoading && !authBootstrapTimedOut) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 text-primary animate-spin" />
+      </div>
+    );
+  }
+
+  // Auth bootstrap timed out (common on standalone iOS PWA) -> show recovery actions
+  if (authLoading && authBootstrapTimedOut) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center gap-4">
+        <h2 className="text-xl font-bold text-foreground">Still loading your session</h2>
+        <p className="text-sm text-muted-foreground max-w-xs">
+          We couldn't restore your session yet. Try sign in again or reload this app.
+        </p>
+        <div className="flex w-full max-w-xs gap-2">
+          <Button
+            size="lg"
+            className="flex-1"
+            onClick={async () => {
+              const returnUrl = location.pathname + location.search;
+              await signIn(returnUrl);
+            }}
+          >
+            <LogIn className="h-4 w-4 mr-2" /> Sign in
+          </Button>
+          <Button size="lg" variant="outline" className="flex-1" onClick={() => window.location.reload()}>
+            Reload
+          </Button>
+        </div>
       </div>
     );
   }
@@ -83,7 +119,7 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
             try {
               const returnUrl = location.pathname + location.search;
               await signIn(returnUrl);
-            } catch {
+            } finally {
               setSigningIn(false);
             }
           }}
