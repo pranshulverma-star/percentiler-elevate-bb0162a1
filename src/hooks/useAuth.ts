@@ -88,13 +88,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as any).standalone === true;
+
     const redirectUri = redirectPath
       ? (redirectPath.startsWith("http") ? redirectPath : `${window.location.origin}${redirectPath}`)
       : `${window.location.origin}${window.location.pathname}${window.location.search}`;
 
+    // In standalone PWA mode, break out to system browser to avoid OAuth state loss
+    if (isStandalone) {
+      window.open(redirectUri, "_blank");
+      return;
+    }
+
     try {
       await lovable.auth.signInWithOAuth("google", {
         redirect_uri: redirectUri,
+        extraParams: { prompt: "select_account" },
       });
     } catch (err) {
       console.error("Sign-in error:", err);

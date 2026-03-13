@@ -1,32 +1,37 @@
 
 
-## Problem
+## Consolidate Phone Capture: Remove Duplicated Logic
 
-When the app is installed as a PWA (standalone mode), Google Sign-In fails with **"Authorization failed — State verification failed"**. This happens because standalone PWA windows cannot maintain OAuth state cookies across the redirect to `oauth.lovable.app` and back — the session context is lost mid-flow, causing the state mismatch.
+### Problem
+`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
 
-Additionally, the Google sign-in prompt doesn't show the account picker (pre-select existing ID), making it harder for users.
+### What Changes
 
-## Plan
+**1. `src/components/LeadModalProvider.tsx`**
+- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
+- Replace it with a single `<PhoneCaptureModal>` component usage
+- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
+- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
 
-### 1. Fix OAuth in standalone PWA mode
+**2. `src/components/PhoneCaptureModal.tsx`**
+- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
+- The component already supports custom `title` and `description`, so no changes needed there
 
-In `src/hooks/useAuth.ts`, detect standalone mode and open the sign-in URL in the system browser instead of navigating within the PWA window. The system browser has full cookie support and will complete OAuth correctly, then redirect back to the app.
+### Result
+- One single source of truth for phone capture logic
+- Future fixes (like the duplicate phone check) only need to be applied once
+- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
 
-```text
-signIn() flow:
-  ├─ In-app browser? → alert + bail (existing)
-  ├─ Standalone PWA? → window.open(currentUrl, "_blank")
-  │   Opens system browser which handles OAuth normally
-  └─ Normal browser? → lovable.auth.signInWithOAuth (existing)
-```
+### Technical Details
 
-When in standalone mode, we'll use `window.open()` with `_blank` to break out of the PWA shell into the real browser, where OAuth state is preserved. The redirect URI will bring the user back to the site, and the PWA can be re-opened from there.
+**`PhoneCaptureModal.tsx` changes:**
+- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
+- Add a name input field that renders when `showNameField` is true and no user name is available
+- Include the name in the upsert payload and persist to localStorage
 
-### 2. Force account picker
-
-Add `prompt: "select_account"` to the `extraParams` in the Google OAuth call so users always see their existing accounts instead of having to type credentials manually.
-
-### Files to change
-
-- **`src/hooks/useAuth.ts`** — Add standalone detection + `prompt: "select_account"` extra param
+**`LeadModalProvider.tsx` changes:**
+- Remove ~60 lines of form state, validation, and submit logic
+- Remove the inline `<Dialog>` JSX (~30 lines)
+- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
+- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
 
