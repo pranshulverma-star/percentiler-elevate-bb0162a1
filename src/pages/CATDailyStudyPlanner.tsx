@@ -701,8 +701,8 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   const fullPlan = useMemo(() => generateFullPlan(planConfig), [planConfig]);
 
   const currentDayIndex = useMemo(() => {
-    const start = new Date(leadData.startDate);
-    start.setHours(0, 0, 0, 0);
+    const [y, m, d] = leadData.startDate.split("-").map(Number);
+    const start = new Date(y, m - 1, d);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return Math.max(0, Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
