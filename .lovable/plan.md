@@ -1,63 +1,37 @@
 
 
-## Making Your Web App Into a Mobile App
+## Consolidate Phone Capture: Remove Duplicated Logic
 
-You already have a fully functional web application. There are two paths to make it installable as an "app" on phones:
+### Problem
+`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
 
-### Option 1: Installable Web App (PWA) — Recommended
+### What Changes
 
-Your app can be installed directly from the browser to the home screen, just like a real app.
+**1. `src/components/LeadModalProvider.tsx`**
+- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
+- Replace it with a single `<PhoneCaptureModal>` component usage
+- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
+- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
 
-**What it gives you:**
-- Works on all phones (iPhone and Android)
-- No app store submission needed
-- Offline support and fast loading
-- Home screen icon, splash screen, full-screen mode
+**2. `src/components/PhoneCaptureModal.tsx`**
+- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
+- The component already supports custom `title` and `description`, so no changes needed there
 
-**What needs to be done:**
-- Install and configure `vite-plugin-pwa`
-- Add a web app manifest (name, icons, theme colors, etc.)
-- Add mobile-optimized meta tags to `index.html`
-- Create PWA icons (192x192 and 512x512 versions of your logo)
-- Ensure the `/~oauth` route is excluded from service worker caching (critical for Google sign-in)
-- Optional: Create an `/install` page with instructions for users
+### Result
+- One single source of truth for phone capture logic
+- Future fixes (like the duplicate phone check) only need to be applied once
+- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
 
-**Constraints:**
-- Push notifications are limited on iOS Safari
-- No access to advanced hardware (NFC, Bluetooth)
-- Users install via browser menu, not an app store
+### Technical Details
 
-**Publishing:** You already have a published URL. Once PWA is configured, users visiting your site on mobile will be prompted to "Add to Home Screen." No app store needed.
+**`PhoneCaptureModal.tsx` changes:**
+- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
+- Add a name input field that renders when `showNameField` is true and no user name is available
+- Include the name in the upsert payload and persist to localStorage
 
----
-
-### Option 2: Native Mobile App (Capacitor)
-
-A real app published to Apple App Store and Google Play.
-
-**What it gives you:**
-- Full access to phone features (push notifications, camera, etc.)
-- App store presence and discoverability
-
-**What needs to be done:**
-- Install Capacitor (`@capacitor/core`, `@capacitor/cli`, `@capacitor/ios`, `@capacitor/android`)
-- Initialize Capacitor config
-- Export project to GitHub, clone locally
-- Build and sync with `npx cap sync`
-- Run on emulator or device via Xcode (iOS) or Android Studio (Android)
-- Submit to Apple App Store ($99/year developer account) and Google Play ($25 one-time)
-
-**Constraints:**
-- Requires a Mac with Xcode for iOS builds
-- Requires Android Studio for Android builds
-- App store review process (Apple can take days)
-- Ongoing maintenance for store compliance
-
----
-
-### Recommendation
-
-**PWA is the fastest, simplest path.** Your app is already a web app with Google OAuth, database, and all features working. A PWA wraps it with offline support and an install prompt — no app stores, no native tooling. Most ed-tech apps in India work great as PWAs.
-
-Go native only if you specifically need push notifications on iOS or app store presence for marketing.
+**`LeadModalProvider.tsx` changes:**
+- Remove ~60 lines of form state, validation, and submit logic
+- Remove the inline `<Dialog>` JSX (~30 lines)
+- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
+- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
 
