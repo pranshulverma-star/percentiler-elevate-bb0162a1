@@ -41,13 +41,14 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 const FreeCourses = lazy(() => import("./pages/FreeCourses"));
 const TestSeries = lazy(() => import("./pages/TestSeries"));
+const Workshops = lazy(() => import("./pages/Workshops"));
 const PracticeLab = lazy(() => import("./pages/PracticeLab"));
 const BattleRoom = lazy(() => import("./pages/BattleRoom"));
 const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const Contact = lazy(() => import("./pages/Contact"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+
 
 const queryClient = new QueryClient();
 
@@ -93,6 +94,7 @@ const App = () => (
                   <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
                   <Route path="/free-courses" element={<FreeCourses />} />
                   <Route path="/test-series" element={<TestSeries />} />
+                  <Route path="/workshops" element={<Workshops />} />
                   <Route path="/practice-lab" element={<PracticeLab />} />
                   <Route path="/practice-lab/battle/:code" element={<BattleRoom />} />
                   <Route path="/terms" element={<Terms />} />

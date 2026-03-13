@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Zap, BarChart3, Users, ArrowRight } from "lucide-react";
+import { Zap, BarChart3, Users, ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const courses = [
@@ -22,6 +22,12 @@ const courses = [
     icon: Users,
     tag: "1-on-1",
     highlights: ["Personalized CAT strategy and accountability sessions", "One-on-one guidance for serious aspirants", "Weekly progress reviews"],
+  },
+  {
+    name: "Topic-wise Workshops",
+    icon: BookOpen,
+    tag: "Deep Dive",
+    highlights: ["Focused workshops on Arithmetic, Algebra, Geometry & more", "Expert-led sessions by 99%ile mentors", "Affordable topic-specific crash courses"],
   },
 ];
 
@@ -44,7 +50,7 @@ const CoursesSection = () => (
         </h2>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
         {courses.map((c, i) => {
           const Icon = c.icon;
           return (
@@ -82,7 +88,7 @@ const CoursesSection = () => (
                   </ul>
                 </div>
                 <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
-                  <Link to={i === 0 ? "/courses/cat-omet" : i === 1 ? "/test-series" : "/mentorship"}>
+                  <Link to={i === 0 ? "/courses/cat-omet" : i === 1 ? "/test-series" : i === 2 ? "/mentorship" : "/workshops"}>
                     Explore Program <ArrowRight className="ml-1 h-3.5 w-3.5" />
                   </Link>
                 </Button>
