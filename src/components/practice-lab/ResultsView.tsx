@@ -596,7 +596,9 @@ export default function ResultsView({
             {questions.map((q, i) => {
               const userAnswer = answers[q.id];
               const isSkipped = userAnswer === undefined || userAnswer === null || userAnswer === "";
-              const isCorrect = userAnswer === q.correctAnswer;
+              const isCorrect = q.type === "tita_text"
+                ? String(userAnswer).trim().toUpperCase() === String(q.correctAnswer).trim().toUpperCase()
+                : userAnswer === q.correctAnswer;
 
               return (
                 <Card key={q.id} className="p-4 border space-y-2">
@@ -610,6 +612,18 @@ export default function ResultsView({
                     </div>
                     <div className="flex-1 space-y-2">
                       <p className="text-xs md:text-sm font-medium text-foreground">Q{i + 1}. {q.question}</p>
+                      {q.type === "tita_text" ? (
+                        <div className="space-y-1 text-xs">
+                          <div className={`px-2.5 py-1 rounded-lg ${isCorrect ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium" : "bg-destructive/10 text-destructive"}`}>
+                            Your answer: {isSkipped ? "(skipped)" : String(userAnswer)}
+                          </div>
+                          {!isCorrect && (
+                            <div className="px-2.5 py-1 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 font-medium">
+                              Correct answer: {String(q.correctAnswer)}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
                       <div className="space-y-1">
                         {q.options.map((opt, idx) => {
                           let cls = "text-xs px-2.5 py-1 rounded-lg ";
@@ -618,6 +632,8 @@ export default function ResultsView({
                           else cls += "text-muted-foreground";
                           return <div key={idx} className={cls}>{opt}</div>;
                         })}
+                      </div>
+                      )}
                       </div>
                       {q.explanation && (
                         <p className="text-[10px] text-muted-foreground italic border-t border-border pt-2 mt-1">
