@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, lazy, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
@@ -12,6 +12,9 @@ import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 import { practiceLabSections, type PracticeQuestion } from "@/data/practiceLabQuestions";
+
+// Lazy load the shareable card (pulls in html-to-image)
+const ShareableResultCard = lazy(() => import("@/components/ShareableResultCard"));
 
 // Quiz topic icon images
 import iconNumberSystem from "@/assets/quiz-icon-number-system.png";
@@ -122,8 +125,10 @@ export default function ResultsView({
   const navigate = useNavigate();
   const { user } = useAuth();
   const [pastAttempts, setPastAttempts] = useState<{ score_pct: number; correct: number; total_questions: number; time_used_seconds: number; created_at: string }[]>([]);
+  const [leaderboard, setLeaderboard] = useState<{ name: string; score: number; isMe: boolean }[]>([]);
   const savedRef = useRef(false);
   const [showReview, setShowReview] = useState(false);
+  const [showShareCard, setShowShareCard] = useState(false);
 
   const { correct, incorrect, unanswered } = useMemo(() => {
     let correct = 0, incorrect = 0, unanswered = 0;
@@ -181,6 +186,7 @@ export default function ResultsView({
           answers_json: answers,
         });
       }
+      // Fetch personal history
       const { data } = await (supabase.from("practice_lab_attempts") as any)
         .select("score_pct, correct, total_questions, time_used_seconds, created_at")
         .eq("user_id", user.id)
@@ -189,6 +195,38 @@ export default function ResultsView({
         .order("created_at", { ascending: false })
         .limit(10);
       setPastAttempts(data || []);
+
+      // Fetch leaderboard — top 10 scores for this chapter across all users
+      const { data: lbData } = await (supabase.from("practice_lab_attempts") as any)
+        .select("user_id, score_pct")
+        .eq("section_id", sectionId)
+        .eq("chapter_slug", chapterSlug)
+        .order("score_pct", { ascending: false })
+        .limit(50);
+
+      if (lbData) {
+        // Deduplicate: best score per user
+        const bestByUser: Record<string, number> = {};
+        for (const row of lbData) {
+          if (!bestByUser[row.user_id] || row.score_pct > bestByUser[row.user_id]) {
+            bestByUser[row.user_id] = row.score_pct;
+          }
+        }
+        const sorted = Object.entries(bestByUser)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([uid, score]) => ({
+            name: uid === user.id ? (user.user_metadata?.name || user.email?.split("@")[0] || "You") : `Student ${uid.slice(0, 4)}`,
+            score,
+            isMe: uid === user.id,
+          }));
+        // Ensure current user is in leaderboard
+        if (!sorted.some((s) => s.isMe)) {
+          sorted.push({ name: user.user_metadata?.name || user.email?.split("@")[0] || "You", score: pct, isMe: true });
+          sorted.sort((a, b) => b.score - a.score);
+        }
+        setLeaderboard(sorted.slice(0, 5));
+      }
     };
     saveAndFetch();
   }, [user?.id]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -280,18 +318,24 @@ export default function ResultsView({
           variant="outline"
           size="sm"
           className="gap-1.5 font-bold flex-1 text-xs"
-          onClick={async () => {
-            const shareText = `🎯 I scored ${correct}/${total} (${percentile}%ile) on CAT Practice Lab!\nCan you beat this? 👀\nTry → percentilers.in/practice-lab`;
-            if (navigator.share) {
-              await navigator.share({ text: shareText }).catch(() => {});
-            } else {
-              await navigator.clipboard.writeText(shareText);
-            }
-          }}
+          onClick={() => setShowShareCard((v) => !v)}
         >
-          <Share2 className="w-3.5 h-3.5" /> Share Score
+          <Share2 className="w-3.5 h-3.5" /> {showShareCard ? "Hide Card" : "Share Image"}
         </Button>
       </div>
+
+      {/* ─── 2b. Shareable Image Card (lazy loaded) ─── */}
+      {showShareCard && (
+        <Suspense fallback={<div className="h-40 rounded-2xl bg-secondary animate-pulse" />}>
+          <ShareableResultCard
+            correct={correct}
+            total={total}
+            chapterName={chapterName}
+            timeUsed={timeUsed}
+            leaderboard={leaderboard.length > 0 ? leaderboard : undefined}
+          />
+        </Suspense>
+      )}
 
       {/* ─── 3. Weak Area + Workshop (only if incorrect) ─── */}
       {incorrect > 0 && (
@@ -348,6 +392,38 @@ export default function ResultsView({
       </div>
 
       {/* ─── 5. History (compact) ─── */}
+      {/* ─── 5a. Leaderboard ─── */}
+      {leaderboard.length > 0 && (
+        <Card className="p-3 border space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="text-sm">🏆</span>
+            <span className="text-xs font-bold text-foreground">Leaderboard</span>
+            <span className="text-[10px] text-muted-foreground ml-auto">{chapterName}</span>
+          </div>
+          {leaderboard.map((p, i) => {
+            const medals = ["🥇", "🥈", "🥉"];
+            return (
+              <div
+                key={i}
+                className={`flex items-center justify-between text-[11px] py-1.5 px-2 rounded-lg ${
+                  p.isMe ? "bg-primary/10 border border-primary/20" : "border-b border-border/50 last:border-0"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="text-sm w-5 text-center">{medals[i] || `#${i + 1}`}</span>
+                  <span className={`font-bold ${p.isMe ? "text-foreground" : "text-muted-foreground"}`}>
+                    {p.name}
+                    {p.isMe && <span className="ml-1 text-[9px] font-black text-primary uppercase">(You)</span>}
+                  </span>
+                </span>
+                <span className="font-black text-foreground">{p.score}%</span>
+              </div>
+            );
+          })}
+        </Card>
+      )}
+
+      {/* ─── 5b. History (compact) ─── */}
       {pastAttempts.length > 1 && (
         <Card className="p-3 border space-y-2">
           <div className="flex items-center gap-2">
