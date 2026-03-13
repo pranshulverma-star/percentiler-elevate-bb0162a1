@@ -692,6 +692,30 @@ export default function ResultsView({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Dashboard discovery nudge */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+      >
+        <Card className="p-4 bg-primary/5 border-primary/20 hover:border-primary/40 transition-colors cursor-pointer group"
+          onClick={() => navigate("/dashboard")}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <BarChart3 className="h-5 w-5 text-primary" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-foreground">Track Your Progress</p>
+                <p className="text-xs text-muted-foreground">View streaks, stats & personalized study plan on your Dashboard</p>
+              </div>
+            </div>
+            <ChevronRight className="h-5 w-5 text-primary group-hover:translate-x-1 transition-transform" />
+          </div>
+        </Card>
+      </motion.div>
     </motion.div>
   );
 }

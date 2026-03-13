@@ -109,11 +109,9 @@ const Navbar = () => {
                 </a>
               )
             )}
-            {isAuthenticated && (
-              <Link to="/dashboard" className="flex items-center gap-1 text-sm font-medium text-primary py-2" onClick={() => setOpen(false)}>
-                <LayoutDashboard className="h-4 w-4" /> Dashboard
-              </Link>
-            )}
+            <Link to="/dashboard" className="flex items-center gap-1.5 text-sm font-semibold text-primary py-2 bg-primary/5 px-3 rounded-lg border border-primary/20" onClick={() => setOpen(false)}>
+              <LayoutDashboard className="h-4 w-4" /> My Dashboard
+            </Link>
             <div className="flex justify-center pt-1"><ThemeToggle /></div>
           </nav>
         )}
