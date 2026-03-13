@@ -24,7 +24,14 @@ type Phase = "sections" | "chapters" | "quiz" | "results";
 const QUIZ_DURATION_DEFAULT = 900; // 15 min
 const QUIZ_DURATION_SHORT = 720;    // 12 min (LRDI + RC)
 const QUIZ_QUESTION_COUNT = 10;
+const PJ_QUESTION_COUNT = 5;
 const ONE_SET_SLUGS = new Set(["cat-lrdi-arena", "reading-comprehension"]);
+const PJ_SLUGS = new Set(["para-jumbles"]);
+
+function getQuizCount(slug: string): number {
+  if (PJ_SLUGS.has(slug)) return PJ_QUESTION_COUNT;
+  return QUIZ_QUESTION_COUNT;
+}
 const XP_PER_CORRECT = 15;
 const XP_PER_SPEED_BONUS = 5;
 
@@ -288,7 +295,7 @@ function ChaptersView({
         {section.chapters.map((ch, i) => {
           const hasQuestions = ch.questions.length > 0;
           const isOneSet = ONE_SET_SLUGS.has(ch.slug);
-          const qCount = isOneSet ? ch.questions.length : Math.min(ch.questions.length, QUIZ_QUESTION_COUNT);
+          const qCount = isOneSet ? ch.questions.length : Math.min(ch.questions.length, getQuizCount(ch.slug));
           return (
             <motion.div
               key={ch.slug}
@@ -713,7 +720,7 @@ export default function PracticeLab() {
     const ch = pendingChapter.current;
     pendingChapter.current = null;
     setSelectedChapter(ch);
-    setQuizQuestions(ONE_SET_SLUGS.has(ch.slug) ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(ONE_SET_SLUGS.has(ch.slug) ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, getQuizCount(ch.slug)));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
@@ -731,7 +738,7 @@ export default function PracticeLab() {
       return;
     }
     setSelectedChapter(ch);
-    setQuizQuestions(ONE_SET_SLUGS.has(ch.slug) ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(ONE_SET_SLUGS.has(ch.slug) ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, getQuizCount(ch.slug)));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
@@ -745,7 +752,7 @@ export default function PracticeLab() {
 
   const handleRetry = useCallback(() => {
     if (selectedChapter) {
-      setQuizQuestions(ONE_SET_SLUGS.has(selectedChapter.slug) ? pickOneSet(selectedChapter.questions) : pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
+      setQuizQuestions(ONE_SET_SLUGS.has(selectedChapter.slug) ? pickOneSet(selectedChapter.questions) : pickGroupedRandom(selectedChapter.questions, getQuizCount(selectedChapter.slug)));
     }
     setQuizAnswers({});
     setQuizTimeUsed(0);
@@ -776,7 +783,7 @@ export default function PracticeLab() {
       return;
     }
     // Pick 10 questions and create a battle room
-    const questions = pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT);
+    const questions = pickGroupedRandom(ch.questions, getQuizCount(ch.slug));
     const code = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 

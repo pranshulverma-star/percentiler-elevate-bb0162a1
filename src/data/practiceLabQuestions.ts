@@ -427,10 +427,14 @@ const varcChapters = buildChaptersFromRaw(varcRaw);
 // ── Import Para Jumble questions ─────────────────────────────────────────────
 import { paraJumbleMCQQuestions, oddSentenceOutQuestions, paraJumbleSubjectiveQuestions } from "./pjQuestions";
 
+const allPjQuestions: PracticeQuestion[] = [
+  ...paraJumbleMCQQuestions,
+  ...oddSentenceOutQuestions,
+  ...paraJumbleSubjectiveQuestions,
+];
+
 const pjChapters: Chapter[] = [
-  { slug: "para-jumbles", name: "Para Jumbles", questions: paraJumbleMCQQuestions },
-  { slug: "odd-sentence-out", name: "Odd Sentence Out", questions: oddSentenceOutQuestions },
-  { slug: "para-jumbles-subjective", name: "Para Jumbles (Subjective)", questions: paraJumbleSubjectiveQuestions },
+  { slug: "para-jumbles", name: "Para Jumbles & Odd One Out", questions: allPjQuestions },
 ];
 
 export const practiceLabSections: SectionData[] = [
