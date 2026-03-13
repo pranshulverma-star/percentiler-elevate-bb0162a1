@@ -783,7 +783,7 @@ export default function PracticeLab() {
       return;
     }
     // Pick 10 questions and create a battle room
-    const questions = pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT);
+    const questions = pickGroupedRandom(ch.questions, getQuizCount(ch.slug));
     const code = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 
