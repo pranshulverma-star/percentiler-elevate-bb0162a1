@@ -5,9 +5,9 @@ import { topicOverrides, getDifficulty, getConceptTags, getSkillTags, getQAChapt
 export interface PracticeQuestion {
   id: number;
   question: string;
-  type: "mcq";
+  type: "mcq" | "tita_text";
   options: string[];
-  correctAnswer: number; // 0-based index
+  correctAnswer: number | string; // 0-based index for mcq, string for tita_text
   explanation?: string;
   group_id?: string;
   group_context?: string;
