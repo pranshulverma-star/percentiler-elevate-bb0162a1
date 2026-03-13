@@ -89,7 +89,7 @@ function BattleLobby({
   onStart: () => void;
 }) {
   const shareUrl = `${window.location.origin}/practice-lab/battle/${room.code}`;
-  const canStart = players.length >= 1;
+  const canStart = players.length >= 3;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shareUrl);
