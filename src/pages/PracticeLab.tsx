@@ -24,7 +24,14 @@ type Phase = "sections" | "chapters" | "quiz" | "results";
 const QUIZ_DURATION_DEFAULT = 900; // 15 min
 const QUIZ_DURATION_SHORT = 720;    // 12 min (LRDI + RC)
 const QUIZ_QUESTION_COUNT = 10;
+const PJ_QUESTION_COUNT = 5;
 const ONE_SET_SLUGS = new Set(["cat-lrdi-arena", "reading-comprehension"]);
+const PJ_SLUGS = new Set(["para-jumbles"]);
+
+function getQuizCount(slug: string): number {
+  if (PJ_SLUGS.has(slug)) return PJ_QUESTION_COUNT;
+  return QUIZ_QUESTION_COUNT;
+}
 const XP_PER_CORRECT = 15;
 const XP_PER_SPEED_BONUS = 5;
 
