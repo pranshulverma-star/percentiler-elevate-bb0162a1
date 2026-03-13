@@ -340,7 +340,39 @@ export default function ResultsView({
         </div>
       </Card>
 
-      {/* ─── 2. Performance Breakdown ─── */}
+      {/* ─── 2. Challenge Your Friends ─── */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-1.5">
+          <Flame className="w-4 h-4 text-primary" />
+          <h3 className="text-sm md:text-base font-bold text-foreground">Challenge Your Friends</h3>
+        </div>
+        <Card className="p-4 border space-y-3">
+          <p className="text-xs text-muted-foreground">Can your friends beat your score?</p>
+          <div className="flex gap-2">
+            <Button onClick={onRetry} size="sm" className="gap-1.5 font-bold flex-1">
+              <Swords className="w-3.5 h-3.5" /> Start Battle
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              className="gap-1.5 font-bold"
+              onClick={async () => {
+                const shareText = `🎯 I scored ${correct}/${total} (${percentile}%ile) on CAT Practice Lab!\n\nCan you beat this? 👀\nTry → percentilers.in/practice-lab`;
+                if (navigator.share) {
+                  await navigator.share({ text: shareText }).catch(() => {});
+                } else {
+                  await navigator.clipboard.writeText(shareText);
+                }
+              }}
+            >
+              <Share2 className="w-3.5 h-3.5" /> Share
+            </Button>
+          </div>
+          <p className="text-[9px] text-muted-foreground">Complete another quiz tomorrow to keep your streak alive.</p>
+        </Card>
+      </div>
+
+      {/* ─── 3. Performance Breakdown ─── */}
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <BarChart3 className="w-4 h-4 text-primary" />
@@ -413,7 +445,7 @@ export default function ResultsView({
         </div>
       </div>
 
-      {/* ─── 3. Leaderboard + Weak Area ─── */}
+      {/* ─── 4. Leaderboard + Weak Area ─── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {/* Leaderboard */}
         <div className="space-y-2">
@@ -460,7 +492,18 @@ export default function ResultsView({
                 Students who improve this topic increase their CAT percentile by ~8-10 points.
               </p>
               <Button
-                onClick={onRetry}
+                onClick={() => {
+                  // Navigate to the section containing this chapter, not retry
+                  const sectionMap: Record<string, string> = { qa: "Quantitative Ability", lrdi: "Logical Reasoning & Data Interpretation", varc: "Verbal Ability & Reading Comprehension" };
+                  // Find which section this chapter belongs to
+                  const targetSection = practiceLabSections.find(s => s.id === sectionId);
+                  if (targetSection) {
+                    // Navigate to practice lab and let user pick from the section
+                    navigate("/practice-lab");
+                  } else {
+                    onBack();
+                  }
+                }}
                 size="sm"
                 className="gap-1.5 font-bold text-xs w-full md:w-auto"
               >
@@ -480,51 +523,25 @@ export default function ResultsView({
         )}
       </div>
 
-      {/* ─── 4. Challenge Your Friends + Next Quizzes ─── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {/* Challenge */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-1.5">
-            <Flame className="w-4 h-4 text-primary" />
-            <h3 className="text-sm md:text-base font-bold text-foreground">Challenge Your Friends</h3>
-          </div>
-          <Card className="p-4 border space-y-3">
-            <p className="text-xs text-muted-foreground">Can your friends beat your score?</p>
-            <div className="flex gap-2">
-              <Button onClick={onRetry} size="sm" className="gap-1.5 font-bold flex-1">
-                <Swords className="w-3.5 h-3.5" /> Start Battle
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                className="gap-1.5 font-bold"
-                onClick={async () => {
-                  const shareText = `🎯 I scored ${correct}/${total} (${percentile}%ile) on CAT Practice Lab!\n\nCan you beat this? 👀\nTry → percentilers.in/practice-lab`;
-                  if (navigator.share) {
-                    await navigator.share({ text: shareText }).catch(() => {});
-                  } else {
-                    await navigator.clipboard.writeText(shareText);
-                  }
-                }}
-              >
-                <Share2 className="w-3.5 h-3.5" /> Share
-              </Button>
-            </div>
-            <p className="text-[9px] text-muted-foreground">Complete another quiz tomorrow to keep your streak alive.</p>
-          </Card>
+      {/* ─── 5. Next Recommended Quizzes ─── */}
+      <div className="space-y-2">
+        <div className="flex items-center gap-1.5">
+          <BookOpen className="w-4 h-4 text-primary" />
+          <h3 className="text-sm md:text-base font-bold text-foreground">Next Recommended Quizzes</h3>
         </div>
-
-        {/* Next Recommended Quizzes */}
-        <div className="space-y-2">
-          <div className="flex items-center gap-1.5">
-            <BookOpen className="w-4 h-4 text-primary" />
-            <h3 className="text-sm md:text-base font-bold text-foreground">Next Recommended Quizzes</h3>
-          </div>
-          <Card className="p-4 border space-y-3">
-            <div className="grid grid-cols-3 gap-2">
-              {recommendedQuizzes.map((q, i) => (
+        <Card className="p-4 border space-y-3">
+          <div className="grid grid-cols-3 gap-2">
+            {recommendedQuizzes.map((q, i) => {
+              const iconImg = getQuizIcon(q.slug);
+              return (
                 <div key={i} className="text-center space-y-1.5">
-                  <div className="text-2xl">{q.icon}</div>
+                  {iconImg ? (
+                    <div className="w-12 h-12 mx-auto rounded-xl overflow-hidden bg-secondary/50 flex items-center justify-center">
+                      <img src={iconImg} alt={q.name} className="w-10 h-10 object-contain" />
+                    </div>
+                  ) : (
+                    <div className="text-2xl">{q.icon}</div>
+                  )}
                   <p className="text-[9px] md:text-[10px] font-semibold text-foreground leading-tight line-clamp-2">{q.name}</p>
                   <Button
                     variant="default"
@@ -535,13 +552,13 @@ export default function ResultsView({
                     Start Quiz
                   </Button>
                 </div>
-              ))}
-            </div>
-            <Button variant="outline" onClick={onBack} size="sm" className="gap-1.5 w-full text-xs">
-              <ArrowLeft className="w-3 h-3" /> Back to Practice Lab
-            </Button>
-          </Card>
-        </div>
+              );
+            })}
+          </div>
+          <Button variant="outline" onClick={onBack} size="sm" className="gap-1.5 w-full text-xs">
+            <ArrowLeft className="w-3 h-3" /> Back to Practice Lab
+          </Button>
+        </Card>
       </div>
 
       {/* ─── 5. Shareable Card (Save Image) ─── */}
