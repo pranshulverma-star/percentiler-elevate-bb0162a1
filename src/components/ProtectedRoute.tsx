@@ -29,16 +29,22 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
   const { isAuthenticated, user, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
   const signInTriggered = useRef(false);
+  const [signingIn, setSigningIn] = useState(false);
 
-  // State A: trigger sign-in once auth resolves as unauthenticated
+  const isStandalone =
+    typeof window !== "undefined" &&
+    (window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as any).standalone === true);
+
+  // State A: trigger sign-in once auth resolves as unauthenticated (browser only, not standalone PWA)
   useEffect(() => {
-    if (authLoading || isAuthenticated || signInTriggered.current) return;
+    if (authLoading || isAuthenticated || signInTriggered.current || isStandalone) return;
 
     signInTriggered.current = true;
     const returnUrl = location.pathname + location.search;
     sessionStorage.setItem("pending_gate_source", source);
     void signIn(returnUrl);
-  }, [authLoading, isAuthenticated, signIn, location.pathname, location.search, source]);
+  }, [authLoading, isAuthenticated, signIn, location.pathname, location.search, source, isStandalone]);
 
   // Clear stale session markers once user arrives at destination
   useEffect(() => {
@@ -58,7 +64,39 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // Not authenticated — show spinner while redirect happens
+  // Not authenticated in standalone PWA → show sign-in button (can't auto-redirect)
+  if (!isAuthenticated && isStandalone) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center gap-4">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
+          <LogIn className="h-8 w-8 text-primary" />
+        </div>
+        <h2 className="text-xl font-bold text-foreground">Sign in to continue</h2>
+        <p className="text-sm text-muted-foreground max-w-xs">
+          Sign in with Google to access your {source === "dashboard" ? "dashboard" : source === "masterclass" ? "masterclass" : "content"}.
+        </p>
+        <Button
+          size="lg"
+          disabled={signingIn}
+          onClick={async () => {
+            setSigningIn(true);
+            try {
+              const returnUrl = location.pathname + location.search;
+              await signIn(returnUrl);
+            } catch {
+              setSigningIn(false);
+            }
+          }}
+          className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)]"
+        >
+          {signingIn ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <LogIn className="h-4 w-4 mr-2" />}
+          Sign in with Google
+        </Button>
+      </div>
+    );
+  }
+
+  // Not authenticated in browser — show spinner while redirect happens
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
