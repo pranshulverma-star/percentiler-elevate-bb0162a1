@@ -43,7 +43,7 @@ export function generateTodaysBattle(): TodaysBattleConfig {
 
   let questions: PracticeQuestion[] = [];
   let duration = 900; // 15 min default
-  let chapterName = "Today's Battle";
+  let chapterName = "Quiz of the Day";
 
   if (section.id === "qa") {
     // 10 mixed-topic questions from all QA chapters
