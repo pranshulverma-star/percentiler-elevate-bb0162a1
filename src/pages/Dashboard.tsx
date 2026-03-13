@@ -204,15 +204,15 @@ export default function Dashboard() {
               ) : null;
             })()}
 
-            {/* Stage 4: Level Up */}
-            <motion.div custom={4} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={4} label="LEVEL UP" />
+            {/* Stage 5: Level Up */}
+            <motion.div custom={5} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
+              <StageLabel number={5} label="LEVEL UP" />
               <DashboardLevelUp />
             </motion.div>
 
-            {/* Stage 5: Explore */}
-            <motion.div custom={5} initial="hidden" animate="visible" variants={stageVariants} className="relative">
-              <StageLabel number={5} label="EXPLORE" />
+            {/* Stage 6: Explore */}
+            <motion.div custom={6} initial="hidden" animate="visible" variants={stageVariants} className="relative">
+              <StageLabel number={6} label="EXPLORE" />
               <DashboardExplore converted={converted} mentorshipActive={mentorshipActive} />
             </motion.div>
           </div>
