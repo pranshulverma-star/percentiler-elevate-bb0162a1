@@ -108,6 +108,7 @@ const App = () => (
                 </Routes>
               </Suspense>
             </BrowserRouter>
+            <PWAInstallPrompt />
           </LeadModalProvider>
         </TooltipProvider>
       </QueryClientProvider>
