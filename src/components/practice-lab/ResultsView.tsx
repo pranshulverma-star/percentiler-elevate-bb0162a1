@@ -493,16 +493,8 @@ export default function ResultsView({
               </p>
               <Button
                 onClick={() => {
-                  // Navigate to the section containing this chapter, not retry
-                  const sectionMap: Record<string, string> = { qa: "Quantitative Ability", lrdi: "Logical Reasoning & Data Interpretation", varc: "Verbal Ability & Reading Comprehension" };
-                  // Find which section this chapter belongs to
-                  const targetSection = practiceLabSections.find(s => s.id === sectionId);
-                  if (targetSection) {
-                    // Navigate to practice lab and let user pick from the section
-                    navigate("/practice-lab");
-                  } else {
-                    onBack();
-                  }
+                  // Navigate back to practice lab section view
+                  navigate("/practice-lab");
                 }}
                 size="sm"
                 className="gap-1.5 font-bold text-xs w-full md:w-auto"
