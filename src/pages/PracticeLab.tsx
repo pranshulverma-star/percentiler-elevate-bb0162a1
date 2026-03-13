@@ -237,7 +237,7 @@ function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData)
       <div className="max-w-2xl mx-auto space-y-3 md:space-y-4">
         <div className="flex items-center gap-2">
           <Crown className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-          <h2 className="text-base md:text-xl font-bold text-foreground tracking-tight">Arena Leaderboard</h2>
+          <h2 className="text-base md:text-xl font-bold text-foreground tracking-tight">Daily Leaderboard</h2>
           <Badge variant="secondary" className="text-[10px] ml-auto">This Week</Badge>
         </div>
         <Card className="border overflow-hidden">
