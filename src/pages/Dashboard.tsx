@@ -9,6 +9,7 @@ import DashboardMission from "@/components/dashboard/DashboardMission";
 import DashboardProgress from "@/components/dashboard/DashboardProgress";
 import DashboardLevelUp from "@/components/dashboard/DashboardLevelUp";
 import DashboardExplore from "@/components/dashboard/DashboardExplore";
+import WorkshopRecommendation, { getWeakSectionWorkshop } from "@/components/WorkshopRecommendation";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 
@@ -182,14 +183,24 @@ export default function Dashboard() {
               />
             </motion.div>
 
+            {/* Weak Area (between Progress and Level Up) */}
+            {(() => {
+              const weakWorkshop = getWeakSectionWorkshop(practiceAttempts);
+              return weakWorkshop ? (
+                <motion.div custom={3.5} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
+                  <WorkshopRecommendation
+                    workshops={[weakWorkshop]}
+                    title="Improve Your Weak Area"
+                    subtitle="Based on your practice history:"
+                  />
+                </motion.div>
+              ) : null;
+            })()}
+
             {/* Stage 4: Level Up */}
             <motion.div custom={4} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
               <StageLabel number={4} label="LEVEL UP" />
-              <DashboardLevelUp
-                campaign={campaign}
-                loadingCampaign={loadingCampaign}
-                practiceAttempts={practiceAttempts}
-              />
+              <DashboardLevelUp />
             </motion.div>
 
             {/* Stage 5: Explore */}
