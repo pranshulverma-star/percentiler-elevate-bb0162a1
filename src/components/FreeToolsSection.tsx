@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, GraduationCap, ClipboardCheck, ArrowRight } from "lucide-react";
+import { CalendarDays, GraduationCap, ClipboardCheck, ArrowRight, LayoutDashboard } from "lucide-react";
 import { motion } from "framer-motion";
 
 
@@ -8,6 +8,7 @@ const tools = [
   { icon: CalendarDays, name: "Daily Study Planner", benefit: "Build a day-wise CAT preparation roadmap aligned with the latest syllabus and your target percentile.", href: "/cat-daily-study-planner", isLink: true },
   { icon: GraduationCap, name: "Free Courses", benefit: "Access free CAT preparation courses covering QA, VARC, LRDI, and more : completely free.", href: "/free-courses", isLink: true },
   { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Evaluate your current performance level and identify gaps before your next mock test.", href: "/free-cat-readiness-assessment", isLink: true },
+  { icon: LayoutDashboard, name: "My Dashboard", benefit: "Track your streaks, quiz scores, and personalized study plan — all in one place.", href: "/dashboard", isLink: true, isDashboard: true },
 ];
 
 const FreeToolsSection = () => {
@@ -27,7 +28,7 @@ const FreeToolsSection = () => {
           </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-5xl mx-auto">
           {tools.map((t, i) => (
             <motion.div
               key={t.name}

@@ -4,7 +4,7 @@ import { Menu, X, Phone, LayoutDashboard } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
+
 import ThemeToggle from "@/components/ThemeToggle";
 import { Link } from "react-router-dom";
 import logoImg from "@/assets/logo-percentilers.png";
@@ -22,7 +22,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showCallDialog, setShowCallDialog] = useState(false);
   const { openPhoneModal } = useLeadModal();
-  const { isAuthenticated } = useAuth();
+  
   const [scrollProgress, setScrollProgress] = useState(0);
   const onScroll = useCallback(() => {
     requestAnimationFrame(() => {
@@ -77,11 +77,9 @@ const Navbar = () => {
                 </a>
               )
             )}
-            {isAuthenticated && (
-              <Link to="/dashboard" className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-                <LayoutDashboard className="h-4 w-4" /> Dashboard
-              </Link>
-            )}
+            <Link to="/dashboard" className="relative text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5 bg-primary/5 px-3 py-1.5 rounded-full border border-primary/20 hover:border-primary/40">
+              <LayoutDashboard className="h-4 w-4" /> My Dashboard
+            </Link>
             <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20">Book Free Strategy Call</Button>
             <ThemeToggle />
           </nav>
@@ -111,11 +109,9 @@ const Navbar = () => {
                 </a>
               )
             )}
-            {isAuthenticated && (
-              <Link to="/dashboard" className="flex items-center gap-1 text-sm font-medium text-primary py-2" onClick={() => setOpen(false)}>
-                <LayoutDashboard className="h-4 w-4" /> Dashboard
-              </Link>
-            )}
+            <Link to="/dashboard" className="flex items-center gap-1.5 text-sm font-semibold text-primary py-2 bg-primary/5 px-3 rounded-lg border border-primary/20" onClick={() => setOpen(false)}>
+              <LayoutDashboard className="h-4 w-4" /> My Dashboard
+            </Link>
             <div className="flex justify-center pt-1"><ThemeToggle /></div>
           </nav>
         )}

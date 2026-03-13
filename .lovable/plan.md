@@ -1,32 +1,37 @@
 
 
-## Problem
+## Consolidate Phone Capture: Remove Duplicated Logic
 
-The Dashboard link only appears in the navbar **after** the user is authenticated. A first-time visitor has no idea a dashboard exists — they might use a tool, leave, and never return.
+### Problem
+`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
 
-## Plan: Make Dashboard Discoverable for All Visitors
+### What Changes
 
-### Changes
+**1. `src/components/LeadModalProvider.tsx`**
+- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
+- Replace it with a single `<PhoneCaptureModal>` component usage
+- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
+- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
 
-**1. Navbar — Always show "My Dashboard" link**
-- Show the Dashboard link in the navbar for **all users** (not just authenticated ones)
-- Remove the `isAuthenticated &&` guard on both desktop and mobile nav
-- Since `/dashboard` is already wrapped in `ProtectedRoute`, clicking it as a guest will trigger Google sign-in and redirect back — no extra logic needed
-- Style it slightly differently (e.g., subtle highlight or user icon) to draw attention
+**2. `src/components/PhoneCaptureModal.tsx`**
+- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
+- The component already supports custom `title` and `description`, so no changes needed there
 
-**2. Homepage — Add a "My Dashboard" entry point**
-- In the `FreeToolsSection` or `HeroSection`, add a small card/link like "Track Your Progress → My Dashboard" so users see the value proposition
-- Alternatively, after a user completes any tool (Readiness Assessment, Planner, Practice Lab quiz), show a nudge: "View your progress on your Dashboard →"
+### Result
+- One single source of truth for phone capture logic
+- Future fixes (like the duplicate phone check) only need to be applied once
+- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
 
-**3. Post-quiz nudge in Practice Lab results**
-- In `ResultsView.tsx`, add a "View Dashboard" link/card after results so users who just completed a quiz discover their personalized dashboard
+### Technical Details
 
-### Recommendation
+**`PhoneCaptureModal.tsx` changes:**
+- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
+- Add a name input field that renders when `showNameField` is true and no user name is available
+- Include the name in the upsert payload and persist to localStorage
 
-The simplest high-impact change is **#1** — always showing the Dashboard link. The `ProtectedRoute` already handles the auth gate, so no new logic is needed. Options #2 and #3 add discovery but are secondary.
-
-### Technical details
-
-- **Navbar.tsx**: Remove `{isAuthenticated && (...)}` wrapper around the Dashboard `<Link>` on lines 80-84 (desktop) and 114-118 (mobile)
-- **ResultsView.tsx**: Add a small "📊 View Your Dashboard" link card near the bottom of the results page, linking to `/dashboard`
+**`LeadModalProvider.tsx` changes:**
+- Remove ~60 lines of form state, validation, and submit logic
+- Remove the inline `<Dialog>` JSX (~30 lines)
+- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
+- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
 
