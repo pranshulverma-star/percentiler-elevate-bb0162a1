@@ -974,6 +974,7 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
                 completed={isCurrentDayCompleted}
                 loading={completionLoading}
                 onComplete={handleComplete}
+                dayName={getCalendarDayName(leadData.startDate, currentTask.dayIndex)}
               />
             );
           })()}
