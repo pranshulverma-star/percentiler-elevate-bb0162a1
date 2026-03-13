@@ -72,13 +72,12 @@ function formatTimeShort(seconds: number) {
 }
 
 function estimatePercentile(correct: number, total: number): number {
-  if (total === 0) return 0;
+  if (total === 0) return 34;
   const ratio = correct / total;
-  const mean = 0.45;
-  const sd = 0.18;
-  const z = (ratio - mean) / sd;
-  const cdf = 1 / (1 + Math.exp(-1.7 * z));
-  const percentile = Math.min(99.8, Math.max(1, cdf * 100));
+  // Map 0% accuracy → 34%ile, 100% accuracy → 98.3%ile
+  const minPct = 34;
+  const maxPct = 98.3;
+  const percentile = minPct + ratio * (maxPct - minPct);
   return Math.round(percentile * 10) / 10;
 }
 
