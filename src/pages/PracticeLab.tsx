@@ -145,7 +145,7 @@ function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData)
         </motion.div>
       </div>
 
-      {/* Today's Battle Card */}
+      {/* Quiz of the Day Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
