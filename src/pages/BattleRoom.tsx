@@ -1022,6 +1022,8 @@ export default function BattleRoomPage() {
                 players={players}
                 questions={questions}
                 currentUserId={user?.id || ""}
+                sectionId={room.section_id}
+                chapterSlug={room.chapter_slug}
                 onPlayAgain={handlePlayAgain}
                 onExit={handleExit}
               />
