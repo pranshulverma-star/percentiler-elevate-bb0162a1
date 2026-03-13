@@ -35,78 +35,99 @@ export default function Dashboard() {
   const [loadingStreaks, setLoadingStreaks] = useState(true);
 
   const fetchLead = async () => {
-    if (!userId) return;
+    console.log("[Dashboard] fetchLead START", { userId });
+    if (!userId) { console.log("[Dashboard] fetchLead SKIP (no userId)"); return; }
     setLoadingLead(true);
-    const { data } = await (supabase.from("leads") as any)
-      .select("name, email, phone_number")
-      .eq("user_id", userId)
-      .maybeSingle();
-    setLead(data);
+    try {
+      const { data, error } = await (supabase.from("leads") as any)
+        .select("name, email, phone_number")
+        .eq("user_id", userId)
+        .maybeSingle();
+      console.log("[Dashboard] fetchLead DONE", { data, error });
+      setLead(data);
+    } catch (e) { console.error("[Dashboard] fetchLead ERROR", e); }
     setLoadingLead(false);
   };
 
   const fetchPlanner = async () => {
     const phone = localStorage.getItem("percentilers_phone");
-    if (!phone) { setLoadingPlanner(false); return; }
+    console.log("[Dashboard] fetchPlanner START", { phone });
+    if (!phone) { console.log("[Dashboard] fetchPlanner SKIP (no phone)"); setLoadingPlanner(false); return; }
     setLoadingPlanner(true);
-    const [statsRes, heatRes, activityRes] = await Promise.all([
-      (supabase.from("planner_stats") as any).select("current_phase, start_date, target_year, crash_mode").eq("phone_number", phone).maybeSingle(),
-      (supabase.from("planner_heat_score") as any).select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", phone).maybeSingle(),
-      (supabase.from("planner_activity") as any).select("date").eq("phone_number", phone).gte("date", getWeekStart()),
-    ]);
-    setPlannerData({
-      stats: statsRes.data,
-      heat: heatRes.data,
-      activeDaysThisWeek: new Set((activityRes.data || []).map((r: any) => r.date)).size,
-    });
+    try {
+      const [statsRes, heatRes, activityRes] = await Promise.all([
+        (supabase.from("planner_stats") as any).select("current_phase, start_date, target_year, crash_mode").eq("phone_number", phone).maybeSingle(),
+        (supabase.from("planner_heat_score") as any).select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", phone).maybeSingle(),
+        (supabase.from("planner_activity") as any).select("date").eq("phone_number", phone).gte("date", getWeekStart()),
+      ]);
+      console.log("[Dashboard] fetchPlanner DONE", { stats: statsRes.data, heat: heatRes.data });
+      setPlannerData({
+        stats: statsRes.data,
+        heat: heatRes.data,
+        activeDaysThisWeek: new Set((activityRes.data || []).map((r: any) => r.date)).size,
+      });
+    } catch (e) { console.error("[Dashboard] fetchPlanner ERROR", e); }
     setLoadingPlanner(false);
   };
 
   const fetchMasterclass = async () => {
     const phone = localStorage.getItem("percentilers_phone");
-    if (!phone) { setLoadingMasterclass(false); return; }
+    console.log("[Dashboard] fetchMasterclass START", { phone });
+    if (!phone) { console.log("[Dashboard] fetchMasterclass SKIP (no phone)"); setLoadingMasterclass(false); return; }
     setLoadingMasterclass(true);
-    const { data } = await (supabase.from("webinar_engagement") as any)
-      .select("watch_percentage, completed")
-      .eq("phone_number", phone)
-      .maybeSingle();
-    setEngagement(data);
+    try {
+      const { data, error } = await (supabase.from("webinar_engagement") as any)
+        .select("watch_percentage, completed")
+        .eq("phone_number", phone)
+        .maybeSingle();
+      console.log("[Dashboard] fetchMasterclass DONE", { data, error });
+      setEngagement(data);
+    } catch (e) { console.error("[Dashboard] fetchMasterclass ERROR", e); }
     setLoadingMasterclass(false);
   };
 
   const fetchCampaign = async () => {
     const phone = localStorage.getItem("percentilers_phone");
-    if (!phone) { setLoadingCampaign(false); setCampaign(null); return; }
+    console.log("[Dashboard] fetchCampaign START", { phone });
+    if (!phone) { console.log("[Dashboard] fetchCampaign SKIP (no phone)"); setLoadingCampaign(false); setCampaign(null); return; }
     setLoadingCampaign(true);
-    const { data } = await (supabase.from("campaign_state") as any)
-      .select("call_booked_at, converted_at, workflow_status, mentorship_active")
-      .eq("phone_number", phone)
-      .maybeSingle();
-    setCampaign(data);
+    try {
+      const { data, error } = await (supabase.from("campaign_state") as any)
+        .select("call_booked_at, converted_at, workflow_status, mentorship_active")
+        .eq("phone_number", phone)
+        .maybeSingle();
+      console.log("[Dashboard] fetchCampaign DONE", { data, error });
+      setCampaign(data);
+    } catch (e) { console.error("[Dashboard] fetchCampaign ERROR", e); }
     setLoadingCampaign(false);
   };
 
   const fetchPractice = async () => {
-    if (!userId) { setLoadingPractice(false); return; }
+    console.log("[Dashboard] fetchPractice START", { userId });
+    if (!userId) { console.log("[Dashboard] fetchPractice SKIP (no userId)"); setLoadingPractice(false); return; }
     setLoadingPractice(true);
-    const { data } = await (supabase.from("practice_lab_attempts") as any)
-      .select("section_id, chapter_slug, score_pct, total_questions, correct, time_used_seconds, created_at")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false })
-      .limit(50);
-    const attempts = data || [];
-    setPracticeAttempts(attempts.slice(0, 20));
+    try {
+      const { data, error } = await (supabase.from("practice_lab_attempts") as any)
+        .select("section_id, chapter_slug, score_pct, total_questions, correct, time_used_seconds, created_at")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .limit(50);
+      console.log("[Dashboard] fetchPractice DONE", { count: data?.length, error });
+      const attempts = data || [];
+      setPracticeAttempts(attempts.slice(0, 20));
 
-    setLoadingStreaks(true);
-    if (attempts.length > 0) {
-      const streaks = computeStreaks(attempts);
-      setStreakData(streaks);
-    }
-    setLoadingStreaks(false);
+      setLoadingStreaks(true);
+      if (attempts.length > 0) {
+        const streaks = computeStreaks(attempts);
+        setStreakData(streaks);
+      }
+      setLoadingStreaks(false);
+    } catch (e) { console.error("[Dashboard] fetchPractice ERROR", e); }
     setLoadingPractice(false);
   };
 
   useEffect(() => {
+    console.log("[Dashboard] useEffect trigger", { userId, authUser: !!user });
     if (userId) {
       fetchLead();
       fetchPlanner();
