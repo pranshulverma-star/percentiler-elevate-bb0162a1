@@ -54,6 +54,15 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     sessionStorage.removeItem("pending_gate_source");
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    if (!authLoading) {
+      setAuthBootstrapTimedOut(false);
+      return;
+    }
+    const timer = window.setTimeout(() => setAuthBootstrapTimedOut(true), 2500);
+    return () => window.clearTimeout(timer);
+  }, [authLoading]);
+
   // --- Render decision tree ---
 
   // Still loading auth
