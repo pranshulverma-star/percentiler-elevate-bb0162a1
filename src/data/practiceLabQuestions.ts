@@ -1,4 +1,5 @@
 import rawQuestions from "./questions_full.json";
+import rcQuestions from "./rc_questions.json";
 import { topicOverrides, getDifficulty, getConceptTags, getSkillTags, getQAChapter, QA_CHAPTER_ORDER, type Difficulty } from "./questionFixes";
 
 export interface PracticeQuestion {
