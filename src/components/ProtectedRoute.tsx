@@ -1,8 +1,9 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Loader2, LogIn } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
+import { Button } from "@/components/ui/button";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 
 interface ProtectedRouteProps {
