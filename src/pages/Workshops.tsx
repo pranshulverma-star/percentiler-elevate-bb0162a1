@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft, ArrowRight, ChevronDown, ChevronUp,
   BookOpen, Brain, Target, Clock, Video, Star,
-  Calculator, Shapes, PenTool, FileText, Sigma, GraduationCap,
+  Calculator, Shapes, PenTool, FileText, Sigma, GraduationCap, TrendingUp,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
