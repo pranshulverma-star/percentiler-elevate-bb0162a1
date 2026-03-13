@@ -394,6 +394,10 @@ function QuizView({
     setAnswers((prev) => ({ ...prev, [q.id]: optIndex }));
   };
 
+  const handleTextAnswer = (text: string) => {
+    setAnswers((prev) => ({ ...prev, [q.id]: text }));
+  };
+
 
   const handleSubmit = () => {
     onFinish(answers, duration - timeLeft);
@@ -514,37 +518,50 @@ function QuizView({
                     </p>
                   </div>
 
-                  <RadioGroup
-                    value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
-                    onValueChange={(v) => handleSelect(Number(v))}
-                    className="space-y-2"
-                  >
-                    {q.options.map((opt, idx) => {
-                      const optLabels = ["A", "B", "C", "D"];
-                      return (
-                        <Label
-                          key={idx}
-                          htmlFor={`opt-${q.id}-${idx}`}
-                          className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all duration-200
-                            ${answers[q.id] === idx
-                              ? "border-primary bg-primary/5 shadow-sm game-glow"
-                              : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
-                            }`}
-                        >
-                          <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-bold shrink-0 transition-colors
-                            ${answers[q.id] === idx
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-secondary text-muted-foreground border border-border"
-                            }`}
+                  {q.type === "tita_text" ? (
+                    <div className="space-y-2">
+                      <p className="text-xs text-muted-foreground font-medium">Type the correct sequence below:</p>
+                      <Input
+                        value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
+                        onChange={(e) => handleTextAnswer(e.target.value.toUpperCase())}
+                        placeholder="e.g. 31452 or BCDAE"
+                        className="text-lg font-mono tracking-widest text-center max-w-[200px]"
+                        maxLength={10}
+                      />
+                    </div>
+                  ) : (
+                    <RadioGroup
+                      value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
+                      onValueChange={(v) => handleSelect(Number(v))}
+                      className="space-y-2"
+                    >
+                      {q.options.map((opt, idx) => {
+                        const optLabels = ["A", "B", "C", "D", "E"];
+                        return (
+                          <Label
+                            key={idx}
+                            htmlFor={`opt-${q.id}-${idx}`}
+                            className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all duration-200
+                              ${answers[q.id] === idx
+                                ? "border-primary bg-primary/5 shadow-sm game-glow"
+                                : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
+                              }`}
                           >
-                            {optLabels[idx]}
-                          </div>
-                          <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} className="sr-only" />
-                          <span className="text-sm text-foreground">{opt}</span>
-                        </Label>
-                      );
-                    })}
-                  </RadioGroup>
+                            <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[11px] font-bold shrink-0 transition-colors
+                              ${answers[q.id] === idx
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-secondary text-muted-foreground border border-border"
+                              }`}
+                            >
+                              {optLabels[idx]}
+                            </div>
+                            <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} className="sr-only" />
+                            <span className="text-sm text-foreground">{opt}</span>
+                          </Label>
+                        );
+                      })}
+                    </RadioGroup>
+                  )}
                 </Card>
               </motion.div>
             </AnimatePresence>
@@ -593,37 +610,50 @@ function QuizView({
                   </p>
                 </div>
 
-                <RadioGroup
-                  value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
-                  onValueChange={(v) => handleSelect(Number(v))}
-                  className="space-y-2 md:space-y-2.5"
-                >
-                  {q.options.map((opt, idx) => {
-                    const optLabels = ["A", "B", "C", "D"];
-                    return (
-                      <Label
-                        key={idx}
-                        htmlFor={`opt-${q.id}-${idx}`}
-                        className={`flex items-center gap-2.5 md:gap-3 p-3 md:p-4 rounded-xl border cursor-pointer transition-all duration-200
-                          ${answers[q.id] === idx
-                            ? "border-primary bg-primary/5 shadow-sm game-glow"
-                            : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
-                          }`}
-                      >
-                        <div className={`w-6 h-6 md:w-7 md:h-7 rounded-lg flex items-center justify-center text-[11px] md:text-xs font-bold shrink-0 transition-colors
-                          ${answers[q.id] === idx
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-secondary text-muted-foreground border border-border"
-                          }`}
+                {q.type === "tita_text" ? (
+                  <div className="space-y-2">
+                    <p className="text-xs text-muted-foreground font-medium">Type the correct sequence below:</p>
+                    <Input
+                      value={typeof answers[q.id] === "string" ? (answers[q.id] as string) : ""}
+                      onChange={(e) => handleTextAnswer(e.target.value.toUpperCase())}
+                      placeholder="e.g. 31452 or BCDAE"
+                      className="text-lg font-mono tracking-widest text-center max-w-[200px]"
+                      maxLength={10}
+                    />
+                  </div>
+                ) : (
+                  <RadioGroup
+                    value={answers[q.id] !== undefined && answers[q.id] !== null ? String(answers[q.id]) : ""}
+                    onValueChange={(v) => handleSelect(Number(v))}
+                    className="space-y-2 md:space-y-2.5"
+                  >
+                    {q.options.map((opt, idx) => {
+                      const optLabels = ["A", "B", "C", "D", "E"];
+                      return (
+                        <Label
+                          key={idx}
+                          htmlFor={`opt-${q.id}-${idx}`}
+                          className={`flex items-center gap-2.5 md:gap-3 p-3 md:p-4 rounded-xl border cursor-pointer transition-all duration-200
+                            ${answers[q.id] === idx
+                              ? "border-primary bg-primary/5 shadow-sm game-glow"
+                              : "border-border hover:border-muted-foreground/30 hover:bg-secondary/50"
+                            }`}
                         >
-                          {optLabels[idx]}
-                        </div>
-                        <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} className="sr-only" />
-                        <span className="text-sm text-foreground">{opt}</span>
-                      </Label>
-                    );
-                  })}
-                </RadioGroup>
+                          <div className={`w-6 h-6 md:w-7 md:h-7 rounded-lg flex items-center justify-center text-[11px] md:text-xs font-bold shrink-0 transition-colors
+                            ${answers[q.id] === idx
+                              ? "bg-primary text-primary-foreground"
+                              : "bg-secondary text-muted-foreground border border-border"
+                            }`}
+                          >
+                            {optLabels[idx]}
+                          </div>
+                          <RadioGroupItem value={String(idx)} id={`opt-${q.id}-${idx}`} className="sr-only" />
+                          <span className="text-sm text-foreground">{opt}</span>
+                        </Label>
+                      );
+                    })}
+                  </RadioGroup>
+                )}
               </Card>
             </motion.div>
           </AnimatePresence>
