@@ -46,7 +46,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const Contact = lazy(() => import("./pages/Contact"));
-const NotFound = lazy(() => import("./pages/NotFound"));
+import NotFoundRedirect from "./components/NotFoundRedirect";
 
 const queryClient = new QueryClient();
 
