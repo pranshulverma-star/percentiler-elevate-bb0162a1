@@ -62,9 +62,9 @@ const Navbar = () => {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl shadow-[0_1px_3px_0_rgb(0,0,0,0.04)]">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
-          <a href="#" className="flex items-center">
+          <Link to="/" className="flex items-center">
             <img src={logoImg} alt="Percentilers - Prepare, Persevere, Perform" width={120} height={40} className="h-10 md:h-12 w-auto dark:brightness-0 dark:invert" />
-          </a>
+          </Link>
           <nav className="hidden md:flex items-center gap-8">
             {navLinks.map((l) =>
               l.external ? (
