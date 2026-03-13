@@ -71,13 +71,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       });
 
-    // Safety timeout: unblock UI after 3s no matter what
-    // Reduced from 3s to 1.5s for faster UI unblock
+    // Safety timeout: unblock UI after 4s no matter what.
+    // iOS PWA session restoration can be slower after OAuth redirect.
     const fallbackTimer = window.setTimeout(() => {
       if (resolved || !isMounted) return;
       console.warn("Auth timed out, unblocking UI");
       setLoading(false);
-    }, 1500);
+    }, 4000);
 
     return () => {
       isMounted = false;
