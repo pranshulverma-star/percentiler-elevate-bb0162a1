@@ -151,7 +151,7 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
         );
       }
 
-      const today = new Date().toISOString().split("T")[0];
+      const today = formatLocalDate(new Date());
       // Always use email as the stable identifier (phone can change later)
       const identifier = email || phone || "unknown";
 
