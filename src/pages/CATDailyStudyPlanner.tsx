@@ -774,11 +774,13 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   const currentPhase = currentTask?.phase || "Foundation Phase";
 
   const getDateForDay = useCallback((dayIndex: number): string => {
-    const start = new Date(leadData.startDate);
-    start.setHours(0, 0, 0, 0);
-    const date = new Date(start);
+    const [y, m, d] = leadData.startDate.split("-").map(Number);
+    const date = new Date(y, m - 1, d);
     date.setDate(date.getDate() + dayIndex);
-    return date.toISOString().split("T")[0];
+    const yr = date.getFullYear();
+    const mo = String(date.getMonth() + 1).padStart(2, "0");
+    const dy = String(date.getDate()).padStart(2, "0");
+    return `${yr}-${mo}-${dy}`;
   }, [leadData.startDate]);
 
   const getSubjectKey = (task: DailyTask): string => {
