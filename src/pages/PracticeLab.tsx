@@ -95,7 +95,13 @@ function XPBar({ current, max, label, className = "" }: { current: number; max: 
 }
 
 // ─── Section Cards (Level Select) ───────────────────────────────────────────
-function SectionsView({ onSelect }: { onSelect: (s: SectionData) => void }) {
+function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData) => void; onTodaysBattle: () => void }) {
+  const sectionLabels = [
+    { tag: "QA Mix · 10 Qs · 15 min" },
+    { tag: "1 LRDI Set · 12 min" },
+    { tag: "1 RC + 1 PJ · 15 min" },
+  ];
+  const todayIdx = getTodaysSectionIndex();
   const sectionThemes = [
     { gradient: "from-orange-500/15 to-amber-500/5", icon: "⚔️", subtitle: "Quantitative Arena" },
     { gradient: "from-blue-500/15 to-indigo-500/5", icon: "🧩", subtitle: "Logic Battleground" },
