@@ -46,12 +46,13 @@ export default function Dashboard() {
   };
 
   const fetchPlanner = async () => {
-    if (!email) return;
+    const phone = localStorage.getItem("percentilers_phone");
+    if (!phone) { setLoadingPlanner(false); return; }
     setLoadingPlanner(true);
     const [statsRes, heatRes, activityRes] = await Promise.all([
-      (supabase.from("planner_stats") as any).select("current_phase, start_date, target_year, crash_mode").eq("phone_number", email).maybeSingle(),
-      (supabase.from("planner_heat_score") as any).select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", email).maybeSingle(),
-      (supabase.from("planner_activity") as any).select("date").eq("phone_number", email).gte("date", getWeekStart()),
+      (supabase.from("planner_stats") as any).select("current_phase, start_date, target_year, crash_mode").eq("phone_number", phone).maybeSingle(),
+      (supabase.from("planner_heat_score") as any).select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", phone).maybeSingle(),
+      (supabase.from("planner_activity") as any).select("date").eq("phone_number", phone).gte("date", getWeekStart()),
     ]);
     setPlannerData({
       stats: statsRes.data,
