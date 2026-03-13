@@ -58,7 +58,7 @@ export function generateTodaysBattle(): TodaysBattleConfig {
       questions = pickOneSet(lrdiChapter.questions);
     }
     duration = 720; // 12 min
-    chapterName = "Today's Battle — LRDI Set";
+    chapterName = "Quiz of the Day — LRDI Set";
   } else if (section.id === "varc") {
     // 1 RC set + 1 PJ question
     const rcChapter = section.chapters.find(ch => ch.slug === "reading-comprehension");
