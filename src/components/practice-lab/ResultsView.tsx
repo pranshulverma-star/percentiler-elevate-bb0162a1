@@ -318,18 +318,24 @@ export default function ResultsView({
           variant="outline"
           size="sm"
           className="gap-1.5 font-bold flex-1 text-xs"
-          onClick={async () => {
-            const shareText = `🎯 I scored ${correct}/${total} (${percentile}%ile) on CAT Practice Lab!\nCan you beat this? 👀\nTry → percentilers.in/practice-lab`;
-            if (navigator.share) {
-              await navigator.share({ text: shareText }).catch(() => {});
-            } else {
-              await navigator.clipboard.writeText(shareText);
-            }
-          }}
+          onClick={() => setShowShareCard((v) => !v)}
         >
-          <Share2 className="w-3.5 h-3.5" /> Share Score
+          <Share2 className="w-3.5 h-3.5" /> {showShareCard ? "Hide Card" : "Share Image"}
         </Button>
       </div>
+
+      {/* ─── 2b. Shareable Image Card (lazy loaded) ─── */}
+      {showShareCard && (
+        <Suspense fallback={<div className="h-40 rounded-2xl bg-secondary animate-pulse" />}>
+          <ShareableResultCard
+            correct={correct}
+            total={total}
+            chapterName={chapterName}
+            timeUsed={timeUsed}
+            leaderboard={leaderboard.length > 0 ? leaderboard : undefined}
+          />
+        </Suspense>
+      )}
 
       {/* ─── 3. Weak Area + Workshop (only if incorrect) ─── */}
       {incorrect > 0 && (
