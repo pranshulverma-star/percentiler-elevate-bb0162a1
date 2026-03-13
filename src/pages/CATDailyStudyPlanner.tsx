@@ -445,7 +445,7 @@ function MockDayCard({ task, completed, loading, onComplete, dayName }: { task: 
 
 // ─── Sunday Card ───
 
-function SundayCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
+function SundayCard({ task, completed, loading, onComplete, dayName }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void; dayName: string }) {
   return (
     <Card className="rounded-2xl border border-border shadow-lg">
       <CardContent className="p-5 md:p-6 space-y-5">
@@ -454,7 +454,7 @@ function SundayCard({ task, completed, loading, onComplete }: { task: DailyTask;
             {task.dayIndex + 1}
           </div>
           <div>
-            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — Sunday</p>
+            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — {dayName}</p>
             <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
           </div>
         </div>
