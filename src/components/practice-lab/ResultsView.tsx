@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import ShareableResultCard from "@/components/ShareableResultCard";
+import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 import { practiceLabSections, type PracticeQuestion } from "@/data/practiceLabQuestions";
 
 const fadeUp = {
