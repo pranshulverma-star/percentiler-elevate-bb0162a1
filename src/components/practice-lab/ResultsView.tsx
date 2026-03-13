@@ -634,8 +634,12 @@ export default function ResultsView({
                         })}
                       </div>
                       )}
-                      </div>
                       {q.explanation && (
+                        <p className="text-[10px] text-muted-foreground italic border-t border-border pt-2 mt-1">
+                          💡 {q.explanation}
+                        </p>
+                      )}
+                    </div>
                         <p className="text-[10px] text-muted-foreground italic border-t border-border pt-2 mt-1">
                           💡 {q.explanation}
                         </p>
