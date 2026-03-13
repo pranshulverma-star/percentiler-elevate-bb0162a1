@@ -119,7 +119,7 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
             try {
               const returnUrl = location.pathname + location.search;
               await signIn(returnUrl);
-            } catch {
+            } finally {
               setSigningIn(false);
             }
           }}
