@@ -75,7 +75,7 @@ export function generateTodaysBattle(): TodaysBattleConfig {
     }
 
     duration = 900;
-    chapterName = "Today's Battle — VARC";
+    chapterName = "Quiz of the Day — VARC";
   }
 
   const virtualChapter: Chapter = {
