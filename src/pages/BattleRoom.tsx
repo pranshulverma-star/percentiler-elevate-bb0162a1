@@ -640,6 +640,15 @@ function BattleResults({
         }))}
       />
 
+      {/* Workshop Recommendation */}
+      {incorrect > 0 && room_section_id && (
+        <WorkshopRecommendation
+          workshops={getWorkshopRecommendations(room_section_id, room_chapter_slug)}
+          title="Strengthen Your Weak Spot"
+          subtitle="Based on your battle performance, this workshop can help:"
+        />
+      )}
+
       <div className="flex flex-col gap-2 md:flex-row md:gap-3 md:justify-center">
         {onPlayAgain && (
           <Button onClick={onPlayAgain} className="gap-2 font-bold game-glow-pulse w-full md:w-auto" size="sm">
