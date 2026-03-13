@@ -145,6 +145,37 @@ function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData)
         </motion.div>
       </div>
 
+      {/* Today's Battle Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15, duration: 0.4 }}
+        className="max-w-4xl mx-auto"
+      >
+        <div
+          className="game-card rounded-xl cursor-pointer overflow-hidden border-primary/30 hover:border-primary/50 transition-all"
+          onClick={onTodaysBattle}
+        >
+          <div className="h-1 bg-gradient-to-r from-primary via-amber-400 to-primary" />
+          <div className="p-4 md:p-6 flex items-center gap-4">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-2xl shrink-0">
+              <Swords className="w-6 h-6 text-primary" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-base md:text-lg font-bold text-foreground flex items-center gap-2">
+                Today's Battle <Zap className="w-4 h-4 text-primary" />
+              </h2>
+              <p className="text-xs md:text-sm text-muted-foreground">
+                {practiceLabSections[todayIdx].icon} {practiceLabSections[todayIdx].name} · {sectionLabels[todayIdx].tag}
+              </p>
+            </div>
+            <Button size="sm" className="shrink-0">
+              Start <ChevronRight className="w-3.5 h-3.5 ml-0.5" />
+            </Button>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Section Cards — Game Style */}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:gap-5 max-w-4xl mx-auto">
         {practiceLabSections.map((section, i) => {
