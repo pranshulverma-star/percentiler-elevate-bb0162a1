@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, Clock, CheckCircle2, XCircle, MinusCircle, BookOpen,
+  ArrowLeft, CheckCircle2, XCircle, MinusCircle, BookOpen,
   BarChart3, Flame, Target, ChevronRight, Share2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
