@@ -77,11 +77,9 @@ const Navbar = () => {
                 </a>
               )
             )}
-            {isAuthenticated && (
-              <Link to="/dashboard" className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-                <LayoutDashboard className="h-4 w-4" /> Dashboard
-              </Link>
-            )}
+            <Link to="/dashboard" className="relative text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-1.5 bg-primary/5 px-3 py-1.5 rounded-full border border-primary/20 hover:border-primary/40">
+              <LayoutDashboard className="h-4 w-4" /> My Dashboard
+            </Link>
             <Button onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20">Book Free Strategy Call</Button>
             <ThemeToggle />
           </nav>
