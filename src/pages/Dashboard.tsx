@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import Navbar from "@/components/Navbar";
 import DashboardHero from "@/components/dashboard/DashboardHero";
+import DashboardLeaderboard from "@/components/dashboard/DashboardLeaderboard";
 import DashboardStats from "@/components/dashboard/DashboardStats";
 import DashboardMission from "@/components/dashboard/DashboardMission";
 import DashboardProgress from "@/components/dashboard/DashboardProgress";
@@ -191,6 +192,9 @@ export default function Dashboard() {
             <motion.div custom={2} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
               <StageLabel number={2} label="QUIZ OF THE DAY" />
               <DashboardTodaysBattle />
+              <div className="mt-4">
+                <DashboardLeaderboard />
+              </div>
             </motion.div>
 
             {/* Stage 3: Today's Mission */}
