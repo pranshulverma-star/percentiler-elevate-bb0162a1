@@ -15,6 +15,43 @@ import ShareableResultCard from "@/components/ShareableResultCard";
 import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 import { practiceLabSections, type PracticeQuestion } from "@/data/practiceLabQuestions";
 
+// Quiz topic icon images
+import iconNumberSystem from "@/assets/quiz-icon-number-system.png";
+import iconTsd from "@/assets/quiz-icon-tsd.png";
+import iconGeometry from "@/assets/quiz-icon-geometry.png";
+import iconAlgebra from "@/assets/quiz-icon-algebra.png";
+import iconRc from "@/assets/quiz-icon-rc.png";
+import iconLrdi from "@/assets/quiz-icon-lrdi.png";
+
+// Map chapter slugs/names to icons
+const quizIconMap: Record<string, string> = {
+  "number-systems": iconNumberSystem,
+  "time-speed-distance": iconTsd,
+  "time-and-work": iconTsd,
+  "geometry": iconGeometry,
+  "mensuration": iconGeometry,
+  "triangles": iconGeometry,
+  "circles": iconGeometry,
+  "algebra": iconAlgebra,
+  "linear-equations": iconAlgebra,
+  "quadratic-equations": iconAlgebra,
+  "inequalities": iconAlgebra,
+  "functions": iconAlgebra,
+  "reading-comprehension": iconRc,
+  "para-jumbles": iconRc,
+  "cat-lrdi-arena": iconLrdi,
+};
+
+function getQuizIcon(slug: string): string | null {
+  // Direct match
+  if (quizIconMap[slug]) return quizIconMap[slug];
+  // Partial match
+  for (const [key, icon] of Object.entries(quizIconMap)) {
+    if (slug.includes(key) || key.includes(slug)) return icon;
+  }
+  return null;
+}
+
 const fadeUp = {
   initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
