@@ -60,6 +60,7 @@ const workshops = [
       { icon: Star, text: "Shortcut techniques for quick solving" },
     ],
     bestFor: "Students who want to nail Arithmetic — the highest-weightage QA topic in CAT.",
+    trending: true,
   },
   {
     id: "geometry",
