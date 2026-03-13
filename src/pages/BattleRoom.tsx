@@ -19,7 +19,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import type { PracticeQuestion } from "@/data/practiceLabQuestions";
 import { practiceLabSections } from "@/data/practiceLabQuestions";
-import ShareableResultCard from "@/components/ShareableResultCard";
+import { lazy, Suspense } from "react";
+const ShareableResultCard = lazy(() => import("@/components/ShareableResultCard"));
 import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 
 const QUIZ_DURATION = 900;
@@ -634,15 +635,17 @@ function BattleResults({
       </div>
 
       {/* Shareable Card */}
-      <ShareableResultCard
-        correct={correct}
-        total={questions.length}
-        leaderboard={ranked.map(p => ({
-          name: p.display_name || "Anonymous",
-          score: p.score_pct,
-          isMe: p.user_id === currentUserId,
-        }))}
-      />
+      <Suspense fallback={<div className="h-40 rounded-2xl bg-secondary animate-pulse" />}>
+        <ShareableResultCard
+          correct={correct}
+          total={questions.length}
+          leaderboard={ranked.map(p => ({
+            name: p.display_name || "Anonymous",
+            score: p.score_pct,
+            isMe: p.user_id === currentUserId,
+          }))}
+        />
+      </Suspense>
 
       {/* Workshop Recommendation */}
       {incorrect > 0 && (

@@ -17,7 +17,7 @@ import { motion } from "framer-motion";
 export default function Dashboard() {
   const { user, signOut } = useAuth();
   const { refetch: refetchPhone } = useLeadPhone();
-  const email = user?.email || "";
+  const _email = user?.email || "";
   const userId = user?.id || "";
 
   const [lead, setLead] = useState<any>(null);
@@ -46,12 +46,13 @@ export default function Dashboard() {
   };
 
   const fetchPlanner = async () => {
-    if (!email) return;
+    const phone = localStorage.getItem("percentilers_phone");
+    if (!phone) { setLoadingPlanner(false); return; }
     setLoadingPlanner(true);
     const [statsRes, heatRes, activityRes] = await Promise.all([
-      (supabase.from("planner_stats") as any).select("current_phase, start_date, target_year, crash_mode").eq("phone_number", email).maybeSingle(),
-      (supabase.from("planner_heat_score") as any).select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", email).maybeSingle(),
-      (supabase.from("planner_activity") as any).select("date").eq("phone_number", email).gte("date", getWeekStart()),
+      (supabase.from("planner_stats") as any).select("current_phase, start_date, target_year, crash_mode").eq("phone_number", phone).maybeSingle(),
+      (supabase.from("planner_heat_score") as any).select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", phone).maybeSingle(),
+      (supabase.from("planner_activity") as any).select("date").eq("phone_number", phone).gte("date", getWeekStart()),
     ]);
     setPlannerData({
       stats: statsRes.data,
@@ -62,22 +63,13 @@ export default function Dashboard() {
   };
 
   const fetchMasterclass = async () => {
-    if (!email) return;
+    const phone = localStorage.getItem("percentilers_phone");
+    if (!phone) { setLoadingMasterclass(false); return; }
     setLoadingMasterclass(true);
-    let { data } = await (supabase.from("webinar_engagement") as any)
+    const { data } = await (supabase.from("webinar_engagement") as any)
       .select("watch_percentage, completed")
-      .eq("phone_number", email)
+      .eq("phone_number", phone)
       .maybeSingle();
-    if (!data) {
-      const phone = localStorage.getItem("percentilers_phone");
-      if (phone) {
-        const res = await (supabase.from("webinar_engagement") as any)
-          .select("watch_percentage, completed")
-          .eq("phone_number", phone)
-          .maybeSingle();
-        data = res.data;
-      }
-    }
     setEngagement(data);
     setLoadingMasterclass(false);
   };
@@ -115,14 +107,14 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (userId && email) {
+    if (userId) {
       fetchLead();
       fetchPlanner();
       fetchMasterclass();
       fetchCampaign();
       fetchPractice();
     }
-  }, [userId, email]);
+  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const firstName = lead?.name?.split(" ")[0] || user?.user_metadata?.full_name?.split(" ")[0] || "there";
   const converted = !!campaign?.converted_at;
