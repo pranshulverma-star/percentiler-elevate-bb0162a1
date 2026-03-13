@@ -266,7 +266,6 @@ function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData)
                 </div>
               </motion.div>
             ))}
-            ))}
           </div>
         </Card>
       </div>
