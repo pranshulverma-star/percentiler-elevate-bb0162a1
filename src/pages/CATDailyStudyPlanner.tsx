@@ -1024,7 +1024,7 @@ export default function CATDailyStudyPlanner() {
       return new Date().getFullYear() + 1;
     })(),
     prepLevel: localStorage.getItem("planner_prep_level") || "Beginner",
-    startDate: localStorage.getItem("planner_start_date") || new Date().toISOString().split("T")[0],
+    startDate: localStorage.getItem("planner_start_date") || formatLocalDate(new Date()),
   }));
 
   // Auto-detect existing planner data from DB for authenticated users
