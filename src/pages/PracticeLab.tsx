@@ -287,7 +287,8 @@ function ChaptersView({
       <div className="grid gap-3 sm:grid-cols-2">
         {section.chapters.map((ch, i) => {
           const hasQuestions = ch.questions.length > 0;
-          const qCount = section.id === "lrdi" ? ch.questions.length : Math.min(ch.questions.length, QUIZ_QUESTION_COUNT);
+          const isOneSet = ONE_SET_SLUGS.has(ch.slug);
+          const qCount = isOneSet ? ch.questions.length : Math.min(ch.questions.length, QUIZ_QUESTION_COUNT);
           return (
             <motion.div
               key={ch.slug}
@@ -319,7 +320,7 @@ function ChaptersView({
                       <div className="flex items-center gap-2 mt-0.5">
                         {hasQuestions ? (
                           <>
-                            <span className="text-[10px] text-muted-foreground">{section.id === "lrdi" ? "1 Set" : `${qCount} Qs`} · {section.id === "lrdi" ? "12" : "15"} min</span>
+                            <span className="text-[10px] text-muted-foreground">{isOneSet ? "1 Set" : `${qCount} Qs`} · {isOneSet ? "12" : "15"} min</span>
                             <span className="text-[10px] font-semibold text-primary">+{qCount * XP_PER_CORRECT} XP</span>
                           </>
                         ) : (
