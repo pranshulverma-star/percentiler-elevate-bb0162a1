@@ -50,7 +50,7 @@ export function generateTodaysBattle(): TodaysBattleConfig {
     const allQaQuestions = section.chapters.flatMap(ch => ch.questions);
     questions = pickGroupedRandom(allQaQuestions, 10);
     duration = 900;
-    chapterName = "Today's Battle — QA Mix";
+    chapterName = "Quiz of the Day — QA Mix";
   } else if (section.id === "lrdi") {
     // 1 set from LRDI
     const lrdiChapter = section.chapters.find(ch => ch.questions.length > 0);
