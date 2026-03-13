@@ -171,7 +171,7 @@ export default function Dashboard() {
               lead={lead}
               loadingLead={loadingLead}
               streakData={streakData}
-              onSignOut={signOut}
+              onSignOut={handleSignOut}
               onPhoneUpdated={() => { fetchLead(); refetchPhone(); fetchCampaign(); }}
             />
           </motion.div>
