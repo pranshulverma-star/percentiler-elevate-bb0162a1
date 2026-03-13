@@ -63,22 +63,13 @@ export default function Dashboard() {
   };
 
   const fetchMasterclass = async () => {
-    if (!email) return;
+    const phone = localStorage.getItem("percentilers_phone");
+    if (!phone) { setLoadingMasterclass(false); return; }
     setLoadingMasterclass(true);
-    let { data } = await (supabase.from("webinar_engagement") as any)
+    const { data } = await (supabase.from("webinar_engagement") as any)
       .select("watch_percentage, completed")
-      .eq("phone_number", email)
+      .eq("phone_number", phone)
       .maybeSingle();
-    if (!data) {
-      const phone = localStorage.getItem("percentilers_phone");
-      if (phone) {
-        const res = await (supabase.from("webinar_engagement") as any)
-          .select("watch_percentage, completed")
-          .eq("phone_number", phone)
-          .maybeSingle();
-        data = res.data;
-      }
-    }
     setEngagement(data);
     setLoadingMasterclass(false);
   };
