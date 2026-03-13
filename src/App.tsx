@@ -9,6 +9,7 @@ import { LeadModalProvider } from "@/components/LeadModalProvider";
 import { HelmetProvider } from "react-helmet-async";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { AuthProvider } from "@/hooks/useAuth";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 
 function ScrollToHash() {
   const { hash, pathname } = useLocation();
