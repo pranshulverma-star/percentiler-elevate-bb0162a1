@@ -253,27 +253,34 @@ function StageLabel({ number, label }: { number: number; label: string }) {
   );
 }
 
+function fmtLocal(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function getWeekStart(): string {
   const now = new Date();
   const day = now.getDay();
   const diff = now.getDate() - day + (day === 0 ? -6 : 1);
   const monday = new Date(now);
   monday.setDate(diff);
-  return monday.toISOString().split("T")[0];
+  return fmtLocal(monday);
 }
 
 function computeStreaks(attempts: any[]) {
   const totalQuizzes = attempts.length;
   const avgAccuracy = Math.round(attempts.reduce((s: number, a: any) => s + a.score_pct, 0) / totalQuizzes);
   const dates = [...new Set(attempts.map((a: any) => a.created_at.split("T")[0]))].sort().reverse();
-  const today = new Date().toISOString().split("T")[0];
+  const today = fmtLocal(new Date());
   let currentStreak = 0;
   let checkDate = new Date();
   if (dates[0] !== today) {
     checkDate.setDate(checkDate.getDate() - 1);
   }
   for (let i = 0; i < 365; i++) {
-    const dateStr = checkDate.toISOString().split("T")[0];
+    const dateStr = fmtLocal(checkDate);
     if (dates.includes(dateStr)) {
       currentStreak++;
       checkDate.setDate(checkDate.getDate() - 1);
@@ -301,7 +308,7 @@ function computeStreaks(attempts: any[]) {
   for (let i = 0; i < 7; i++) {
     const d = new Date(weekStart);
     d.setDate(d.getDate() + i);
-    const ds = d.toISOString().split("T")[0];
+    const ds = fmtLocal(d);
     weeklyActivity.push(dates.includes(ds));
   }
   let recentTrend: "up" | "down" | "stable" = "stable";

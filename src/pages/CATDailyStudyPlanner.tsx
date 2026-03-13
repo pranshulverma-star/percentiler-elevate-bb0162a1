@@ -82,6 +82,13 @@ function getRankTier(rank: number): RankTier {
   return { label: "99%ile Path", color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" };
 }
 
+function formatLocalDate(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function calculateCurrentStreak(completedDays: Set<string>, _startDate: string): number {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -89,7 +96,7 @@ function calculateCurrentStreak(completedDays: Set<string>, _startDate: string):
   const d = new Date(today);
 
   for (let i = 0; i < 365; i++) {
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = formatLocalDate(d);
     // Check if any subject was completed on this date
     const hasActivity = Array.from(completedDays).some(k => k.startsWith(dateStr + "|"));
     if (hasActivity) {
@@ -144,7 +151,7 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
         );
       }
 
-      const today = new Date().toISOString().split("T")[0];
+      const today = formatLocalDate(new Date());
       // Always use email as the stable identifier (phone can change later)
       const identifier = email || phone || "unknown";
 
@@ -298,7 +305,14 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
 }
 // ─── Day Label Map ───
 
-const DAY_NAMES = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const CALENDAR_DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+function getCalendarDayName(startDate: string, dayIndex: number): string {
+  const [y, m, d] = startDate.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  date.setDate(date.getDate() + dayIndex);
+  return CALENDAR_DAY_NAMES[date.getDay()];
+}
 
 const SUBJECT_ICON: Record<string, React.ReactNode> = {
   QA: <Calculator className="h-4 w-4 text-primary" />,
@@ -411,7 +425,7 @@ function CompletionButton({
 
 // ─── Mock Day Card ───
 
-function MockDayCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
+function MockDayCard({ task, completed, loading, onComplete, dayName }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void; dayName: string }) {
   return (
     <Card className="rounded-2xl border-2 border-emerald-500/30 shadow-lg bg-emerald-500/5">
       <CardContent className="p-5 md:p-6 space-y-4">
@@ -421,7 +435,7 @@ function MockDayCard({ task, completed, loading, onComplete }: { task: DailyTask
           </div>
           <div>
             <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — Mock Day</p>
-            <p className="text-xs text-muted-foreground">{task.weekLabel} · {DAY_NAMES[task.dayOfWeek]}</p>
+            <p className="text-xs text-muted-foreground">{task.weekLabel} · {dayName}</p>
           </div>
         </div>
         <div className="bg-emerald-500/10 rounded-xl p-4 text-center">
@@ -438,7 +452,7 @@ function MockDayCard({ task, completed, loading, onComplete }: { task: DailyTask
 
 // ─── Sunday Card ───
 
-function SundayCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
+function SundayCard({ task, completed, loading, onComplete, dayName }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void; dayName: string }) {
   return (
     <Card className="rounded-2xl border border-border shadow-lg">
       <CardContent className="p-5 md:p-6 space-y-5">
@@ -447,7 +461,7 @@ function SundayCard({ task, completed, loading, onComplete }: { task: DailyTask;
             {task.dayIndex + 1}
           </div>
           <div>
-            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — Sunday</p>
+            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — {dayName}</p>
             <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
           </div>
         </div>
@@ -482,9 +496,9 @@ function SundayCard({ task, completed, loading, onComplete }: { task: DailyTask;
 
 // ─── Subject Day Card ───
 
-function TaskCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
-  if (task.is_mock_day) return <MockDayCard task={task} completed={completed} loading={loading} onComplete={onComplete} />;
-  if (task.subjectFocus === "WEEKLY_TEST") return <SundayCard task={task} completed={completed} loading={loading} onComplete={onComplete} />;
+function TaskCard({ task, completed, loading, onComplete, dayName }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void; dayName: string }) {
+  if (task.is_mock_day) return <MockDayCard task={task} completed={completed} loading={loading} onComplete={onComplete} dayName={dayName} />;
+  if (task.subjectFocus === "WEEKLY_TEST") return <SundayCard task={task} completed={completed} loading={loading} onComplete={onComplete} dayName={dayName} />;
 
   const subject = task.subjectFocus;
   const icon = SUBJECT_ICON[subject];
@@ -498,7 +512,7 @@ function TaskCard({ task, completed, loading, onComplete }: { task: DailyTask; c
             {task.dayIndex + 1}
           </div>
           <div>
-            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — {DAY_NAMES[task.dayOfWeek]}</p>
+            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — {dayName}</p>
             <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
           </div>
           <Badge className="ml-auto bg-primary/10 text-primary border-primary/20 text-xs font-semibold">{subject} Day</Badge>
@@ -687,8 +701,8 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   const fullPlan = useMemo(() => generateFullPlan(planConfig), [planConfig]);
 
   const currentDayIndex = useMemo(() => {
-    const start = new Date(leadData.startDate);
-    start.setHours(0, 0, 0, 0);
+    const [y, m, d] = leadData.startDate.split("-").map(Number);
+    const start = new Date(y, m - 1, d);
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return Math.max(0, Math.floor((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)));
@@ -767,11 +781,13 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
   const currentPhase = currentTask?.phase || "Foundation Phase";
 
   const getDateForDay = useCallback((dayIndex: number): string => {
-    const start = new Date(leadData.startDate);
-    start.setHours(0, 0, 0, 0);
-    const date = new Date(start);
+    const [y, m, d] = leadData.startDate.split("-").map(Number);
+    const date = new Date(y, m - 1, d);
     date.setDate(date.getDate() + dayIndex);
-    return date.toISOString().split("T")[0];
+    const yr = date.getFullYear();
+    const mo = String(date.getMonth() + 1).padStart(2, "0");
+    const dy = String(date.getDate()).padStart(2, "0");
+    return `${yr}-${mo}-${dy}`;
   }, [leadData.startDate]);
 
   const getSubjectKey = (task: DailyTask): string => {
@@ -946,6 +962,7 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
                       completed={false}
                       loading={false}
                       onComplete={() => {}}
+                      dayName={getCalendarDayName(leadData.startDate, currentTask.dayIndex)}
                     />
                   </div>
                   <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/60 rounded-2xl backdrop-blur-[2px]">
@@ -966,6 +983,7 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
                 completed={isCurrentDayCompleted}
                 loading={completionLoading}
                 onComplete={handleComplete}
+                dayName={getCalendarDayName(leadData.startDate, currentTask.dayIndex)}
               />
             );
           })()}
@@ -1006,7 +1024,7 @@ export default function CATDailyStudyPlanner() {
       return new Date().getFullYear() + 1;
     })(),
     prepLevel: localStorage.getItem("planner_prep_level") || "Beginner",
-    startDate: localStorage.getItem("planner_start_date") || new Date().toISOString().split("T")[0],
+    startDate: localStorage.getItem("planner_start_date") || formatLocalDate(new Date()),
   }));
 
   // Auto-detect existing planner data from DB for authenticated users

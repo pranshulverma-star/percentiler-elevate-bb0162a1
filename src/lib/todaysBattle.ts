@@ -28,8 +28,16 @@ function seededRandom(seed: number): () => number {
   };
 }
 
+function todayLocal(): string {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, "0");
+  const d = String(now.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 export function getTodaysSectionIndex(): number {
-  const dateStr = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+  const dateStr = todayLocal();
   const hash = hashString(dateStr);
   return hash % 3; // 0=QA, 1=LRDI, 2=VARC
 }
@@ -38,7 +46,7 @@ export function generateTodaysBattle(): TodaysBattleConfig {
   const sectionIndex = getTodaysSectionIndex();
   const sections = practiceLabSections;
   const section = sections[sectionIndex];
-  const dateStr = new Date().toISOString().split("T")[0];
+  const dateStr = todayLocal();
   const rand = seededRandom(hashString(dateStr + "battle"));
 
   let questions: PracticeQuestion[] = [];
