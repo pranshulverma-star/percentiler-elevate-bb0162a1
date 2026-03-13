@@ -86,7 +86,7 @@ const App = () => (
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/cat-coaching-comparison" element={<CATCoachingComparison />} />
                   <Route path="/admin" element={<AdminDashboard />} />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="*" element={<NotFoundRedirect />} />
                 </Routes>
               </Suspense>
             </BrowserRouter>
