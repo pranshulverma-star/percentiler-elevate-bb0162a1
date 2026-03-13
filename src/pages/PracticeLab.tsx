@@ -22,8 +22,9 @@ import ResultsView from "@/components/practice-lab/ResultsView";
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
 const QUIZ_DURATION_DEFAULT = 900; // 15 min
-const QUIZ_DURATION_LRDI = 720;    // 12 min
+const QUIZ_DURATION_SHORT = 720;    // 12 min (LRDI + RC)
 const QUIZ_QUESTION_COUNT = 10;
+const ONE_SET_SLUGS = new Set(["cat-lrdi-arena", "reading-comprehension"]);
 const XP_PER_CORRECT = 15;
 const XP_PER_SPEED_BONUS = 5;
 
