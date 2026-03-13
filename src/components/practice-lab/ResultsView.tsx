@@ -426,6 +426,15 @@ export default function ResultsView({
             </Card>
           </div>
         )}
+
+        {/* Workshop Recommendation based on weak topic */}
+        {incorrect > 0 && (
+          <WorkshopRecommendation
+            workshops={getWorkshopRecommendations(sectionId, chapterSlug)}
+            title="Boost Your Weak Area"
+            subtitle={`Based on your performance in ${chapterName}, we recommend:`}
+          />
+        )}
       </div>
 
       {/* ─── 4. Challenge Your Friends + Next Quizzes ─── */}
