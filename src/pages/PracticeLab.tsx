@@ -898,7 +898,7 @@ export default function PracticeLab() {
         <div className="max-w-5xl mx-auto py-6 md:py-16">
           <AnimatePresence mode="wait">
             {phase === "sections" && (
-              <SectionsView key="sections" onSelect={handleSelectSection} />
+              <SectionsView key="sections" onSelect={handleSelectSection} onTodaysBattle={handleTodaysBattle} />
             )}
             {phase === "chapters" && selectedSection && (
               <ChaptersView
