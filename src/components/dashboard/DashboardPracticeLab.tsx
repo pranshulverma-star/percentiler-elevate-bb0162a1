@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { FlaskConical, ArrowRight, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import WorkshopRecommendation, { getWeakSectionWorkshop } from "@/components/WorkshopRecommendation";
 
 interface AttemptSummary {
   section_id: string;
