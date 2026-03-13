@@ -22,8 +22,9 @@ import ResultsView from "@/components/practice-lab/ResultsView";
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
 const QUIZ_DURATION_DEFAULT = 900; // 15 min
-const QUIZ_DURATION_LRDI = 720;    // 12 min
+const QUIZ_DURATION_SHORT = 720;    // 12 min (LRDI + RC)
 const QUIZ_QUESTION_COUNT = 10;
+const ONE_SET_SLUGS = new Set(["cat-lrdi-arena", "reading-comprehension"]);
 const XP_PER_CORRECT = 15;
 const XP_PER_SPEED_BONUS = 5;
 
@@ -681,7 +682,7 @@ export default function PracticeLab() {
     const ch = pendingChapter.current;
     pendingChapter.current = null;
     setSelectedChapter(ch);
-    setQuizQuestions(selectedSection?.id === "lrdi" ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(ONE_SET_SLUGS.has(ch.slug) ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
@@ -699,7 +700,7 @@ export default function PracticeLab() {
       return;
     }
     setSelectedChapter(ch);
-    setQuizQuestions(selectedSection?.id === "lrdi" ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
+    setQuizQuestions(ONE_SET_SLUGS.has(ch.slug) ? pickOneSet(ch.questions) : pickGroupedRandom(ch.questions, QUIZ_QUESTION_COUNT));
     setQuizAnswers({});
     setQuizTimeUsed(0);
     setPhase("quiz");
@@ -713,7 +714,7 @@ export default function PracticeLab() {
 
   const handleRetry = useCallback(() => {
     if (selectedChapter) {
-      setQuizQuestions(selectedSection?.id === "lrdi" ? pickOneSet(selectedChapter.questions) : pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
+      setQuizQuestions(ONE_SET_SLUGS.has(selectedChapter.slug) ? pickOneSet(selectedChapter.questions) : pickGroupedRandom(selectedChapter.questions, QUIZ_QUESTION_COUNT));
     }
     setQuizAnswers({});
     setQuizTimeUsed(0);
@@ -799,7 +800,7 @@ export default function PracticeLab() {
                 key="quiz"
                 chapter={selectedChapter}
                 questions={quizQuestions}
-                duration={selectedSection?.id === "lrdi" ? QUIZ_DURATION_LRDI : QUIZ_DURATION_DEFAULT}
+                duration={selectedChapter && ONE_SET_SLUGS.has(selectedChapter.slug) ? QUIZ_DURATION_SHORT : QUIZ_DURATION_DEFAULT}
                 onFinish={handleFinishQuiz}
                 onBack={handleBackToChapters}
               />
