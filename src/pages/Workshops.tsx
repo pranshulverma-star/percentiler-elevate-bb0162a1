@@ -36,6 +36,7 @@ const workshops = [
       { icon: Clock, text: "Time management techniques for LRDI" },
     ],
     bestFor: "Aspirants who struggle with DI/LR sets and want a dedicated booster to crack LRDI.",
+    trending: true,
   },
   {
     id: "arithmetic",
