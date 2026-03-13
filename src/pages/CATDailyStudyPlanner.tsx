@@ -96,7 +96,7 @@ function calculateCurrentStreak(completedDays: Set<string>, _startDate: string):
   const d = new Date(today);
 
   for (let i = 0; i < 365; i++) {
-    const dateStr = d.toISOString().split("T")[0];
+    const dateStr = formatLocalDate(d);
     // Check if any subject was completed on this date
     const hasActivity = Array.from(completedDays).some(k => k.startsWith(dateStr + "|"));
     if (hasActivity) {
