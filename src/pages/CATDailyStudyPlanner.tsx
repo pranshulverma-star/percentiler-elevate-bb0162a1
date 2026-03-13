@@ -489,9 +489,9 @@ function SundayCard({ task, completed, loading, onComplete, dayName }: { task: D
 
 // ─── Subject Day Card ───
 
-function TaskCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
-  if (task.is_mock_day) return <MockDayCard task={task} completed={completed} loading={loading} onComplete={onComplete} />;
-  if (task.subjectFocus === "WEEKLY_TEST") return <SundayCard task={task} completed={completed} loading={loading} onComplete={onComplete} />;
+function TaskCard({ task, completed, loading, onComplete, dayName }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void; dayName: string }) {
+  if (task.is_mock_day) return <MockDayCard task={task} completed={completed} loading={loading} onComplete={onComplete} dayName={dayName} />;
+  if (task.subjectFocus === "WEEKLY_TEST") return <SundayCard task={task} completed={completed} loading={loading} onComplete={onComplete} dayName={dayName} />;
 
   const subject = task.subjectFocus;
   const icon = SUBJECT_ICON[subject];
@@ -505,7 +505,7 @@ function TaskCard({ task, completed, loading, onComplete }: { task: DailyTask; c
             {task.dayIndex + 1}
           </div>
           <div>
-            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — {DAY_NAMES[task.dayOfWeek]}</p>
+            <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — {dayName}</p>
             <p className="text-xs text-muted-foreground">{task.weekLabel}</p>
           </div>
           <Badge className="ml-auto bg-primary/10 text-primary border-primary/20 text-xs font-semibold">{subject} Day</Badge>
