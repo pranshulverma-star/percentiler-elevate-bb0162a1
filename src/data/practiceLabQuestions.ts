@@ -424,6 +424,15 @@ const lrdiChapters: Chapter[] = lrdiAllQuestions.length > 0
 const varcChapters = buildChaptersFromRaw(varcRaw);
 
 
+// ── Import Para Jumble questions ─────────────────────────────────────────────
+import { paraJumbleMCQQuestions, oddSentenceOutQuestions, paraJumbleSubjectiveQuestions } from "./pjQuestions";
+
+const pjChapters: Chapter[] = [
+  { slug: "para-jumbles", name: "Para Jumbles", questions: paraJumbleMCQQuestions },
+  { slug: "odd-sentence-out", name: "Odd Sentence Out", questions: oddSentenceOutQuestions },
+  { slug: "para-jumbles-subjective", name: "Para Jumbles (Subjective)", questions: paraJumbleSubjectiveQuestions },
+];
+
 export const practiceLabSections: SectionData[] = [
   {
     id: "qa",
@@ -444,6 +453,6 @@ export const practiceLabSections: SectionData[] = [
     name: "Verbal Ability & Reading Comprehension",
     icon: "📖",
     description: "Reading Comprehension, Para Jumbles & Grammar",
-    chapters: varcChapters,
+    chapters: [...varcChapters, ...pjChapters],
   },
 ];
