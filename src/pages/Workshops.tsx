@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft, ArrowRight, ChevronDown, ChevronUp,
   BookOpen, Brain, Target, Clock, Video, Star,
-  Calculator, Shapes, PenTool, FileText, Sigma, GraduationCap,
+  Calculator, Shapes, PenTool, FileText, Sigma, GraduationCap, TrendingUp,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -36,6 +36,7 @@ const workshops = [
       { icon: Clock, text: "Time management techniques for LRDI" },
     ],
     bestFor: "Aspirants who struggle with DI/LR sets and want a dedicated booster to crack LRDI.",
+    trending: true,
   },
   {
     id: "arithmetic",
@@ -59,6 +60,7 @@ const workshops = [
       { icon: Star, text: "Shortcut techniques for quick solving" },
     ],
     bestFor: "Students who want to nail Arithmetic — the highest-weightage QA topic in CAT.",
+    trending: true,
   },
   {
     id: "geometry",
@@ -82,6 +84,7 @@ const workshops = [
       { icon: PenTool, text: "Visual techniques for tricky questions" },
     ],
     bestFor: "Aspirants who find Geometry intimidating and want structured concept-to-problem mastery.",
+    trending: true,
   },
   {
     id: "algebra",
@@ -128,6 +131,7 @@ const workshops = [
       { icon: Clock, text: "Speed-reading & elimination techniques" },
     ],
     bestFor: "Anyone who wants to boost VARC accuracy — the most scoring yet tricky CAT section.",
+    trending: true,
   },
   {
     id: "modernMaths",
@@ -254,6 +258,11 @@ const Workshops = () => {
                               <Badge variant="secondary" className="text-[8px] md:text-[10px] tracking-wider uppercase shrink-0">
                                 {w.tag}
                               </Badge>
+                              {w.trending && (
+                                <Badge className="bg-primary text-primary-foreground text-[8px] md:text-[10px] tracking-wider uppercase shrink-0 gap-0.5">
+                                  <TrendingUp className="h-3 w-3" /> Trending
+                                </Badge>
+                              )}
                             </div>
                             <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5 truncate">{w.tagline}</p>
                           </div>
