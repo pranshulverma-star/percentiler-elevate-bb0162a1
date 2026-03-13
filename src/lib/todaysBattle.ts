@@ -79,7 +79,7 @@ export function generateTodaysBattle(): TodaysBattleConfig {
   }
 
   const virtualChapter: Chapter = {
-    slug: "todays-battle",
+    slug: "quiz-of-the-day",
     name: chapterName,
     questions,
   };

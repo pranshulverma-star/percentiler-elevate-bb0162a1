@@ -24,7 +24,7 @@ export default function DashboardTodaysBattle() {
         </div>
         <div className="flex-1 min-w-0">
           <h3 className="text-sm font-bold text-foreground flex items-center gap-1.5">
-            Today's Battle <Zap className="w-3.5 h-3.5 text-primary" />
+            Quiz of the Day <Zap className="w-3.5 h-3.5 text-primary" />
           </h3>
           <p className="text-[11px] text-muted-foreground truncate">
             {info.icon} {info.name} · {info.tag}

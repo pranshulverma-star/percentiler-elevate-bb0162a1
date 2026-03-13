@@ -163,7 +163,7 @@ function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData)
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="text-base md:text-lg font-bold text-foreground flex items-center gap-2">
-                Today's Battle <Zap className="w-4 h-4 text-primary" />
+                Quiz of the Day <Zap className="w-4 h-4 text-primary" />
               </h2>
               <p className="text-xs md:text-sm text-muted-foreground">
                 {practiceLabSections[todayIdx].icon} {practiceLabSections[todayIdx].name} · {sectionLabels[todayIdx].tag}

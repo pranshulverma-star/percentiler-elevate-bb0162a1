@@ -169,7 +169,7 @@ export default function Dashboard() {
 
             {/* Today's Battle */}
             <motion.div custom={2} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={2} label="TODAY'S BATTLE" />
+              <StageLabel number={2} label="QUIZ OF THE DAY" />
               <DashboardTodaysBattle />
             </motion.div>
 
