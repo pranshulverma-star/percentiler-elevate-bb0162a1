@@ -167,7 +167,7 @@ export default function Dashboard() {
               <DashboardStats streakData={streakData} loading={loadingStreaks} />
             </motion.div>
 
-            {/* Today's Battle */}
+            {/* Quiz of the Day */}
             <motion.div custom={2} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
               <StageLabel number={2} label="QUIZ OF THE DAY" />
               <DashboardTodaysBattle />

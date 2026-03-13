@@ -749,7 +749,7 @@ export default function PracticeLab() {
     setPhase("chapters");
   }, []);
 
-  // Today's Battle handler
+  // Quiz of the Day handler
   const handleTodaysBattle = useCallback(() => {
     const battle = generateTodaysBattle();
     if (battle.questions.length === 0) return;
