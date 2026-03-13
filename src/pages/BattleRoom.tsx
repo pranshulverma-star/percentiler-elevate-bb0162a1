@@ -19,7 +19,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import type { PracticeQuestion } from "@/data/practiceLabQuestions";
 import { practiceLabSections } from "@/data/practiceLabQuestions";
-import ShareableResultCard from "@/components/ShareableResultCard";
+import { lazy, Suspense } from "react";
+const ShareableResultCard = lazy(() => import("@/components/ShareableResultCard"));
 import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 
 const QUIZ_DURATION = 900;

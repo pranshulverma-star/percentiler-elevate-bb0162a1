@@ -107,14 +107,14 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (userId && email) {
+    if (userId) {
       fetchLead();
       fetchPlanner();
       fetchMasterclass();
       fetchCampaign();
       fetchPractice();
     }
-  }, [userId, email]);
+  }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const firstName = lead?.name?.split(" ")[0] || user?.user_metadata?.full_name?.split(" ")[0] || "there";
   const converted = !!campaign?.converted_at;
