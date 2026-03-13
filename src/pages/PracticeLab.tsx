@@ -295,7 +295,7 @@ function ChaptersView({
         {section.chapters.map((ch, i) => {
           const hasQuestions = ch.questions.length > 0;
           const isOneSet = ONE_SET_SLUGS.has(ch.slug);
-          const qCount = isOneSet ? ch.questions.length : Math.min(ch.questions.length, QUIZ_QUESTION_COUNT);
+          const qCount = isOneSet ? ch.questions.length : Math.min(ch.questions.length, getQuizCount(ch.slug));
           return (
             <motion.div
               key={ch.slug}
