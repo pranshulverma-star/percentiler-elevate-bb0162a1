@@ -63,6 +63,9 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     return () => window.clearTimeout(timer);
   }, [authLoading]);
 
+  // Debug logging
+  console.log("[ProtectedRoute]", { authLoading, isAuthenticated, isStandalone, authBootstrapTimedOut, userId: user?.id, path: location.pathname });
+
   // --- Render decision tree ---
 
   if (authLoading && !authBootstrapTimedOut) {
