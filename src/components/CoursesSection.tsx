@@ -23,6 +23,12 @@ const courses = [
     tag: "1-on-1",
     highlights: ["Personalized CAT strategy and accountability sessions", "One-on-one guidance for serious aspirants", "Weekly progress reviews"],
   },
+  {
+    name: "Topic-wise Workshops",
+    icon: BookOpen,
+    tag: "Deep Dive",
+    highlights: ["Focused workshops on Arithmetic, Algebra, Geometry & more", "Expert-led sessions by 99%ile mentors", "Affordable topic-specific crash courses"],
+  },
 ];
 
 const CoursesSection = () => (
