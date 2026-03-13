@@ -392,6 +392,38 @@ export default function ResultsView({
       </div>
 
       {/* ─── 5. History (compact) ─── */}
+      {/* ─── 5a. Leaderboard ─── */}
+      {leaderboard.length > 0 && (
+        <Card className="p-3 border space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="text-sm">🏆</span>
+            <span className="text-xs font-bold text-foreground">Leaderboard</span>
+            <span className="text-[10px] text-muted-foreground ml-auto">{chapterName}</span>
+          </div>
+          {leaderboard.map((p, i) => {
+            const medals = ["🥇", "🥈", "🥉"];
+            return (
+              <div
+                key={i}
+                className={`flex items-center justify-between text-[11px] py-1.5 px-2 rounded-lg ${
+                  p.isMe ? "bg-primary/10 border border-primary/20" : "border-b border-border/50 last:border-0"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="text-sm w-5 text-center">{medals[i] || `#${i + 1}`}</span>
+                  <span className={`font-bold ${p.isMe ? "text-foreground" : "text-muted-foreground"}`}>
+                    {p.name}
+                    {p.isMe && <span className="ml-1 text-[9px] font-black text-primary uppercase">(You)</span>}
+                  </span>
+                </span>
+                <span className="font-black text-foreground">{p.score}%</span>
+              </div>
+            );
+          })}
+        </Card>
+      )}
+
+      {/* ─── 5b. History (compact) ─── */}
       {pastAttempts.length > 1 && (
         <Card className="p-3 border space-y-2">
           <div className="flex items-center gap-2">
