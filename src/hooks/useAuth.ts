@@ -100,13 +100,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       ? (redirectPath.startsWith("http") ? redirectPath : `${window.location.origin}${redirectPath}`)
       : `${window.location.origin}${window.location.pathname}${window.location.search}`;
 
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (navigator as any).standalone === true;
+
+    // In standalone PWA mode, the managed auth popup flow is blocked by iOS.
+    // Fall back to Supabase's native full-page redirect OAuth flow.
+    if (isStandalone) {
+      console.log("[Auth] Standalone PWA detected, using direct redirect flow");
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: redirectUri,
+          skipBrowserRedirect: false,
+        },
+      });
+      if (error) {
+        console.error("[Auth] Standalone sign-in error:", error);
+        throw error;
+      }
+      return;
+    }
+
     try {
-      await lovable.auth.signInWithOAuth("google", {
+      const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: redirectUri,
         extraParams: { prompt: "select_account" },
       });
+      if (result?.error) {
+        console.error("[Auth] Sign-in result error:", result.error);
+      }
     } catch (err) {
-      console.error("Sign-in error:", err);
+      console.error("[Auth] Sign-in error:", err);
       throw err;
     }
   }, []);
