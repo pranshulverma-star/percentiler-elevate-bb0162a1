@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { Zap, BarChart3, Users, ArrowRight } from "lucide-react";
+import { Zap, BarChart3, Users, ArrowRight, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const courses = [
