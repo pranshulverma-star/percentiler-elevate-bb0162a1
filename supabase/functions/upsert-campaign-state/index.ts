@@ -24,7 +24,7 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { phone_number, workflow_status, lead_source, sequence_entry_msg } = await req.json();
+    const { phone_number, workflow_status, lead_source, sequence_entry_msg, name } = await req.json();
 
     if (!phone_number) {
       return new Response(JSON.stringify({ error: "phone_number required" }), {
@@ -48,6 +48,7 @@ Deno.serve(async (req) => {
           workflow_status: workflow_status || "ppc_nurture",
           lead_source: lead_source || null,
           sequence_entry_msg: sequence_entry_msg || 1,
+          name: name || null,
         },
         { onConflict: "phone_number", ignoreDuplicates: true }
       )

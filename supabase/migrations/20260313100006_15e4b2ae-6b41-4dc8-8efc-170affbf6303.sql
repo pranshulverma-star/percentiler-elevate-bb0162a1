@@ -1,0 +1,1 @@
+ALTER TABLE public.campaign_state ADD COLUMN name text DEFAULT NULL;

@@ -20,6 +20,7 @@ const ALLOWED_FIELDS = new Set([
   "free_call_sent",
   "webinar_nudge_sent",
   "money_constraint_sent",
+  "name",
 ]);
 
 Deno.serve(async (req) => {

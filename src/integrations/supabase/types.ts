@@ -114,6 +114,7 @@ export type Database = {
           mentorship_active: boolean | null
           money_constraint: boolean | null
           money_constraint_sent: boolean | null
+          name: string | null
           next_offer_friday: string | null
           offer_sent_friday: boolean | null
           offer_sent_saturday: boolean | null
@@ -137,6 +138,7 @@ export type Database = {
           mentorship_active?: boolean | null
           money_constraint?: boolean | null
           money_constraint_sent?: boolean | null
+          name?: string | null
           next_offer_friday?: string | null
           offer_sent_friday?: boolean | null
           offer_sent_saturday?: boolean | null
@@ -160,6 +162,7 @@ export type Database = {
           mentorship_active?: boolean | null
           money_constraint?: boolean | null
           money_constraint_sent?: boolean | null
+          name?: string | null
           next_offer_friday?: string | null
           offer_sent_friday?: boolean | null
           offer_sent_saturday?: boolean | null
