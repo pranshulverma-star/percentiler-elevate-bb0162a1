@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { GraduationCap, Users, ClipboardList, Wrench, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
