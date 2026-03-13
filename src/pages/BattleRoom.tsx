@@ -645,9 +645,9 @@ function BattleResults({
       />
 
       {/* Workshop Recommendation */}
-      {incorrect > 0 && room_section_id && (
+      {incorrect > 0 && (
         <WorkshopRecommendation
-          workshops={getWorkshopRecommendations(room_section_id, room_chapter_slug)}
+          workshops={getWorkshopRecommendations(sectionId, chapterSlug)}
           title="Strengthen Your Weak Spot"
           subtitle="Based on your battle performance, this workshop can help:"
         />
