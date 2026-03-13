@@ -125,8 +125,10 @@ export default function ResultsView({
   const navigate = useNavigate();
   const { user } = useAuth();
   const [pastAttempts, setPastAttempts] = useState<{ score_pct: number; correct: number; total_questions: number; time_used_seconds: number; created_at: string }[]>([]);
+  const [leaderboard, setLeaderboard] = useState<{ name: string; score: number; isMe: boolean }[]>([]);
   const savedRef = useRef(false);
   const [showReview, setShowReview] = useState(false);
+  const [showShareCard, setShowShareCard] = useState(false);
 
   const { correct, incorrect, unanswered } = useMemo(() => {
     let correct = 0, incorrect = 0, unanswered = 0;
