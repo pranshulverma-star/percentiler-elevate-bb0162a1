@@ -84,6 +84,7 @@ const workshops = [
       { icon: PenTool, text: "Visual techniques for tricky questions" },
     ],
     bestFor: "Aspirants who find Geometry intimidating and want structured concept-to-problem mastery.",
+    trending: true,
   },
   {
     id: "algebra",
