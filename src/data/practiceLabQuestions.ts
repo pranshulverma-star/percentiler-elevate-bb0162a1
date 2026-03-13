@@ -250,8 +250,9 @@ function buildChaptersFromRaw(raw: RawQuestion[], useSubtopic = false, splitBroa
     if (isMcq) {
       const sortedKeys = optKeys.sort((a, b) => Number(a) - Number(b));
       const optionsArr = sortedKeys.map((k) => r.options[k]);
-      // Skip questions where any option is excessively long (likely explanation leakage)
-      if (optionsArr.some((o) => o.length > 120)) continue;
+      // Skip questions where any option is excessively long (likely explanation leakage) — except RC which has naturally long options
+      const maxOptLen = r.group_id ? 300 : 120;
+      if (optionsArr.some((o) => o.length > maxOptLen)) continue;
       const correctIdx = sortedKeys.indexOf(r.correct_answer);
 
       pq = {
