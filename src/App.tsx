@@ -1,3 +1,4 @@
+import NotFoundRedirect from "@/components/NotFoundRedirect";
 import { useEffect, lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -46,7 +47,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const Contact = lazy(() => import("./pages/Contact"));
-import NotFoundRedirect from "./components/NotFoundRedirect";
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
@@ -71,8 +72,22 @@ const App = () => (
                   <Route path="/" element={<Index />} />
                   <Route path="/masterclass" element={<Masterclass />} />
                   <Route path="/mentorship" element={<MentorshipPage />} />
-                  <Route path="/masterclass/watch" element={<ProtectedRoute requirePhone source="masterclass"><MasterclassWatch /></ProtectedRoute>} />
-                  <Route path="/dashboard" element={<ProtectedRoute source="dashboard"><Dashboard /></ProtectedRoute>} />
+                  <Route
+                    path="/masterclass/watch"
+                    element={
+                      <ProtectedRoute requirePhone source="masterclass">
+                        <MasterclassWatch />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute source="dashboard">
+                        <Dashboard />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="/free-cat-readiness-assessment" element={<CATReadinessAssessment />} />
                   <Route path="/cat-daily-study-planner" element={<CATDailyStudyPlanner />} />
                   <Route path="/courses/cat-omet" element={<CATOMETCourses />} />
