@@ -28,8 +28,7 @@ function ScrollToHash() {
 // Eagerly load homepage
 import Index from "./pages/Index";
 
-// Eagerly load high-traffic landing pages to prevent flash
-import CATCoachingComparison from "./pages/CATCoachingComparison";
+const CATCoachingComparison = lazy(() => import("./pages/CATCoachingComparison"));
 
 // Lazy load all other routes
 const Masterclass = lazy(() => import("./pages/Masterclass"));
