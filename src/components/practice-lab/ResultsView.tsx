@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import ShareableResultCard from "@/components/ShareableResultCard";
+import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 import { practiceLabSections, type PracticeQuestion } from "@/data/practiceLabQuestions";
 
 const fadeUp = {
@@ -424,6 +425,15 @@ export default function ResultsView({
               </Button>
             </Card>
           </div>
+        )}
+
+        {/* Workshop Recommendation based on weak topic */}
+        {incorrect > 0 && (
+          <WorkshopRecommendation
+            workshops={getWorkshopRecommendations(sectionId, chapterSlug)}
+            title="Boost Your Weak Area"
+            subtitle={`Based on your performance in ${chapterName}, we recommend:`}
+          />
         )}
       </div>
 

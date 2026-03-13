@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { FlaskConical, ArrowRight, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
+import WorkshopRecommendation, { getWeakSectionWorkshop } from "@/components/WorkshopRecommendation";
 
 interface AttemptSummary {
   section_id: string;
@@ -116,6 +117,19 @@ export default function DashboardPracticeLab({ attempts, loading }: Props) {
             </div>
           ))}
         </div>
+
+        {/* Workshop recommendation based on weakest section */}
+        {(() => {
+          const weakWorkshop = getWeakSectionWorkshop(attempts);
+          if (!weakWorkshop) return null;
+          return (
+            <WorkshopRecommendation
+              workshops={[weakWorkshop]}
+              title="Improve Your Weak Area"
+              subtitle="Based on your practice history, this can help:"
+            />
+          );
+        })()}
 
         <Button asChild variant="outline" size="sm" className="w-full">
           <Link to="/practice-lab">Continue Practicing <ArrowRight className="ml-1 h-4 w-4" /></Link>

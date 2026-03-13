@@ -20,6 +20,7 @@ import Footer from "@/components/Footer";
 import type { PracticeQuestion } from "@/data/practiceLabQuestions";
 import { practiceLabSections } from "@/data/practiceLabQuestions";
 import ShareableResultCard from "@/components/ShareableResultCard";
+import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 
 const QUIZ_DURATION = 900;
 const QUIZ_QUESTION_COUNT = 10;
@@ -405,12 +406,16 @@ function BattleResults({
   players,
   questions,
   currentUserId,
+  sectionId,
+  chapterSlug,
   onPlayAgain,
   onExit,
 }: {
   players: BattlePlayer[];
   questions: PracticeQuestion[];
   currentUserId: string;
+  sectionId: string;
+  chapterSlug: string;
   onPlayAgain?: () => void;
   onExit: () => void;
 }) {
@@ -638,6 +643,15 @@ function BattleResults({
           isMe: p.user_id === currentUserId,
         }))}
       />
+
+      {/* Workshop Recommendation */}
+      {incorrect > 0 && (
+        <WorkshopRecommendation
+          workshops={getWorkshopRecommendations(sectionId, chapterSlug)}
+          title="Strengthen Your Weak Spot"
+          subtitle="Based on your battle performance, this workshop can help:"
+        />
+      )}
 
       <div className="flex flex-col gap-2 md:flex-row md:gap-3 md:justify-center">
         {onPlayAgain && (
@@ -1008,6 +1022,8 @@ export default function BattleRoomPage() {
                 players={players}
                 questions={questions}
                 currentUserId={user?.id || ""}
+                sectionId={room.section_id}
+                chapterSlug={room.chapter_slug}
                 onPlayAgain={handlePlayAgain}
                 onExit={handleExit}
               />
