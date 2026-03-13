@@ -131,6 +131,7 @@ const workshops = [
       { icon: Clock, text: "Speed-reading & elimination techniques" },
     ],
     bestFor: "Anyone who wants to boost VARC accuracy — the most scoring yet tricky CAT section.",
+    trending: true,
   },
   {
     id: "modernMaths",
