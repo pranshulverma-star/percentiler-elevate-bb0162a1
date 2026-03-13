@@ -729,6 +729,7 @@ function QuizView({
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function PracticeLab() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [phase, setPhase] = useState<Phase>("sections");
   const [selectedSection, setSelectedSection] = useState<SectionData | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<Chapter | null>(null);
@@ -736,6 +737,7 @@ export default function PracticeLab() {
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number | string | null>>({});
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
+  const [battleDuration, setBattleDuration] = useState<number | null>(null);
 
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
