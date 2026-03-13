@@ -280,7 +280,7 @@ function computeStreaks(attempts: any[]) {
     checkDate.setDate(checkDate.getDate() - 1);
   }
   for (let i = 0; i < 365; i++) {
-    const dateStr = checkDate.toISOString().split("T")[0];
+    const dateStr = fmtLocal(checkDate);
     if (dates.includes(dateStr)) {
       currentStreak++;
       checkDate.setDate(checkDate.getDate() - 1);
