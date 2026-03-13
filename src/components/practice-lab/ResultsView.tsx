@@ -127,7 +127,11 @@ export default function ResultsView({
       const a = answers[q.id];
       if (a === undefined || a === null || a === "") {
         unanswered++;
-      } else if (a === q.correctAnswer) {
+      } else if (
+        q.type === "tita_text"
+          ? String(a).trim().toUpperCase() === String(q.correctAnswer).trim().toUpperCase()
+          : a === q.correctAnswer
+      ) {
         correct++;
       } else {
         incorrect++;
