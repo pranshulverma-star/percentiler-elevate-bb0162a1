@@ -49,7 +49,7 @@ const FreeToolsSection = () => {
                 </div>
                 <Button variant="outline" size="sm" className="group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-colors duration-300" asChild>
                     <a href={t.href}>
-                      {t.name === "Free Courses" ? "Explore Free Courses" : "Use Free Tool"} <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                      {t.name === "Free Courses" ? "Explore Free Courses" : t.name === "My Dashboard" ? "Go to Dashboard" : "Use Free Tool"} <ArrowRight className="ml-1 h-3.5 w-3.5" />
                     </a>
                   </Button>
               </Card>
