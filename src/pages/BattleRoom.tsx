@@ -406,12 +406,16 @@ function BattleResults({
   players,
   questions,
   currentUserId,
+  sectionId,
+  chapterSlug,
   onPlayAgain,
   onExit,
 }: {
   players: BattlePlayer[];
   questions: PracticeQuestion[];
   currentUserId: string;
+  sectionId: string;
+  chapterSlug: string;
   onPlayAgain?: () => void;
   onExit: () => void;
 }) {
