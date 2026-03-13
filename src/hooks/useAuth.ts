@@ -71,13 +71,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       });
 
-    // Safety timeout: unblock UI after 3s no matter what
-    // Reduced from 3s to 1.5s for faster UI unblock
+    // Safety timeout: unblock UI after 4s no matter what.
+    // iOS PWA session restoration can be slower after OAuth redirect.
     const fallbackTimer = window.setTimeout(() => {
       if (resolved || !isMounted) return;
       console.warn("Auth timed out, unblocking UI");
       setLoading(false);
-    }, 1500);
+    }, 4000);
 
     return () => {
       isMounted = false;
@@ -104,33 +104,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       window.matchMedia("(display-mode: standalone)").matches ||
       (navigator as any).standalone === true;
 
-    // In standalone PWA mode, the managed auth popup flow is blocked by iOS.
-    // Fall back to Supabase's native full-page redirect OAuth flow.
-    if (isStandalone) {
-      console.log("[Auth] Standalone PWA detected, using direct redirect flow");
-      const { error } = await supabase.auth.signInWithOAuth({
+    const startDirectRedirect = async () => {
+      const { data, error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
           redirectTo: redirectUri,
-          skipBrowserRedirect: false,
+          skipBrowserRedirect: true,
+          queryParams: { prompt: "select_account" },
         },
       });
+
       if (error) {
-        console.error("[Auth] Standalone sign-in error:", error);
+        console.error("[Auth] Direct redirect sign-in error:", error);
         throw error;
       }
-      return;
-    }
+
+      if (data?.url) {
+        window.location.assign(data.url);
+        return;
+      }
+
+      throw new Error("[Auth] Missing OAuth redirect URL");
+    };
 
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: redirectUri,
         extraParams: { prompt: "select_account" },
       });
+
       if (result?.error) {
-        console.error("[Auth] Sign-in result error:", result.error);
+        throw result.error;
+      }
+
+      // Standalone PWA on iOS can fail popup/token handoff silently.
+      // Force a same-window OAuth redirect to keep the flow inside the PWA context.
+      if (isStandalone && !result?.redirected) {
+        console.warn("[Auth] Standalone fallback to direct redirect flow");
+        await startDirectRedirect();
       }
     } catch (err) {
+      if (isStandalone) {
+        console.warn("[Auth] Standalone managed flow failed, retrying direct redirect", err);
+        await startDirectRedirect();
+        return;
+      }
       console.error("[Auth] Sign-in error:", err);
       throw err;
     }
