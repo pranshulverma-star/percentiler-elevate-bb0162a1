@@ -418,7 +418,7 @@ function CompletionButton({
 
 // ─── Mock Day Card ───
 
-function MockDayCard({ task, completed, loading, onComplete }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void }) {
+function MockDayCard({ task, completed, loading, onComplete, dayName }: { task: DailyTask; completed: boolean; loading: boolean; onComplete: () => void; dayName: string }) {
   return (
     <Card className="rounded-2xl border-2 border-emerald-500/30 shadow-lg bg-emerald-500/5">
       <CardContent className="p-5 md:p-6 space-y-4">
@@ -428,7 +428,7 @@ function MockDayCard({ task, completed, loading, onComplete }: { task: DailyTask
           </div>
           <div>
             <p className="text-sm font-bold text-foreground">Day {task.dayIndex + 1} — Mock Day</p>
-            <p className="text-xs text-muted-foreground">{task.weekLabel} · {DAY_NAMES[task.dayOfWeek]}</p>
+            <p className="text-xs text-muted-foreground">{task.weekLabel} · {dayName}</p>
           </div>
         </div>
         <div className="bg-emerald-500/10 rounded-xl p-4 text-center">
