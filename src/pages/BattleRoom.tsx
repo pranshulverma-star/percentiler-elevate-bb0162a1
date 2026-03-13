@@ -635,15 +635,17 @@ function BattleResults({
       </div>
 
       {/* Shareable Card */}
-      <ShareableResultCard
-        correct={correct}
-        total={questions.length}
-        leaderboard={ranked.map(p => ({
-          name: p.display_name || "Anonymous",
-          score: p.score_pct,
-          isMe: p.user_id === currentUserId,
-        }))}
-      />
+      <Suspense fallback={<div className="h-40 rounded-2xl bg-secondary animate-pulse" />}>
+        <ShareableResultCard
+          correct={correct}
+          total={questions.length}
+          leaderboard={ranked.map(p => ({
+            name: p.display_name || "Anonymous",
+            score: p.score_pct,
+            isMe: p.user_id === currentUserId,
+          }))}
+        />
+      </Suspense>
 
       {/* Workshop Recommendation */}
       {incorrect > 0 && (

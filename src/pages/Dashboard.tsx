@@ -17,7 +17,7 @@ import { motion } from "framer-motion";
 export default function Dashboard() {
   const { user, signOut } = useAuth();
   const { refetch: refetchPhone } = useLeadPhone();
-  const email = user?.email || "";
+  const _email = user?.email || "";
   const userId = user?.id || "";
 
   const [lead, setLead] = useState<any>(null);
