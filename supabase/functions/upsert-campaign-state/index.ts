@@ -40,18 +40,18 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
     );
 
+    const payload: Record<string, unknown> = {
+      phone_number: normalized,
+      workflow_status: workflow_status || "ppc_nurture",
+      sequence_entry_msg: sequence_entry_msg || 1,
+    };
+
+    if (lead_source) payload.lead_source = lead_source;
+    if (typeof name === "string" && name.trim()) payload.name = name.trim();
+
     const { data, error } = await supabase
       .from("campaign_state")
-      .upsert(
-        {
-          phone_number: normalized,
-          workflow_status: workflow_status || "ppc_nurture",
-          lead_source: lead_source || null,
-          sequence_entry_msg: sequence_entry_msg || 1,
-          name: name || null,
-        },
-        { onConflict: "phone_number", ignoreDuplicates: true }
-      )
+      .upsert(payload, { onConflict: "phone_number" })
       .select()
       .single();
 
