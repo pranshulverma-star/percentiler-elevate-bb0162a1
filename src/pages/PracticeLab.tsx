@@ -749,6 +749,42 @@ export default function PracticeLab() {
     setPhase("chapters");
   }, []);
 
+  // Today's Battle handler
+  const handleTodaysBattle = useCallback(() => {
+    const battle = generateTodaysBattle();
+    if (battle.questions.length === 0) return;
+
+    if (!isAuthenticated) {
+      pendingChapter.current = battle.chapter;
+      signIn(window.location.pathname + "?daily=true");
+      return;
+    }
+    if (!hasPhone) {
+      pendingChapter.current = battle.chapter;
+      setPhoneModalOpen(true);
+      return;
+    }
+
+    const section = practiceLabSections.find(s => s.id === battle.sectionId) || null;
+    setSelectedSection(section);
+    setSelectedChapter(battle.chapter);
+    setQuizQuestions(battle.questions);
+    setBattleDuration(battle.duration);
+    setQuizAnswers({});
+    setQuizTimeUsed(0);
+    setPhase("quiz");
+  }, [isAuthenticated, hasPhone, signIn]);
+
+  // Auto-start today's battle if ?daily=true
+  const dailyTriggered = useRef(false);
+  useEffect(() => {
+    if (dailyTriggered.current) return;
+    if (searchParams.get("daily") !== "true") return;
+    if (authLoading || phoneLoading) return;
+    dailyTriggered.current = true;
+    handleTodaysBattle();
+  }, [searchParams, authLoading, phoneLoading, handleTodaysBattle]);
+
   useEffect(() => {
     if (!pendingChapter.current) return;
     if (authLoading || phoneLoading) return;
