@@ -273,7 +273,7 @@ function computeStreaks(attempts: any[]) {
   const totalQuizzes = attempts.length;
   const avgAccuracy = Math.round(attempts.reduce((s: number, a: any) => s + a.score_pct, 0) / totalQuizzes);
   const dates = [...new Set(attempts.map((a: any) => a.created_at.split("T")[0]))].sort().reverse();
-  const today = new Date().toISOString().split("T")[0];
+  const today = fmtLocal(new Date());
   let currentStreak = 0;
   let checkDate = new Date();
   if (dates[0] !== today) {
