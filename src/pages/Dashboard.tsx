@@ -308,7 +308,7 @@ function computeStreaks(attempts: any[]) {
   for (let i = 0; i < 7; i++) {
     const d = new Date(weekStart);
     d.setDate(d.getDate() + i);
-    const ds = d.toISOString().split("T")[0];
+    const ds = fmtLocal(d);
     weeklyActivity.push(dates.includes(ds));
   }
   let recentTrend: "up" | "down" | "stable" = "stable";
