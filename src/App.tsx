@@ -15,9 +15,19 @@ function ScrollToHash() {
   const { hash, pathname } = useLocation();
   useEffect(() => {
     if (hash) {
-      setTimeout(() => {
-        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+      // Retry scrolling until the target element is rendered (handles lazy-loaded sections)
+      let attempts = 0;
+      const maxAttempts = 20;
+      const interval = setInterval(() => {
+        const el = document.querySelector(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+          clearInterval(interval);
+        } else if (++attempts >= maxAttempts) {
+          clearInterval(interval);
+        }
+      }, 150);
+      return () => clearInterval(interval);
     } else {
       window.scrollTo(0, 0);
     }
