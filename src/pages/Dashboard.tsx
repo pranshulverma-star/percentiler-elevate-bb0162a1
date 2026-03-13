@@ -167,9 +167,15 @@ export default function Dashboard() {
               <DashboardStats streakData={streakData} loading={loadingStreaks} />
             </motion.div>
 
-            {/* Stage 2: Today's Mission */}
+            {/* Today's Battle */}
             <motion.div custom={2} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={2} label="TODAY'S MISSION" />
+              <StageLabel number={2} label="TODAY'S BATTLE" />
+              <DashboardTodaysBattle />
+            </motion.div>
+
+            {/* Stage 3: Today's Mission */}
+            <motion.div custom={3} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
+              <StageLabel number={3} label="TODAY'S MISSION" />
               <DashboardMission engagement={engagement} loadingMasterclass={loadingMasterclass} />
             </motion.div>
 
