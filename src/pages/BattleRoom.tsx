@@ -89,7 +89,7 @@ function BattleLobby({
   onStart: () => void;
 }) {
   const shareUrl = `${window.location.origin}/practice-lab/battle/${room.code}`;
-  const canStart = players.length >= 1;
+  const canStart = players.length >= 3;
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shareUrl);
@@ -183,7 +183,7 @@ function BattleLobby({
 
       {isHost ? (
         <Button onClick={onStart} disabled={!canStart} className="w-full gap-2 font-bold game-glow-pulse" size="lg">
-          <Swords className="w-4 h-4" /> {canStart ? "Start Battle!" : "Need 2+ players"}
+          <Swords className="w-4 h-4" /> {canStart ? "Start Battle!" : `Need ${3 - players.length} more player${3 - players.length === 1 ? "" : "s"}`}
         </Button>
       ) : (
         <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
