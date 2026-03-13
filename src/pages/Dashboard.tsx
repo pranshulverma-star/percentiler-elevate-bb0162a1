@@ -253,13 +253,20 @@ function StageLabel({ number, label }: { number: number; label: string }) {
   );
 }
 
+function fmtLocal(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function getWeekStart(): string {
   const now = new Date();
   const day = now.getDay();
   const diff = now.getDate() - day + (day === 0 ? -6 : 1);
   const monday = new Date(now);
   monday.setDate(diff);
-  return monday.toISOString().split("T")[0];
+  return fmtLocal(monday);
 }
 
 function computeStreaks(attempts: any[]) {
