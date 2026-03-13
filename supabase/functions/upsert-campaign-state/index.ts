@@ -48,6 +48,7 @@ Deno.serve(async (req) => {
           workflow_status: workflow_status || "ppc_nurture",
           lead_source: lead_source || null,
           sequence_entry_msg: sequence_entry_msg || 1,
+          name: name || null,
         },
         { onConflict: "phone_number", ignoreDuplicates: true }
       )
