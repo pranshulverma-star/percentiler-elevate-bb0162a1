@@ -82,6 +82,13 @@ function getRankTier(rank: number): RankTier {
   return { label: "99%ile Path", color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" };
 }
 
+function formatLocalDate(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
 function calculateCurrentStreak(completedDays: Set<string>, _startDate: string): number {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
