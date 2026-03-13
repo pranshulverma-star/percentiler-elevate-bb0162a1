@@ -29,6 +29,7 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
   const { isAuthenticated, user, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
   const signInTriggered = useRef(false);
+  const [authBootstrapTimedOut, setAuthBootstrapTimedOut] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
 
   const isStandalone =
