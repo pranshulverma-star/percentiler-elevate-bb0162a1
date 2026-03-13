@@ -138,9 +138,15 @@ export default function Dashboard() {
     }
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const navigate = useNavigate();
   const firstName = lead?.name?.split(" ")[0] || user?.user_metadata?.full_name?.split(" ")[0] || "there";
   const converted = !!campaign?.converted_at;
   const mentorshipActive = !!campaign?.mentorship_active;
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
+  };
 
   const stageVariants = {
     hidden: { opacity: 0, y: 24 },
