@@ -1,4 +1,5 @@
 import rawQuestions from "./questions_full.json";
+import rcQuestions from "./rc_questions.json";
 import { topicOverrides, getDifficulty, getConceptTags, getSkillTags, getQAChapter, QA_CHAPTER_ORDER, type Difficulty } from "./questionFixes";
 
 export interface PracticeQuestion {
@@ -407,7 +408,8 @@ function getEffectiveTopic(r: RawQuestion): string {
   return topicOverrides[r.id]?.topic ?? r.topic;
 }
 
-const rawData: RawQuestion[] = Array.isArray(rawQuestions) ? rawQuestions : ((rawQuestions as any).default ?? []);
+const rcData: RawQuestion[] = Array.isArray(rcQuestions) ? rcQuestions : ((rcQuestions as any).default ?? []);
+const rawData: RawQuestion[] = [...(Array.isArray(rawQuestions) ? rawQuestions : ((rawQuestions as any).default ?? [])), ...rcData];
 
 const qaRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "qa");
 const lrdiRaw = rawData.filter((r) => getSectionForTopic(getEffectiveTopic(r)) === "lrdi");
