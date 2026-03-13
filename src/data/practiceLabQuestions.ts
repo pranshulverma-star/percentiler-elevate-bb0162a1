@@ -423,7 +423,27 @@ const lrdiAllQuestions = buildChaptersFromRaw(lrdiRaw, true).flatMap(c => c.ques
 const lrdiChapters: Chapter[] = lrdiAllQuestions.length > 0
   ? [{ slug: "cat-lrdi-arena", name: "CAT LRDI Arena", questions: lrdiAllQuestions }]
   : [];
-const varcChapters = buildChaptersFromRaw(varcRaw);
+const varcChaptersRaw = buildChaptersFromRaw(varcRaw);
+
+// Filter out RC groups with fewer than 4 questions
+const varcChapters = varcChaptersRaw.map(ch => {
+  if (ch.slug !== "reading-comprehension") return ch;
+  // Count questions per group_id, keep only groups with >= 4 questions
+  const groupCounts = new Map<string, number>();
+  for (const q of ch.questions) {
+    if (q.group_id) {
+      groupCounts.set(q.group_id, (groupCounts.get(q.group_id) || 0) + 1);
+    }
+  }
+  const validGroups = new Set<string>();
+  for (const [gid, count] of groupCounts) {
+    if (count >= 4) validGroups.add(gid);
+  }
+  return {
+    ...ch,
+    questions: ch.questions.filter(q => q.group_id && validGroups.has(q.group_id)),
+  };
+});
 
 
 // ── Import Para Jumble questions ─────────────────────────────────────────────

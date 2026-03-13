@@ -43,14 +43,14 @@ export function generateTodaysBattle(): TodaysBattleConfig {
 
   let questions: PracticeQuestion[] = [];
   let duration = 900; // 15 min default
-  let chapterName = "Today's Battle";
+  let chapterName = "Quiz of the Day";
 
   if (section.id === "qa") {
     // 10 mixed-topic questions from all QA chapters
     const allQaQuestions = section.chapters.flatMap(ch => ch.questions);
     questions = pickGroupedRandom(allQaQuestions, 10);
     duration = 900;
-    chapterName = "Today's Battle — QA Mix";
+    chapterName = "Quiz of the Day — QA Mix";
   } else if (section.id === "lrdi") {
     // 1 set from LRDI
     const lrdiChapter = section.chapters.find(ch => ch.questions.length > 0);
@@ -58,7 +58,7 @@ export function generateTodaysBattle(): TodaysBattleConfig {
       questions = pickOneSet(lrdiChapter.questions);
     }
     duration = 720; // 12 min
-    chapterName = "Today's Battle — LRDI Set";
+    chapterName = "Quiz of the Day — LRDI Set";
   } else if (section.id === "varc") {
     // 1 RC set + 1 PJ question
     const rcChapter = section.chapters.find(ch => ch.slug === "reading-comprehension");
@@ -75,11 +75,11 @@ export function generateTodaysBattle(): TodaysBattleConfig {
     }
 
     duration = 900;
-    chapterName = "Today's Battle — VARC";
+    chapterName = "Quiz of the Day — VARC";
   }
 
   const virtualChapter: Chapter = {
-    slug: "todays-battle",
+    slug: "quiz-of-the-day",
     name: chapterName,
     questions,
   };

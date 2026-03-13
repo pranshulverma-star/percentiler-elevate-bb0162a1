@@ -145,7 +145,7 @@ function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData)
         </motion.div>
       </div>
 
-      {/* Today's Battle Card */}
+      {/* Quiz of the Day Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -163,7 +163,7 @@ function SectionsView({ onSelect, onTodaysBattle }: { onSelect: (s: SectionData)
             </div>
             <div className="flex-1 min-w-0">
               <h2 className="text-base md:text-lg font-bold text-foreground flex items-center gap-2">
-                Today's Battle <Zap className="w-4 h-4 text-primary" />
+                Quiz of the Day <Zap className="w-4 h-4 text-primary" />
               </h2>
               <p className="text-xs md:text-sm text-muted-foreground">
                 {practiceLabSections[todayIdx].icon} {practiceLabSections[todayIdx].name} · {sectionLabels[todayIdx].tag}
@@ -749,7 +749,7 @@ export default function PracticeLab() {
     setPhase("chapters");
   }, []);
 
-  // Today's Battle handler
+  // Quiz of the Day handler
   const handleTodaysBattle = useCallback(() => {
     const battle = generateTodaysBattle();
     if (battle.questions.length === 0) return;
