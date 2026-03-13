@@ -118,6 +118,19 @@ export default function DashboardPracticeLab({ attempts, loading }: Props) {
           ))}
         </div>
 
+        {/* Workshop recommendation based on weakest section */}
+        {(() => {
+          const weakWorkshop = getWeakSectionWorkshop(attempts);
+          if (!weakWorkshop) return null;
+          return (
+            <WorkshopRecommendation
+              workshops={[weakWorkshop]}
+              title="Improve Your Weak Area"
+              subtitle="Based on your practice history, this can help:"
+            />
+          );
+        })()}
+
         <Button asChild variant="outline" size="sm" className="w-full">
           <Link to="/practice-lab">Continue Practicing <ArrowRight className="ml-1 h-4 w-4" /></Link>
         </Button>
