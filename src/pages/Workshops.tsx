@@ -258,6 +258,11 @@ const Workshops = () => {
                               <Badge variant="secondary" className="text-[8px] md:text-[10px] tracking-wider uppercase shrink-0">
                                 {w.tag}
                               </Badge>
+                              {w.trending && (
+                                <Badge className="bg-primary text-primary-foreground text-[8px] md:text-[10px] tracking-wider uppercase shrink-0 gap-0.5">
+                                  <TrendingUp className="h-3 w-3" /> Trending
+                                </Badge>
+                              )}
                             </div>
                             <p className="text-[10px] md:text-xs text-muted-foreground mt-0.5 truncate">{w.tagline}</p>
                           </div>
