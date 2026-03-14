@@ -39,6 +39,7 @@ interface ShareableResultCardProps {
   chapterName?: string;
   leaderboard?: { name: string; score: number; isMe: boolean }[];
   timeUsed?: number;
+  percentile?: number;
 }
 
 export default function ShareableResultCard({
