@@ -39,6 +39,7 @@ interface ShareableResultCardProps {
   chapterName?: string;
   leaderboard?: { name: string; score: number; isMe: boolean }[];
   timeUsed?: number;
+  percentile?: number;
 }
 
 export default function ShareableResultCard({
@@ -47,10 +48,11 @@ export default function ShareableResultCard({
   chapterName,
   leaderboard,
   timeUsed,
+  percentile: percentileProp,
 }: ShareableResultCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
-  const percentile = estimatePercentile(correct, total);
+  const percentile = percentileProp ?? estimatePercentile(correct, total);
   const pct = Math.round((correct / total) * 100);
   const label = getPercentileLabel(percentile);
   const accent = getTierAccent(percentile);

@@ -212,11 +212,26 @@ export default function ResultsView({
             bestByUser[row.user_id] = row.score_pct;
           }
         }
+
+        // Fetch profile names for all user IDs
+        const userIds = Object.keys(bestByUser);
+        const { data: profilesData } = await (supabase.from("profiles") as any)
+          .select("id, name")
+          .in("id", userIds);
+        const nameMap: Record<string, string> = {};
+        if (profilesData) {
+          for (const p of profilesData) {
+            if (p.name) nameMap[p.id] = p.name.split(" ")[0]; // First name only
+          }
+        }
+
         const sorted = Object.entries(bestByUser)
           .sort((a, b) => b[1] - a[1])
           .slice(0, 5)
           .map(([uid, score]) => ({
-            name: uid === user.id ? (user.user_metadata?.name || user.email?.split("@")[0] || "You") : `Student ${uid.slice(0, 4)}`,
+            name: uid === user.id
+              ? (user.user_metadata?.name || user.email?.split("@")[0] || "You")
+              : (nameMap[uid] || "CAT Aspirant"),
             score,
             isMe: uid === user.id,
           }));
@@ -330,6 +345,7 @@ export default function ResultsView({
           <ShareableResultCard
             correct={correct}
             total={total}
+            percentile={percentile}
             chapterName={chapterName}
             timeUsed={timeUsed}
             leaderboard={leaderboard.length > 0 ? leaderboard : undefined}
