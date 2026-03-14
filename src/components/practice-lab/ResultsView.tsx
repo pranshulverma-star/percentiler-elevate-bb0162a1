@@ -345,6 +345,7 @@ export default function ResultsView({
           <ShareableResultCard
             correct={correct}
             total={total}
+            percentile={percentile}
             chapterName={chapterName}
             timeUsed={timeUsed}
             leaderboard={leaderboard.length > 0 ? leaderboard : undefined}
