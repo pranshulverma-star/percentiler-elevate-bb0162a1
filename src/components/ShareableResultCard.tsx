@@ -6,11 +6,9 @@ import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 
 function estimatePercentile(correct: number, total: number): number {
-  if (total === 0) return 0;
+  if (total === 0) return 34;
   const ratio = correct / total;
-  const z = (ratio - 0.45) / 0.18;
-  const cdf = 1 / (1 + Math.exp(-1.7 * z));
-  return Math.round(Math.min(99.8, Math.max(1, cdf * 100)) * 10) / 10;
+  return Math.round((34 + ratio * (98.3 - 34)) * 10) / 10;
 }
 
 function getPercentileLabel(p: number): { emoji: string; text: string; vibe: string } {
