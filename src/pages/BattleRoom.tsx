@@ -931,7 +931,8 @@ export default function BattleRoomPage() {
 
   const handlePlayAgain = useCallback(async () => {
     if (!room || !user) return;
-    // Find the chapter's questions from the sections data
+    // Dynamically import to avoid loading 1500+ questions on initial page load
+    const { practiceLabSections } = await import("@/data/practiceLabQuestions");
     const section = practiceLabSections.find(s => s.id === room.section_id);
     const chapter = section?.chapters.find(ch => ch.slug === room.chapter_slug);
     if (!chapter || chapter.questions.length === 0) return;
