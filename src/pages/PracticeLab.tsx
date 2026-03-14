@@ -728,8 +728,8 @@ export default function PracticeLab() {
   }, []);
 
   // Quiz of the Day handler
-  const handleTodaysBattle = useCallback(() => {
-    const battle = generateTodaysBattle();
+  const handleTodaysBattle = useCallback(async () => {
+    const battle = await generateTodaysBattle();
     if (battle.questions.length === 0) return;
 
     if (!isAuthenticated) {
