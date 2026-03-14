@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { pickGroupedRandom, pickOneSet } from "@/lib/pickGroupedQuestions";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { generateTodaysBattle, getTodaysSectionIndex } from "@/lib/todaysBattle";
+import { generateTodaysBattle } from "@/lib/todaysBattle";
+import { getTodaysSectionIndex } from "@/lib/todaySectionIndex";
 import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -727,8 +728,8 @@ export default function PracticeLab() {
   }, []);
 
   // Quiz of the Day handler
-  const handleTodaysBattle = useCallback(() => {
-    const battle = generateTodaysBattle();
+  const handleTodaysBattle = useCallback(async () => {
+    const battle = await generateTodaysBattle();
     if (battle.questions.length === 0) return;
 
     if (!isAuthenticated) {

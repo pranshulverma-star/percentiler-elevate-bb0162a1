@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Swords, Zap } from "lucide-react";
-import { getTodaysSectionIndex } from "@/lib/todaysBattle";
+import { getTodaysSectionIndex } from "@/lib/todaySectionIndex";
 
 const sectionLabels = [
   { name: "Quantitative Ability", icon: "⚔️", tag: "QA Mix · 10 Qs · 15 min" },
