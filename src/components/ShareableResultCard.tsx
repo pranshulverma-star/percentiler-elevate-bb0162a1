@@ -51,7 +51,7 @@ export default function ShareableResultCard({
 }: ShareableResultCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [sharing, setSharing] = useState(false);
-  const percentile = estimatePercentile(correct, total);
+  const percentile = percentile_prop ?? estimatePercentile(correct, total);
   const pct = Math.round((correct / total) * 100);
   const label = getPercentileLabel(percentile);
   const accent = getTierAccent(percentile);
