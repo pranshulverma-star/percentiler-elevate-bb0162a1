@@ -1,37 +1,35 @@
 
 
-## Consolidate Phone Capture: Remove Duplicated Logic
+## Optimize App Navigation Speed — Lazy-Load Question Data
 
 ### Problem
-`PhoneCaptureModal` and `LeadModalProvider` both implement nearly identical phone capture forms and submission logic, creating maintenance burden (as seen with the duplicate-phone fix needing changes in both files).
+A ~500KB+ JSON question bank is eagerly imported on every route (including Dashboard) due to a shared import chain. This blocks rendering even when no questions are needed.
 
-### What Changes
+### Key Clarification
+Dynamic imports load the question data **once when the user clicks "Start Quiz"**. After that, all questions are in memory — zero delay between questions.
 
-**1. `src/components/LeadModalProvider.tsx`**
-- Remove the inline phone Dialog form entirely (the `<Dialog>` with phone input, name input, submit handler)
-- Replace it with a single `<PhoneCaptureModal>` component usage
-- Keep the `openPhoneModal` context method, but instead of managing its own form state, it just opens `PhoneCaptureModal` with the right props
-- Remove all duplicated state: `phone`, `nameInput`, `submitting`, and `handlePhoneSubmit`
+### Changes
 
-**2. `src/components/PhoneCaptureModal.tsx`**
-- Add an optional `showNameField` prop (defaults to false) to handle the case where `LeadModalProvider` shows a name input for anonymous users
-- The component already supports custom `title` and `description`, so no changes needed there
+**1. New file: `src/lib/todaySectionIndex.ts`**
+- Extract `getTodaysSectionIndex()`, `todayLocal()`, and `hashString()` from `todaysBattle.ts` into this tiny standalone module (pure date math, zero dependencies on question data).
 
-### Result
-- One single source of truth for phone capture logic
-- Future fixes (like the duplicate phone check) only need to be applied once
-- `LeadModalProvider` stays as the global context provider but delegates UI to `PhoneCaptureModal`
+**2. `src/components/dashboard/DashboardTodaysBattle.tsx`**
+- Import `getTodaysSectionIndex` from the new lightweight module instead of `todaysBattle.ts`.
 
-### Technical Details
+**3. `src/lib/todaysBattle.ts`**
+- Make `generateTodaysBattle()` async — dynamically import `practiceLabQuestions` and `pickGroupedQuestions` inside the function body.
+- Remove top-level imports of question data.
 
-**`PhoneCaptureModal.tsx` changes:**
-- Add `showNameField?: boolean` to `PhoneCaptureModalProps`
-- Add a name input field that renders when `showNameField` is true and no user name is available
-- Include the name in the upsert payload and persist to localStorage
+**4. `src/pages/PracticeLab.tsx`**
+- Replace top-level `import { practiceLabSections }` with a dynamic import triggered when user selects a section/starts a quiz.
+- Use static section metadata (id, name, icon) for the initial section listing UI — no question data needed.
 
-**`LeadModalProvider.tsx` changes:**
-- Remove ~60 lines of form state, validation, and submit logic
-- Remove the inline `<Dialog>` JSX (~30 lines)
-- Add `<PhoneCaptureModal open={phoneOpen} onOpenChange={setPhoneOpen} source={source} onSuccess={onSuccessCb} showNameField />` 
-- Keep `openContentGate` and `openPhoneModal` context methods unchanged in their external API
+**5. `src/components/practice-lab/ResultsView.tsx`**
+- Pass section name as a prop from the parent instead of importing the full question bank just for a name lookup, OR use a dynamic import.
+
+### User Experience
+- **Dashboard**: Loads instantly — no question data downloaded.
+- **Practice Lab landing**: Section cards appear immediately — questions load on "Start" click (~200ms on 4G).
+- **During quiz**: Zero impact — all questions already in memory after initial load.
+- **Between questions**: No change — instant as before.
 
