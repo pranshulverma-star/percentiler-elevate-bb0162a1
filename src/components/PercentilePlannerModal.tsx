@@ -377,7 +377,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
             <div className="space-y-5">
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-foreground">Academic Scores (%)</h3>
-                <p className="text-[11px] text-muted-foreground/70 italic">
+                <p className="text-[11px] text-primary/70 italic">
                   (Enter percentages in integer. Conversion: Percentage = CGPA × 9)
                 </p>
                 <div className="grid grid-cols-3 gap-3">
