@@ -377,21 +377,21 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
             <div className="space-y-5">
               <div className="space-y-3">
                 <h3 className="text-sm font-semibold text-foreground">Academic Scores (%)</h3>
-                <p className="text-[11px] text-muted-foreground/70 italic">
+                <p className="text-[11px] text-primary/70 italic">
                   (Enter percentages in integer. Conversion: Percentage = CGPA × 9)
                 </p>
                 <div className="grid grid-cols-3 gap-3">
                   <div>
                     <label className="text-xs text-muted-foreground mb-1 block">10th</label>
-                    <Input type="number" placeholder="85" value={form.tenth_score} onChange={(e) => handleAcademicChange("tenth_score", e.target.value, twelfthRef)} min={0} max={100} />
+                    <Input type="number" placeholder="85%" value={form.tenth_score} onChange={(e) => handleAcademicChange("tenth_score", e.target.value, twelfthRef)} min={0} max={100} />
                   </div>
                   <div>
                     <label className="text-xs text-muted-foreground mb-1 block">12th</label>
-                    <Input ref={twelfthRef} type="number" placeholder="82" value={form.twelfth_score} onChange={(e) => handleAcademicChange("twelfth_score", e.target.value, gradRef)} min={0} max={100} />
+                    <Input ref={twelfthRef} type="number" placeholder="82%" value={form.twelfth_score} onChange={(e) => handleAcademicChange("twelfth_score", e.target.value, gradRef)} min={0} max={100} />
                   </div>
                   <div>
                     <label className="text-xs text-muted-foreground mb-1 block">Graduation</label>
-                    <Input ref={gradRef} type="number" placeholder="75" value={form.grad_score} onChange={(e) => handleAcademicChange("grad_score", e.target.value, workexRef)} min={0} max={100} />
+                    <Input ref={gradRef} type="number" placeholder="75%" value={form.grad_score} onChange={(e) => handleAcademicChange("grad_score", e.target.value, workexRef)} min={0} max={100} />
                   </div>
                 </div>
               </div>
