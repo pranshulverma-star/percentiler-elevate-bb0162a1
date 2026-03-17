@@ -143,7 +143,7 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
           <SelectItem value="2027">CAT 2027</SelectItem>
         </SelectContent>
       </Select>
-      <Button type="submit" size="lg" className="w-full h-13 text-base font-black tracking-wide" disabled={submitting}>
+      <Button type="submit" size="lg" className="w-full h-14 text-base md:text-lg font-black tracking-wide" disabled={submitting}>
         {submitting ? "Submitting..." : label}
       </Button>
     </form>
