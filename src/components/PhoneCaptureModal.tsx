@@ -107,6 +107,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
       }).catch(() => {});
 
       trackLead(source);
+      trackFormSubmitConversion();
       toast({ title: "Phone number saved!", description: "You're all set." });
       onOpenChange(false);
       setPhone("");

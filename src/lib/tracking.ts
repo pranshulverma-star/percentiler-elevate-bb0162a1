@@ -31,3 +31,17 @@ export const trackComparisonFormSubmit = () => {
     send_to: "AW-672956729/oUskCLKy_aUaELmC8sAC",
   });
 };
+
+// Google Ads — WhatsApp click conversion
+export const trackWhatsAppClick = () => {
+  window.gtag?.("event", "conversion", {
+    send_to: "AW-672956729/EtdBCNXFh9ECELmC8sAC",
+  });
+};
+
+// Google Ads — any form submit conversion
+export const trackFormSubmitConversion = () => {
+  window.gtag?.("event", "conversion", {
+    send_to: "AW-672956729/oUskCLKy_aUaELmC8sAC",
+  });
+};

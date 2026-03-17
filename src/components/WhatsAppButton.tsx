@@ -29,6 +29,7 @@ const WhatsAppButton = () => {
       href="https://wa.me/918929280711"
       target="_blank"
       rel="noopener noreferrer"
+      onClick={trackWhatsAppClick}
       className="fixed bottom-5 left-5 md:bottom-7 md:left-7 z-50 bg-[#25D366] hover:bg-[#1ebe5b] text-white rounded-full px-4 py-2.5 shadow-xl transition-all flex items-center gap-2 text-sm font-semibold animate-slide-in-right"
       aria-label="Chat on WhatsApp"
     >
