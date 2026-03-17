@@ -143,7 +143,7 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
           <SelectItem value="2027">CAT 2027</SelectItem>
         </SelectContent>
       </Select>
-      <Button type="submit" size="lg" className="w-full h-13 text-base font-black tracking-wide" disabled={submitting}>
+      <Button type="submit" size="lg" className="w-full h-14 text-base md:text-lg font-black tracking-wide" disabled={submitting}>
         {submitting ? "Submitting..." : label}
       </Button>
     </form>
@@ -622,9 +622,11 @@ export default function CATCoachingComparison() {
             <Button
               size="lg"
               className="h-12 md:h-14 px-6 md:px-10 text-sm md:text-base font-black tracking-wide rounded-xl shadow-lg shadow-primary/20"
-              onClick={() => scrollTo("masterclass-section")}
+              asChild
             >
-              Watch Free Masterclass <ArrowRight className="ml-2 w-4 h-4" />
+              <a href="/masterclass">
+                Watch Free Masterclass <ArrowRight className="ml-2 w-4 h-4" />
+              </a>
             </Button>
             <Button
               size="lg"
