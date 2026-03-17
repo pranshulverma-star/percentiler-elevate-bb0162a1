@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { MessageCircle } from "lucide-react";
+import { trackWhatsAppClick } from "@/lib/tracking";
 
 const WhatsAppButton = () => {
   const [visible, setVisible] = useState(false);
