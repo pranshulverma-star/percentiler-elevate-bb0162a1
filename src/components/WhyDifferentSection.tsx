@@ -11,7 +11,7 @@ const points = [
 
 const WhyDifferentSection = () => {
   const { ref: headerRef, inView: headerInView } = useInView();
-  const { ref: listRef, inView: listInView } = useInView();
+  const { ref: listRef, inView: listInView } = useInView<HTMLUListElement>();
   const { ref: footerRef, inView: footerInView } = useInView();
 
   return (
