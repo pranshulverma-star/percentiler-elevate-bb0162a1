@@ -622,9 +622,11 @@ export default function CATCoachingComparison() {
             <Button
               size="lg"
               className="h-12 md:h-14 px-6 md:px-10 text-sm md:text-base font-black tracking-wide rounded-xl shadow-lg shadow-primary/20"
-              onClick={() => scrollTo("masterclass-section")}
+              asChild
             >
-              Watch Free Masterclass <ArrowRight className="ml-2 w-4 h-4" />
+              <a href="/masterclass">
+                Watch Free Masterclass <ArrowRight className="ml-2 w-4 h-4" />
+              </a>
             </Button>
             <Button
               size="lg"
