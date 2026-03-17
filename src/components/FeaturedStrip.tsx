@@ -1,8 +1,8 @@
-import logoHT from "@/assets/logo-hindustan-times.png";
-import logoZee from "@/assets/logo-zee-news.png";
-import logoDH from "@/assets/logo-deccan-herald.png";
-import logoTOI from "@/assets/logo-times-of-india.png";
-import logoDailyhunt from "@/assets/logo-dailyhunt.png";
+import logoHT from "@/assets/logo-hindustan-times.webp";
+import logoZee from "@/assets/logo-zee-news.webp";
+import logoDH from "@/assets/logo-deccan-herald.webp";
+import logoTOI from "@/assets/logo-times-of-india.webp";
+import logoDailyhunt from "@/assets/logo-dailyhunt.webp";
 
 const logos = [
   { name: "Hindustan Times", src: logoHT },
@@ -22,7 +22,7 @@ const FeaturedStrip = () => (
       <div className="pointer-events-none absolute inset-y-0 left-0 w-20 z-10 bg-gradient-to-r from-secondary/30 to-transparent" />
       <div className="pointer-events-none absolute inset-y-0 right-0 w-20 z-10 bg-gradient-to-l from-secondary/30 to-transparent" />
 
-      <div className="flex animate-scroll-x items-center gap-14 md:gap-20 w-max group-hover:[animation-play-state:paused]">
+      <div className="flex animate-scroll-x will-change-transform items-center gap-14 md:gap-20 w-max group-hover:[animation-play-state:paused]">
         {[...logos, ...logos].map((logo, i) => (
           <div
             key={`${logo.name}-${i}`}

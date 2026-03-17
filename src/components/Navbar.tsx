@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 import ThemeToggle from "@/components/ThemeToggle";
 import { Link } from "react-router-dom";
-import logoImg from "@/assets/logo-percentilers.png";
+import logoImg from "@/assets/logo-percentilers.webp";
 
 const navLinks = [
   { label: "Home", href: "/", external: false },

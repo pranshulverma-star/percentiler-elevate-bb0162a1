@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Users, Award, Star, Clock } from "lucide-react";
+import { useInView } from "@/hooks/useInView";
 
 const stats = [
   { value: 2000, suffix: "+", label: "95+ Percentilers Produced", icon: Award },
@@ -44,33 +44,34 @@ const Counter = ({ value, suffix, decimal }: { value: number; suffix: string; de
   );
 };
 
-const TrustStrip = () => (
-  <section className="py-8 md:py-14 bg-background relative">
-    <div className="absolute inset-0 pointer-events-none">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-primary/[0.03] blur-3xl" />
-    </div>
-    <div className="container mx-auto px-4 md:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 text-center relative z-10">
-      {stats.map((s, i) => {
-        const Icon = s.icon;
-        return (
-          <motion.div
-            key={s.label}
-            className="space-y-2"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.4, delay: i * 0.1 }}
-          >
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-2">
-              <Icon className="h-5 w-5" />
+const TrustStrip = () => {
+  const { ref, inView } = useInView();
+
+  return (
+    <section className="py-8 md:py-14 bg-background relative">
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] rounded-full bg-primary/[0.03] blur-3xl" />
+      </div>
+      <div ref={ref} className="container mx-auto px-4 md:px-6 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 text-center relative z-10">
+        {stats.map((s, i) => {
+          const Icon = s.icon;
+          return (
+            <div
+              key={s.label}
+              className={`space-y-2 fade-in-up ${inView ? "in-view" : ""}`}
+              style={{ transitionDelay: inView ? `${i * 100}ms` : "0ms" }}
+            >
+              <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 text-primary mb-2">
+                <Icon className="h-5 w-5" />
+              </div>
+              <Counter value={s.value} suffix={s.suffix} decimal={s.decimal} />
+              <p className="text-sm font-medium text-muted-foreground">{s.label}</p>
             </div>
-            <Counter value={s.value} suffix={s.suffix} decimal={s.decimal} />
-            <p className="text-sm font-medium text-muted-foreground">{s.label}</p>
-          </motion.div>
-        );
-      })}
-    </div>
-  </section>
-);
+          );
+        })}
+      </div>
+    </section>
+  );
+};
 
 export default TrustStrip;
