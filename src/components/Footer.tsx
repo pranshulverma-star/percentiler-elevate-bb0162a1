@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logoImg from "@/assets/logo-percentilers.png";
+import logoImg from "@/assets/logo-percentilers.webp";
 
 const Footer = () => (
   <footer className="py-14 md:py-16 bg-background relative">
