@@ -58,6 +58,25 @@ const Navbar = () => {
     }
   };
 
+  const handleHashClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    const hash = href.includes("#") ? href.split("#")[1] : null;
+    if (!hash) return;
+    const basePath = href.split("#")[0] || "/";
+    if (window.location.pathname === basePath || (basePath === "/" && window.location.pathname === "/")) {
+      e.preventDefault();
+      let attempts = 0;
+      const tryScroll = setInterval(() => {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+          clearInterval(tryScroll);
+        } else if (++attempts >= 20) {
+          clearInterval(tryScroll);
+        }
+      }, 150);
+    }
+  };
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl shadow-[0_1px_3px_0_rgb(0,0,0,0.04)]">
