@@ -114,6 +114,16 @@ export async function acceptInvite(
     .update({ status: "accepted" })
     .eq("id", invite.id);
 
+  // Double-check no active pair was created in the meantime (race guard)
+  const recheck = await getActiveBuddy(acceptorId);
+  if (recheck) {
+    throw new Error("You already have an active study buddy.");
+  }
+  const inviterRecheck = await getActiveBuddy(invite.inviter_id);
+  if (inviterRecheck) {
+    throw new Error("This person already has a study buddy.");
+  }
+
   // Create pair
   const { data, error } = await (supabase.from("buddy_pairs") as any)
     .insert({
