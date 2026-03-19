@@ -114,7 +114,7 @@ const HeroCollegeMarquee = () => (
       <div className="flex animate-scroll-x items-center gap-6 w-max">
         {[...colleges, ...colleges].map((c, i) => (
           <div key={`${c.name}-${i}`} className="shrink-0 flex items-center gap-1.5">
-            <img src={c.logo} alt={`${c.name} college logo – students placed from Percentilers`} width={24} height={24} className="h-6 w-6 object-contain rounded-sm" />
+            <img src={c.logo} alt={`${c.name} college logo – students placed from Percentilers`} width={24} height={24} className="h-6 w-6 object-contain rounded-sm" loading="lazy" />
             <span className="text-xs font-bold tracking-wide text-foreground/80 whitespace-nowrap">{c.name}</span>
           </div>
         ))}
