@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import SEO from "@/components/SEO";
@@ -8,6 +8,8 @@ import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import SprintGoalList from "@/components/sprint/SprintGoalList";
+import { getBuddyGoals, type SprintGoal } from "@/lib/sprint-utils";
 
 import {
   Dialog,
