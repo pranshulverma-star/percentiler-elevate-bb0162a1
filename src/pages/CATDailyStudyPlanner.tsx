@@ -1101,6 +1101,7 @@ export default function CATDailyStudyPlanner() {
       <div className="container mx-auto px-4 md:px-6 pt-4">
         <BuddyMiniWidget />
       </div>
+      {view === "loading" && (
         <section className="min-h-[85vh] flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </section>
