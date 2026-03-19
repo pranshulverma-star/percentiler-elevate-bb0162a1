@@ -244,6 +244,18 @@ export async function sendNudge(pairId: string, userId: string): Promise<void> {
   );
 }
 
+/** Check if buddy sent a nudge today */
+export async function hasReceivedNudge(pairId: string, buddyId: string): Promise<boolean> {
+  const today = todayDate();
+  const { data } = await (supabase.from("buddy_activity_log") as any)
+    .select("nudge_sent")
+    .eq("pair_id", pairId)
+    .eq("user_id", buddyId)
+    .eq("activity_date", today)
+    .maybeSingle();
+  return data?.nudge_sent === true;
+}
+
 /** Get buddy's name from a pair given the current user */
 export function getBuddyName(pair: BuddyPair, currentUserId: string): string {
   if (pair.student_a_id === currentUserId) {

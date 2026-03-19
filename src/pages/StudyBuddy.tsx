@@ -37,6 +37,7 @@ import {
   calculateBuddyStreak,
   getBuddyName,
   getBuddyId,
+  hasReceivedNudge,
   type BuddyPair,
   type BuddyInvite,
   type BuddyActivity,
@@ -108,6 +109,7 @@ function DashboardState({
   const [loading, setLoading] = useState(true);
   const [dissolveOpen, setDissolveOpen] = useState(false);
   const [dissolving, setDissolving] = useState(false);
+  const [nudgeReceived, setNudgeReceived] = useState(false);
 
   const buddyName = getBuddyName(pair, userId);
   const buddyId = getBuddyId(pair, userId);
@@ -116,15 +118,17 @@ function DashboardState({
     const load = async () => {
       try {
         await syncDailyActivity(pair.id, userId, userEmail).catch(() => {});
-        const [progress, streak] = await Promise.all([
+        const [progress, streak, gotNudge] = await Promise.all([
           getBuddyProgress(pair.id),
           calculateBuddyStreak(pair.id),
+          hasReceivedNudge(pair.id, buddyId),
         ]);
         const mine = progress.find((p) => p.user_id === userId) ?? null;
         const buddy = progress.find((p) => p.user_id === buddyId) ?? null;
         setMyActivity(mine);
         setBuddyActivityData(buddy);
         setBuddyStreak(streak);
+        setNudgeReceived(gotNudge);
       } catch {
         toast.error("Failed to load progress. Please refresh.");
       } finally {
@@ -175,6 +179,24 @@ function DashboardState({
 
   return (
     <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-6">
+      {nudgeReceived && (
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 px-4 py-3"
+        >
+          <Bell className="h-5 w-5 text-primary shrink-0" />
+          <p className="text-sm font-medium text-foreground">
+            {buddyName} nudged you! Time to get started 💪
+          </p>
+          <button
+            onClick={() => setNudgeReceived(false)}
+            className="ml-auto text-muted-foreground hover:text-foreground text-xs"
+          >
+            ✕
+          </button>
+        </motion.div>
+      )}
       <BuddyProgressCard
         pair={pair}
         currentUserId={userId}
