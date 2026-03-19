@@ -96,6 +96,21 @@ function SprintDashboard({ userId }: { userId: string }) {
 
   useEffect(() => { loadData(); }, [loadData]);
 
+  // Resolve buddy for realtime toasts
+  useEffect(() => {
+    (async () => {
+      try {
+        const pair = await getActiveBuddy(userId);
+        if (pair) {
+          setBuddyId(getBuddyId(pair, userId));
+          setBuddyName(getBuddyName(pair, userId));
+        }
+      } catch {}
+    })();
+  }, [userId]);
+
+  useBuddyRealtimeToast(buddyId, buddyName);
+
   const loadHistory = async () => {
     setLoadingHistory(true);
     try {
