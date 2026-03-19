@@ -296,6 +296,45 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_sprint_goals: {
+        Row: {
+          activity_type: string
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          description: string
+          id: string
+          position: number
+          sprint_date: string
+          subject: string
+          user_id: string
+        }
+        Insert: {
+          activity_type: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          description: string
+          id?: string
+          position?: number
+          sprint_date?: string
+          subject: string
+          user_id: string
+        }
+        Update: {
+          activity_type?: string
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          description?: string
+          id?: string
+          position?: number
+          sprint_date?: string
+          subject?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           created_at: string
