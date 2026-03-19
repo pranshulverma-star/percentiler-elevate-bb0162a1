@@ -153,10 +153,10 @@ function SprintDashboard({ userId }: { userId: string }) {
   const dayName = today.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "short" });
 
   return (
-    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-6">
-      <div className="text-center space-y-1">
-        <h1 className="text-2xl md:text-3xl font-black text-foreground">Today's Sprint</h1>
-        <p className="text-sm text-muted-foreground">{dayName}</p>
+    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-4 md:space-y-6">
+      <div className="text-center space-y-0.5">
+        <h1 className="text-xl md:text-3xl font-black text-foreground">Today's Sprint</h1>
+        <p className="text-xs md:text-sm text-muted-foreground">{dayName}</p>
       </div>
 
       <SprintWeeklySummary
@@ -166,8 +166,6 @@ function SprintDashboard({ userId }: { userId: string }) {
         loadingHistory={loadingHistory}
         onLoadHistory={loadHistory}
       />
-
-      <SprintStats goals={goals} streak={streak} />
 
       <div className="space-y-4">
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">My Goals</h2>
