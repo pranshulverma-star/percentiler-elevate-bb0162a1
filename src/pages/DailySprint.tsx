@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarCheck, Flame, Target } from "lucide-react";
 import SprintGoalForm from "@/components/sprint/SprintGoalForm";
 import SprintGoalList from "@/components/sprint/SprintGoalList";
-import SprintStats from "@/components/sprint/SprintStats";
+
 import SprintBuddyView from "@/components/sprint/SprintBuddyView";
 import SprintWeeklySummary from "@/components/sprint/SprintWeeklySummary";
 import {
@@ -153,10 +153,10 @@ function SprintDashboard({ userId }: { userId: string }) {
   const dayName = today.toLocaleDateString("en-IN", { weekday: "long", day: "numeric", month: "short" });
 
   return (
-    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-6">
-      <div className="text-center space-y-1">
-        <h1 className="text-2xl md:text-3xl font-black text-foreground">Today's Sprint</h1>
-        <p className="text-sm text-muted-foreground">{dayName}</p>
+    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-4 md:space-y-6">
+      <div className="text-center space-y-0.5">
+        <h1 className="text-xl md:text-3xl font-black text-foreground">Today's Sprint</h1>
+        <p className="text-xs md:text-sm text-muted-foreground">{dayName}</p>
       </div>
 
       <SprintWeeklySummary
@@ -166,8 +166,6 @@ function SprintDashboard({ userId }: { userId: string }) {
         loadingHistory={loadingHistory}
         onLoadHistory={loadHistory}
       />
-
-      <SprintStats goals={goals} streak={streak} />
 
       <div className="space-y-4">
         <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">My Goals</h2>
@@ -199,8 +197,8 @@ export default function DailySprint() {
         canonical="https://percentilers.in/daily-sprint"
       />
       <Navbar />
-      <main className="pt-6 pb-16 px-4 md:px-6">
-        <div className="max-w-5xl mx-auto py-8 md:py-16">
+      <main className="pt-4 pb-12 px-4 md:px-6">
+        <div className="max-w-5xl mx-auto py-4 md:py-16">
           {authLoading ? (
             <div className="flex items-center justify-center py-20">
               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />

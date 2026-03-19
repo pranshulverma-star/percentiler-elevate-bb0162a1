@@ -19,8 +19,8 @@ const tiles = [
 export default function DashboardExplore({ converted, mentorshipActive }: Props) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/95 backdrop-blur-xl border-t border-border shadow-[0_-2px_10px_0_rgb(0,0,0,0.06)]">
-      <div className="container mx-auto max-w-lg px-3 py-2">
-        <div className="flex gap-1.5 overflow-x-auto scrollbar-none">
+      <div className="container mx-auto max-w-lg px-2 py-1.5">
+        <div className="flex gap-0.5 overflow-x-auto scrollbar-none">
           {tiles.map((t) => {
             const Icon = t.icon;
             const showBadge = (t.label === "Course" && converted) || (t.label === "Mentorship" && mentorshipActive);
@@ -28,7 +28,7 @@ export default function DashboardExplore({ converted, mentorshipActive }: Props)
               <Link
                 key={t.label}
                 to={t.to}
-                className="flex flex-col items-center gap-1 min-w-[56px] rounded-lg bg-card hover:bg-accent/50 transition-colors p-2 text-center group"
+                className="flex flex-col items-center gap-0.5 min-w-[46px] md:min-w-[56px] rounded-lg hover:bg-accent/50 transition-colors p-1.5 md:p-2 text-center group"
               >
                 <div className="relative">
                   <Icon className={`h-4 w-4 ${t.color} group-hover:scale-110 transition-transform`} />
@@ -36,7 +36,7 @@ export default function DashboardExplore({ converted, mentorshipActive }: Props)
                     <span className="absolute -top-1 -right-2 w-2 h-2 rounded-full bg-emerald-500" />
                   )}
                 </div>
-                <span className="text-[9px] font-medium text-muted-foreground group-hover:text-foreground transition-colors leading-tight">{t.label}</span>
+                <span className="text-[8px] md:text-[9px] font-medium text-muted-foreground group-hover:text-foreground transition-colors leading-tight whitespace-nowrap">{t.label}</span>
               </Link>
             );
           })}
