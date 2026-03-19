@@ -162,7 +162,7 @@ export default function Dashboard() {
     <>
       <SEO title="Dashboard | Percentilers" description="Your personalized CAT preparation dashboard" canonical="https://percentilers.in/dashboard" />
       <Navbar />
-      <main className="min-h-screen bg-background pt-4 pb-16">
+      <main className="min-h-screen bg-background pt-4 pb-28">
         <div className="container mx-auto px-4 max-w-lg">
 
           {/* Hero */}
