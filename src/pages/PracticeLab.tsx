@@ -20,6 +20,7 @@ import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
 import ResultsView from "@/components/practice-lab/ResultsView";
+import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 

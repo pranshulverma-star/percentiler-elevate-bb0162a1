@@ -39,6 +39,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
+import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import {
   generateFullPlan,
