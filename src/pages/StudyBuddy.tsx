@@ -106,6 +106,7 @@ function DashboardState({
   const [myActivity, setMyActivity] = useState<BuddyActivity | null>(null);
   const [buddyActivityData, setBuddyActivityData] = useState<BuddyActivity | null>(null);
   const [buddyStreak, setBuddyStreak] = useState(0);
+  const [buddyGoals, setBuddyGoals] = useState<SprintGoal[]>([]);
   const [loading, setLoading] = useState(true);
   const [dissolveOpen, setDissolveOpen] = useState(false);
   const [dissolving, setDissolving] = useState(false);
@@ -118,10 +119,11 @@ function DashboardState({
     const load = async () => {
       try {
         await syncDailyActivity(pair.id, userId, userEmail).catch(() => {});
-        const [progress, streak, gotNudge] = await Promise.all([
+        const [progress, streak, gotNudge, goals] = await Promise.all([
           getBuddyProgress(pair.id),
           calculateBuddyStreak(pair.id),
           hasReceivedNudge(pair.id, buddyId),
+          getBuddyGoals(buddyId),
         ]);
         const mine = progress.find((p) => p.user_id === userId) ?? null;
         const buddy = progress.find((p) => p.user_id === buddyId) ?? null;
@@ -129,6 +131,7 @@ function DashboardState({
         setBuddyActivityData(buddy);
         setBuddyStreak(streak);
         setNudgeReceived(gotNudge);
+        setBuddyGoals(goals);
       } catch {
         toast.error("Failed to load progress. Please refresh.");
       } finally {
@@ -213,6 +216,33 @@ function DashboardState({
           buddyIsActive={buddyIsActive}
         />
       </div>
+
+      {/* Buddy's Sprint Goals */}
+      <Card className="border-border">
+        <CardContent className="p-5 space-y-3">
+          <div className="flex items-center gap-2">
+            <Flame className="h-4 w-4 text-primary" />
+            <p className="text-sm font-semibold text-foreground">{buddyName}'s Daily Sprint</p>
+            {buddyGoals.length > 0 && (
+              <span className="ml-auto text-xs text-muted-foreground">
+                {buddyGoals.filter((g) => g.completed).length}/{buddyGoals.length} done
+              </span>
+            )}
+          </div>
+          {buddyGoals.length === 0 ? (
+            <p className="text-xs text-muted-foreground">{buddyName} hasn't set sprint goals yet today.</p>
+          ) : (
+            <SprintGoalList goals={buddyGoals} onToggle={() => {}} onDelete={() => {}} readOnly />
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Daily Sprint CTA */}
+      <Button variant="outline" asChild className="w-full gap-2">
+        <Link to="/daily-sprint">
+          Go to Daily Sprint <ArrowRight className="h-4 w-4" />
+        </Link>
+      </Button>
 
       {/* Course CTA */}
       <Card className="border-border bg-secondary/30">
