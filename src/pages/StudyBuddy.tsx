@@ -109,6 +109,7 @@ function DashboardState({
   const [loading, setLoading] = useState(true);
   const [dissolveOpen, setDissolveOpen] = useState(false);
   const [dissolving, setDissolving] = useState(false);
+  const [nudgeReceived, setNudgeReceived] = useState(false);
 
   const buddyName = getBuddyName(pair, userId);
   const buddyId = getBuddyId(pair, userId);
