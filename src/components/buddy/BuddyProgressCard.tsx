@@ -85,8 +85,7 @@ function ProgressColumn({ data, isYou }: { data: UserProgress; isYou: boolean })
   );
 }
 
-export default function BuddyProgressCard({ pair, currentUserId, myProgress, buddyProgress, buddyStreak }: Props) {
-  const buddyName = getBuddyName(pair, currentUserId);
+export default function BuddyProgressCard({ pair, currentUserId, myProgress, buddyProgress }: Props) {
   const daysTogether = Math.max(1, Math.floor((Date.now() - new Date(pair.created_at).getTime()) / 86400000));
   const bothActive = myProgress.plannerCompleted || myProgress.quizAttempted
     ? buddyProgress.plannerCompleted || buddyProgress.quizAttempted
