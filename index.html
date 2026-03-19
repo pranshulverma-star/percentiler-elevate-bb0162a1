@@ -90,6 +90,30 @@
       events.forEach(function(e){window.addEventListener(e,onInteract,{once:true,passive:true})});
       setTimeout(loadThirdParty, 5000);
     </script>
+    <script>
+      document.addEventListener('click', function(e) {
+        if (e.target.closest('a[href*="wa.me"]')) {
+          gtag('event', 'conversion', { 'send_to': 'AW-672956729/EtdBCNXFh9ECELmC8sAC' });
+          return;
+        }
+        if (e.target.closest('a[href*="tel:"]')) {
+          gtag('event', 'conversion', { 'send_to': 'AW-672956729/oUskCLKy_aUaELmC8sAC' });
+          return;
+        }
+        var btn = e.target.closest('button');
+        if (btn && btn.innerText.trim().toLowerCase().includes('strategy call')) {
+          gtag('event', 'conversion', { 'send_to': 'AW-672956729/oUskCLKy_aUaELmC8sAC' });
+          return;
+        }
+        if (btn && btn.classList.contains('animate-pulse-glow')) {
+          gtag('event', 'conversion', { 'send_to': 'AW-672956729/oUskCLKy_aUaELmC8sAC' });
+          return;
+        }
+      });
+      document.addEventListener('submit', function(e) {
+        gtag('event', 'conversion', { 'send_to': 'AW-672956729/oUskCLKy_aUaELmC8sAC' });
+      });
+    </script>
     <!-- react-helmet-async manages og:title, description, twitter tags per page -->
 </head>
   <body>
