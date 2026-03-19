@@ -11,8 +11,11 @@ import SprintGoalForm from "@/components/sprint/SprintGoalForm";
 import SprintGoalList from "@/components/sprint/SprintGoalList";
 import SprintStats from "@/components/sprint/SprintStats";
 import SprintBuddyView from "@/components/sprint/SprintBuddyView";
+import SprintWeeklySummary from "@/components/sprint/SprintWeeklySummary";
 import {
   getTodayGoals,
+  getWeeklyGoals,
+  getSprintHistory,
   addGoal,
   toggleGoal,
   deleteGoal,
@@ -65,17 +68,22 @@ function LandingState({ onSignIn }: { onSignIn: () => void }) {
 
 function SprintDashboard({ userId }: { userId: string }) {
   const [goals, setGoals] = useState<SprintGoal[]>([]);
+  const [weeklyGoals, setWeeklyGoals] = useState<SprintGoal[]>([]);
+  const [historyGoals, setHistoryGoals] = useState<SprintGoal[]>([]);
   const [streak, setStreak] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingHistory, setLoadingHistory] = useState(false);
 
   const loadData = useCallback(async () => {
     try {
-      const [todayGoals, currentStreak] = await Promise.all([
+      const [todayGoals, currentStreak, weekly] = await Promise.all([
         getTodayGoals(userId),
         calculateSprintStreak(userId),
+        getWeeklyGoals(userId),
       ]);
       setGoals(todayGoals);
       setStreak(currentStreak);
+      setWeeklyGoals(weekly);
     } catch {
       toast.error("Failed to load goals. Please refresh.");
     } finally {
@@ -84,6 +92,18 @@ function SprintDashboard({ userId }: { userId: string }) {
   }, [userId]);
 
   useEffect(() => { loadData(); }, [loadData]);
+
+  const loadHistory = async () => {
+    setLoadingHistory(true);
+    try {
+      const history = await getSprintHistory(userId, 14);
+      setHistoryGoals(history);
+    } catch {
+      toast.error("Failed to load history.");
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
 
   const handleAdd = async (subject: string, activityType: string, description: string) => {
     if (goals.length >= MAX_GOALS) {
@@ -138,6 +158,14 @@ function SprintDashboard({ userId }: { userId: string }) {
         <h1 className="text-2xl md:text-3xl font-black text-foreground">Today's Sprint</h1>
         <p className="text-sm text-muted-foreground">{dayName}</p>
       </div>
+
+      <SprintWeeklySummary
+        weeklyGoals={weeklyGoals}
+        streak={streak}
+        historyGoals={historyGoals}
+        loadingHistory={loadingHistory}
+        onLoadHistory={loadHistory}
+      />
 
       <SprintStats goals={goals} streak={streak} />
 

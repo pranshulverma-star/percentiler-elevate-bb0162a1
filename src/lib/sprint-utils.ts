@@ -133,7 +133,7 @@ export async function calculateSprintStreak(userId: string): Promise<number> {
   return streak;
 }
 
-/** Calculate points for today */
+/** Calculate points for a set of goals */
 export function calculatePoints(goals: SprintGoal[]): number {
   if (goals.length === 0) return 0;
   const completedCount = goals.filter((g) => g.completed).length;
@@ -142,4 +142,42 @@ export function calculatePoints(goals: SprintGoal[]): number {
     points += 20; // all-done bonus
   }
   return points;
+}
+
+/** Get weekly summary: goals from Mon–Sun of current week */
+export async function getWeeklyGoals(userId: string): Promise<SprintGoal[]> {
+  const now = new Date();
+  const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
+  const mondayStr = `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(2, "0")}-${String(monday.getDate()).padStart(2, "0")}`;
+  const sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  const sundayStr = `${sunday.getFullYear()}-${String(sunday.getMonth() + 1).padStart(2, "0")}-${String(sunday.getDate()).padStart(2, "0")}`;
+
+  const { data, error } = await (supabase.from("daily_sprint_goals") as any)
+    .select("*")
+    .eq("user_id", userId)
+    .gte("sprint_date", mondayStr)
+    .lte("sprint_date", sundayStr)
+    .order("sprint_date", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
+}
+
+/** Get past sprint history (last N days, excluding today) */
+export async function getSprintHistory(userId: string, days: number = 7): Promise<SprintGoal[]> {
+  const today = todayDate();
+  const past = new Date();
+  past.setDate(past.getDate() - days);
+  const pastStr = `${past.getFullYear()}-${String(past.getMonth() + 1).padStart(2, "0")}-${String(past.getDate()).padStart(2, "0")}`;
+
+  const { data, error } = await (supabase.from("daily_sprint_goals") as any)
+    .select("*")
+    .eq("user_id", userId)
+    .gte("sprint_date", pastStr)
+    .lt("sprint_date", today)
+    .order("sprint_date", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
 }
