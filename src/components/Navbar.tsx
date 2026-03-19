@@ -123,7 +123,7 @@ const Navbar = () => {
                   {l.label}
                 </a>
               ) : (
-                <a key={l.label} href={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
+                <a key={l.label} href={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={(e) => { handleHashClick(e, l.href); setOpen(false); }}>
                   {l.label}
                 </a>
               )
