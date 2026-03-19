@@ -5,6 +5,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
+import { useBuddyRealtimeToast } from "@/hooks/useBuddyRealtimeToast";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarCheck, Flame, Target } from "lucide-react";
 import SprintGoalForm from "@/components/sprint/SprintGoalForm";
