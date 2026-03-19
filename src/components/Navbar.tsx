@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, LayoutDashboard } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
@@ -58,6 +58,25 @@ const Navbar = () => {
     }
   };
 
+  const handleHashClick = (e: MouseEvent<HTMLAnchorElement>, href: string) => {
+    const hash = href.includes("#") ? href.split("#")[1] : null;
+    if (!hash) return;
+    const basePath = href.split("#")[0] || "/";
+    if (window.location.pathname === basePath || (basePath === "/" && window.location.pathname === "/")) {
+      e.preventDefault();
+      let attempts = 0;
+      const tryScroll = setInterval(() => {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth" });
+          clearInterval(tryScroll);
+        } else if (++attempts >= 20) {
+          clearInterval(tryScroll);
+        }
+      }, 150);
+    }
+  };
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-xl shadow-[0_1px_3px_0_rgb(0,0,0,0.04)]">
@@ -72,7 +91,7 @@ const Navbar = () => {
                   {l.label}
                 </a>
               ) : (
-              <a key={l.label} href={l.href} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+              <a key={l.label} href={l.href} onClick={(e) => handleHashClick(e, l.href)} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
                   {l.label}
                 </a>
               )
@@ -104,7 +123,7 @@ const Navbar = () => {
                   {l.label}
                 </a>
               ) : (
-                <a key={l.label} href={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={() => setOpen(false)}>
+                <a key={l.label} href={l.href} className="block text-sm font-medium text-muted-foreground py-2" onClick={(e) => { handleHashClick(e, l.href); setOpen(false); }}>
                   {l.label}
                 </a>
               )
