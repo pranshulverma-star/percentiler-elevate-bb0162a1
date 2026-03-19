@@ -91,7 +91,7 @@ const Navbar = () => {
                   {l.label}
                 </a>
               ) : (
-              <a key={l.label} href={l.href} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
+              <a key={l.label} href={l.href} onClick={(e) => handleHashClick(e, l.href)} className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-colors after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-primary after:transition-all after:duration-300 hover:after:w-full">
                   {l.label}
                 </a>
               )
