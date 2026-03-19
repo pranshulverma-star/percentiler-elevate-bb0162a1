@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Copy, Share2, Loader2, UserPlus } from "lucide-react";
 import { createInvite, getPendingInvite, getInviteByCode, acceptInvite, type BuddyInvite } from "@/lib/buddy-utils";
+import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 
 interface Props {
