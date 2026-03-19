@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, LayoutDashboard } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
