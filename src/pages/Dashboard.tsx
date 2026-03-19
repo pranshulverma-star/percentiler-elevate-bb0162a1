@@ -162,7 +162,7 @@ export default function Dashboard() {
     <>
       <SEO title="Dashboard | Percentilers" description="Your personalized CAT preparation dashboard" canonical="https://percentilers.in/dashboard" />
       <Navbar />
-      <main className="min-h-screen bg-background pt-4 pb-16">
+      <main className="min-h-screen bg-background pt-4 pb-28">
         <div className="container mx-auto px-4 max-w-lg">
 
           {/* Hero */}
@@ -234,14 +234,10 @@ export default function Dashboard() {
               <DashboardLevelUp />
             </motion.div>
 
-            {/* Stage 6: Explore */}
-            <motion.div custom={6} initial="hidden" animate="visible" variants={stageVariants} className="relative">
-              <StageLabel number={6} label="EXPLORE" />
-              <DashboardExplore converted={converted} mentorshipActive={mentorshipActive} />
-            </motion.div>
           </div>
         </div>
       </main>
+      <DashboardExplore converted={converted} mentorshipActive={mentorshipActive} />
     </>
   );
 }
