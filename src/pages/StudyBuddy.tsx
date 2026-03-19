@@ -37,6 +37,7 @@ import {
   calculateBuddyStreak,
   getBuddyName,
   getBuddyId,
+  hasReceivedNudge,
   type BuddyPair,
   type BuddyInvite,
   type BuddyActivity,
