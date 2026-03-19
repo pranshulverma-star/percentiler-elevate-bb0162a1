@@ -234,12 +234,10 @@ export default function Dashboard() {
               <DashboardLevelUp />
             </motion.div>
 
-            {/* Stage 6: Explore */}
-            <motion.div custom={6} initial="hidden" animate="visible" variants={stageVariants} className="relative">
-              <StageLabel number={6} label="EXPLORE" />
-              <DashboardExplore converted={converted} mentorshipActive={mentorshipActive} />
-            </motion.div>
           </div>
+        </div>
+      </main>
+      <DashboardExplore converted={converted} mentorshipActive={mentorshipActive} />
         </div>
       </main>
     </>
