@@ -180,7 +180,7 @@ function DashboardState({
         currentUserId={userId}
         myProgress={myProgress}
         buddyProgress={buddyProgress}
-        buddyStreak={buddyStreak}
+        
       />
 
       <div className="flex justify-center">
