@@ -159,6 +159,14 @@ function SprintDashboard({ userId }: { userId: string }) {
         <p className="text-sm text-muted-foreground">{dayName}</p>
       </div>
 
+      <SprintWeeklySummary
+        weeklyGoals={weeklyGoals}
+        streak={streak}
+        historyGoals={historyGoals}
+        loadingHistory={loadingHistory}
+        onLoadHistory={loadHistory}
+      />
+
       <SprintStats goals={goals} streak={streak} />
 
       <div className="space-y-4">
