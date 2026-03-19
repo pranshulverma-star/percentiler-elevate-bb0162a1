@@ -2,8 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Flame, CheckCircle2, Clock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import type { BuddyPair, BuddyActivity } from "@/lib/buddy-utils";
-import { getBuddyName } from "@/lib/buddy-utils";
+import type { BuddyPair } from "@/lib/buddy-utils";
 
 interface UserProgress {
   name: string;
