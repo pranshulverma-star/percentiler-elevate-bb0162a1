@@ -11,8 +11,11 @@ import SprintGoalForm from "@/components/sprint/SprintGoalForm";
 import SprintGoalList from "@/components/sprint/SprintGoalList";
 import SprintStats from "@/components/sprint/SprintStats";
 import SprintBuddyView from "@/components/sprint/SprintBuddyView";
+import SprintWeeklySummary from "@/components/sprint/SprintWeeklySummary";
 import {
   getTodayGoals,
+  getWeeklyGoals,
+  getSprintHistory,
   addGoal,
   toggleGoal,
   deleteGoal,
