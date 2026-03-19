@@ -9,12 +9,12 @@ import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import mentorImg from "@/assets/founder-pranshul.webp";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import studentNaira from "@/assets/student-naira.jpg";
-import studentAayushiRana from "@/assets/student-aayushi-rana.jpeg";
-import studentHardik from "@/assets/student-hardik.jpg";
-import studentAnkur from "@/assets/student-ankur.jpg";
-import studentVishwajeet from "@/assets/student-vishwajeet.jpeg";
-import studentShivam from "@/assets/student-shivam.jpg";
+import studentNaira from "@/assets/student-naira.webp";
+import studentAayushiRana from "@/assets/student-aayushi-rana.webp";
+import studentHardik from "@/assets/student-hardik.webp";
+import studentAnkur from "@/assets/student-ankur.webp";
+import studentVishwajeet from "@/assets/student-vishwajeet.webp";
+import studentShivam from "@/assets/student-shivam.webp";
 import {
   Phone, Video, FileText, Repeat, Calendar,
   ArrowRight, Sparkles, Star, CheckCircle2,
