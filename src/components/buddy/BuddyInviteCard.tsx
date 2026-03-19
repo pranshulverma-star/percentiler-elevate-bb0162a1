@@ -21,6 +21,36 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
   const [joinCode, setJoinCode] = useState("");
   const [joining, setJoining] = useState(false);
 
+  const stableOnPaired = useCallback(onPaired, []);
+
+  // Realtime listener: auto-detect when buddy accepts the invite
+  useEffect(() => {
+    if (!invite?.invite_code) return;
+    const channel = supabase
+      .channel(`invite:${invite.invite_code}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "buddy_invites",
+          filter: `invite_code=eq.${invite.invite_code}`,
+        },
+        (payload) => {
+          const newRow = payload.new as { status?: string };
+          if (newRow.status === "accepted") {
+            toast.success("Your buddy joined! 🎉");
+            stableOnPaired();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [invite?.invite_code, stableOnPaired]);
+
   const handleGenerate = async () => {
     setCreating(true);
     try {
