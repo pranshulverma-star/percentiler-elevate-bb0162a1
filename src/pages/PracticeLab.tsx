@@ -20,6 +20,7 @@ import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
 import ResultsView from "@/components/practice-lab/ResultsView";
+import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
@@ -873,6 +874,9 @@ export default function PracticeLab() {
       />
       <Navbar />
       <main className="min-h-screen bg-background pt-4 pb-12 px-3 md:pt-6 md:pb-16 md:px-6 game-grid-bg">
+        <div className="max-w-5xl mx-auto">
+          <BuddyMiniWidget />
+        </div>
         <div className="max-w-5xl mx-auto py-6 md:py-16">
           <AnimatePresence mode="wait">
             {phase === "sections" && (

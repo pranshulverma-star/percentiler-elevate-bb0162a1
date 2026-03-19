@@ -54,6 +54,7 @@ const TestSeries = lazy(() => import("./pages/TestSeries"));
 const Workshops = lazy(() => import("./pages/Workshops"));
 const PracticeLab = lazy(() => import("./pages/PracticeLab"));
 const BattleRoom = lazy(() => import("./pages/BattleRoom"));
+const StudyBuddy = lazy(() => import("./pages/StudyBuddy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
@@ -108,6 +109,7 @@ const App = () => (
                   <Route path="/workshops" element={<Workshops />} />
                   <Route path="/practice-lab" element={<PracticeLab />} />
                   <Route path="/practice-lab/battle/:code" element={<BattleRoom />} />
+                  <Route path="/study-buddy" element={<StudyBuddy />} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/refund-policy" element={<RefundPolicy />} />

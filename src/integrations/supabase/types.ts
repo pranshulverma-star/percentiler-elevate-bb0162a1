@@ -100,6 +100,127 @@ export type Database = {
         }
         Relationships: []
       }
+      buddy_activity_log: {
+        Row: {
+          activity_date: string
+          bonus_earned: boolean
+          created_at: string
+          id: string
+          nudge_sent: boolean
+          pair_id: string
+          planner_completed: boolean
+          quiz_attempted: boolean
+          streak_count: number
+          user_id: string
+        }
+        Insert: {
+          activity_date?: string
+          bonus_earned?: boolean
+          created_at?: string
+          id?: string
+          nudge_sent?: boolean
+          pair_id: string
+          planner_completed?: boolean
+          quiz_attempted?: boolean
+          streak_count?: number
+          user_id: string
+        }
+        Update: {
+          activity_date?: string
+          bonus_earned?: boolean
+          created_at?: string
+          id?: string
+          nudge_sent?: boolean
+          pair_id?: string
+          planner_completed?: boolean
+          quiz_attempted?: boolean
+          streak_count?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buddy_activity_log_pair_id_fkey"
+            columns: ["pair_id"]
+            isOneToOne: false
+            referencedRelation: "buddy_pairs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      buddy_invites: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          invite_code: string
+          inviter_id: string
+          inviter_name: string | null
+          status: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invite_code: string
+          inviter_id: string
+          inviter_name?: string | null
+          status?: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          invite_code?: string
+          inviter_id?: string
+          inviter_name?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
+      buddy_pairs: {
+        Row: {
+          created_at: string
+          dissolved_at: string | null
+          id: string
+          invite_id: string | null
+          status: string
+          student_a_id: string
+          student_a_name: string | null
+          student_b_id: string
+          student_b_name: string | null
+        }
+        Insert: {
+          created_at?: string
+          dissolved_at?: string | null
+          id?: string
+          invite_id?: string | null
+          status?: string
+          student_a_id: string
+          student_a_name?: string | null
+          student_b_id: string
+          student_b_name?: string | null
+        }
+        Update: {
+          created_at?: string
+          dissolved_at?: string | null
+          id?: string
+          invite_id?: string | null
+          status?: string
+          student_a_id?: string
+          student_a_name?: string | null
+          student_b_id?: string
+          student_b_name?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "buddy_pairs_invite_id_fkey"
+            columns: ["invite_id"]
+            isOneToOne: false
+            referencedRelation: "buddy_invites"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaign_state: {
         Row: {
           call_booked_at: string | null
@@ -582,7 +703,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_buddy_pair_member: {
+        Args: { _pair_id: string; _user_id: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never

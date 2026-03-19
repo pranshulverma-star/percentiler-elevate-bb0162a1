@@ -39,6 +39,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
+import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import {
   generateFullPlan,
@@ -1097,6 +1098,9 @@ export default function CATDailyStudyPlanner() {
         canonical="https://percentilers.in/cat-daily-study-planner"
       />
       <Navbar />
+      <div className="container mx-auto px-4 md:px-6 pt-4">
+        <BuddyMiniWidget />
+      </div>
       {view === "loading" && (
         <section className="min-h-[85vh] flex items-center justify-center">
           <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
