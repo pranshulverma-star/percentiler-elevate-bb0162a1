@@ -5,12 +5,14 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
+import { useBuddyRealtimeToast } from "@/hooks/useBuddyRealtimeToast";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarCheck, Flame, Target } from "lucide-react";
 import SprintGoalForm from "@/components/sprint/SprintGoalForm";
 import SprintGoalList from "@/components/sprint/SprintGoalList";
 
 import SprintBuddyView from "@/components/sprint/SprintBuddyView";
+import { getActiveBuddy, getBuddyId, getBuddyName } from "@/lib/buddy-utils";
 import SprintWeeklySummary from "@/components/sprint/SprintWeeklySummary";
 import {
   getTodayGoals,
@@ -73,6 +75,8 @@ function SprintDashboard({ userId }: { userId: string }) {
   const [streak, setStreak] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [buddyId, setBuddyId] = useState<string | null>(null);
+  const [buddyName, setBuddyName] = useState("Your Buddy");
 
   const loadData = useCallback(async () => {
     try {
@@ -92,6 +96,21 @@ function SprintDashboard({ userId }: { userId: string }) {
   }, [userId]);
 
   useEffect(() => { loadData(); }, [loadData]);
+
+  // Resolve buddy for realtime toasts
+  useEffect(() => {
+    (async () => {
+      try {
+        const pair = await getActiveBuddy(userId);
+        if (pair) {
+          setBuddyId(getBuddyId(pair, userId));
+          setBuddyName(getBuddyName(pair, userId));
+        }
+      } catch {}
+    })();
+  }, [userId]);
+
+  useBuddyRealtimeToast(buddyId, buddyName);
 
   const loadHistory = async () => {
     setLoadingHistory(true);
