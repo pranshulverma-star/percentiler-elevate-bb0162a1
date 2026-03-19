@@ -12,6 +12,7 @@ import SprintGoalForm from "@/components/sprint/SprintGoalForm";
 import SprintGoalList from "@/components/sprint/SprintGoalList";
 
 import SprintBuddyView from "@/components/sprint/SprintBuddyView";
+import { getActiveBuddy, getBuddyId, getBuddyName } from "@/lib/buddy-utils";
 import SprintWeeklySummary from "@/components/sprint/SprintWeeklySummary";
 import {
   getTodayGoals,
