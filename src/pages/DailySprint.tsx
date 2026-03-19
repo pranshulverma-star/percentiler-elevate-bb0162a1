@@ -197,8 +197,8 @@ export default function DailySprint() {
         canonical="https://percentilers.in/daily-sprint"
       />
       <Navbar />
-      <main className="pt-6 pb-16 px-4 md:px-6">
-        <div className="max-w-5xl mx-auto py-8 md:py-16">
+      <main className="pt-4 pb-12 px-4 md:px-6">
+        <div className="max-w-5xl mx-auto py-4 md:py-16">
           {authLoading ? (
             <div className="flex items-center justify-center py-20">
               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
