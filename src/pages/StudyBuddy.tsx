@@ -118,15 +118,17 @@ function DashboardState({
     const load = async () => {
       try {
         await syncDailyActivity(pair.id, userId, userEmail).catch(() => {});
-        const [progress, streak] = await Promise.all([
+        const [progress, streak, gotNudge] = await Promise.all([
           getBuddyProgress(pair.id),
           calculateBuddyStreak(pair.id),
+          hasReceivedNudge(pair.id, buddyId),
         ]);
         const mine = progress.find((p) => p.user_id === userId) ?? null;
         const buddy = progress.find((p) => p.user_id === buddyId) ?? null;
         setMyActivity(mine);
         setBuddyActivityData(buddy);
         setBuddyStreak(streak);
+        setNudgeReceived(gotNudge);
       } catch {
         toast.error("Failed to load progress. Please refresh.");
       } finally {
