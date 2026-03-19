@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { Copy, Share2, Loader2, UserPlus } from "lucide-react";
 import { createInvite, getPendingInvite, getInviteByCode, acceptInvite, type BuddyInvite } from "@/lib/buddy-utils";
+import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 
 interface Props {
@@ -19,6 +20,36 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
   const [creating, setCreating] = useState(false);
   const [joinCode, setJoinCode] = useState("");
   const [joining, setJoining] = useState(false);
+
+  const stableOnPaired = useCallback(onPaired, []);
+
+  // Realtime listener: auto-detect when buddy accepts the invite
+  useEffect(() => {
+    if (!invite?.invite_code) return;
+    const channel = supabase
+      .channel(`invite:${invite.invite_code}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "UPDATE",
+          schema: "public",
+          table: "buddy_invites",
+          filter: `invite_code=eq.${invite.invite_code}`,
+        },
+        (payload) => {
+          const newRow = payload.new as { status?: string };
+          if (newRow.status === "accepted") {
+            toast.success("Your buddy joined! 🎉");
+            stableOnPaired();
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [invite?.invite_code, stableOnPaired]);
 
   const handleGenerate = async () => {
     setCreating(true);

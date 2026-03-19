@@ -71,6 +71,9 @@ export default function SprintBuddyView({ userId }: Props) {
         ) : (
           <SprintGoalList goals={goals} onToggle={() => {}} onDelete={() => {}} readOnly />
         )}
+        <Link to="/study-buddy" className="text-xs text-primary hover:underline mt-1 inline-block">
+          View full buddy dashboard →
+        </Link>
       </CardContent>
     </Card>
   );
