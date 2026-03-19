@@ -74,6 +74,8 @@ function SprintDashboard({ userId }: { userId: string }) {
   const [streak, setStreak] = useState(0);
   const [loading, setLoading] = useState(true);
   const [loadingHistory, setLoadingHistory] = useState(false);
+  const [buddyId, setBuddyId] = useState<string | null>(null);
+  const [buddyName, setBuddyName] = useState("Your Buddy");
 
   const loadData = useCallback(async () => {
     try {
