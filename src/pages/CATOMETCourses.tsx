@@ -12,9 +12,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import mentorImg from "@/assets/founder-pranshul.webp";
-import studentAarav from "@/assets/student-aarav.jpg";
-import studentPriya from "@/assets/student-priya.jpg";
-import studentRohan from "@/assets/student-rohan.jpg";
+import studentAarav from "@/assets/student-aarav.webp";
+import studentPriya from "@/assets/student-priya.webp";
+import studentRohan from "@/assets/student-rohan.webp";
 import {
   Shield, Video, BookOpen, Users, Clock, Target,
   CheckCircle2, XCircle, Star, ArrowRight, Sparkles,

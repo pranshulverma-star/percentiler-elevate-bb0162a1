@@ -8,9 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import mentorPhoto from "@/assets/founder-pranshul.webp";
 import { useAuth } from "@/hooks/useAuth";
-import studentAnanya from "@/assets/student-ananya.jpg";
-import studentKarthik from "@/assets/student-karthik.jpg";
-import studentDivya from "@/assets/student-divya.jpg";
+import studentAnanya from "@/assets/student-ananya.webp";
+import studentKarthik from "@/assets/student-karthik.webp";
+import studentDivya from "@/assets/student-divya.webp";
 
 const bullets = [
   "Eligibility Criteria and When to Start",
