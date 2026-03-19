@@ -179,6 +179,24 @@ function DashboardState({
 
   return (
     <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-6">
+      {nudgeReceived && (
+        <motion.div
+          initial={{ opacity: 0, y: -12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/10 px-4 py-3"
+        >
+          <Bell className="h-5 w-5 text-primary shrink-0" />
+          <p className="text-sm font-medium text-foreground">
+            {buddyName} nudged you! Time to get started 💪
+          </p>
+          <button
+            onClick={() => setNudgeReceived(false)}
+            className="ml-auto text-muted-foreground hover:text-foreground text-xs"
+          >
+            ✕
+          </button>
+        </motion.div>
+      )}
       <BuddyProgressCard
         pair={pair}
         currentUserId={userId}
