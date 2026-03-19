@@ -20,7 +20,6 @@ interface Props {
   currentUserId: string;
   myProgress: UserProgress;
   buddyProgress: UserProgress;
-  buddyStreak: number;
 }
 
 function ProgressColumn({ data, isYou }: { data: UserProgress; isYou: boolean }) {
