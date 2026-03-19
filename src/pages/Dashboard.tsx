@@ -238,8 +238,6 @@ export default function Dashboard() {
         </div>
       </main>
       <DashboardExplore converted={converted} mentorshipActive={mentorshipActive} />
-        </div>
-      </main>
     </>
   );
 }
