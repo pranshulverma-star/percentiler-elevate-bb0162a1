@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -42,7 +42,7 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
           const newRow = payload.new as { status?: string };
           if (newRow.status === "accepted") {
             toast.success("Your buddy joined! 🎉");
-            stableOnPaired();
+            onPairedRef.current();
           }
         }
       )
@@ -51,7 +51,7 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [invite?.invite_code, stableOnPaired]);
+  }, [invite?.invite_code]);
 
   const handleGenerate = async () => {
     setCreating(true);
