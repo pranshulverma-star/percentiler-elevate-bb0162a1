@@ -689,6 +689,7 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
 // ─── Planner Dashboard ───
 
 function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: () => void }) {
+  const { recordActivity } = useStreaks();
   const daysLeft = getDaysUntilCAT(leadData.targetYear);
   const isCrashMode = daysLeft <= 50;
   const { hasPhone, refetch: refetchPhone } = useLeadPhone();
