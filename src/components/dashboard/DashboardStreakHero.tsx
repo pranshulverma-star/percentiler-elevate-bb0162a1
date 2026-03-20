@@ -64,7 +64,6 @@ export default function DashboardStreakHero({ streakData, loading }: Props) {
         {weekly.map((done, i) => {
           const isToday = i === todayIdx;
           const isPast = i < todayIdx;
-          const isFuture = i > todayIdx;
 
           return (
             <div key={i} className="flex-1 flex flex-col items-center gap-1">

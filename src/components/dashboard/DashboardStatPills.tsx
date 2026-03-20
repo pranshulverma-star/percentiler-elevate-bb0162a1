@@ -12,12 +12,12 @@ interface Props {
   loading: boolean;
 }
 
-const pills = [
+const pills: { key: string; icon: typeof Flame; iconColor: string; field: string; label: string; suffix?: string }[] = [
   { key: "streak", icon: Flame, iconColor: "text-primary", field: "currentStreak", label: "Streak" },
   { key: "best", icon: Trophy, iconColor: "text-amber-500", field: "longestStreak", label: "Best" },
   { key: "quizzes", icon: Zap, iconColor: "text-primary", field: "totalQuizzes", label: "Quizzes" },
   { key: "accuracy", icon: TrendingUp, iconColor: "text-emerald-500", field: "avgAccuracy", label: "Accuracy", suffix: "%" },
-] as const;
+];
 
 export default function DashboardStatPills({ streakData, loading }: Props) {
   if (loading) {

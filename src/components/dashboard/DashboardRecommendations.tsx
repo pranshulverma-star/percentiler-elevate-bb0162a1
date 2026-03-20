@@ -7,7 +7,7 @@ interface Props {
   practiceAttempts: any[];
 }
 
-const staticRecs = [
+const staticRecs: { name: string; type: string; to: string; free: boolean; external?: boolean }[] = [
   { name: "QA Formulas", type: "Flashcard", to: "/flashcards", free: true },
   { name: "VARC Practice", type: "Practice", to: "/practice-lab", free: true },
 ];

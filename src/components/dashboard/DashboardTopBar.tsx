@@ -1,4 +1,4 @@
-import { Flame, Bell, LogOut } from "lucide-react";
+import { Flame, LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface Props {

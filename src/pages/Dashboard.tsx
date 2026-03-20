@@ -25,7 +25,7 @@ export default function Dashboard() {
   const [practiceAttempts, setPracticeAttempts] = useState<any[]>([]);
   const [streakData, setStreakData] = useState<any>(null);
 
-  const [loadingLead, setLoadingLead] = useState(true);
+  const [, setLoadingLead] = useState(true);
   const [loadingPlanner, setLoadingPlanner] = useState(true);
   const [loadingPractice, setLoadingPractice] = useState(true);
   const [loadingStreaks, setLoadingStreaks] = useState(true);

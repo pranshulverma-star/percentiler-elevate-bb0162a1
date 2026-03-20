@@ -15,7 +15,7 @@ const tiles = [
   { icon: Phone, label: "Strategy Call", to: "/mentorship" },
 ];
 
-export default function DashboardQuickAccess({ converted, mentorshipActive }: Props) {
+export default function DashboardQuickAccess({ converted: _converted, mentorshipActive: _mentorshipActive }: Props) {
   return (
     <div>
       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Explore</p>
