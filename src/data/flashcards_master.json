@@ -1,0 +1,3179 @@
+{
+  "vocab": [
+    {
+      "id": "v001",
+      "word": "Refulgent",
+      "meaning": "Radiant, shining, bright",
+      "memoryKey": "Sounds like 'detergent'. After using Tide detergent, clothes start shining and radiating in light. So, refulgent means bright and shining."
+    },
+    {
+      "id": "v002",
+      "word": "Adept",
+      "meaning": "Expert, proficient, savvy",
+      "memoryKey": "Sounds like 'at depth'. When you know your subject at depth, you are adept. So, adept means an expert at something."
+    },
+    {
+      "id": "v003",
+      "word": "Allegiance",
+      "meaning": "Loyalty, fealty, devotion",
+      "memoryKey": "Sounds like 'Ali + genie'. Genie always said 'Jo hukum mere aaka' to Aladdin. He remained loyal to him till the end. Hence, allegiance means loyalty."
+    },
+    {
+      "id": "v004",
+      "word": "Bantering",
+      "meaning": "Joking talk, humorous",
+      "memoryKey": "Has 'Banta' in it. Banta is a famous character of Santa Banta joke series. Banta always keeps on joking. So, bantering means joking talk."
+    },
+    {
+      "id": "v005",
+      "word": "Introspection",
+      "meaning": "Self-examination, contemplation",
+      "memoryKey": "Sounds like 'internal inspection'. When a person looks inside himself to know more about himself, then it is called introspection."
+    },
+    {
+      "id": "v006",
+      "word": "Amenable",
+      "meaning": "Docile, obedient, compliant",
+      "memoryKey": "Sounds like 'men + able'. A mother is advising her son to become an able man who considers everyone's opinion. So, amenable means docile and obedient."
+    },
+    {
+      "id": "v007",
+      "word": "Ingenuous",
+      "meaning": "Artless, innocent, straightforward",
+      "memoryKey": "Sounds like 'genuine'. Genuine people are straightforward and innocent, just like children. So, ingenuous means artless and innocent."
+    },
+    {
+      "id": "v008",
+      "word": "Zest",
+      "meaning": "Zeal, eagerness, enthusiasm",
+      "memoryKey": "Sounds like 'fest'. At an inter-college fest, everyone participates with great energy. Hence, zest means enthusiasm and zeal."
+    },
+    {
+      "id": "v009",
+      "word": "Apogee",
+      "meaning": "Culmination, highest stage",
+      "memoryKey": "Sounds like 'up ho gi'. When you climb up and up, you will reach the highest point. So, apogee means the highest stage."
+    },
+    {
+      "id": "v010",
+      "word": "Belittle",
+      "meaning": "Criticize, ridicule",
+      "memoryKey": "Sounds like 'be + little'. If you are criticizing someone, you are making him appear little in front of you. Hence, belittle means to criticize."
+    },
+    {
+      "id": "v011",
+      "word": "Abase",
+      "meaning": "To humiliate, belittle",
+      "memoryKey": "Sounds like 'a base'. To bring someone to the base level will be to humiliate him. So, abase means to humiliate."
+    },
+    {
+      "id": "v012",
+      "word": "Brawn",
+      "meaning": "Strength, sturdiness",
+      "memoryKey": "Sounds like 'prawn'. Sometimes, wrestlers eat more prawn to become muscular and strong (brawn). Hence, brawn means strength."
+    },
+    {
+      "id": "v013",
+      "word": "Bedizen",
+      "meaning": "Dress up or decorate gaudily",
+      "memoryKey": "Sounds like 'bad design'. A woman in the neighbourhood used to dress up very loudly with all bad designer clothes. Hence, bedizen means dress up gaudily."
+    },
+    {
+      "id": "v014",
+      "word": "Bellicose",
+      "meaning": "Angry, combative, threatening",
+      "memoryKey": "Sounds like 'belly + cause'. Imagine there is nothing in your belly, you are hungry and because of this you are angry. Hence, bellicose means angry."
+    },
+    {
+      "id": "v015",
+      "word": "Incarcerate",
+      "meaning": "Constrict, imprison, detain",
+      "memoryKey": "Sounds like a Hindi phrase 'in karagaar' (means jail). So, the word incarcerate means to imprison."
+    },
+    {
+      "id": "v016",
+      "word": "Badinage",
+      "meaning": "Teasing playfully, banter",
+      "memoryKey": "Sounds like 'bald in this age'. Suppose your friend is having hair fall and you are teasing him about being bald in this age. So, badinage means teasing playfully."
+    },
+    {
+      "id": "v017",
+      "word": "Animus",
+      "meaning": "Animosity, hostility, enmity",
+      "memoryKey": "Sounds like 'enemy + us'. An enemy has nothing but hostility towards us. So, animus means to have animosity for someone."
+    },
+    {
+      "id": "v018",
+      "word": "Altercation",
+      "meaning": "Dispute, argument, fight",
+      "memoryKey": "Sounds like 'alter your nation'. The NRI got into an altercation with the authorities because they asked him to alter his nation. So, altercation means dispute."
+    },
+    {
+      "id": "v019",
+      "word": "Zephyr",
+      "meaning": "Breeze, gentle wind",
+      "memoryKey": "Sounds like 'the + fire'. Winds blow out the fire. Hence, zephyr is the wind that blows out the fire."
+    },
+    {
+      "id": "v020",
+      "word": "Acidulous",
+      "meaning": "Somewhat acid or harsh in taste or manner",
+      "memoryKey": "Derived from the word acid, which is sharp and harsh. So, acidulous means somewhat acid or harsh in taste or manner."
+    },
+    {
+      "id": "v021",
+      "word": "Ambush",
+      "meaning": "To attack by surprise from a hidden place",
+      "memoryKey": "Sounds like 'I am in the bush'. A person is hiding in the bush, so he can attack his enemy by surprise. So, ambush means to attack by surprise."
+    },
+    {
+      "id": "v022",
+      "word": "Anneal",
+      "meaning": "Toughen, harden, petrify",
+      "memoryKey": "Sounds like 'a nail'. To toughen a nail, annealing is done. Hence, anneal means to toughen."
+    },
+    {
+      "id": "v023",
+      "word": "Addle",
+      "meaning": "Baffle, puzzle, confuse",
+      "memoryKey": "Sounds like 'riddle'. A riddle is confusing. So, addle means confused and puzzled."
+    },
+    {
+      "id": "v024",
+      "word": "Adorn",
+      "meaning": "Garnish, decorate, embellish",
+      "memoryKey": "Sounds like 'add ornaments'. It is done to decorate something. So, adorn means to decorate and to garnish something."
+    },
+    {
+      "id": "v025",
+      "word": "Gaffe",
+      "meaning": "Blunder, error, slip",
+      "memoryKey": "Can be memorized using cartoon character 'Goofy'. Goofy was famous for committing mistakes and blunders. So, something that Goofy does is gaffe."
+    },
+    {
+      "id": "v026",
+      "word": "Annuity",
+      "meaning": "Allowance, pension, bounty",
+      "memoryKey": "Sounds like 'annual + duty'. As a duty, I pay her annual allowance for her work. So, annuity means specific income given at a specific time."
+    },
+    {
+      "id": "v027",
+      "word": "Abstruse",
+      "meaning": "Hard to understand, abstract",
+      "memoryKey": "Sounds like 'confuse'. Something which confuses you is abstruse because it is hard to understand."
+    },
+    {
+      "id": "v028",
+      "word": "Brawl",
+      "meaning": "Fight, battle, quarrel",
+      "memoryKey": "Sounds like Hindi 'bawaal'. Imagine there is a quarrel in the neighbourhood. Bawaal macha hua hai. So, brawl means noisy quarrel."
+    },
+    {
+      "id": "v029",
+      "word": "Zenith",
+      "meaning": "Summit, acme, highest point",
+      "memoryKey": "Sounds like Hindi 'jannat' (heaven), which is the highest point. Hence, zenith means summit or the highest point."
+    },
+    {
+      "id": "v030",
+      "word": "Blurt",
+      "meaning": "Exclaim, babble, betray",
+      "memoryKey": "Sounds like 'flirt'. Imagine you are flirting with a pretty girl. You are so excited that you blurt out all the secrets of your friend."
+    },
+    {
+      "id": "v031",
+      "word": "Benison",
+      "meaning": "Blessings, invocation",
+      "memoryKey": "Sounds like 'be nice son'. Imagine yourself touching your father's feet and receiving blessings of always being nice. Hence, benison means blessings."
+    },
+    {
+      "id": "v032",
+      "word": "Bereft",
+      "meaning": "Bereaved, crestfallen",
+      "memoryKey": "Sounds like 'dear + left'. Imagine someone very dear to you has left the world. So, you are very sad. So, bereft means sad."
+    },
+    {
+      "id": "v033",
+      "word": "Ballast",
+      "meaning": "Heavy objects used to add stability and balance",
+      "memoryKey": "Sounds like 'blast'. A ballast saves from blast by adding stability. Hence, ballast means something used to give stability."
+    },
+    {
+      "id": "v034",
+      "word": "Aggrandize",
+      "meaning": "Magnify, amplify, extend",
+      "memoryKey": "Has 'grand' in it, which means something great and large. Hence, aggrandize means to enlarge or increase in size or intensity."
+    },
+    {
+      "id": "v035",
+      "word": "Belligerent",
+      "meaning": "Aggressive, quarrelsome",
+      "memoryKey": "Sounds like 'belly + gents'. Imagine sumo wrestlers, gents with huge bellies, always angry and ready to fight. So, belligerent means quarrelsome."
+    },
+    {
+      "id": "v036",
+      "word": "Mendacity",
+      "meaning": "Lie, deceit, falsehood",
+      "memoryKey": "Sounds like 'man in the city'. Relatives warn a girl that men in the city are liars, be careful. So, mendacity means lie or deceit."
+    },
+    {
+      "id": "v037",
+      "word": "Babble",
+      "meaning": "Chatter foolishly, gibber",
+      "memoryKey": "Sounds like 'blah blah blah'. When we talk about unimportant things, people will listen it as blah blah blah. So, babble means to chatter foolishly."
+    },
+    {
+      "id": "v038",
+      "word": "Benefactor",
+      "meaning": "Supporter, contributor",
+      "memoryKey": "Sounds like 'benefit + act'. A person who acts for the benefit of others is a benefactor."
+    },
+    {
+      "id": "v039",
+      "word": "Adjuration",
+      "meaning": "Plea, appeal, petition",
+      "memoryKey": "Sounds like 'add more duration'. I owe him money but I requested him to give me some more duration. So, adjuration means earnest plea or appeal."
+    },
+    {
+      "id": "v040",
+      "word": "Brandishing",
+      "meaning": "To wave something in the air in a threatening or excited way",
+      "memoryKey": "Sounds like 'brandy'. After drinking brandy, we become drunk and we wave. Hence, brandishing means waving."
+    },
+    {
+      "id": "v041",
+      "word": "Garish",
+      "meaning": "Excessively bright and showy",
+      "memoryKey": "Sounds like 'garnish'. The dessert was looking ordinary, but after garnishing, it turned garish. So, garish means showy and gaudy."
+    },
+    {
+      "id": "v042",
+      "word": "Baleful",
+      "meaning": "Evil, vile, immoral",
+      "memoryKey": "Sounds like 'painful'. If evil acts are done by bad people, it is painful for good people. Hence, baleful means evil."
+    },
+    {
+      "id": "v043",
+      "word": "Infirmity",
+      "meaning": "Ailment, frailness",
+      "memoryKey": "Opposite of 'firmity'. To remain firm means to be strong. So, infirmity means physical weakness."
+    },
+    {
+      "id": "v044",
+      "word": "Appall",
+      "meaning": "Disgust, shock, scare",
+      "memoryKey": "Sounds like 'AAP + all'. Imagine AAP lost all its seats. People will be shocked. So, appall means disgusted and shocked."
+    },
+    {
+      "id": "v045",
+      "word": "Benign",
+      "meaning": "Friendly, gentle, kind",
+      "memoryKey": "Sounds like 'be + nice'. Your mother tells you to be nice and friendly. Hence, benign means being nice."
+    },
+    {
+      "id": "v046",
+      "word": "Zany",
+      "meaning": "Comical, eccentric",
+      "memoryKey": "Sounds like 'Johnny'. Johnny Lever is a famous comedian in Bollywood. Hence, being comical like Johnny is zany."
+    },
+    {
+      "id": "v047",
+      "word": "Benediction",
+      "meaning": "Blessings, invocation",
+      "memoryKey": "Derived from 'benefit + dictation'. Saying something to cause benefit is a blessing. So, benediction means blessings."
+    },
+    {
+      "id": "v048",
+      "word": "Parvenu",
+      "meaning": "Affluent, wealthy (newly rich)",
+      "memoryKey": "Relate to cricketer Praveen Kumar. He became rich after joining the Indian cricket team. So, parvenu refers to someone who has recently acquired wealth."
+    },
+    {
+      "id": "v049",
+      "word": "Accretion",
+      "meaning": "Increment, gathering",
+      "memoryKey": "Sounds like 'addition'. On addition, accretion occurs. Hence, accretion means growth or accumulation."
+    },
+    {
+      "id": "v050",
+      "word": "Mortify",
+      "meaning": "Humiliation, disgrace",
+      "memoryKey": "Hindi mnemonic 'Moti + fly'. A fat girl fled from a party because she felt ashamed of her massive body. So, mortify means humiliation."
+    },
+    {
+      "id": "v051",
+      "word": "Cacophony",
+      "meaning": "Harsh noise, discord, dissonance",
+      "memoryKey": "Sounds like 'kaun phone'. Imagine 50 people shouting 'kaun hai phone pe?!' at once. Pure chaos and noise. So, cacophony means horrible, jarring sound."
+    },
+    {
+      "id": "v052",
+      "word": "Debilitate",
+      "meaning": "Weaken, enfeeble, exhaust",
+      "memoryKey": "Sounds like 'the bill it ate'. The restaurant bill was so huge, it ate up all your energy and money. You're left weak and drained. Debilitate = to weaken completely."
+    },
+    {
+      "id": "v053",
+      "word": "Ebullient",
+      "meaning": "Enthusiastic, cheerful, lively",
+      "memoryKey": "Sounds like 'a brilliant'. A student who scores 99.9 percentile in CAT becomes bubbling with joy — jumping, shouting, celebrating. That's ebullient — overflowing with excitement!"
+    },
+    {
+      "id": "v054",
+      "word": "Fastidious",
+      "meaning": "Meticulous, fussy, particular",
+      "memoryKey": "Sounds like 'fast + hideous'. Your mom says 'jaldi karo!' but you say 'fast kaam hideous hota hai!' You want everything perfect and neat. Fastidious = extremely fussy."
+    },
+    {
+      "id": "v055",
+      "word": "Garrulous",
+      "meaning": "Talkative, chatty, verbose",
+      "memoryKey": "Sounds like 'girl + us'. Bhai jab girls humare saath hoti hain, sab non-stop bakte hain! Everyone becomes excessively talkative. Garrulous = talks way too much."
+    },
+    {
+      "id": "v056",
+      "word": "Hapless",
+      "meaning": "Unlucky, unfortunate, wretched",
+      "memoryKey": "Think 'happiness-less'. No happiness = no luck. Like a guy who studies 6 months for CAT but sleeps through the exam alarm. Totally hapless — unlucky and pitiful."
+    },
+    {
+      "id": "v057",
+      "word": "Impetuous",
+      "meaning": "Impulsive, rash, hasty",
+      "memoryKey": "Sounds like 'I'm a pet lover'. You see a puppy on the road and impulsively take it home without thinking. Your mom is furious! Impetuous = acting without thinking."
+    },
+    {
+      "id": "v058",
+      "word": "Juxtapose",
+      "meaning": "Place side by side, compare",
+      "memoryKey": "Sounds like 'just + oppose'. When you put two opposite things next to each other — like a topper's answer sheet next to yours — that painful comparison is juxtaposing."
+    },
+    {
+      "id": "v059",
+      "word": "Kowtow",
+      "meaning": "To bow down, submit, grovel",
+      "memoryKey": "Sounds like 'cow + tow'. Try towing a cow — even the cow bows its head in defeat! Kowtow = to bow down submissively, like you do before your strict professor."
+    },
+    {
+      "id": "v060",
+      "word": "Languid",
+      "meaning": "Sluggish, lazy, lethargic",
+      "memoryKey": "Sounds like 'lunch + kid'. After a heavy lunch, every kid becomes lazy and sleepy. That post-biryani drowsiness is languid — completely lacking energy."
+    },
+    {
+      "id": "v061",
+      "word": "Maverick",
+      "meaning": "Rebel, nonconformist, free thinker",
+      "memoryKey": "Think of the movie Top Gun — Maverick is the pilot who breaks every rule and does things his own way. A maverick doesn't follow the crowd."
+    },
+    {
+      "id": "v062",
+      "word": "Nefarious",
+      "meaning": "Wicked, criminal, villainous",
+      "memoryKey": "Sounds like 'never + fair + us'. A nefarious person is never fair to anyone. They're always scheming evil plans. Nefarious = extremely wicked."
+    },
+    {
+      "id": "v063",
+      "word": "Oblivious",
+      "meaning": "Unaware, ignorant, unconscious",
+      "memoryKey": "Sounds like 'O bhai, obvious!' But the person still doesn't get it — they're completely unaware of what's happening around them. Oblivious = totally clueless."
+    },
+    {
+      "id": "v064",
+      "word": "Penchant",
+      "meaning": "Strong liking, fondness, taste",
+      "memoryKey": "Sounds like 'pen + chant'. Imagine a poet who chants while holding a pen — he has a strong liking for writing poetry. Penchant = a strong inclination towards something."
+    },
+    {
+      "id": "v065",
+      "word": "Quagmire",
+      "meaning": "Difficult situation, mess, predicament",
+      "memoryKey": "Sounds like 'kwag + mire (mud)'. Imagine stepping into deep mud — the more you struggle, the deeper you sink. A quagmire is a messy situation you can't escape easily."
+    },
+    {
+      "id": "v066",
+      "word": "Rancour",
+      "meaning": "Bitterness, hatred, resentment",
+      "memoryKey": "Sounds like 'rancid + our'. Our rancid, spoiled friendship left nothing but bitterness. Rancour = deep-seated hatred and ill-feeling."
+    },
+    {
+      "id": "v067",
+      "word": "Sagacious",
+      "meaning": "Wise, shrewd, intelligent",
+      "memoryKey": "Sounds like 'sage + aashish'. A sage gives you aashirvaad (blessings) with wise words. Sagacious = having sharp judgment and wisdom."
+    },
+    {
+      "id": "v068",
+      "word": "Taciturn",
+      "meaning": "Reserved, silent, uncommunicative",
+      "memoryKey": "Sounds like 'ta + sit + turn'. A taciturn person just sits and turns away — never speaks. Like that one friend in the group who says 5 words the entire evening."
+    },
+    {
+      "id": "v069",
+      "word": "Ubiquitous",
+      "meaning": "Everywhere, omnipresent, widespread",
+      "memoryKey": "Sounds like 'you be quit us'. No matter where you go to quit us, we're everywhere! Like Jio network — ubiquitous, present all over India."
+    },
+    {
+      "id": "v070",
+      "word": "Vacillate",
+      "meaning": "Waver, hesitate, fluctuate",
+      "memoryKey": "Sounds like 'was + late'. He vacillated so much between options that he was late for everything! Vacillate = to keep going back and forth, unable to decide."
+    },
+    {
+      "id": "v071",
+      "word": "Wanton",
+      "meaning": "Reckless, unrestrained, immoral",
+      "memoryKey": "Sounds like 'woh + aunty'. Woh aunty spends recklessly — shopping without any self-control! Wanton = deliberately cruel or reckless without care."
+    },
+    {
+      "id": "v072",
+      "word": "Xenophobia",
+      "meaning": "Fear or hatred of foreigners",
+      "memoryKey": "Xeno = foreign, phobia = fear. Simple! Imagine someone scared of eating Chinese food because it's foreign. Xenophobia = irrational fear of anything foreign."
+    },
+    {
+      "id": "v073",
+      "word": "Yeoman",
+      "meaning": "A loyal, hardworking servant or helper",
+      "memoryKey": "Sounds like 'yeah + man'. Your most reliable friend who always says 'yeah man, I'm on it!' and does all the hard work loyally. Yeoman = faithful, diligent helper."
+    },
+    {
+      "id": "v074",
+      "word": "Zealot",
+      "meaning": "Fanatic, extremist, radical",
+      "memoryKey": "Sounds like 'zeal + lot'. Someone with way too much zeal — a lot of it. They take their passion to an extreme, fanatical level. Zealot = an overly enthusiastic fanatic."
+    },
+    {
+      "id": "v075",
+      "word": "Abscond",
+      "meaning": "Flee, escape, run away secretly",
+      "memoryKey": "Sounds like 'absent + scond (second)'. In one second, the thief became absent — he absconded! Ran away secretly before the police came."
+    },
+    {
+      "id": "v076",
+      "word": "Beguile",
+      "meaning": "Charm, deceive, enchant",
+      "memoryKey": "Sounds like 'be + girl'. Boys try to 'be' impressive in front of a girl — they charm and enchant. But sometimes it's all deception! Beguile = to charm or trick someone."
+    },
+    {
+      "id": "v077",
+      "word": "Candour",
+      "meaning": "Frankness, honesty, openness",
+      "memoryKey": "Sounds like 'can + do + r'. 'I can do it, and I'll tell you honestly!' That's candour — speaking with complete frankness and honesty."
+    },
+    {
+      "id": "v078",
+      "word": "Dearth",
+      "meaning": "Shortage, scarcity, lack",
+      "memoryKey": "Sounds like 'earth'. Imagine the earth has run out of water — a severe shortage! Dearth = an extreme scarcity of something."
+    },
+    {
+      "id": "v079",
+      "word": "Eloquent",
+      "meaning": "Fluent, articulate, persuasive",
+      "memoryKey": "Sounds like 'elephant'. An elephant walks with grace and command — similarly, an eloquent speaker speaks with grace and commands attention. Eloquent = beautifully spoken."
+    },
+    {
+      "id": "v080",
+      "word": "Furtive",
+      "meaning": "Secretive, sneaky, stealthy",
+      "memoryKey": "Sounds like 'fruit + thief'. Imagine a kid stealing mangoes furtively — looking left and right, sneaking quietly. Furtive = doing something secretively to avoid being noticed."
+    },
+    {
+      "id": "v081",
+      "word": "Gregarious",
+      "meaning": "Sociable, outgoing, friendly",
+      "memoryKey": "Sounds like 'group + areas'. A gregarious person is always found in group areas — canteen, party, chai stall. They love being around people. Gregarious = super social."
+    },
+    {
+      "id": "v082",
+      "word": "Hedonist",
+      "meaning": "Pleasure-seeker, sensualist",
+      "memoryKey": "Sounds like 'he + done + it'. He's done it all — partying, travelling, eating out. He lives only for pleasure. A hedonist = someone whose life goal is enjoyment."
+    },
+    {
+      "id": "v083",
+      "word": "Iconoclast",
+      "meaning": "Rebel against traditions, critic of beliefs",
+      "memoryKey": "Icon + clash. Someone who clashes with icons and traditions. Think of someone who questions every festival, every ritual — 'why do we do this?' Iconoclast = tradition-breaker."
+    },
+    {
+      "id": "v084",
+      "word": "Jovial",
+      "meaning": "Cheerful, merry, good-humoured",
+      "memoryKey": "Sounds like 'joy + wala'. The 'joy-wala' person — always laughing, always happy, the life of every party. Jovial = full of happiness and high spirits."
+    },
+    {
+      "id": "v085",
+      "word": "Knack",
+      "meaning": "Talent, skill, aptitude",
+      "memoryKey": "Sounds like 'knock'. Some people have the knack of knocking on the right doors — natural talent to find opportunities. Knack = a special skill that comes naturally."
+    },
+    {
+      "id": "v086",
+      "word": "Loquacious",
+      "meaning": "Very talkative, chatty",
+      "memoryKey": "Sounds like 'low + quash'. You can't quash (stop) a loquacious person even at low volume — they'll keep talking no matter what! Loquacious = can't stop talking."
+    },
+    {
+      "id": "v087",
+      "word": "Magnanimous",
+      "meaning": "Generous, noble, forgiving",
+      "memoryKey": "Magna = great, animus = spirit. Great spirit! A magnanimous person forgives even their enemies. Like forgiving your friend who ate your tiffin. Magnanimous = big-hearted."
+    },
+    {
+      "id": "v088",
+      "word": "Narcissist",
+      "meaning": "Self-obsessed person, egotist",
+      "memoryKey": "Named after Narcissus from Greek mythology — a man so obsessed with his own reflection that he fell into a lake staring at himself. Narcissist = obsessively in love with oneself."
+    },
+    {
+      "id": "v089",
+      "word": "Opulent",
+      "meaning": "Luxurious, lavish, rich",
+      "memoryKey": "Sounds like 'O + Pullman'. 'O wow, Pullman hotel!' — extremely luxurious and rich interiors. Opulent = displaying great wealth and luxury."
+    },
+    {
+      "id": "v090",
+      "word": "Perfidious",
+      "meaning": "Treacherous, disloyal, deceitful",
+      "memoryKey": "Sounds like 'perfect + hideous'. Looks perfect from outside, but hideous (treacherous) from inside. Like a backstabbing friend who smiles at you but plots against you."
+    },
+    {
+      "id": "v091",
+      "word": "Querulous",
+      "meaning": "Complaining, whiny, grumbling",
+      "memoryKey": "Sounds like 'quarrel + us'. Someone who quarrels with everyone by constantly complaining. 'Yeh nahi chahiye, woh nahi chahiye.' Querulous = always cribbing."
+    },
+    {
+      "id": "v092",
+      "word": "Rapacious",
+      "meaning": "Greedy, grasping, predatory",
+      "memoryKey": "Sounds like 'rapa + cious (seize)'. Imagine someone rapidly seizing everything — money, food, property. Extremely greedy! Rapacious = aggressively greedy."
+    },
+    {
+      "id": "v093",
+      "word": "Sycophant",
+      "meaning": "Flatterer, bootlicker, yes-man",
+      "memoryKey": "Sounds like 'psycho + aunt'. Your psycho aunt who flatters everyone to get what she wants — 'aap toh bahut sundar ho, beta toh genius hai!' Sycophant = shameless flatterer."
+    },
+    {
+      "id": "v094",
+      "word": "Trepidation",
+      "meaning": "Fear, anxiety, nervousness",
+      "memoryKey": "Sounds like 'trip + addition'. You're going on a trip but the addition to the plan scares you — bungee jumping! That nervous fear is trepidation."
+    },
+    {
+      "id": "v095",
+      "word": "Unctuous",
+      "meaning": "Excessively flattering, oily, smarmy",
+      "memoryKey": "Sounds like 'uncle + thus'. That uncle at weddings who's overly sweet — 'beta, tum toh bahut bade ho gaye!' Dripping with fake praise. Unctuous = oily and insincere."
+    },
+    {
+      "id": "v096",
+      "word": "Vindictive",
+      "meaning": "Revengeful, spiteful, unforgiving",
+      "memoryKey": "Sounds like 'win + addictive'. Winning is so addictive for this person that they'll take revenge on anyone who defeats them. Vindictive = driven by revenge."
+    },
+    {
+      "id": "v097",
+      "word": "Whimsical",
+      "meaning": "Unpredictable, playful, fanciful",
+      "memoryKey": "Sounds like 'whim + sical (cycle)'. Riding a cycle based on whims — suddenly turning left, then right, then doing a wheelie. Totally unpredictable! Whimsical = acting on sudden fancies."
+    },
+    {
+      "id": "v098",
+      "word": "Exacerbate",
+      "meaning": "Worsen, aggravate, intensify",
+      "memoryKey": "Sounds like 'eggs + irritate'. Imagine you're already sick and someone keeps throwing eggs at you — making it worse! Exacerbate = to make a bad situation even worse."
+    },
+    {
+      "id": "v099",
+      "word": "Frivolous",
+      "meaning": "Silly, trivial, not serious",
+      "memoryKey": "Sounds like 'free + walrus'. Imagine a free walrus roaming in your college — silly and ridiculous! Nobody takes it seriously. Frivolous = lacking any seriousness."
+    },
+    {
+      "id": "v100",
+      "word": "Gullible",
+      "meaning": "Easily deceived, naive, trusting",
+      "memoryKey": "Sounds like 'gul + lable'. If you 'gul' (swallow in Hindi) every label without checking, you're gullible. You believe anything anyone tells you. Gullible = easily fooled."
+    },
+    {
+      "id": "v101",
+      "word": "Harangue",
+      "meaning": "Lengthy aggressive speech, tirade",
+      "memoryKey": "Sounds like 'her + anger'. When her anger explodes, she delivers a long, aggressive lecture that goes on and on. That unstoppable angry speech is a harangue."
+    },
+    {
+      "id": "v102",
+      "word": "Immutable",
+      "meaning": "Unchangeable, permanent, fixed",
+      "memoryKey": "Im + mutable (mute = change). 'I'm not mutable!' — I cannot be changed. Like your mother's rule — 'jab tak padhai nahi, TV nahi.' That rule is immutable."
+    },
+    {
+      "id": "v103",
+      "word": "Jeopardize",
+      "meaning": "Endanger, risk, threaten",
+      "memoryKey": "Think of the quiz show 'Jeopardy'. In the show, you put your money at risk with every answer. Jeopardize = to put something valuable in danger."
+    },
+    {
+      "id": "v104",
+      "word": "Kindle",
+      "meaning": "Ignite, inspire, arouse",
+      "memoryKey": "Amazon Kindle lights up knowledge just like kindling lights up fire. Kindle = to spark something — whether it's fire or inspiration."
+    },
+    {
+      "id": "v105",
+      "word": "Lethargic",
+      "meaning": "Drowsy, sluggish, inactive",
+      "memoryKey": "Sounds like 'let + her + jic (sleep)'. Let her sleep — she's so lethargic after the heavy rajma chawal lunch. Lethargic = zero energy, total laziness."
+    },
+    {
+      "id": "v106",
+      "word": "Meticulous",
+      "meaning": "Careful, precise, thorough",
+      "memoryKey": "Sounds like 'medical + us'. Doctors (medical people) have to be extremely careful and precise — one wrong cut and it's over! Meticulous = paying great attention to detail."
+    },
+    {
+      "id": "v107",
+      "word": "Nonchalant",
+      "meaning": "Casual, cool, indifferent",
+      "memoryKey": "Sounds like 'none + shall + rant'. Nothing makes this person rant — they stay cool and unbothered about everything. 'CAT result? Chill hai bhai.' Nonchalant = effortlessly calm."
+    },
+    {
+      "id": "v108",
+      "word": "Ostracize",
+      "meaning": "Exclude, banish, shun",
+      "memoryKey": "Sounds like 'ostrich + size'. An ostrich is so large that the other birds kick it out of the group — excluded! Ostracize = to deliberately exclude someone from a group."
+    },
+    {
+      "id": "v109",
+      "word": "Placate",
+      "meaning": "Calm down, soothe, pacify",
+      "memoryKey": "Sounds like 'please + kate'. Kate is angry and you're begging 'please Kate, calm down!' Placate = to make someone less angry or upset."
+    },
+    {
+      "id": "v110",
+      "word": "Quandary",
+      "meaning": "Dilemma, confusion, uncertainty",
+      "memoryKey": "Sounds like 'kaunsa dairy?' You're standing between Amul and Mother Dairy — which one to buy? That confusion is a quandary — a state of not knowing what to do."
+    },
+    {
+      "id": "v111",
+      "word": "Reticent",
+      "meaning": "Reserved, quiet, restrained",
+      "memoryKey": "Sounds like 'retire + scent'. A retired person sitting silently, smelling flowers. Quiet and reserved. Reticent = not willing to speak freely."
+    },
+    {
+      "id": "v112",
+      "word": "Spurious",
+      "meaning": "Fake, false, counterfeit",
+      "memoryKey": "Sounds like 'Spurs' (Tottenham). Tottenham Spurs fans claim they'll win the league — that's completely spurious and fake every season! Spurious = not genuine."
+    },
+    {
+      "id": "v113",
+      "word": "Tenacious",
+      "meaning": "Persistent, determined, stubborn",
+      "memoryKey": "Sounds like 'ten + nails'. Imagine holding on with ten nails dug deep — you won't let go no matter what. Tenacious = holding firmly, never giving up."
+    },
+    {
+      "id": "v114",
+      "word": "Usurp",
+      "meaning": "Seize power illegally, take by force",
+      "memoryKey": "Sounds like 'use + roop (form)'. A villain uses someone's roop (disguise) to seize the throne illegally. Usurp = to grab power that isn't yours."
+    },
+    {
+      "id": "v115",
+      "word": "Verbose",
+      "meaning": "Wordy, long-winded, rambling",
+      "memoryKey": "Verb + dose. A huge dose of verbs (words)! When someone uses 500 words to say what could be said in 5. Verbose = using way more words than needed."
+    },
+    {
+      "id": "v116",
+      "word": "Wistful",
+      "meaning": "Yearning, longing, nostalgic",
+      "memoryKey": "Sounds like 'wish + full'. Full of wishes for the past — remembering college days, old friends, childhood summers. That bittersweet longing is wistful."
+    },
+    {
+      "id": "v117",
+      "word": "Exonerate",
+      "meaning": "Acquit, clear of blame, vindicate",
+      "memoryKey": "Sounds like 'ex + honour + ate'. They ate his honour (blamed him) but later he was declared innocent — his ex-honour was restored! Exonerate = to declare someone not guilty."
+    },
+    {
+      "id": "v118",
+      "word": "Flippant",
+      "meaning": "Disrespectful, casual, cheeky",
+      "memoryKey": "Sounds like 'flip + ant'. Imagine flipping an ant off the table casually — showing zero respect for it. Flippant = not taking things seriously, being casually rude."
+    },
+    {
+      "id": "v119",
+      "word": "Gratuitous",
+      "meaning": "Unnecessary, uncalled for, unjustified",
+      "memoryKey": "Sounds like 'gratuity + us'. They charged us gratuity even though the service was terrible — totally unnecessary and uncalled for! Gratuitous = without good reason."
+    },
+    {
+      "id": "v120",
+      "word": "Harbinger",
+      "meaning": "Forerunner, herald, sign of what's coming",
+      "memoryKey": "Sounds like 'harbour + danger'. Dark clouds over the harbour are a harbinger of the coming storm. Harbinger = a sign that something is about to happen."
+    },
+    {
+      "id": "v121",
+      "word": "Insipid",
+      "meaning": "Bland, tasteless, dull",
+      "memoryKey": "Sounds like 'in + sip + id'. You take one sip and your id (soul) dies — it's that tasteless! Hostel food without salt. Insipid = lacking flavour or interest."
+    },
+    {
+      "id": "v122",
+      "word": "Judicious",
+      "meaning": "Wise, sensible, prudent",
+      "memoryKey": "Sounds like 'judge + us'. A judge has to be wise and sensible when judging us. Judicious = showing good sense and careful thinking."
+    },
+    {
+      "id": "v123",
+      "word": "Labyrinth",
+      "meaning": "Maze, complex network, puzzle",
+      "memoryKey": "Think of the movie Labyrinth — a giant confusing maze you can't escape. Old Delhi galiyan (lanes) are a labyrinth — once you enter, good luck finding your way out!"
+    },
+    {
+      "id": "v124",
+      "word": "Mundane",
+      "meaning": "Boring, ordinary, dull",
+      "memoryKey": "Sounds like 'Monday'. Monday is the most mundane, boring day of the week — back to routine, nothing exciting. Mundane = dull and ordinary."
+    },
+    {
+      "id": "v125",
+      "word": "Nostalgia",
+      "meaning": "Longing for the past, homesickness",
+      "memoryKey": "Sounds like 'nosta + aligah (Aligarh)'. Missing your hometown Aligarh while studying in a different city. That homesick feeling is nostalgia — yearning for old times."
+    },
+    {
+      "id": "v126",
+      "word": "Ominous",
+      "meaning": "Threatening, menacing, sinister",
+      "memoryKey": "Sounds like 'Oh my + nas'. 'Oh my god, meri naas (destruction) aa rahi hai!' Dark clouds, eerie silence — something bad is coming. Ominous = giving signs of bad things ahead."
+    },
+    {
+      "id": "v127",
+      "word": "Parsimonious",
+      "meaning": "Stingy, miserly, cheap",
+      "memoryKey": "Sounds like 'purse + money + us'. He keeps his purse and money from us — never treats anyone! That kanjoos uncle is parsimonious — extremely stingy with money."
+    },
+    {
+      "id": "v128",
+      "word": "Quintessential",
+      "meaning": "Perfect example, ideal, classic",
+      "memoryKey": "Quint = five, essential = important. The five most essential qualities combined = the perfect example. Shah Rukh Khan is the quintessential Bollywood hero — the classic ideal."
+    },
+    {
+      "id": "v129",
+      "word": "Recalcitrant",
+      "meaning": "Stubborn, defiant, uncooperative",
+      "memoryKey": "Sounds like 're + call + I + can't'. 'You can recall me but I can't come!' — a defiant, stubborn response. Recalcitrant = refusing to obey authority."
+    },
+    {
+      "id": "v130",
+      "word": "Soporific",
+      "meaning": "Sleep-inducing, drowsy, boring",
+      "memoryKey": "Sounds like 'so + poor + ific (terrific)'. The lecture was so poorly terrific that everyone fell asleep! Soporific = so boring it puts you to sleep."
+    },
+    {
+      "id": "v131",
+      "word": "Truculent",
+      "meaning": "Fierce, aggressive, hostile",
+      "memoryKey": "Sounds like 'truck + lent'. Imagine a truck driver who won't lend his parking spot — he gets fierce and aggressive about it! Truculent = ready to fight at any moment."
+    },
+    {
+      "id": "v132",
+      "word": "Untenable",
+      "meaning": "Indefensible, unsustainable, weak",
+      "memoryKey": "Un + tenable (hold). Cannot be held or defended. Like arguing that samosa is healthier than salad — your position is untenable, it just can't stand!"
+    },
+    {
+      "id": "v133",
+      "word": "Venerate",
+      "meaning": "Respect deeply, revere, worship",
+      "memoryKey": "Sounds like 'we + narrate'. 'We narrate stories about our grandparents with deep respect.' Venerate = to honour someone with great admiration, like touching elders' feet."
+    },
+    {
+      "id": "v134",
+      "word": "Wane",
+      "meaning": "Decrease, decline, diminish",
+      "memoryKey": "Think of the waning moon — it gets smaller and smaller every night until it almost disappears. Wane = to gradually decrease in power or size."
+    },
+    {
+      "id": "v135",
+      "word": "Ephemeral",
+      "meaning": "Short-lived, fleeting, temporary",
+      "memoryKey": "Sounds like 'a + female + role'. In old Bollywood, a female role was ephemeral — 2 songs and disappeared! Ephemeral = lasting for a very short time."
+    },
+    {
+      "id": "v136",
+      "word": "Fortuitous",
+      "meaning": "Lucky, fortunate, accidental",
+      "memoryKey": "Sounds like 'fortunate + us'. A fortuitous event is one that's fortunate for us — happening by lucky chance. Like randomly guessing correctly in CAT!"
+    },
+    {
+      "id": "v137",
+      "word": "Hegemony",
+      "meaning": "Dominance, leadership, supremacy",
+      "memoryKey": "Sounds like 'he + jee + money'. He has JEE degree AND money — naturally, he dominates everyone! Hegemony = dominance of one group over others."
+    },
+    {
+      "id": "v138",
+      "word": "Idiosyncrasy",
+      "meaning": "Peculiarity, quirk, eccentricity",
+      "memoryKey": "Idiot + sin + crazy. An idiotic, sinful, crazy habit that only you have — like eating maggi with curd. That's your idiosyncrasy — a personal quirk nobody understands."
+    },
+    {
+      "id": "v139",
+      "word": "Juggernaut",
+      "meaning": "Unstoppable force, powerful entity",
+      "memoryKey": "Named after Lord Jagannath's massive chariot in Puri — once it starts rolling, nothing can stop it! A juggernaut is any powerful, unstoppable force."
+    },
+    {
+      "id": "v140",
+      "word": "Clemency",
+      "meaning": "Mercy, leniency, forgiveness",
+      "memoryKey": "Sounds like 'clement + sea'. A clement (gentle) sea is calm and merciful to sailors. Clemency = showing mercy and forgiveness, like a judge reducing a sentence."
+    },
+    {
+      "id": "v141",
+      "word": "Draconian",
+      "meaning": "Very harsh, severe, strict",
+      "memoryKey": "Sounds like 'Draco' from Harry Potter — Draco Malfoy was harsh and cruel. Draconian = excessively harsh rules or punishments. Like 'phone submit at hostel gate' rules!"
+    },
+    {
+      "id": "v142",
+      "word": "Enervate",
+      "meaning": "Weaken, drain, sap energy",
+      "memoryKey": "Sounds like 'energy + wait'. All your energy says 'wait, I'm leaving!' You're drained completely. Enervate = to make someone feel drained and lifeless."
+    },
+    {
+      "id": "v143",
+      "word": "Filibuster",
+      "meaning": "Obstruct legislation by long speeches",
+      "memoryKey": "Sounds like 'fill + buster'. Someone who fills time like a buster — talking endlessly in Parliament to block a bill from passing. Filibuster = talking non-stop to delay decisions."
+    },
+    {
+      "id": "v144",
+      "word": "Germane",
+      "meaning": "Relevant, pertinent, applicable",
+      "memoryKey": "Sounds like 'Germany'. If you're discussing European football, Germany is germane (relevant) to the topic. Germane = closely related to the subject at hand."
+    },
+    {
+      "id": "v145",
+      "word": "Hypothetical",
+      "meaning": "Theoretical, imaginary, supposed",
+      "memoryKey": "Hypo = under, thetical = thesis. Under a thesis — not yet proven, just imaginary. 'Hypothetically, agar mujhe 100 percentile aa jaye...' — it's theoretical, not real."
+    },
+    {
+      "id": "v146",
+      "word": "Impervious",
+      "meaning": "Unaffected, resistant, immune",
+      "memoryKey": "Im + pervious (previous). Not affected by previous attacks! Like a student who fails 5 mocks but is impervious to discouragement — nothing penetrates their confidence."
+    },
+    {
+      "id": "v147",
+      "word": "Jurisprudence",
+      "meaning": "Philosophy of law, legal theory",
+      "memoryKey": "Juris (law) + prudence (wisdom). Wisdom of law! Jurisprudence = the study and theory of law. Law students study this to become wise judges."
+    },
+    {
+      "id": "v148",
+      "word": "Misanthrope",
+      "meaning": "Person who hates humanity, recluse",
+      "memoryKey": "Mis (hate) + anthrope (humans). Hates humans! That grumpy uncle who shouts at every kid, hates every neighbour, and talks to nobody. He's a misanthrope."
+    },
+    {
+      "id": "v149",
+      "word": "Pragmatic",
+      "meaning": "Practical, realistic, sensible",
+      "memoryKey": "Sounds like 'practical + magic'. Not magic — practical! A pragmatic person deals with things sensibly and realistically, not based on dreams. 'IIM milega ya nahi, backup rakh!'"
+    },
+    {
+      "id": "v150",
+      "word": "Sanguine",
+      "meaning": "Optimistic, hopeful, confident",
+      "memoryKey": "Sounds like 'sangeen (serious in Hindi)'. But flip it! A sanguine person takes even serious situations with a positive smile. 'CAT exam kharab gaya? Koi nahi, next year!' Always optimistic."
+    }
+  ],
+  "idioms": [
+    {
+      "id": "i001",
+      "phrase": "Burn the midnight oil",
+      "meaning": "To work or study late into the night",
+      "memoryKey": "Picture a CAT aspirant at 3 AM — Red Bull finished, eyes burning, but still solving quant. The lamp oil is almost gone but the grind doesn't stop. Burning midnight oil = pulling an all-nighter."
+    },
+    {
+      "id": "i002",
+      "phrase": "A penny for your thoughts",
+      "meaning": "Asking someone what they're thinking about",
+      "memoryKey": "Your friend is zoning out during a CAT mock. You wave a coin and say 'ek paisa dunga, bata kya soch raha hai!' Penny for your thoughts = 'bhai, kya chal raha hai dimag mein?'"
+    },
+    {
+      "id": "i003",
+      "phrase": "Beat around the bush",
+      "meaning": "To avoid talking about the main topic",
+      "memoryKey": "A hunter keeps hitting bushes around the rabbit but never aims at it. Like when your friend asks 'result kaisa tha?' and you start talking about the weather. Stop beating around the bush!"
+    },
+    {
+      "id": "i004",
+      "phrase": "Bite the bullet",
+      "meaning": "To endure a painful situation bravely",
+      "memoryKey": "Old war soldiers bit actual bullets during surgery without anaesthesia. Like you biting the bullet and opening your CAT scorecard — painful but you gotta face it!"
+    },
+    {
+      "id": "i005",
+      "phrase": "Break the ice",
+      "meaning": "To initiate conversation in an awkward situation",
+      "memoryKey": "First day at coaching class — everyone sitting like statues frozen in ice. Someone cracks a joke and CRACK — the ice breaks! Conversation flows. Break the ice = start talking in awkward silence."
+    },
+    {
+      "id": "i006",
+      "phrase": "Cost an arm and a leg",
+      "meaning": "Something extremely expensive",
+      "memoryKey": "IIM fees — 25 lakhs! Itna mehnga ki lagta hai haath-pair bech diye. When something costs an arm and a leg, it's insanely expensive."
+    },
+    {
+      "id": "i007",
+      "phrase": "Cry over spilt milk",
+      "meaning": "To regret something that cannot be undone",
+      "memoryKey": "You accidentally submitted the CAT exam 10 minutes early. Crying about it won't add those 10 minutes back. Don't cry over spilt milk — jo hua so hua!"
+    },
+    {
+      "id": "i008",
+      "phrase": "Hit the nail on the head",
+      "meaning": "To describe exactly what's causing a problem",
+      "memoryKey": "A carpenter who drives the nail in one perfect strike — no wasted effort. Like when someone says 'tumhari problem hai ki tum time manage nahi karte' — boom, nail on the head!"
+    },
+    {
+      "id": "i009",
+      "phrase": "Let the cat out of the bag",
+      "meaning": "To reveal a secret accidentally",
+      "memoryKey": "Surprise birthday party planned. But your dumb friend texts 'party ke liye kya laun?' in the group. The CAT (secret) is out of the bag! Accidentally exposed."
+    },
+    {
+      "id": "i010",
+      "phrase": "Once in a blue moon",
+      "meaning": "Something that happens very rarely",
+      "memoryKey": "Moon turns blue almost never. Just like your kanjoos friend treating everyone — once in a blue moon! Extremely rare occurrence."
+    },
+    {
+      "id": "i011",
+      "phrase": "The ball is in your court",
+      "meaning": "It's your turn to make a decision or take action",
+      "memoryKey": "Badminton match — the shuttle is on your side. Your opponent has played their shot. Now it's YOUR turn to hit. Ball in your court = decision is yours now."
+    },
+    {
+      "id": "i012",
+      "phrase": "Barking up the wrong tree",
+      "meaning": "Looking in the wrong place or accusing the wrong person",
+      "memoryKey": "A dog barking at a tree where the cat used to be — but the cat already climbed to another tree! The dog is wasting its time. Barking up the wrong tree = blaming the wrong person."
+    },
+    {
+      "id": "i013",
+      "phrase": "Burning bridges",
+      "meaning": "Destroying relationships or connections permanently",
+      "memoryKey": "Imagine crossing a bridge and setting it on fire behind you — now you can never go back. Like fighting with your professor before results — you've burned that bridge forever!"
+    },
+    {
+      "id": "i014",
+      "phrase": "A blessing in disguise",
+      "meaning": "Something that seems bad but turns out to be good",
+      "memoryKey": "You didn't crack CAT, joined a startup instead, and became a crorepati. The failure was actually a blessing wearing a disguise — it looked bad but turned out amazing!"
+    },
+    {
+      "id": "i015",
+      "phrase": "Cut corners",
+      "meaning": "To do something in the cheapest or easiest way",
+      "memoryKey": "Building a house but cutting corners on material to save money — fewer bricks, thinner walls. Cut corners = doing something lazily to save time or money. Never cut corners in CAT prep!"
+    },
+    {
+      "id": "i016",
+      "phrase": "Devil's advocate",
+      "meaning": "Someone who argues the opposite side for the sake of debate",
+      "memoryKey": "In a GD (group discussion), one person deliberately argues the opposite view to test everyone's thinking. They're playing devil's advocate — not because they believe it, but to challenge you."
+    },
+    {
+      "id": "i017",
+      "phrase": "Elephant in the room",
+      "meaning": "An obvious problem nobody wants to discuss",
+      "memoryKey": "Imagine a literal elephant standing in your living room and everyone pretends it's not there. 'Nice weather today!' Elephant in the room = the big issue everyone's ignoring."
+    },
+    {
+      "id": "i018",
+      "phrase": "Get a taste of your own medicine",
+      "meaning": "Experience the same bad treatment you give to others",
+      "memoryKey": "The class bully gets bullied by the new kid. How does it feel now, bhai? Taste of your own medicine = suffering what you made others suffer."
+    },
+    {
+      "id": "i019",
+      "phrase": "Go the extra mile",
+      "meaning": "To make more effort than is expected",
+      "memoryKey": "Everyone stops after running 5 km. But you run 6 km — that extra mile. Like solving 100 extra questions when others stop at the syllabus. Going the extra mile = putting in extraordinary effort."
+    },
+    {
+      "id": "i020",
+      "phrase": "In hot water",
+      "meaning": "In serious trouble",
+      "memoryKey": "Imagine being thrown into a bathtub of boiling hot water — AAAH! You're in serious trouble. Like getting caught using your phone during a CAT mock — you're in hot water now!"
+    },
+    {
+      "id": "i021",
+      "phrase": "Jump on the bandwagon",
+      "meaning": "To follow a trend or join something popular",
+      "memoryKey": "A band plays on a wagon and everyone jumps on to join the party. Like when one person starts a startup and suddenly everyone wants to be an 'entrepreneur'. Jumping on the bandwagon!"
+    },
+    {
+      "id": "i022",
+      "phrase": "Keep your chin up",
+      "meaning": "Stay positive during difficult times",
+      "memoryKey": "When you're sad, your chin drops. But someone lifts it up — 'sar upar rakh bhai!' Keep your chin up = stay confident and hopeful even when things are tough."
+    },
+    {
+      "id": "i023",
+      "phrase": "Kill two birds with one stone",
+      "meaning": "Achieve two things with a single action",
+      "memoryKey": "One stone, two birds down. Like going to the library to study AND impress your crush — kill two birds with one stone. Maximum output, minimum effort!"
+    },
+    {
+      "id": "i024",
+      "phrase": "Let sleeping dogs lie",
+      "meaning": "Don't disturb a situation that's currently stable",
+      "memoryKey": "A dog is sleeping peacefully. You poke it. It bites you. Your fault! Let sleeping dogs lie = don't bring up old fights or forgotten problems. Rehne de bhai!"
+    },
+    {
+      "id": "i025",
+      "phrase": "Miss the boat",
+      "meaning": "To miss an opportunity by being too slow",
+      "memoryKey": "The boat is leaving the harbour and you're still tying your shoelaces on the dock. Too late! You missed the boat. Like submitting your IIM application one day after the deadline."
+    },
+    {
+      "id": "i026",
+      "phrase": "Nip it in the bud",
+      "meaning": "To stop a problem before it grows bigger",
+      "memoryKey": "A weed is just a tiny bud — easy to pluck now. But let it grow and it'll destroy the whole garden. Nip it in the bud = kill the problem while it's still small."
+    },
+    {
+      "id": "i027",
+      "phrase": "On thin ice",
+      "meaning": "In a risky or dangerous situation",
+      "memoryKey": "Walking on thin ice over a lake — one wrong step and CRACK, you fall in. Like bunking classes when you already have low attendance — you're on thin ice, buddy!"
+    },
+    {
+      "id": "i028",
+      "phrase": "Pull someone's leg",
+      "meaning": "To joke or tease someone",
+      "memoryKey": "Literally imagine pulling someone's leg — they stumble and everyone laughs. It's just a prank! Pull someone's leg = tease them harmlessly for fun."
+    },
+    {
+      "id": "i029",
+      "phrase": "Read between the lines",
+      "meaning": "To understand the hidden meaning",
+      "memoryKey": "RC passages in CAT — the answer is never in the lines, it's BETWEEN them! You have to read what's implied, not stated. Read between the lines = understand the hidden message."
+    },
+    {
+      "id": "i030",
+      "phrase": "Spill the beans",
+      "meaning": "To reveal secret information",
+      "memoryKey": "Imagine a jar full of secret beans. Someone tips it over and all the beans spill out — secrets exposed! Like your friend accidentally revealing the surprise party. Spilled the beans!"
+    },
+    {
+      "id": "i031",
+      "phrase": "Steal someone's thunder",
+      "meaning": "To take credit for someone else's achievement",
+      "memoryKey": "You prepare an amazing presentation. But your teammate presents it first and gets all the applause — he stole your thunder! Taking credit for someone else's work."
+    },
+    {
+      "id": "i032",
+      "phrase": "The best of both worlds",
+      "meaning": "Enjoying the advantages of two different things",
+      "memoryKey": "Working from home — office salary + home ka khana. You get the best of both worlds! Enjoying two different advantages at the same time."
+    },
+    {
+      "id": "i033",
+      "phrase": "Through thick and thin",
+      "meaning": "Through good and bad times together",
+      "memoryKey": "Thick jungle and thin ice — your best friend walks with you through both. Through thick and thin = staying loyal in good times AND bad times."
+    },
+    {
+      "id": "i034",
+      "phrase": "Under the weather",
+      "meaning": "Feeling slightly ill or unwell",
+      "memoryKey": "Bad weather makes you feel gloomy and sick. Under the weather = 'tabiyat theek nahi hai yaar.' Not seriously ill, just feeling off."
+    },
+    {
+      "id": "i035",
+      "phrase": "Up in the air",
+      "meaning": "Uncertain, not yet decided",
+      "memoryKey": "Throw a coin in the air — while it's spinning, you don't know heads or tails. It's up in the air! Plans that aren't confirmed yet are up in the air."
+    },
+    {
+      "id": "i036",
+      "phrase": "When pigs fly",
+      "meaning": "Something that will never happen",
+      "memoryKey": "Pigs flying? IMPOSSIBLE! 'I'll top CAT without studying — haan, when pigs fly!' Used sarcastically for things that'll never happen."
+    },
+    {
+      "id": "i037",
+      "phrase": "A storm in a teacup",
+      "meaning": "A big fuss about something unimportant",
+      "memoryKey": "A tiny storm inside a tiny teacup — sounds dramatic but it's harmless. Like two friends fighting for 3 days over who ate the last biscuit. A storm in a teacup = overreacting!"
+    },
+    {
+      "id": "i038",
+      "phrase": "Actions speak louder than words",
+      "meaning": "What you do matters more than what you say",
+      "memoryKey": "Your friend says 'I'll help you study' but never shows up. Meanwhile, another friend silently shares their notes daily. Actions > words. Always."
+    },
+    {
+      "id": "i039",
+      "phrase": "Add fuel to the fire",
+      "meaning": "To make a bad situation worse",
+      "memoryKey": "A small fire is burning. Instead of water, you throw petrol on it — BOOM! Like telling your angry mom 'relax, it's not a big deal.' You just added fuel to the fire!"
+    },
+    {
+      "id": "i040",
+      "phrase": "Back to the drawing board",
+      "meaning": "Start over because the plan failed",
+      "memoryKey": "Your business plan flopped. Time to erase the whiteboard and start fresh. Back to the drawing board = the current approach failed, let's redesign from scratch."
+    },
+    {
+      "id": "i041",
+      "phrase": "Bite off more than you can chew",
+      "meaning": "To take on more responsibility than you can handle",
+      "memoryKey": "Stuffing an entire samosa in your mouth — your cheeks explode, you can't chew. Like joining 5 coaching classes at once. You've bitten off more than you can chew!"
+    },
+    {
+      "id": "i042",
+      "phrase": "Don't count your chickens before they hatch",
+      "meaning": "Don't assume success before it happens",
+      "memoryKey": "You have 10 eggs and already telling everyone you'll have 10 chickens. But what if 5 eggs don't hatch? Like celebrating IIM admission before the final merit list. Don't count your chickens!"
+    },
+    {
+      "id": "i043",
+      "phrase": "Every cloud has a silver lining",
+      "meaning": "There is something positive in every bad situation",
+      "memoryKey": "Dark rain clouds look gloomy but the sun shining behind them creates a silver edge. Even your worst CAT mock teaches you something. Every bad situation has a hidden positive."
+    },
+    {
+      "id": "i044",
+      "phrase": "Get out of hand",
+      "meaning": "To become out of control",
+      "memoryKey": "A kite string slips out of your hand and the kite flies away wildly. Like a small argument that escalates into a full fight — things got out of hand."
+    },
+    {
+      "id": "i045",
+      "phrase": "Give the benefit of the doubt",
+      "meaning": "To trust someone despite uncertainty",
+      "memoryKey": "Your friend says 'I didn't copy in the exam.' You're not sure, but you trust them anyway. Giving the benefit of the doubt = choosing to believe someone when you're unsure."
+    },
+    {
+      "id": "i046",
+      "phrase": "Hit the books",
+      "meaning": "To study hard",
+      "memoryKey": "Literally hitting your books — THWACK! Not with anger, but with dedication. When your parents say 'padhai kar', they mean hit the books = study seriously!"
+    },
+    {
+      "id": "i047",
+      "phrase": "Icing on the cake",
+      "meaning": "Something extra that makes a good situation even better",
+      "memoryKey": "The cake is already delicious. But add icing? NOW it's perfect! Like getting a scholarship on top of your IIM admission — that's the icing on the cake!"
+    },
+    {
+      "id": "i048",
+      "phrase": "Jack of all trades, master of none",
+      "meaning": "Someone who can do many things but isn't expert at any",
+      "memoryKey": "Jack tries coding, singing, cooking, painting — decent at all, expert at none. Like that student who joins every club but tops none. Jack of all trades, master of none."
+    },
+    {
+      "id": "i049",
+      "phrase": "Piece of cake",
+      "meaning": "Something very easy to do",
+      "memoryKey": "Eating cake = easiest thing ever. Nobody struggles to eat cake! When someone says the exam was a piece of cake, it means it was ridiculously easy."
+    },
+    {
+      "id": "i050",
+      "phrase": "Sit on the fence",
+      "meaning": "To remain neutral and not take sides",
+      "memoryKey": "Two neighbours are fighting. You sit on the fence between their houses — literally in the middle, not choosing either side. Sit on the fence = refuse to pick a side in an argument."
+    }
+  ],
+  "quant_formulas": [
+    {
+      "id": "q001",
+      "topic": "Numbers",
+      "question": "Multiplicand × Multiplier = ?",
+      "answer": "$$\\text{Product}$$\n\nAlso: $$\\text{Dividend} = \\text{Divisor} \\times \\text{Quotient} + \\text{Remainder}$$"
+    },
+    {
+      "id": "q002",
+      "topic": "Numbers",
+      "question": "What is a Rational Number?",
+      "answer": "A number expressible as $$\\frac{p}{q}$$ where $$q \\neq 0$$.\n\nIt has a terminating or recurring decimal."
+    },
+    {
+      "id": "q003",
+      "topic": "Numbers",
+      "question": "What is an Irrational Number?",
+      "answer": "A number with a non-terminating, non-recurring decimal.\n\nE.g., $$\\sqrt{2}, \\pi, e$$"
+    },
+    {
+      "id": "q004",
+      "topic": "Numbers",
+      "question": "Every prime > 3 can be written as?",
+      "answer": "$$6k \\pm 1$$"
+    },
+    {
+      "id": "q005",
+      "topic": "Numbers",
+      "question": "Is 1 prime or composite?",
+      "answer": "1 is neither prime nor composite.\n\n15 primes between 1–50.\n10 primes between 50–100."
+    },
+    {
+      "id": "q006",
+      "topic": "Numbers",
+      "question": "Product of any number of odd numbers is?",
+      "answer": "Always odd.\n\nProduct of numbers when at least one is even → always even."
+    },
+    {
+      "id": "q007",
+      "topic": "Numbers",
+      "question": "What is a Perfect Number?",
+      "answer": "Sum of all factors excluding itself (including 1) = the number.\n\nE.g., $$6 = 1+2+3$$"
+    },
+    {
+      "id": "q008",
+      "topic": "Numbers",
+      "question": "BODMAS hierarchy?",
+      "answer": "Brackets → Of → Division, Multiplication → Addition, Subtraction"
+    },
+    {
+      "id": "q009",
+      "topic": "Numbers",
+      "question": "Divisibility by $$2^n$$ or $$5^n$$?",
+      "answer": "A number formed by the last $$n$$ digits (left to right) must be divisible by $$2^n$$ or $$5^n$$."
+    },
+    {
+      "id": "q010",
+      "topic": "Numbers",
+      "question": "Divisibility rule for 6?",
+      "answer": "Must be divisible by both 2 AND 3."
+    },
+    {
+      "id": "q011",
+      "topic": "Numbers",
+      "question": "Divisibility rule for 7?",
+      "answer": "Difference between number of tens and twice the units digit is divisible by 7.\n\nE.g., $$4558 \\to 455 - 16 = 439 \\to 43 - 18 = 25$$ → Not divisible."
+    },
+    {
+      "id": "q012",
+      "topic": "Numbers",
+      "question": "Divisibility rule for 9?",
+      "answer": "Sum of all digits is a multiple of 9."
+    },
+    {
+      "id": "q013",
+      "topic": "Numbers",
+      "question": "Divisibility rule for 11?",
+      "answer": "Sum of alternate digits is the same, or they differ by a multiple of 11.\n\nE.g., $$7853245 \\to |16-16| = 0$$ ✓"
+    },
+    {
+      "id": "q014",
+      "topic": "Numbers",
+      "question": "Divisibility rule for 19?",
+      "answer": "Sum of number of tens + twice the unit digit is divisible by 19.\n\nE.g., $$4579 \\to 457+18 = 475 \\to 47+10 = 57$$ ✓"
+    },
+    {
+      "id": "q015",
+      "topic": "Numbers",
+      "question": "If $$N = a^p \\times b^q \\times c^r$$, number of factors?",
+      "answer": "$$(p+1)(q+1)(r+1)$$\n\nIncludes 1 and $$N$$ itself."
+    },
+    {
+      "id": "q016",
+      "topic": "Numbers",
+      "question": "Ways to express $$N$$ as product of two factors?",
+      "answer": "$$\\frac{1}{2}(p+1)(q+1)(r+1)\\ldots$$"
+    },
+    {
+      "id": "q017",
+      "topic": "Numbers",
+      "question": "If $$N$$ is a perfect square, ways to express as product of 2 different factors?",
+      "answer": "$$\\frac{1}{2}\\left[(p+1)(q+1)(r+1)\\ldots - 1\\right]$$\n\nExcludes $$\\sqrt{N} \\times \\sqrt{N}$$"
+    },
+    {
+      "id": "q018",
+      "topic": "Numbers",
+      "question": "Sum of all factors of $$N = a^p \\times b^q$$?",
+      "answer": "$$\\frac{a^{p+1}-1}{a-1} \\times \\frac{b^{q+1}-1}{b-1}$$"
+    },
+    {
+      "id": "q019",
+      "topic": "Numbers",
+      "question": "Product of all factors of $$N$$?",
+      "answer": "$$N^{d/2}$$\n\nwhere $$d$$ = total number of factors."
+    },
+    {
+      "id": "q020",
+      "topic": "Numbers",
+      "question": "Ways of writing $$N$$ as product of 2 coprimes?",
+      "answer": "$$2^{n-1}$$\n\nwhere $$n$$ = number of different prime factors."
+    },
+    {
+      "id": "q021",
+      "topic": "Numbers",
+      "question": "Euler's totient $$\\phi(N)$$ — coprimes less than $$N$$?",
+      "answer": "$$\\phi(N) = N\\left(1-\\frac{1}{a}\\right)\\left(1-\\frac{1}{b}\\right)\\left(1-\\frac{1}{c}\\right)\\ldots$$\n\nwhere $$a,b,c$$ are prime factors of $$N$$."
+    },
+    {
+      "id": "q022",
+      "topic": "Numbers",
+      "question": "Sum of coprimes to $$N$$ less than $$N$$?",
+      "answer": "$$\\frac{N}{2} \\times \\phi(N)$$"
+    },
+    {
+      "id": "q023",
+      "topic": "Numbers",
+      "question": "Successive Division — how does it work?",
+      "answer": "Divide step by step by successive divisors.\n\nProduct form: $$3 \\times 4 \\times 7 + 23$$\n$$= ((1 \\times 4+3) \\times 3+2)$$"
+    },
+    {
+      "id": "q024",
+      "topic": "Numbers",
+      "question": "Largest power of prime $$p$$ in $$N!$$?",
+      "answer": "$$\\left\\lfloor\\frac{N}{p}\\right\\rfloor + \\left\\lfloor\\frac{N}{p^2}\\right\\rfloor + \\left\\lfloor\\frac{N}{p^3}\\right\\rfloor + \\cdots$$\n\nE.g., power of 5 in $$121! = 24+4+0 = 28$$"
+    },
+    {
+      "id": "q025",
+      "topic": "Numbers",
+      "question": "$$a^n - b^n$$ is always divisible by?",
+      "answer": "Always by $$(a-b)$$.\n\n$$n$$ even → also by $$(a+b)$$.\n$$n$$ odd → NOT by $$(a+b)$$."
+    },
+    {
+      "id": "q026",
+      "topic": "Numbers",
+      "question": "$$a^n + b^n$$ is divisible by?",
+      "answer": "NEVER by $$(a-b)$$.\n\n$$n$$ odd → by $$(a+b)$$.\n$$n$$ even → NOT by $$(a+b)$$."
+    },
+    {
+      "id": "q027",
+      "topic": "Numbers",
+      "question": "Product of 2 consecutive numbers divisible by?",
+      "answer": "$$2$$\n\nProduct of 3 consecutive → divisible by $$6$$."
+    },
+    {
+      "id": "q028",
+      "topic": "Numbers",
+      "question": "Out of $$n$$ consecutive integers?",
+      "answer": "Exactly one is divisible by $$n$$.\n\nProduct of $$n$$ consecutive integers is divisible by $$n!$$"
+    },
+    {
+      "id": "q029",
+      "topic": "Numbers",
+      "question": "Tens digit of a perfect square ending in 6?",
+      "answer": "Always odd."
+    },
+    {
+      "id": "q030",
+      "topic": "Numbers",
+      "question": "If a perfect square ends with 5, tens digit?",
+      "answer": "Always 2."
+    },
+    {
+      "id": "q031",
+      "topic": "Numbers",
+      "question": "Product of $$m$$-digit and $$n$$-digit number has how many digits?",
+      "answer": "Either $$(m+n-1)$$ or $$(m+n)$$ digits."
+    },
+    {
+      "id": "q032",
+      "topic": "Numbers",
+      "question": "What are Twin Primes?",
+      "answer": "Primes differing by 2.\n\n$$(3,5), (5,7), (11,13), (17,19)$$"
+    },
+    {
+      "id": "q033",
+      "topic": "Numbers",
+      "question": "$$n$$th root of $$M$$-digit number — how many digits?",
+      "answer": "If $$\\lceil M/n \\rceil$$ is integer → that many digits.\n\nOtherwise → $$\\lfloor M/n \\rfloor + 1$$ digits."
+    },
+    {
+      "id": "q034",
+      "topic": "Numbers",
+      "question": "Key algebraic identities?",
+      "answer": "$$a^3+b^3 = (a+b)(a^2-ab+b^2)$$\n\n$$a^2-b^2 = (a-b)(a+b)$$\n\n$$a^3+b^3+c^3-3abc = (a+b+c)(a^2+b^2+c^2-ab-bc-ca)$$"
+    },
+    {
+      "id": "q035",
+      "topic": "Numbers",
+      "question": "If $$a^3+b^3+c^3 = 3abc$$, then?",
+      "answer": "$$a+b+c = 0$$\n\n(when $$a,b,c$$ are not all equal)"
+    },
+    {
+      "id": "q036",
+      "topic": "Numbers",
+      "question": "Remainder shortcuts?",
+      "answer": "$$\\frac{15}{7} \\to$$ remainder 1.\n\nUse successive division or digit-sum methods for larger numbers."
+    },
+    {
+      "id": "q037",
+      "topic": "Numbers",
+      "question": "$$\\text{LCM} \\times \\text{HCF} = ?$$",
+      "answer": "$$\\text{LCM} \\times \\text{HCF} = \\text{Product of the two numbers}$$\n\nLCM is always a multiple of HCF."
+    },
+    {
+      "id": "q038",
+      "topic": "Numbers",
+      "question": "HCF and LCM of fractions?",
+      "answer": "$$\\text{HCF} = \\frac{\\text{HCF of numerators}}{\\text{LCM of denominators}}$$\n\n$$\\text{LCM} = \\frac{\\text{LCM of numerators}}{\\text{HCF of denominators}}$$"
+    },
+    {
+      "id": "q039",
+      "topic": "Numbers",
+      "question": "Number divided by $$p,q,r$$ leaves SAME remainder $$s$$?",
+      "answer": "Form: $$k \\cdot \\text{LCM}(p,q,r) + s$$"
+    },
+    {
+      "id": "q040",
+      "topic": "Numbers",
+      "question": "Divided by $$p,q,r$$ with remainders where $$p-s = q-t = r-u = v$$?",
+      "answer": "Form: $$k \\cdot \\text{LCM}(p,q,r) - v$$"
+    },
+    {
+      "id": "q041",
+      "topic": "Numbers",
+      "question": "Largest number dividing $$p,q,r$$ giving remainders $$s,t,u$$?",
+      "answer": "$$\\text{HCF}(p-s,\\; q-t,\\; r-u)$$"
+    },
+    {
+      "id": "q042",
+      "topic": "Numbers",
+      "question": "Largest number dividing $$p,q,r$$ giving SAME remainder?",
+      "answer": "$$\\text{HCF}(p-q,\\; q-r)$$"
+    },
+    {
+      "id": "q043",
+      "topic": "Numbers",
+      "question": "Last digit of powers follows?",
+      "answer": "Cyclic pattern with period 4.\n\nE.g., powers of 3: $$3,9,7,1,3,9,7,1\\ldots$$"
+    },
+    {
+      "id": "q044",
+      "topic": "Numbers",
+      "question": "Remainders of powers follow?",
+      "answer": "A cyclic pattern.\n\nE.g., $$3^n \\mod 4$$: $$3,1,3,1\\ldots$$"
+    },
+    {
+      "id": "q045",
+      "topic": "Numbers",
+      "question": "Remainder Theorem: $$f(x)$$ divided by $$(x-a)$$?",
+      "answer": "Remainder $$= f(a)$$\n\nE.g., $$2^{67} \\mod 9 \\to (2^3)^{22} \\cdot 2 \\to (-1)^{22} \\times 2 = 2$$"
+    },
+    {
+      "id": "q046",
+      "topic": "Numbers",
+      "question": "Last 2 digits of powers when $$a$$ ends in 0?",
+      "answer": "All higher powers have at least 2 zeros at end."
+    },
+    {
+      "id": "q047",
+      "topic": "Numbers",
+      "question": "Last 2 digits of powers when $$a$$ ends in 5?",
+      "answer": "End in 25 or 75 depending on tens digit being even or odd."
+    },
+    {
+      "id": "q048",
+      "topic": "Numbers",
+      "question": "Last 2 digits when $$a$$ ends in 1,3,7,9?",
+      "answer": "Follow a cycle of 20 (or factors of 20)."
+    },
+    {
+      "id": "q049",
+      "topic": "Numbers",
+      "question": "Last 2 digits when $$a$$ ends in 2,4,6,8?",
+      "answer": "$$4^{k}$$ cycle pattern. All subsequent series repeat."
+    },
+    {
+      "id": "q050",
+      "topic": "Numbers",
+      "question": "$$N$$ divided by $$D_n = \\underbrace{99\\ldots9}_{n}$$?",
+      "answer": "Group digits of $$N$$ in sets of $$n$$ from right, add all groups → $$S_n$$.\n\nRemainder $$= S_n \\mod D_n$$"
+    },
+    {
+      "id": "q051",
+      "topic": "Numbers",
+      "question": "Binomial expansion $$(a+b)^n$$?",
+      "answer": "$$\\binom{n}{0}a^n + \\binom{n}{1}a^{n-1}b + \\binom{n}{2}a^{n-2}b^2 + \\cdots + \\binom{n}{n}b^n$$"
+    },
+    {
+      "id": "q052",
+      "topic": "Numbers",
+      "question": "Fermat's Little Theorem?",
+      "answer": "If $$p$$ is prime and $$\\gcd(a,p)=1$$:\n\n$$a^{p-1} \\equiv 1 \\pmod{p}$$\n\nWilson's: $$(p-1)!+1 \\equiv 0 \\pmod{p}$$"
+    },
+    {
+      "id": "q053",
+      "topic": "Numbers",
+      "question": "$$(n-1)!$$ is NOT divisible by $$n$$ when?",
+      "answer": "When $$n$$ is prime."
+    },
+    {
+      "id": "q054",
+      "topic": "Numbers",
+      "question": "$$(x^4+x^2+1)$$ factorizes as?",
+      "answer": "$$(x^2+x+1)(x^2-x+1)$$"
+    },
+    {
+      "id": "q055",
+      "topic": "Numbers",
+      "question": "$$2^{2k}$$ leaves remainder 1 when divided by?",
+      "answer": "3 or 5."
+    },
+    {
+      "id": "q056",
+      "topic": "Numbers",
+      "question": "Remainder of $$10^n \\div 11$$ when $$n$$ is odd?",
+      "answer": "Always 10."
+    },
+    {
+      "id": "q057",
+      "topic": "Numbers",
+      "question": "$$76^n$$ always ends in?",
+      "answer": "76, for any positive integral $$n$$."
+    },
+    {
+      "id": "q058",
+      "topic": "Numbers",
+      "question": "$$x^n$$ ends in 76 whenever?",
+      "answer": "$$x$$ is even and $$n$$ is a multiple of 20."
+    },
+    {
+      "id": "q059",
+      "topic": "Ratio & Proportion",
+      "question": "$$\\frac{a}{b}$$ ratio types?",
+      "answer": "$$a > b \\to$$ ratio of greater inequality\n$$a < b \\to$$ ratio of lesser inequality\n$$a = b \\to$$ ratio of equality"
+    },
+    {
+      "id": "q060",
+      "topic": "Ratio & Proportion",
+      "question": "$$a:b :: c:d$$ — what are the terms called?",
+      "answer": "$$a,d$$ → Extremes\n$$b,c$$ → Means"
+    },
+    {
+      "id": "q061",
+      "topic": "Ratio & Proportion",
+      "question": "Invertendo?",
+      "answer": "If $$\\frac{a}{b} = \\frac{c}{d}$$ then $$\\frac{b}{a} = \\frac{d}{c}$$"
+    },
+    {
+      "id": "q062",
+      "topic": "Ratio & Proportion",
+      "question": "Alternendo?",
+      "answer": "If $$\\frac{a}{b} = \\frac{c}{d}$$ then $$\\frac{a}{c} = \\frac{b}{d}$$"
+    },
+    {
+      "id": "q063",
+      "topic": "Ratio & Proportion",
+      "question": "Componendo?",
+      "answer": "If $$\\frac{a}{b} = \\frac{c}{d}$$ then $$\\frac{a+b}{b} = \\frac{c+d}{d}$$"
+    },
+    {
+      "id": "q064",
+      "topic": "Ratio & Proportion",
+      "question": "Dividendo?",
+      "answer": "If $$\\frac{a}{b} = \\frac{c}{d}$$ then $$\\frac{a-b}{b} = \\frac{c-d}{d}$$"
+    },
+    {
+      "id": "q065",
+      "topic": "Ratio & Proportion",
+      "question": "Componendo-Dividendo?",
+      "answer": "If $$\\frac{a}{b} = \\frac{c}{d}$$ then $$\\frac{a+b}{a-b} = \\frac{c+d}{c-d}$$"
+    },
+    {
+      "id": "q066",
+      "topic": "Ratio & Proportion",
+      "question": "$$\\frac{a}{b} = \\frac{c}{d} = \\frac{e}{f} = \\ldots$$ then all equal?",
+      "answer": "$$\\frac{a+c+e+\\ldots}{b+d+f+\\ldots}$$"
+    },
+    {
+      "id": "q067",
+      "topic": "Ratio & Proportion",
+      "question": "If $$a:b :: b:c$$ then?",
+      "answer": "$$ac = b^2$$\n\n$$c$$ is 3rd proportion of $$a$$ & $$b$$.\n$$b$$ is mean proportion of $$a$$ & $$c$$."
+    },
+    {
+      "id": "q068",
+      "topic": "Ratio & Proportion",
+      "question": "Triplicate, Duplicate, Sub-duplicate ratios?",
+      "answer": "Triplicate: $$\\frac{a^3}{b^3}$$ | Duplicate: $$\\frac{a^2}{b^2}$$\n\nSub-duplicate: $$\\frac{\\sqrt{a}}{\\sqrt{b}}$$ | Sub-triplicate: $$\\frac{\\sqrt[3]{a}}{\\sqrt[3]{b}}$$"
+    },
+    {
+      "id": "q069",
+      "topic": "Profit & Loss",
+      "question": "2 articles sold at same price, one at $$p\\%$$ profit, other at $$p\\%$$ loss?",
+      "answer": "Net result is always LOSS.\n\n$$\\text{Loss\\%} = \\frac{p^2}{100}$$"
+    },
+    {
+      "id": "q070",
+      "topic": "Equations",
+      "question": "When can $$y$$ be uniquely determined from 2 equations with 3 unknowns?",
+      "answer": "$$a_1x+b_1y+c_1z=m$$ and $$a_2x+b_2y+c_2z=n$$\n\nWhen $$\\frac{a_1}{a_2} = \\frac{c_1}{c_2}$$"
+    },
+    {
+      "id": "q071",
+      "topic": "Equations",
+      "question": "Linearly independent equations for 3 unknowns?",
+      "answer": "Need 3 equations.\n\n$$I_3 \\neq I_1 + kI_2$$ (no equation is a linear combination of others)"
+    },
+    {
+      "id": "q072",
+      "topic": "Geometry",
+      "question": "Acute, Obtuse, Reflex angles?",
+      "answer": "$$\\alpha < 90° \\to$$ Acute\n$$90° < \\alpha < 180° \\to$$ Obtuse\n$$180° < \\alpha < 360° \\to$$ Reflex"
+    },
+    {
+      "id": "q073",
+      "topic": "Geometry",
+      "question": "Complementary vs Supplementary?",
+      "answer": "$$\\alpha + \\beta = 90° \\to$$ Complementary\n$$\\alpha + \\beta = 180° \\to$$ Supplementary"
+    },
+    {
+      "id": "q074",
+      "topic": "Geometry",
+      "question": "Any point on perpendicular bisector is?",
+      "answer": "Equidistant from both endpoints."
+    },
+    {
+      "id": "q075",
+      "topic": "Geometry",
+      "question": "Parallel lines cut by transversal?",
+      "answer": "$$l \\parallel m \\parallel n \\implies \\frac{AB}{DE} = \\frac{BC}{EF}$$\n\nCorresponding angles equal, alternate angles equal."
+    },
+    {
+      "id": "q076",
+      "topic": "Geometry",
+      "question": "Four centres of a triangle?",
+      "answer": "Altitude → Orthocentre\nCircumscribed circle → Circumcentre\nMedian → Centroid\nAngle bisector → Incentre"
+    },
+    {
+      "id": "q077",
+      "topic": "Geometry",
+      "question": "In isosceles triangle, altitude to base?",
+      "answer": "Altitude = $$\\perp$$ bisector = Angle bisector = Median\n\n(All four coincide on the base)"
+    },
+    {
+      "id": "q078",
+      "topic": "Geometry",
+      "question": "Triangle inequality?",
+      "answer": "Sum of any 2 sides $$>$$ 3rd side.\n\nDifference of any 2 sides $$<$$ 3rd side."
+    },
+    {
+      "id": "q079",
+      "topic": "Geometry",
+      "question": "If $$a < b < c$$ (sides), then angles?",
+      "answer": "$$\\alpha < \\beta < \\gamma$$\n\nAngles opposite to sides follow the same order."
+    },
+    {
+      "id": "q080",
+      "topic": "Geometry",
+      "question": "Acute vs Obtuse triangle — cosine rule?",
+      "answer": "Acute: $$AC^2 = AB^2 + BC^2 - 2 \\cdot BC \\cdot BD$$\n\nObtuse: $$AC^2 = AB^2 + BC^2 + 2 \\cdot BC \\cdot BD$$"
+    },
+    {
+      "id": "q081",
+      "topic": "Geometry",
+      "question": "Internal bisector divides opposite side in?",
+      "answer": "Ratio of other two sides:\n\n$$\\frac{BD}{DC} = \\frac{AB}{AC}$$"
+    },
+    {
+      "id": "q082",
+      "topic": "Geometry",
+      "question": "Apollonius theorem (median)?",
+      "answer": "$$2(AD^2 + BD^2) = AB^2 + AC^2$$"
+    },
+    {
+      "id": "q083",
+      "topic": "Geometry",
+      "question": "Circumcentre location?",
+      "answer": "Acute → Inside\nRight → Midpoint of hypotenuse\nObtuse → Outside"
+    },
+    {
+      "id": "q084",
+      "topic": "Geometry",
+      "question": "Orthocentre location?",
+      "answer": "Acute → Inside\nRight → At the right-angle vertex\nObtuse → Outside"
+    },
+    {
+      "id": "q085",
+      "topic": "Geometry",
+      "question": "Incentre angle and inradius?",
+      "answer": "$$\\angle BIC = 90° + \\frac{A}{2}$$\n\nInradius: $$r = \\frac{\\text{Area}}{s}$$\n\nwhere $$s$$ = semi-perimeter"
+    },
+    {
+      "id": "q086",
+      "topic": "Geometry",
+      "question": "Excentre — what is it?",
+      "answer": "Internal bisector of one angle + external bisectors of other two meet at Excentre.\n\n3 Excentres per triangle."
+    },
+    {
+      "id": "q087",
+      "topic": "Geometry",
+      "question": "Right triangle: median to hypotenuse?",
+      "answer": "$$= \\frac{\\text{hypotenuse}}{2} = R$$ (circumradius)"
+    },
+    {
+      "id": "q088",
+      "topic": "Geometry",
+      "question": "Centroid divides median in ratio?",
+      "answer": "$$2:1$$ from vertex to midpoint of opposite side.\n\n$$\\frac{AG}{GD} = \\frac{2}{1}$$"
+    },
+    {
+      "id": "q089",
+      "topic": "Geometry",
+      "question": "Equilateral triangle — which centres coincide?",
+      "answer": "Centroid = Orthocentre = Circumcentre = Incentre\n\nAll four coincide!"
+    },
+    {
+      "id": "q090",
+      "topic": "Geometry",
+      "question": "Equilateral triangle: circumradius to inradius?",
+      "answer": "$$\\frac{R}{r} = \\frac{2}{1}$$\n\nArea $$= \\frac{\\sqrt{3}}{4}a^2$$\n\nEach median creates 6 triangles of equal area."
+    },
+    {
+      "id": "q091",
+      "topic": "Geometry",
+      "question": "Two triangles are similar if?",
+      "answer": "(i) All 3 angles respectively equal.\n(ii) 2 sides proportional AND included angle equal."
+    },
+    {
+      "id": "q092",
+      "topic": "Geometry",
+      "question": "For similar triangles, ratio of sides = ratio of?",
+      "answer": "Altitudes = Medians = Angle bisectors = Inradii = Circumradii = Perimeters\n\nAlso: $$AB^2 = BD \\cdot BC$$"
+    },
+    {
+      "id": "q093",
+      "topic": "Geometry",
+      "question": "Congruence conditions?",
+      "answer": "SSS, SAS, ASA"
+    },
+    {
+      "id": "q094",
+      "topic": "Geometry",
+      "question": "Midpoint theorem?",
+      "answer": "Line joining midpoints of 2 sides is $$\\parallel$$ to 3rd side and = half its length.\n\n$$AD \\parallel BC$$ and Area $$\\triangle ABC = $$ Area $$\\triangle BDC$$"
+    },
+    {
+      "id": "q095",
+      "topic": "Geometry",
+      "question": "Area of triangle — all formulas?",
+      "answer": "$$\\frac{1}{2}bh = \\sqrt{s(s-a)(s-b)(s-c)}$$\n\n$$= \\frac{1}{2}ab\\sin C = \\frac{abc}{4R} = rs$$\n\nEquilateral: $$\\frac{\\sqrt{3}}{4}a^2$$ | Isosceles: $$\\frac{b}{4}\\sqrt{4a^2-b^2}$$"
+    },
+    {
+      "id": "q096",
+      "topic": "Geometry",
+      "question": "Area of quadrilateral?",
+      "answer": "$$\\frac{1}{2} \\times \\text{diagonal} \\times \\text{sum of offsets}$$"
+    },
+    {
+      "id": "q097",
+      "topic": "Geometry",
+      "question": "Area of cyclic quadrilateral?",
+      "answer": "$$\\sqrt{(s-a)(s-b)(s-c)(s-d)}$$\n\nwhere $$s = \\frac{a+b+c+d}{2}$$"
+    },
+    {
+      "id": "q098",
+      "topic": "Geometry",
+      "question": "Area of trapezium?",
+      "answer": "$$\\frac{1}{2} \\times (\\text{sum of } \\parallel \\text{ sides}) \\times h$$"
+    },
+    {
+      "id": "q099",
+      "topic": "Geometry",
+      "question": "Area of parallelogram?",
+      "answer": "$$\\text{Base} \\times \\text{Height}$$\n\n$$= \\text{product of 2 sides} \\times \\sin(\\text{included angle})$$"
+    },
+    {
+      "id": "q100",
+      "topic": "Geometry",
+      "question": "Area of rhombus?",
+      "answer": "$$\\frac{1}{2} \\times d_1 \\times d_2$$\n\nPerimeter $$= 4 \\times \\text{side}$$"
+    },
+    {
+      "id": "q101",
+      "topic": "Geometry",
+      "question": "Area of regular polygon?",
+      "answer": "$$\\frac{1}{2} \\times \\text{Perimeter} \\times \\perp \\text{ dist from centre to any side}$$"
+    },
+    {
+      "id": "q102",
+      "topic": "Geometry",
+      "question": "Area of ellipse?",
+      "answer": "$$\\pi ab$$\n\nPerimeter $$\\approx \\pi(a+b)$$"
+    },
+    {
+      "id": "q103",
+      "topic": "Geometry",
+      "question": "Inradius of a triangle is always less than?",
+      "answer": "Half of the smallest altitude."
+    },
+    {
+      "id": "q104",
+      "topic": "Geometry",
+      "question": "Cyclic quadrilateral: Ptolemy's theorem?",
+      "answer": "$$d_1 \\cdot d_2 = ac + bd$$"
+    },
+    {
+      "id": "q105",
+      "topic": "Geometry",
+      "question": "Right $$\\triangle$$ with fixed hypotenuse — max area when?",
+      "answer": "When the triangle is isosceles."
+    },
+    {
+      "id": "q106",
+      "topic": "Geometry",
+      "question": "Right $$\\triangle$$ area with inradius $$r$$ and circumradius $$R$$?",
+      "answer": "Area $$= r(r+2R)$$\n\n$$r = \\frac{a+b-c}{2}$$ where $$c$$ = hypotenuse.\n$$R = \\frac{c}{2}$$"
+    },
+    {
+      "id": "q107",
+      "topic": "Geometry",
+      "question": "Sides are inversely proportional to?",
+      "answer": "Corresponding altitudes.\n\n$$\\text{Side} \\propto \\frac{1}{\\text{Altitude}}$$"
+    },
+    {
+      "id": "q108",
+      "topic": "Geometry",
+      "question": "Quadrilateral: offsets?",
+      "answer": "Perpendiculars drawn from opposite vertices to a diagonal."
+    },
+    {
+      "id": "q109",
+      "topic": "Geometry",
+      "question": "Cyclic quadrilateral: opposite angles?",
+      "answer": "$$A + D = 180°$$\n\nExterior angle = Interior opposite angle."
+    },
+    {
+      "id": "q110",
+      "topic": "Geometry",
+      "question": "Trapezium ratio formula?",
+      "answer": "$$RS = \\frac{D}{m+n} \\times \\text{long side} + \\frac{m}{m+n} \\times \\text{short side}$$"
+    },
+    {
+      "id": "q111",
+      "topic": "Geometry",
+      "question": "Parallelogram properties?",
+      "answer": "$$\\alpha+\\beta = 180°$$\n\nEach diagonal → 2 congruent $$\\triangle$$s.\nDiagonals bisect each other.\n\nArea: $$\\triangle PAB + \\triangle PCD = \\frac{1}{2}$$ of $$\\parallel$$gm"
+    },
+    {
+      "id": "q112",
+      "topic": "Geometry",
+      "question": "$$\\parallel$$gm and $$\\triangle$$ with same base between same $$\\parallel$$ lines?",
+      "answer": "Area of $$\\triangle = \\frac{1}{2}$$ of $$\\parallel$$gm."
+    },
+    {
+      "id": "q113",
+      "topic": "Geometry",
+      "question": "Rhombus diagonals property?",
+      "answer": "Bisect each other at $$90°$$.\n\n4 congruent $$\\triangle$$s formed."
+    },
+    {
+      "id": "q114",
+      "topic": "Geometry",
+      "question": "Largest rectangle inscribed in a circle?",
+      "answer": "A square."
+    },
+    {
+      "id": "q115",
+      "topic": "Geometry",
+      "question": "Convex polygon: interior angle?",
+      "answer": "Each interior angle $$< 180°$$.\n\nAny straight line crosses only 2 sides."
+    },
+    {
+      "id": "q116",
+      "topic": "Geometry",
+      "question": "Regular polygon: sum of all interior angles?",
+      "answer": "$$(n-2) \\times 180°$$\n\nAll sides and angles equal. Can be inscribed in a circle."
+    },
+    {
+      "id": "q117",
+      "topic": "Geometry",
+      "question": "Regular polygon: centre joined to each vertex?",
+      "answer": "$$n$$ identical isosceles $$\\triangle$$s.\n\nHexagon → all equilateral.\n\nDiagonals = $$\\binom{n}{2} - n$$"
+    },
+    {
+      "id": "q118",
+      "topic": "Circles",
+      "question": "Secant-Tangent relation?",
+      "answer": "$$PA \\cdot PB = PC \\cdot PD = PT^2$$"
+    },
+    {
+      "id": "q119",
+      "topic": "Circles",
+      "question": "Tangents from external point?",
+      "answer": "2 tangents, equal length.\n\nTangent $$\\perp$$ radius at point of contact."
+    },
+    {
+      "id": "q120",
+      "topic": "Circles",
+      "question": "$$\\perp$$ from centre to chord?",
+      "answer": "Bisects the chord.\n\n2 chords equidistant from centre are equal."
+    },
+    {
+      "id": "q121",
+      "topic": "Circles",
+      "question": "Circles through 3 non-collinear points?",
+      "answer": "One and only one."
+    },
+    {
+      "id": "q122",
+      "topic": "Circles",
+      "question": "2 intersecting circles — line joining centres?",
+      "answer": "$$\\perp$$ bisects the common chord."
+    },
+    {
+      "id": "q123",
+      "topic": "Circles",
+      "question": "Common tangent lengths?",
+      "answer": "Direct: $$\\sqrt{d^2-(R-r)^2}$$\n\nTransverse: $$\\sqrt{d^2-(R+r)^2}$$"
+    },
+    {
+      "id": "q124",
+      "topic": "Circles",
+      "question": "Angle in a semicircle?",
+      "answer": "$$90°$$\n\nInscribed angle $$= \\frac{1}{2} \\times$$ central angle.\n\nAngle subtended by diameter $$= 90°$$"
+    },
+    {
+      "id": "q125",
+      "topic": "Circles",
+      "question": "Angles in same segment?",
+      "answer": "Equal.\n\n$$\\angle ABC + \\angle ADC = 180°$$ (cyclic quad).\n\nAlternate segment theorem: angle between tangent & chord = angle in alternate segment."
+    },
+    {
+      "id": "q126",
+      "topic": "Circles",
+      "question": "Alternate segment theorem?",
+      "answer": "$$\\angle STP = \\angle SRT$$\n\nAngle between tangent and chord = angle subtended by chord in alternate segment."
+    },
+    {
+      "id": "q127",
+      "topic": "Quadratic Equations",
+      "question": "Standard form and roots?",
+      "answer": "$$ax^2+bx+c=0$$\n\n$$x = \\frac{-b \\pm \\sqrt{b^2-4ac}}{2a}$$\n\nDiscriminant $$= b^2-4ac$$"
+    },
+    {
+      "id": "q128",
+      "topic": "Quadratic Equations",
+      "question": "Sum and Product of roots?",
+      "answer": "Sum $$= -\\frac{b}{a}$$\n\nProduct $$= \\frac{c}{a}$$"
+    },
+    {
+      "id": "q129",
+      "topic": "Quadratic Equations",
+      "question": "Roots are $$\\alpha, \\frac{1}{\\alpha}$$ → new equation?",
+      "answer": "Replace $$x$$ with $$\\frac{1}{x}$$:\n\n$$cx^2+bx+a=0$$"
+    },
+    {
+      "id": "q130",
+      "topic": "Quadratic Equations",
+      "question": "Roots are $$(\\alpha+k),(\\beta+k)$$?",
+      "answer": "Replace $$x$$ with $$(x-k)$$.\n\nRoots $$(\\alpha-k),(\\beta-k)$$ → replace $$x$$ with $$(x+k)$$."
+    },
+    {
+      "id": "q131",
+      "topic": "Quadratic Equations",
+      "question": "Roots are $$k\\alpha, k\\beta$$?",
+      "answer": "Replace $$x$$ with $$\\frac{x}{k}$$."
+    },
+    {
+      "id": "q132",
+      "topic": "Quadratic Equations",
+      "question": "Min/Max value of $$ax^2+bx+c$$?",
+      "answer": "$$a>0$$: min $$= \\frac{4ac-b^2}{4a}$$ at $$x = -\\frac{b}{2a}$$\n\n$$a<0$$: max $$= \\frac{4ac-b^2}{4a}$$ at $$x = -\\frac{b}{2a}$$"
+    },
+    {
+      "id": "q133",
+      "topic": "Quadratic Equations",
+      "question": "$$p(x)$$ divided by $$(ax+b)$$, remainder?",
+      "answer": "$$p\\left(-\\frac{b}{a}\\right)$$"
+    },
+    {
+      "id": "q134",
+      "topic": "Quadratic Equations",
+      "question": "Degree of remainder vs divisor?",
+      "answer": "Degree of remainder is always less than degree of divisor."
+    },
+    {
+      "id": "q135",
+      "topic": "Quadratic Equations",
+      "question": "$$f(x) = a_nx^n+\\ldots+a_0$$: sum of roots taken $$m$$ at a time?",
+      "answer": "$$S_1 = -\\frac{a_{n-1}}{a_n}$$\n\n$$S_2 = \\frac{a_{n-2}}{a_n}$$\n\n$$S_m = (-1)^m \\cdot \\frac{a_{n-m}}{a_n}$$"
+    },
+    {
+      "id": "q136",
+      "topic": "Quadratic Equations",
+      "question": "Real coefficients, complex root $$z_1$$?",
+      "answer": "Conjugate $$\\bar{z}_1$$ is also a root."
+    },
+    {
+      "id": "q137",
+      "topic": "Quadratic Equations",
+      "question": "Odd degree equation must have?",
+      "answer": "At least one real root."
+    },
+    {
+      "id": "q138",
+      "topic": "Quadratic Equations",
+      "question": "Max positive roots by Descartes' rule?",
+      "answer": "= Number of sign changes $$k$$.\n\nPositive roots: $$k, k-2, k-4, \\ldots$$\n\nNegative roots: from $$f(-x)=0$$"
+    },
+    {
+      "id": "q139",
+      "topic": "Quadratic Equations",
+      "question": "Two quadratics with one common root — condition?",
+      "answer": "$$(ca'-c'a)^2 = (ab'-a'b)(bc'-b'c)$$"
+    },
+    {
+      "id": "q140",
+      "topic": "Inequalities",
+      "question": "$$(x-p)(x-q) < 0$$?",
+      "answer": "$$x$$ lies between $$p$$ and $$q$$.\n\n$$\\min(p,q) < x < \\max(p,q)$$"
+    },
+    {
+      "id": "q141",
+      "topic": "Inequalities",
+      "question": "$$(x-p)(x-q) > 0$$?",
+      "answer": "$$x$$ lies outside $$[p,q]$$.\n\n$$x < \\min(p,q)$$ or $$x > \\max(p,q)$$"
+    },
+    {
+      "id": "q142",
+      "topic": "Inequalities",
+      "question": "Max of $$(a-x)^m(b+x)^n$$ where $$m,n>0$$?",
+      "answer": "When $$\\frac{a-x}{m} = \\frac{b+x}{n}$$\n\nSolve for $$x$$."
+    },
+    {
+      "id": "q143",
+      "topic": "Inequalities",
+      "question": "Power mean inequality: $$\\frac{a^m+b^m}{2}$$ vs $$\\left(\\frac{a+b}{2}\\right)^m$$?",
+      "answer": "$$m<0$$ or $$m>1$$: $$\\geq$$\n$$0<m<1$$: $$\\leq$$\nEquality when $$a=b$$."
+    },
+    {
+      "id": "q144",
+      "topic": "Inequalities",
+      "question": "AM $$\\geq$$ GM $$\\geq$$ HM?",
+      "answer": "Always true for positive numbers.\n\nEquality only when all numbers are equal.\n\nIf $$a+b=$$ const, $$\\max(ab)$$ when $$a=b$$.\nIf $$ab=$$ const, $$\\min(a+b)$$ when $$a=b$$."
+    },
+    {
+      "id": "q145",
+      "topic": "Inequalities",
+      "question": "For any positive $$x$$: $$x + \\frac{1}{x} \\geq$$ ?",
+      "answer": "$$x + \\frac{1}{x} \\geq 2$$\n\nEquality when $$x=1$$."
+    },
+    {
+      "id": "q146",
+      "topic": "Inequalities",
+      "question": "Triangle inequality for absolute values?",
+      "answer": "$$|x+y| \\leq |x|+|y|$$\n\n$$\\big||x|-|y|\\big| \\leq |x-y|$$"
+    },
+    {
+      "id": "q147",
+      "topic": "Inequalities",
+      "question": "AM-GM application for products?",
+      "answer": "Min of $$(a+k)(b+k)$$ → use AM-GM.\n\nExtends to 3+ quantities."
+    },
+    {
+      "id": "q148",
+      "topic": "Progressions",
+      "question": "AP: $$n$$th term and sum?",
+      "answer": "$$T_n = a+(n-1)d$$\n\n$$S_n = \\frac{n}{2}[2a+(n-1)d] = \\frac{n}{2}(a+l)$$"
+    },
+    {
+      "id": "q149",
+      "topic": "Progressions",
+      "question": "3 terms in AP?",
+      "answer": "$$(a-d),\\; a,\\; (a+d)$$\n\n4 terms: $$(a-3d),(a-d),(a+d),(a+3d)$$"
+    },
+    {
+      "id": "q150",
+      "topic": "Progressions",
+      "question": "GP: $$n$$th term and sum?",
+      "answer": "$$T_n = ar^{n-1}$$\n\n$$S_n = \\frac{a(r^n-1)}{r-1}$$\n\n$$|r|<1$$: $$S_\\infty = \\frac{a}{1-r}$$"
+    },
+    {
+      "id": "q151",
+      "topic": "Progressions",
+      "question": "GM of $$n$$ numbers?",
+      "answer": "$$G.M. = (a_1 \\cdot a_2 \\cdots a_n)^{1/n}$$\n\n$$A.M. \\geq G.M. \\geq H.M.$$"
+    },
+    {
+      "id": "q152",
+      "topic": "Progressions",
+      "question": "3 terms in GP?",
+      "answer": "$$\\frac{a}{r},\\; a,\\; ar$$\n\n4 terms: $$\\frac{a}{r^3},\\; \\frac{a}{r},\\; ar,\\; ar^3$$"
+    },
+    {
+      "id": "q153",
+      "topic": "Progressions",
+      "question": "Infinite GP sum when $$|r|<1$$?",
+      "answer": "$$S_\\infty = \\frac{a}{1-r}$$"
+    },
+    {
+      "id": "q154",
+      "topic": "Progressions",
+      "question": "HP: definition?",
+      "answer": "$$\\frac{1}{a},\\; \\frac{1}{a+d},\\; \\frac{1}{a+2d},\\ldots$$\n\nReciprocals are in AP. No direct sum formula."
+    },
+    {
+      "id": "q155",
+      "topic": "Progressions",
+      "question": "$$\\sum_{k=1}^{n} k = ?$$",
+      "answer": "$$\\frac{n(n+1)}{2}$$"
+    },
+    {
+      "id": "q156",
+      "topic": "Progressions",
+      "question": "$$\\sum_{k=1}^{n} k^2 = ?$$",
+      "answer": "$$\\frac{n(n+1)(2n+1)}{6}$$"
+    },
+    {
+      "id": "q157",
+      "topic": "Progressions",
+      "question": "$$\\sum_{k=1}^{n} k^3 = ?$$",
+      "answer": "$$\\left[\\frac{n(n+1)}{2}\\right]^2$$"
+    },
+    {
+      "id": "q158",
+      "topic": "Progressions",
+      "question": "$$e^x$$ expansion?",
+      "answer": "$$1 + x + \\frac{x^2}{2!} + \\frac{x^3}{3!} + \\cdots$$"
+    },
+    {
+      "id": "q159",
+      "topic": "Progressions",
+      "question": "Telescoping: $$\\frac{1}{a(a+d)}$$?",
+      "answer": "$$= \\frac{1}{d}\\left[\\frac{1}{a} - \\frac{1}{a+d}\\right]$$\n\nTerms cancel in summation."
+    },
+    {
+      "id": "q160",
+      "topic": "Progressions",
+      "question": "$$\\sum \\frac{1}{k^2}$$ converges to?",
+      "answer": "$$\\frac{\\pi^2}{6} \\approx 1.645$$\n\nAlso: $$1+\\frac{1}{1!}+\\frac{1}{2!}+\\cdots = e$$"
+    },
+    {
+      "id": "q161",
+      "topic": "Progressions",
+      "question": "Finding $$t_n$$ from $$S_n$$?",
+      "answer": "$$t_n = S_n - S_{n-1}$$\n\nUse standard sum formulas."
+    },
+    {
+      "id": "q162",
+      "topic": "Logarithms",
+      "question": "$$a^x = N$$ means?",
+      "answer": "$$\\log_a N = x$$\n\n$$e = 2.718$$"
+    },
+    {
+      "id": "q163",
+      "topic": "Logarithms",
+      "question": "Characteristic and Mantissa?",
+      "answer": "$$\\log_a N = \\text{abc.xyz}$$\n\nabc → characteristic (integer part)\nxyz → mantissa (decimal part)\n\nFor $$N>1$$: characteristic = (digits - 1)"
+    },
+    {
+      "id": "q164",
+      "topic": "Logarithms",
+      "question": "Characteristic when $$N < 1$$?",
+      "answer": "Magnitude = 1 + (number of zeros after decimal point).\n\nIt is negative: e.g., $$\\log 0.02 = \\bar{2} + 0.301$$"
+    },
+    {
+      "id": "q165",
+      "topic": "Logarithms",
+      "question": "Mantissa property?",
+      "answer": "Same for all numbers with same significant digits.\n\n$$\\log 2 = 0.301$$"
+    },
+    {
+      "id": "q166",
+      "topic": "Logarithms",
+      "question": "$$\\log_a 1$$ and $$\\log_a a$$?",
+      "answer": "$$\\log_a 1 = 0$$\n\n$$\\log_a a = 1$$"
+    },
+    {
+      "id": "q167",
+      "topic": "Logarithms",
+      "question": "Log product and quotient rules?",
+      "answer": "$$\\log(mn) = \\log m + \\log n$$\n\n$$\\log\\frac{m}{n} = \\log m - \\log n$$\n\n$$\\log m^p = p \\cdot \\log m$$"
+    },
+    {
+      "id": "q168",
+      "topic": "Logarithms",
+      "question": "Change of base?",
+      "answer": "$$\\log_a b = \\frac{1}{\\log_b a}$$\n\n$$\\log_a m = \\frac{\\log_b m}{\\log_b a}$$"
+    },
+    {
+      "id": "q169",
+      "topic": "Logarithms",
+      "question": "$$a^{\\log_a N} = ?$$",
+      "answer": "$$N$$\n\nAlso: $$\\log_{a^k} m^p = \\frac{p}{k} \\cdot \\log_a m$$"
+    },
+    {
+      "id": "q170",
+      "topic": "P&C",
+      "question": "$$^nP_r = ?$$",
+      "answer": "$$\\frac{n!}{(n-r)!}$$\n\n$$^nP_n = n!$$ and $$0! = 1$$"
+    },
+    {
+      "id": "q171",
+      "topic": "P&C",
+      "question": "$$^nC_r = ?$$",
+      "answer": "$$\\frac{n!}{r!(n-r)!} = {^nC_{n-r}}$$"
+    },
+    {
+      "id": "q172",
+      "topic": "P&C",
+      "question": "$$^nP_r$$ recurrence?",
+      "answer": "$$^nP_r = {^{n-1}P_r} + r \\cdot {^{n-1}P_{r-1}}$$"
+    },
+    {
+      "id": "q173",
+      "topic": "P&C",
+      "question": "$$1! + 2 \\times 2! + 3 \\times 3! + \\ldots + n \\cdot n! = ?$$",
+      "answer": "$$(n+1)! - 1$$"
+    },
+    {
+      "id": "q174",
+      "topic": "P&C",
+      "question": "$$^nC_x = {^nC_y}$$ implies?",
+      "answer": "$$x = y$$ OR $$x + y = n$$"
+    },
+    {
+      "id": "q175",
+      "topic": "P&C",
+      "question": "Pascal's rule?",
+      "answer": "$$^nC_r + {^nC_{r-1}} = {^{n+1}C_r}$$"
+    },
+    {
+      "id": "q176",
+      "topic": "P&C",
+      "question": "Greatest value of $$^nC_x$$?",
+      "answer": "$$n$$ even: $$^nC_{n/2}$$\n\n$$n$$ odd: $$^nC_{(n-1)/2}$$ or $$^nC_{(n+1)/2}$$"
+    },
+    {
+      "id": "q177",
+      "topic": "P&C",
+      "question": "$$\\sum_{r=0}^{n} {^nC_r} = ?$$",
+      "answer": "$$2^n$$"
+    },
+    {
+      "id": "q178",
+      "topic": "P&C",
+      "question": "$$^nC_0 + {^nC_2} + {^nC_4} + \\ldots = ?$$",
+      "answer": "$$2^{n-1}$$\n\nSame for odd-indexed: $$^nC_1+{^nC_3}+\\ldots = 2^{n-1}$$"
+    },
+    {
+      "id": "q179",
+      "topic": "P&C",
+      "question": "Arrangements with repetition: $$p$$ alike, $$q$$ alike, $$r$$ alike?",
+      "answer": "$$\\frac{n!}{p!\\; q!\\; r!}$$\n\nOnly when ALL $$n$$ are selected."
+    },
+    {
+      "id": "q180",
+      "topic": "P&C",
+      "question": "Each item used any number of times, $$r$$ positions?",
+      "answer": "$$n^r$$"
+    },
+    {
+      "id": "q181",
+      "topic": "P&C",
+      "question": "Selecting 1 or more from $$n$$ items?",
+      "answer": "$$^nC_1 + {^nC_2} + \\ldots + {^nC_n} = 2^n - 1$$"
+    },
+    {
+      "id": "q182",
+      "topic": "P&C",
+      "question": "Dividing $$(p+q)$$ items into groups of $$p$$ and $$q$$?",
+      "answer": "$$\\frac{(p+q)!}{p!\\; q!}$$"
+    },
+    {
+      "id": "q183",
+      "topic": "P&C",
+      "question": "$$2p$$ items into 2 equal groups?",
+      "answer": "Distinct groups: $$\\frac{(2p)!}{(p!)^2}$$\n\nIdentical groups: $$\\frac{(2p)!}{2!(p!)^2}$$"
+    },
+    {
+      "id": "q184",
+      "topic": "P&C",
+      "question": "Circular permutation of $$n$$ distinct items?",
+      "answer": "$$(n-1)!$$\n\nIf clockwise = anticlockwise (necklace): $$\\frac{(n-1)!}{2}$$"
+    },
+    {
+      "id": "q185",
+      "topic": "P&C",
+      "question": "Sum of all $$n$$-digit numbers from $$n$$ distinct digits?",
+      "answer": "$$(n-1)! \\times (\\text{sum of digits}) \\times \\underbrace{111\\ldots1}_{n}$$"
+    },
+    {
+      "id": "q186",
+      "topic": "P&C",
+      "question": "Diagonals of $$n$$-sided polygon?",
+      "answer": "$$\\binom{n}{2} - n = \\frac{n(n-3)}{2}$$"
+    },
+    {
+      "id": "q187",
+      "topic": "P&C",
+      "question": "Integral solutions of $$x_1+x_2+\\ldots+x_r = n$$?",
+      "answer": "$$x_i \\geq 0$$: $$\\binom{n+r-1}{r-1}$$\n\n$$x_i \\geq 1$$: $$\\binom{n-1}{r-1}$$"
+    },
+    {
+      "id": "q188",
+      "topic": "P&C",
+      "question": "Derangement $$D_n$$?",
+      "answer": "$$D_n = n!\\left[1-\\frac{1}{1!}+\\frac{1}{2!}-\\frac{1}{3!}+\\cdots+\\frac{(-1)^n}{n!}\\right]$$"
+    },
+    {
+      "id": "q189",
+      "topic": "P&C",
+      "question": "Selections from $$p$$ alike + $$q$$ alike + $$r$$ alike?",
+      "answer": "$$(p+1)(q+1)(r+1)\\ldots - 1$$"
+    },
+    {
+      "id": "q190",
+      "topic": "P&C",
+      "question": "$$r$$ items wrong, $$(n-r)$$ items right?",
+      "answer": "$$\\binom{n}{n-r} \\times D_r$$"
+    },
+    {
+      "id": "q191",
+      "topic": "P&C",
+      "question": "Intersection points of diagonals inside $$n$$-gon?",
+      "answer": "$$\\binom{n}{4}$$"
+    },
+    {
+      "id": "q192",
+      "topic": "P&C",
+      "question": "Squares and Rectangles in $$n \\times n$$ grid?",
+      "answer": "Squares: $$\\sum_{k=1}^{n} k^2 = \\frac{n(n+1)(2n+1)}{6}$$\n\nRectangles: $$\\binom{n+1}{2}^2$$"
+    },
+    {
+      "id": "q193",
+      "topic": "Probability",
+      "question": "$$P(A \\cup B) = ?$$",
+      "answer": "$$P(A)+P(B)-P(A \\cap B)$$"
+    },
+    {
+      "id": "q194",
+      "topic": "Probability",
+      "question": "Conditional probability $$P(A|B)$$?",
+      "answer": "$$P(A|B) = \\frac{P(A \\cap B)}{P(B)}$$"
+    },
+    {
+      "id": "q195",
+      "topic": "Probability",
+      "question": "Independent events?",
+      "answer": "$$P(A \\cap B) = P(A) \\times P(B)$$\n\nMutual independence (3 events): each pair independent AND\n$$P(A \\cap B \\cap C) = P(A) \\cdot P(B) \\cdot P(C)$$"
+    },
+    {
+      "id": "q196",
+      "topic": "Probability",
+      "question": "Bayes' Theorem?",
+      "answer": "$$P(A_i|B) = \\frac{P(B|A_i)\\,P(A_i)}{\\sum_{j} P(B|A_j)\\,P(A_j)}$$"
+    },
+    {
+      "id": "q197",
+      "topic": "Probability",
+      "question": "$$n$$ coin tosses — total outcomes?",
+      "answer": "$$2^n$$\n\n$$P(\\text{exactly } r \\text{ heads}) = \\frac{\\binom{n}{r}}{2^n}$$"
+    },
+    {
+      "id": "q198",
+      "topic": "Probability",
+      "question": "Card deck basics?",
+      "answer": "4 suits: Clubs, Hearts, Diamonds, Spades.\nHonours: Ace, King, Queen, Jack.\nTotal = 52."
+    },
+    {
+      "id": "q199",
+      "topic": "Probability",
+      "question": "Leap year rule?",
+      "answer": "Divisible by 4 ✓ (2004, 2008)\nDivisible by 100 but not 400 ✗ (2100, 2200)\nDivisible by 400 ✓ (2400)\n\nOdds in favour $$= \\frac{\\text{favourable}}{\\text{unfavourable}}$$"
+    },
+    {
+      "id": "q200",
+      "topic": "SI & CI",
+      "question": "Simple Interest?",
+      "answer": "$$A = P\\left(1+\\frac{nr}{100}\\right)$$\n\n$$SI = \\frac{Pnr}{100}$$"
+    },
+    {
+      "id": "q201",
+      "topic": "SI & CI",
+      "question": "Compound Interest?",
+      "answer": "$$A = P\\left(1+\\frac{r}{100}\\right)^n$$"
+    },
+    {
+      "id": "q202",
+      "topic": "SI & CI",
+      "question": "Compounding $$k$$ times per year?",
+      "answer": "$$A = P\\left(1+\\frac{r}{k \\times 100}\\right)^{kn}$$\n\n$$r$$ = nominal rate, $$k$$ = frequency."
+    },
+    {
+      "id": "q203",
+      "topic": "SI & CI",
+      "question": "Continuous compounding?",
+      "answer": "$$A = P \\cdot e^{nr/100}$$\n\n$$e = 2.718$$"
+    },
+    {
+      "id": "q204",
+      "topic": "SI & CI",
+      "question": "Difference between CI and SI for 2 years?",
+      "answer": "$$\\frac{Pr^2}{(100)^2}$$"
+    },
+    {
+      "id": "q205",
+      "topic": "SI & CI",
+      "question": "CI for $$k$$th year?",
+      "answer": "$$P\\left(1+\\frac{r}{100}\\right)^{k-1} \\times \\frac{r}{100}$$"
+    },
+    {
+      "id": "q206",
+      "topic": "Averages",
+      "question": "Average formula?",
+      "answer": "$$\\text{Avg} = P + \\frac{1}{n}\\sum(a_i - P)$$\n\nOr simply: $$\\frac{\\text{Sum}}{\\text{Count}}$$"
+    },
+    {
+      "id": "q207",
+      "topic": "Averages",
+      "question": "Weighted Average?",
+      "answer": "$$\\frac{h_1a_1+h_2a_2+h_3a_3+\\ldots}{a_1+a_2+a_3+\\ldots}$$"
+    },
+    {
+      "id": "q208",
+      "topic": "Mixtures",
+      "question": "Alligation rule?",
+      "answer": "$$\\frac{\\text{Cheaper qty}}{\\text{Dearer qty}} = \\frac{\\text{Dearer price}-\\text{Mean}}{\\text{Mean}-\\text{Cheaper price}}$$"
+    },
+    {
+      "id": "q209",
+      "topic": "Mixtures",
+      "question": "Replacement: $$P$$ volume liquid, $$Q$$ removed and replaced $$n$$ times?",
+      "answer": "Concentration after $$n$$ ops:\n\n$$\\left(\\frac{P-Q}{P}\\right)^n$$"
+    },
+    {
+      "id": "q210",
+      "topic": "Time & Distance",
+      "question": "km/h to m/s conversion?",
+      "answer": "$$\\text{km/h} \\to \\text{m/s}: \\times \\frac{5}{18}$$\n\n$$\\text{m/s} \\to \\text{km/h}: \\times \\frac{18}{5}$$"
+    },
+    {
+      "id": "q211",
+      "topic": "Time & Distance",
+      "question": "Average Speed?",
+      "answer": "$$\\frac{\\text{Total distance}}{\\text{Total time}}$$\n\nNOT the average of speeds."
+    },
+    {
+      "id": "q212",
+      "topic": "Time & Distance",
+      "question": "Boats & Streams?",
+      "answer": "$$V_u = V_s - V_c$$ (upstream)\n$$V_d = V_s + V_c$$ (downstream)\n\n$$V_s = \\frac{V_d+V_u}{2}$$\n$$V_c = \\frac{V_d-V_u}{2}$$"
+    },
+    {
+      "id": "q213",
+      "topic": "Time & Distance",
+      "question": "Circular track, same direction — first meet?",
+      "answer": "$$t = \\frac{L}{a-b}$$\n\nwhere $$L$$ = track length, $$a>b$$ are speeds."
+    },
+    {
+      "id": "q214",
+      "topic": "Time & Distance",
+      "question": "Circular track, opposite direction?",
+      "answer": "$$t = \\frac{L}{a+b}$$"
+    },
+    {
+      "id": "q215",
+      "topic": "Time & Distance",
+      "question": "Time to meet at starting point?",
+      "answer": "$$\\text{LCM}\\left(\\frac{L}{a},\\; \\frac{L}{b}\\right)$$"
+    },
+    {
+      "id": "q216",
+      "topic": "Time & Distance",
+      "question": "3 people, same direction — first meet?",
+      "answer": "$$\\text{LCM}\\left(\\frac{L}{a-b},\\; \\frac{L}{b-c}\\right)$$\n\nAt starting point: $$\\text{LCM}\\left(\\frac{L}{a},\\frac{L}{b},\\frac{L}{c}\\right)$$"
+    },
+    {
+      "id": "q217",
+      "topic": "Time & Distance",
+      "question": "Two people P→Q, after meeting?",
+      "answer": "1st meeting: combined distance $$= d$$.\n2nd onwards: $$= 2d$$ each.\n\nIf after 1st meet, $$a$$ took $$t_1$$ and $$b$$ took $$t_2$$:\n$$t_{\\text{meet}} = \\sqrt{t_1 \\cdot t_2}$$"
+    },
+    {
+      "id": "q218",
+      "topic": "Time & Distance",
+      "question": "$$PQ = 3a - b$$ context?",
+      "answer": "When P starts first, head-start distance and meeting relationships."
+    },
+    {
+      "id": "q219",
+      "topic": "Clocks",
+      "question": "Minute hand speed?",
+      "answer": "$$360°$$ per hour $$= 6°$$ per minute."
+    },
+    {
+      "id": "q220",
+      "topic": "Clocks",
+      "question": "Hour hand speed?",
+      "answer": "$$30°$$ per hour $$= \\frac{1}{2}°$$ per minute."
+    },
+    {
+      "id": "q221",
+      "topic": "Clocks",
+      "question": "In 12 hours, hands at $$0°$$?",
+      "answer": "11 times. Every $$\\frac{12}{11}$$ hrs $$= 1$$ hr $$5\\frac{5}{11}$$ min.\n\n$$180°$$: 11 times.\n$$90°$$ or any other angle: 22 times."
+    },
+    {
+      "id": "q222",
+      "topic": "Time & Work",
+      "question": "MDH formula?",
+      "answer": "$$\\frac{M_1 D_1 H_1}{W_1} = \\frac{M_2 D_2 H_2}{W_2}$$"
+    },
+    {
+      "id": "q223",
+      "topic": "Mensuration",
+      "question": "Euler's Rule?",
+      "answer": "$$F + V = E + 2$$\n\nFaces + Vertices = Edges + 2"
+    },
+    {
+      "id": "q224",
+      "topic": "Mensuration",
+      "question": "Prism?",
+      "answer": "LSA $$= \\text{Perimeter}_{\\text{base}} \\times h$$\n\nTSA $$=$$ LSA $$+ 2 \\times$$ Area$$_{\\text{base}}$$\n\nVolume $$=$$ Area$$_{\\text{base}} \\times h$$"
+    },
+    {
+      "id": "q225",
+      "topic": "Mensuration",
+      "question": "Cuboid?",
+      "answer": "LSA $$= 2(l+b)h$$\nTSA $$= 2(lb+bh+lh)$$\nVolume $$= lbh$$\nDiagonal $$= \\sqrt{l^2+b^2+h^2}$$"
+    },
+    {
+      "id": "q226",
+      "topic": "Mensuration",
+      "question": "Pyramid?",
+      "answer": "Volume $$= \\frac{1}{3} \\times$$ Area$$_{\\text{base}} \\times h$$\n\nLSA $$= \\frac{1}{2} \\times$$ Perimeter$$_{\\text{base}} \\times l$$"
+    },
+    {
+      "id": "q227",
+      "topic": "Mensuration",
+      "question": "Cone?",
+      "answer": "$$l^2 = r^2+h^2$$\n\nVolume $$= \\frac{1}{3}\\pi r^2 h$$\n\nCSA $$= \\pi r l$$\n\nTSA $$= \\pi r(l+r)$$"
+    },
+    {
+      "id": "q228",
+      "topic": "Mensuration",
+      "question": "Frustum of cone?",
+      "answer": "$$V = \\frac{1}{3}\\pi h(R^2+r^2+Rr)$$\n\nLSA $$= \\pi l(R+r)$$\n\n$$l^2 = (R-r)^2+h^2$$"
+    },
+    {
+      "id": "q229",
+      "topic": "Mensuration",
+      "question": "Frustum of pyramid?",
+      "answer": "$$V = \\frac{1}{3}h(A_1+A_2+\\sqrt{A_1 A_2})$$\n\nLSA $$= \\frac{1}{2}(P_1+P_2) \\times l$$"
+    },
+    {
+      "id": "q230",
+      "topic": "Mensuration",
+      "question": "Torus?",
+      "answer": "SA $$= 4\\pi^2 ra$$\n\nVolume $$= 2\\pi^2 r^2 a$$\n\n$$r$$ = tube radius, $$a$$ = centre-to-tube distance."
+    },
+    {
+      "id": "q231",
+      "topic": "Mensuration",
+      "question": "Circle vs inscribed/circumscribed polygon?",
+      "answer": "Circumference $$>$$ perimeter of any inscribed polygon.\n\nPerimeter of circumscribing polygon $$>$$ circumference."
+    },
+    {
+      "id": "q232",
+      "topic": "Mensuration",
+      "question": "Unit conversions?",
+      "answer": "1 Feet = 12 inches\n1 Inch = 2.54 cm"
+    },
+    {
+      "id": "q233",
+      "topic": "Mensuration",
+      "question": "Equilateral $$\\triangle$$: inradius?",
+      "answer": "$$r = \\frac{a}{2\\sqrt{3}}$$\n\nInradius $$= \\frac{1}{2} \\times$$ Circumradius."
+    },
+    {
+      "id": "q234",
+      "topic": "Coordinate Geometry",
+      "question": "Area of $$\\triangle$$ with vertices?",
+      "answer": "$$\\frac{1}{2}|x_1(y_2-y_3)+x_2(y_3-y_1)+x_3(y_1-y_2)|$$\n\nIf area $$= 0$$, points are collinear."
+    },
+    {
+      "id": "q235",
+      "topic": "Coordinate Geometry",
+      "question": "Internal division $$m:n$$?",
+      "answer": "$$\\left(\\frac{mx_2+nx_1}{m+n},\\; \\frac{my_2+ny_1}{m+n}\\right)$$"
+    },
+    {
+      "id": "q236",
+      "topic": "Coordinate Geometry",
+      "question": "External division $$m:n$$?",
+      "answer": "$$\\left(\\frac{mx_2-nx_1}{m-n},\\; \\frac{my_2-ny_1}{m-n}\\right)$$"
+    },
+    {
+      "id": "q237",
+      "topic": "Coordinate Geometry",
+      "question": "Centroid?",
+      "answer": "$$\\left(\\frac{x_1+x_2+x_3}{3},\\; \\frac{y_1+y_2+y_3}{3}\\right)$$"
+    },
+    {
+      "id": "q238",
+      "topic": "Coordinate Geometry",
+      "question": "Straight line equations?",
+      "answer": "Two-point: $$\\frac{y-y_1}{x-x_1} = \\frac{y_2-y_1}{x_2-x_1}$$\n\nSlope: $$y=mx+c$$\n\nIntercept: $$\\frac{x}{a}+\\frac{y}{b}=1$$"
+    },
+    {
+      "id": "q239",
+      "topic": "Coordinate Geometry",
+      "question": "Parallel and perpendicular lines?",
+      "answer": "$$\\parallel$$: $$\\frac{a_1}{a_2}=\\frac{b_1}{b_2}$$\n\n$$\\perp$$: $$m_1 m_2 = -1$$\n\nSame line: $$\\frac{a_1}{a_2}=\\frac{b_1}{b_2}=\\frac{c_1}{c_2}$$"
+    },
+    {
+      "id": "q240",
+      "topic": "Coordinate Geometry",
+      "question": "Distance between parallel lines?",
+      "answer": "$$\\frac{|c_1-c_2|}{\\sqrt{a^2+b^2}}$$"
+    },
+    {
+      "id": "q241",
+      "topic": "Coordinate Geometry",
+      "question": "Angle between two lines?",
+      "answer": "$$\\cos\\theta = \\frac{a_1a_2+b_1b_2}{\\sqrt{a_1^2+b_1^2}\\cdot\\sqrt{a_2^2+b_2^2}}$$\n\n$$\\tan\\theta = \\left|\\frac{m_1-m_2}{1+m_1m_2}\\right|$$"
+    },
+    {
+      "id": "q242",
+      "topic": "Coordinate Geometry",
+      "question": "Circle equation?",
+      "answer": "$$(x-a)^2+(y-b)^2=r^2$$\n\nGeneral: $$x^2+y^2+2gx+2fy+c=0$$\n\nCentre $$=(-g,-f)$$, $$r=\\sqrt{g^2+f^2-c}$$"
+    },
+    {
+      "id": "q243",
+      "topic": "Coordinate Geometry",
+      "question": "Common chord of two circles?",
+      "answer": "$$C_1 - C_2 = 0$$\n\n(Subtract the two equations)"
+    },
+    {
+      "id": "q244",
+      "topic": "Coordinate Geometry",
+      "question": "Pair of straight lines?",
+      "answer": "$$ax^2+2hxy+by^2+2gx+2fy+c=0$$"
+    },
+    {
+      "id": "q245",
+      "topic": "Coordinate Geometry",
+      "question": "Translation of axes?",
+      "answer": "$$x = X+h,\\quad y = Y+k$$\n\nOrigin shifted to $$(h,k)$$."
+    },
+    {
+      "id": "q246",
+      "topic": "Coordinate Geometry",
+      "question": "Rotation of axes?",
+      "answer": "$$x = X\\cos\\theta - Y\\sin\\theta$$\n$$y = X\\sin\\theta + Y\\cos\\theta$$"
+    },
+    {
+      "id": "q247",
+      "topic": "Trigonometry",
+      "question": "Pythagorean identities?",
+      "answer": "$$\\sin^2\\theta+\\cos^2\\theta=1$$\n$$1+\\tan^2\\theta=\\sec^2\\theta$$\n$$1+\\cot^2\\theta=\\csc^2\\theta$$"
+    },
+    {
+      "id": "q248",
+      "topic": "Trigonometry",
+      "question": "Negative angle formulas?",
+      "answer": "$$\\sin(-\\theta)=-\\sin\\theta$$\n$$\\cos(-\\theta)=\\cos\\theta$$\n$$\\tan(-\\theta)=-\\tan\\theta$$"
+    },
+    {
+      "id": "q249",
+      "topic": "Trigonometry",
+      "question": "$$\\sin(A+B)$$?",
+      "answer": "$$\\sin A\\cos B + \\cos A\\sin B$$\n\n$$\\cos(A+B) = \\cos A\\cos B - \\sin A\\sin B$$"
+    },
+    {
+      "id": "q250",
+      "topic": "Trigonometry",
+      "question": "$$\\sin(A-B)$$?",
+      "answer": "$$\\sin A\\cos B - \\cos A\\sin B$$\n\n$$\\cos(A-B) = \\cos A\\cos B + \\sin A\\sin B$$"
+    },
+    {
+      "id": "q251",
+      "topic": "Trigonometry",
+      "question": "$$\\tan(A+B)$$?",
+      "answer": "$$\\frac{\\tan A+\\tan B}{1-\\tan A\\tan B}$$\n\n$$\\tan(A-B) = \\frac{\\tan A-\\tan B}{1+\\tan A\\tan B}$$"
+    },
+    {
+      "id": "q252",
+      "topic": "Trigonometry",
+      "question": "$$\\sin(A+B)\\sin(A-B)$$?",
+      "answer": "$$\\sin^2 A - \\sin^2 B = \\cos^2 B - \\cos^2 A$$"
+    },
+    {
+      "id": "q253",
+      "topic": "Trigonometry",
+      "question": "$$\\cos(A+B)\\cos(A-B)$$?",
+      "answer": "$$\\cos^2 A - \\sin^2 B$$"
+    },
+    {
+      "id": "q254",
+      "topic": "Trigonometry",
+      "question": "$$\\sin 2\\theta$$?",
+      "answer": "$$2\\sin\\theta\\cos\\theta = \\frac{2\\tan\\theta}{1+\\tan^2\\theta}$$"
+    },
+    {
+      "id": "q255",
+      "topic": "Trigonometry",
+      "question": "$$\\cos 2\\theta$$?",
+      "answer": "$$\\cos^2\\theta-\\sin^2\\theta = 2\\cos^2\\theta-1$$\n$$= 1-2\\sin^2\\theta = \\frac{1-\\tan^2\\theta}{1+\\tan^2\\theta}$$"
+    },
+    {
+      "id": "q256",
+      "topic": "Trigonometry",
+      "question": "$$\\tan 2\\theta$$?",
+      "answer": "$$\\frac{2\\tan\\theta}{1-\\tan^2\\theta}$$\n\n$$\\cot 2\\theta = \\frac{\\cot^2\\theta-1}{2\\cot\\theta}$$"
+    },
+    {
+      "id": "q257",
+      "topic": "Trigonometry",
+      "question": "Triple angle formulas?",
+      "answer": "$$\\sin 3\\theta = 3\\sin\\theta-4\\sin^3\\theta$$\n$$\\cos 3\\theta = 4\\cos^3\\theta-3\\cos\\theta$$\n$$\\tan 3\\theta = \\frac{3\\tan\\theta-\\tan^3\\theta}{1-3\\tan^2\\theta}$$"
+    },
+    {
+      "id": "q258",
+      "topic": "Trigonometry",
+      "question": "Product-to-sum formulas?",
+      "answer": "$$2\\sin A\\cos B = \\sin(A+B)+\\sin(A-B)$$\n$$2\\cos A\\cos B = \\cos(A+B)+\\cos(A-B)$$\n$$2\\sin A\\sin B = \\cos(A-B)-\\cos(A+B)$$"
+    },
+    {
+      "id": "q259",
+      "topic": "Trigonometry",
+      "question": "Sine rule?",
+      "answer": "$$\\frac{a}{\\sin A}=\\frac{b}{\\sin B}=\\frac{c}{\\sin C}=2R$$"
+    },
+    {
+      "id": "q260",
+      "topic": "Trigonometry",
+      "question": "Cosine rule?",
+      "answer": "$$\\cos A = \\frac{b^2+c^2-a^2}{2bc}$$"
+    },
+    {
+      "id": "q261",
+      "topic": "Trigonometry",
+      "question": "Max of $$a\\cos\\theta+b\\sin\\theta$$?",
+      "answer": "$$\\sqrt{a^2+b^2}$$"
+    },
+    {
+      "id": "q262",
+      "topic": "Trigonometry",
+      "question": "Pythagorean triplets?",
+      "answer": "$$(3,4,5),\\;(5,12,13),\\;(7,24,25)$$\n$$(8,15,17),\\;(9,40,41),\\;(11,60,61),\\;(12,35,37)$$"
+    },
+    {
+      "id": "q263",
+      "topic": "Trigonometry",
+      "question": "$$(1+\\tan 5°)(1+\\tan 40°) = ?$$",
+      "answer": "$$2$$\n\nFor any $$A+B=45°$$:\n$$(1+\\tan A)(1+\\tan B)=2$$"
+    },
+    {
+      "id": "q264",
+      "topic": "Trigonometry",
+      "question": "When $$A+B+C=180°$$?",
+      "answer": "$$\\tan A+\\tan B+\\tan C = \\tan A \\cdot \\tan B \\cdot \\tan C$$"
+    },
+    {
+      "id": "q265",
+      "topic": "Sets",
+      "question": "Cardinality?",
+      "answer": "Number of distinct elements. Order doesn't matter."
+    },
+    {
+      "id": "q266",
+      "topic": "Sets",
+      "question": "Subsets of set with cardinality $$n$$?",
+      "answer": "$$2^n$$\n\nPower set = set of all subsets.\n$$\\phi$$ is a subset of every set."
+    },
+    {
+      "id": "q267",
+      "topic": "Sets",
+      "question": "$$A-B$$ and Complement?",
+      "answer": "$$A-B=$$ elements in $$A$$ not in $$B$$.\n\n$$A' = A^c = U-A$$"
+    },
+    {
+      "id": "q268",
+      "topic": "Sets",
+      "question": "Symmetric difference?",
+      "answer": "$$A \\triangle B = (A-B) \\cup (B-A)$$"
+    },
+    {
+      "id": "q269",
+      "topic": "Sets",
+      "question": "De Morgan's Laws?",
+      "answer": "$$(A \\cup B)^c = A^c \\cap B^c$$\n\n$$(A \\cap B)^c = A^c \\cup B^c$$"
+    },
+    {
+      "id": "q270",
+      "topic": "Sets",
+      "question": "$$n(A \\cup B) = ?$$",
+      "answer": "$$n(A)+n(B)-n(A \\cap B)$$"
+    },
+    {
+      "id": "q271",
+      "topic": "Sets",
+      "question": "Cartesian product $$A \\times B$$?",
+      "answer": "$$O(A)=m,\\; O(B)=n \\implies O(A \\times B) = mn$$\n\n$$A \\times B \\neq B \\times A$$ but $$n(A \\times B)=n(B \\times A)$$"
+    },
+    {
+      "id": "q272",
+      "topic": "Functions",
+      "question": "Function definition?",
+      "answer": "Each element of $$A$$ maps to exactly one element of $$B$$.\n\nRange $$\\subseteq$$ Co-domain."
+    },
+    {
+      "id": "q273",
+      "topic": "Functions",
+      "question": "Total functions from $$A$$ to $$B$$?",
+      "answer": "$$n^m$$\n\nwhere $$n(A)=m,\\; n(B)=n$$"
+    },
+    {
+      "id": "q274",
+      "topic": "Functions",
+      "question": "Onto (surjection)?",
+      "answer": "Range = Co-domain.\n$$n(A) \\geq n(B)$$"
+    },
+    {
+      "id": "q275",
+      "topic": "Functions",
+      "question": "Bijection?",
+      "answer": "One-one AND onto.\n$$n(A)=n(B)$$\n\nNumber of bijections $$= n!$$"
+    },
+    {
+      "id": "q276",
+      "topic": "Functions",
+      "question": "Even vs Odd function?",
+      "answer": "Even: $$f(-x)=f(x)$$\nOdd: $$f(-x)=-f(x)$$"
+    },
+    {
+      "id": "q277",
+      "topic": "Functions",
+      "question": "Inverse function exists when?",
+      "answer": "Function is bijective.\n\n$$f(a)=b \\implies a=f^{-1}(b)$$"
+    },
+    {
+      "id": "q278",
+      "topic": "Number Systems",
+      "question": "Base systems?",
+      "answer": "Binary: base 2 $$(0,1)$$\nOctal: base 8\nDecimal: base 10\nHexadecimal: base 16"
+    },
+    {
+      "id": "q279",
+      "topic": "Number Systems",
+      "question": "Decimal to other base?",
+      "answer": "Repeated division by base.\nRead remainders bottom-to-top.\n\n$$(23)_{10} = (10111)_2$$"
+    },
+    {
+      "id": "q280",
+      "topic": "Number Systems",
+      "question": "Binary to Octal?",
+      "answer": "Group in 3s from right.\n\n$$1\\;001\\;100 \\to 1,1,4 \\to (114)_8$$"
+    },
+    {
+      "id": "q281",
+      "topic": "Number Systems",
+      "question": "Binary to Hexadecimal?",
+      "answer": "Group in 4s from right."
+    },
+    {
+      "id": "q282",
+      "topic": "Number Systems",
+      "question": "Decimal fraction to binary?",
+      "answer": "Multiply fraction by 2 repeatedly, note integer parts.\n\n$$(0.375)_{10} = (0.011)_2$$"
+    },
+    {
+      "id": "q283",
+      "topic": "Statistics",
+      "question": "Arithmetic Mean?",
+      "answer": "$$A.M. = \\frac{x_1+x_2+\\cdots+x_n}{n}$$"
+    },
+    {
+      "id": "q284",
+      "topic": "Statistics",
+      "question": "Geometric Mean?",
+      "answer": "$$G.M. = (x_1 \\cdot x_2 \\cdots x_n)^{1/n}$$"
+    },
+    {
+      "id": "q285",
+      "topic": "Statistics",
+      "question": "Harmonic Mean?",
+      "answer": "$$H.M. = \\frac{n}{\\frac{1}{x_1}+\\frac{1}{x_2}+\\cdots+\\frac{1}{x_n}}$$"
+    },
+    {
+      "id": "q286",
+      "topic": "Statistics",
+      "question": "Sum of deviations about mean?",
+      "answer": "$$\\sum(x_i - \\bar{x}) = 0$$\n\nAlways zero."
+    },
+    {
+      "id": "q287",
+      "topic": "Statistics",
+      "question": "AM, GM, HM relationship?",
+      "answer": "$$A.M. \\geq G.M. \\geq H.M.$$\n\n$$(G.M.)^2 = (A.M.)(H.M.)$$"
+    },
+    {
+      "id": "q288",
+      "topic": "Statistics",
+      "question": "Median?",
+      "answer": "Middle value when sorted.\n\nFor $$n$$ values:\nOdd: $$\\frac{n+1}{2}$$th term.\nEven: average of $$\\frac{n}{2}$$th and $$\\frac{n}{2}+1$$th terms."
+    },
+    {
+      "id": "q289",
+      "topic": "Statistics",
+      "question": "Mode?",
+      "answer": "Value occurring the highest number of times."
+    },
+    {
+      "id": "q290",
+      "topic": "Statistics",
+      "question": "Symmetric distribution?",
+      "answer": "Mean = Median = Mode.\n\nModerately symmetric:\n$$\\text{Mode} = 3\\text{Median} - 2\\text{Mean}$$"
+    },
+    {
+      "id": "q291",
+      "topic": "Statistics",
+      "question": "Quartiles?",
+      "answer": "$$Q_1 = \\frac{n+1}{4}$$th term\n$$Q_2 =$$ Median\n$$Q_3 = \\frac{3(n+1)}{4}$$th term\n\nIQR $$= Q_3-Q_1$$"
+    },
+    {
+      "id": "q292",
+      "topic": "Statistics",
+      "question": "Mean Deviation?",
+      "answer": "$$M.D. = \\frac{\\sum|x_i-A|}{n}$$\n\nLeast when taken about the Median."
+    },
+    {
+      "id": "q293",
+      "topic": "Statistics",
+      "question": "Standard Deviation?",
+      "answer": "$$\\sigma = \\sqrt{\\frac{\\sum(x_i-\\bar{x})^2}{n}} = \\sqrt{\\frac{\\sum x_i^2}{n}-\\bar{x}^2}$$\n\n$$= \\sqrt{\\text{Variance}}$$"
+    },
+    {
+      "id": "q294",
+      "topic": "Statistics",
+      "question": "Quartile Deviation of 2 numbers $$a,b$$?",
+      "answer": "$$\\frac{|a-b|}{2}$$"
+    },
+    {
+      "id": "q295",
+      "topic": "Statistics",
+      "question": "SD transformation: if S.D. = 6, find S.D. of $$(2x_i+3)$$?",
+      "answer": "$$= 2 \\times 6 = 12$$\n\nAdding constant → no change.\nMultiplying by $$k$$ → S.D. $$\\times |k|$$"
+    },
+    {
+      "id": "q296",
+      "topic": "Syllogisms",
+      "question": "Distribution table: ALL, NO, Some, Some not?",
+      "answer": "ALL: Subject ✓, Predicate ✗\nNO: Both ✓\nSome: Both ✗\nSome not: Subject ✗, Predicate ✓"
+    },
+    {
+      "id": "q297",
+      "topic": "Syllogisms",
+      "question": "Middle term rule?",
+      "answer": "Must be distributed at least once."
+    },
+    {
+      "id": "q298",
+      "topic": "Syllogisms",
+      "question": "One premise is negative?",
+      "answer": "Conclusion must be negative."
+    },
+    {
+      "id": "q299",
+      "topic": "Syllogisms",
+      "question": "One premise is particular?",
+      "answer": "Conclusion must be particular."
+    },
+    {
+      "id": "q300",
+      "topic": "Syllogisms",
+      "question": "Both premises negative or particular?",
+      "answer": "No conclusion can be drawn."
+    },
+    {
+      "id": "q301",
+      "topic": "Syllogisms",
+      "question": "Negation: If $$p$$, then $$q$$?",
+      "answer": "Negation: $$p \\wedge \\neg q$$\n\nUnless $$p$$, then $$q$$: $$\\neg p \\wedge \\neg q$$\n\nOnly if $$p$$, then $$q$$: $$\\neg p \\wedge q$$"
+    },
+    {
+      "id": "q302",
+      "topic": "Syllogisms",
+      "question": "Contrapositive of $$p \\to q$$?",
+      "answer": "$$\\neg q \\to \\neg p$$\n\nConverse: $$q \\to p$$\nInverse: $$\\neg p \\to \\neg q$$"
+    }
+  ],
+  "lrdi_tips": [
+    {
+      "id": "l001",
+      "topic": "LRDI Strategy",
+      "question": "First 2 minutes of any LRDI set — what should you do?",
+      "answer": "READ the entire set without solving. Understand the structure: how many entities, how many parameters, what constraints exist. Jumping in without reading = guaranteed mistakes."
+    },
+    {
+      "id": "l002",
+      "topic": "LRDI Strategy",
+      "question": "How to pick which LRDI set to attempt first?",
+      "answer": "Scan ALL sets in 3–4 minutes. Pick the one with maximum definite information and minimum ambiguity. Arrangement > Scheduling > Venn Diagram > Games & Tournaments (usually)."
+    },
+    {
+      "id": "l003",
+      "topic": "Arrangements",
+      "question": "Linear arrangement — where to start?",
+      "answer": "Start with the person who has the MOST constraints. Place them first, then build around them. Never start with the least constrained person."
+    },
+    {
+      "id": "l004",
+      "topic": "Arrangements",
+      "question": "Circular arrangement — key difference from linear?",
+      "answer": "No fixed starting point. Fix one person and arrange rest relative to them. If N people, arrangements = (N-1)! Also: left/right flips in circular = clockwise/anticlockwise."
+    },
+    {
+      "id": "l005",
+      "topic": "Arrangements",
+      "question": "How to handle \"not adjacent\" conditions?",
+      "answer": "Method 1: Total arrangements − adjacent arrangements.\nMethod 2: Place others first, then fill gaps.\n\nAlways draw it out — don't try to do it mentally."
+    },
+    {
+      "id": "l006",
+      "topic": "Tables & Grids",
+      "question": "Table with missing values — first step?",
+      "answer": "Fill in ALL values that can be directly calculated from given data. Then look for rows/columns with only ONE unknown — solve those next. Cascade: each solved cell may unlock another."
+    },
+    {
+      "id": "l007",
+      "topic": "Tables & Grids",
+      "question": "When a table has \"at least\" or \"at most\" conditions?",
+      "answer": "Use boundary values. \"At least 3\" means minimum is 3. \"At most 5\" means maximum is 5. Mark ranges for each cell, then use row/column totals to narrow down."
+    },
+    {
+      "id": "l008",
+      "topic": "Venn Diagrams",
+      "question": "3-set Venn Diagram — formula?",
+      "answer": "n(A∪B∪C) = n(A)+n(B)+n(C) − n(A∩B) − n(B∩C) − n(A∩C) + n(A∩B∩C).\n\nAlways fill from the INSIDE OUT — start with the center (all three), then pairs, then singles."
+    },
+    {
+      "id": "l009",
+      "topic": "Venn Diagrams",
+      "question": "\"Only A\" vs \"A\" — what's the difference?",
+      "answer": "\"A\" includes everyone in A (even those in A∩B, A∩C, A∩B∩C). \"Only A\" excludes all overlaps. CAT loves testing this distinction. Always clarify which one the question asks."
+    },
+    {
+      "id": "l010",
+      "topic": "Games & Tournaments",
+      "question": "Round-robin tournament: total matches?",
+      "answer": "Each pair plays once: ⁿC₂ = n(n-1)/2 matches.\n\nTotal points distributed = total matches (if win=1, loss=0) or 2× matches (if win=2, draw=1, loss=0)."
+    },
+    {
+      "id": "l011",
+      "topic": "Games & Tournaments",
+      "question": "Knockout tournament: total matches to find winner?",
+      "answer": "Always n-1 matches (because each match eliminates exactly 1 player). True regardless of seeding or byes."
+    },
+    {
+      "id": "l012",
+      "topic": "Games & Tournaments",
+      "question": "How to approach tournament problems with partial results?",
+      "answer": "Draw the complete bracket/table structure first. Fill known results. Use total points constraints (row totals = points earned by each team) to deduce unknowns."
+    },
+    {
+      "id": "l013",
+      "topic": "Scheduling",
+      "question": "Scheduling problems — key constraint to identify first?",
+      "answer": "Find the bottleneck: which resource/person/room has the tightest schedule? Build around that. Also check: are there any mutual exclusions (A and B can't happen at same time)?"
+    },
+    {
+      "id": "l014",
+      "topic": "Blood Relations",
+      "question": "Fastest way to solve blood relations?",
+      "answer": "Draw a family tree as you read. Males on one side, females on other. Use symbols: = for married, | for parent-child, -- for siblings. Never try to solve without a diagram."
+    },
+    {
+      "id": "l015",
+      "topic": "Blood Relations",
+      "question": "Coded blood relations — how to decode?",
+      "answer": "Decode the relationship words first (e.g., A#B means A is father of B). Write out the actual relationships. THEN draw the tree. Two-step process — don't mix decoding with tree-building."
+    },
+    {
+      "id": "l016",
+      "topic": "Direction Sense",
+      "question": "Direction sense — common trap?",
+      "answer": "LEFT and RIGHT are relative to the person's facing direction, not yours! Always track which direction the person is facing after each turn. Draw arrows."
+    },
+    {
+      "id": "l017",
+      "topic": "Cubes & Dice",
+      "question": "Painted cube cut into smaller cubes — corner/edge/face pieces?",
+      "answer": "If cut into n³ smaller cubes:\n3 faces painted (corners): always 8\n2 faces painted (edges): 12(n-2)\n1 face painted (faces): 6(n-2)²\n0 faces painted (inside): (n-2)³"
+    },
+    {
+      "id": "l018",
+      "topic": "Cubes & Dice",
+      "question": "Opposite faces of a standard dice always sum to?",
+      "answer": "7. Pairs: (1,6), (2,5), (3,4). If you can see 3 faces, you can determine all 6."
+    },
+    {
+      "id": "l019",
+      "topic": "Binary Logic",
+      "question": "Liar-Truth teller problems — how to approach?",
+      "answer": "Assume one person is telling the truth. Check if all statements are consistent. If contradiction → that person is lying. Try the other assumption. Only one scenario will be consistent."
+    },
+    {
+      "id": "l020",
+      "topic": "Binary Logic",
+      "question": "How to handle \"exactly one of us is lying\" type statements?",
+      "answer": "These are self-referential. If A says \"exactly one of us is lying\" — test both cases (A lies vs A tells truth). The trick: a liar saying \"exactly one lies\" means the reality is different from \"exactly one.\""
+    },
+    {
+      "id": "l021",
+      "topic": "LRDI Strategy",
+      "question": "What if you're stuck on a set for 5+ minutes?",
+      "answer": "MOVE ON. Mark it and come back if time permits. Spending 15 minutes on one set kills your score. Better to attempt 4 sets at 80% accuracy than 2 sets at 100%."
+    },
+    {
+      "id": "l022",
+      "topic": "LRDI Strategy",
+      "question": "How to handle \"cannot be determined\" options in LRDI?",
+      "answer": "This is ONLY correct when there are genuinely multiple valid configurations. If you can find even ONE additional constraint that pins down the answer, it CAN be determined. Check your work."
+    },
+    {
+      "id": "l023",
+      "topic": "Data Sufficiency",
+      "question": "Data sufficiency — common mistake?",
+      "answer": "Don't solve! Just check if the data IS SUFFICIENT to solve. Students waste time computing exact answers. The question is about possibility, not calculation."
+    },
+    {
+      "id": "l024",
+      "topic": "LRDI Strategy",
+      "question": "Order of solving questions within a set?",
+      "answer": "Answer definite questions first (those with unique answers). Skip \"possible\" questions initially. Come back to possibility-based questions after you've maximized constraints from the definite ones."
+    },
+    {
+      "id": "l025",
+      "topic": "Logical Connectives",
+      "question": "If P then Q — what can we conclude from Q being true?",
+      "answer": "NOTHING about P. Common trap! \"If it rains, ground is wet\" does NOT mean \"ground is wet implies it rained\" (could be a sprinkler). Only contrapositive is valid: not Q → not P."
+    }
+  ],
+  "summary": {
+    "vocab_count": 150,
+    "idioms_count": 50,
+    "quant_count": 302,
+    "lrdi_count": 25,
+    "total": 527
+  }
+}
