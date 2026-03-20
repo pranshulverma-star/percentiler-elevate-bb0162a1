@@ -3167,6 +3167,186 @@
       "topic": "Logical Connectives",
       "question": "If P then Q — what can we conclude from Q being true?",
       "answer": "NOTHING about P. Common trap! \"If it rains, ground is wet\" does NOT mean \"ground is wet implies it rained\" (could be a sprinkler). Only contrapositive is valid: not Q → not P."
+    },
+    {
+      "id": "l026",
+      "topic": "Seating Arrangement",
+      "question": "Rectangular table with people on both sides — key trap?",
+      "answer": "People sitting OPPOSITE each other face each other. People sitting on the SAME side face the same direction. Don't confuse 'left of' on the same side vs opposite side — left flips when facing directions change."
+    },
+    {
+      "id": "l027",
+      "topic": "Seating Arrangement",
+      "question": "How to handle 'A sits 3 places to the right of B'?",
+      "answer": "Draw the arrangement. Count seats from B going rightward (clockwise in circular). 3 places means 3 seats away, NOT 3 people between them. Common CAT trap: '3 places to the right' ≠ '3 people between them'."
+    },
+    {
+      "id": "l028",
+      "topic": "Seating Arrangement",
+      "question": "What if circular arrangement has conditions like 'A and B are not adjacent'?",
+      "answer": "Fix one person (say A). Place everyone else. For 'not adjacent' — place B in any seat EXCEPT the two seats next to A. Total valid spots = (n-3) for B out of (n-1) remaining seats."
+    },
+    {
+      "id": "l029",
+      "topic": "Scheduling",
+      "question": "Multiple events, multiple rooms, time slots — first step?",
+      "answer": "Draw a grid: rows = time slots, columns = rooms. Fill in fixed/known events first. Then apply constraints one by one. Key: look for time slots or rooms with only 1 option left."
+    },
+    {
+      "id": "l030",
+      "topic": "Scheduling",
+      "question": "How to handle 'Event A must happen before Event B' constraints?",
+      "answer": "Create a precedence chain: A → B → C. Draw arrows showing which must come first. Then fit into available slots. Multiple precedence chains? Find where they overlap or conflict."
+    },
+    {
+      "id": "l031",
+      "topic": "Distributions",
+      "question": "Distributing items to people with 'at least' and 'at most' constraints?",
+      "answer": "Start with the TIGHTEST constraint. If A gets at least 4 and at most 6 out of 20 total, try A=4 first and see what remains. Then A=5, A=6. Enumerate systematically — don't guess."
+    },
+    {
+      "id": "l032",
+      "topic": "Distributions",
+      "question": "'Each person gets a different number of items' — shortcut?",
+      "answer": "If n people get distinct counts from a total T, the minimum total = 0+1+2+...+(n-1) = n(n-1)/2. If T is much larger, the maximum goes to the person with fewest constraints. Start from min allocation and distribute surplus."
+    },
+    {
+      "id": "l033",
+      "topic": "Comparisons",
+      "question": "Ranking problems: 'A scored more than B but less than C' — how to track?",
+      "answer": "Write inequalities: C > A > B. Chain them. When you have 5-6 people, maintain a single sorted list. Insert each new person into the right position. If the final order has gaps (unknown relative positions), note them."
+    },
+    {
+      "id": "l034",
+      "topic": "Comparisons",
+      "question": "'Exactly 3 people scored between A and B' — what does this mean?",
+      "answer": "It means in the ranking, there are exactly 3 people whose scores are strictly between A's and B's scores. A could be above or below B. Consider both cases unless specified."
+    },
+    {
+      "id": "l035",
+      "topic": "Selections",
+      "question": "'A committee of 5 from 10 people with constraints' — LRDI approach?",
+      "answer": "This isn't P&C — it's logic! List constraints: 'If A is selected, B must be selected', 'C and D cannot both be selected'. Start with the most restrictive constraint. Build valid committees one by one."
+    },
+    {
+      "id": "l036",
+      "topic": "Selections",
+      "question": "How to handle 'If A then B' and 'If B then not C' together?",
+      "answer": "Chain them: A → B → not C. So if A is selected, C is automatically OUT. Contrapositive: C → not B → not A. Build an implication map before trying combinations."
+    },
+    {
+      "id": "l037",
+      "topic": "Routes & Networks",
+      "question": "Shortest path problems in LRDI?",
+      "answer": "Draw the network. Label each edge with distance/time. Use systematic exploration: start from source, track cumulative distance at each node. Don't just eyeball — one missed shorter path ruins everything."
+    },
+    {
+      "id": "l038",
+      "topic": "Routes & Networks",
+      "question": "'How many distinct routes from A to B without repeating any node?'",
+      "answer": "Enumerate paths systematically. Tree method: branch at each junction, prune branches that revisit a node. Count only complete paths reaching B. For small networks (5-7 nodes), this is faster than any formula."
+    },
+    {
+      "id": "l039",
+      "topic": "Venn Diagrams",
+      "question": "Maxima-minima in Venn diagrams?",
+      "answer": "To MAXIMIZE an intersection, push as many elements as possible into the overlap. To MINIMIZE, spread elements apart. Use: max(A∩B) = min(A,B). min(A∩B) = max(0, A+B-Total)."
+    },
+    {
+      "id": "l040",
+      "topic": "Venn Diagrams",
+      "question": "4-set Venn diagram — is it possible?",
+      "answer": "Yes, but NOT with circles — you need ellipses or rectangles. In CAT, 4-set problems usually use a table/matrix instead of a diagram. Convert to a grid with 2 parameters on rows and 2 on columns."
+    },
+    {
+      "id": "l041",
+      "topic": "Tables & Grids",
+      "question": "Table where row totals and column totals are given but individual cells unknown?",
+      "answer": "Start with rows/columns that have the fewest unknowns. If a row has 4 cells and 3 are known, the 4th = row total minus the 3 knowns. Each solved cell cascades into solving cells in its column."
+    },
+    {
+      "id": "l042",
+      "topic": "Tables & Grids",
+      "question": "What if the table has percentages instead of absolute numbers?",
+      "answer": "Convert everything to the same unit first. If you know any one absolute value, you can derive all others from percentages. If no absolute value is given, work entirely in ratios — actual values may not be needed."
+    },
+    {
+      "id": "l043",
+      "topic": "Games & Tournaments",
+      "question": "League format with ties in points table — how to resolve?",
+      "answer": "Check if additional info is given (head-to-head, goal difference, etc.). If not, list all valid configurations. CAT often asks 'which is definitely true?' — only pick what holds in ALL valid scenarios."
+    },
+    {
+      "id": "l044",
+      "topic": "Games & Tournaments",
+      "question": "Tournament with group stage + knockouts — what to track?",
+      "answer": "Two separate structures. Group stage: use a points table (wins, losses, draws, points). Knockout: draw a bracket. Bridge them: top 2 from each group enter knockouts. Don't mix up the formats."
+    },
+    {
+      "id": "l045",
+      "topic": "Cubes & Dice",
+      "question": "Cube painted on all faces, cut into 64 smaller cubes. How many have exactly 2 painted faces?",
+      "answer": "64 = 4³, so n=4. Two painted faces = edge cubes (not corners). Formula: 12(n-2) = 12×2 = 24."
+    },
+    {
+      "id": "l046",
+      "topic": "Cubes & Dice",
+      "question": "Two dice rolled — probability of same number?",
+      "answer": "Total outcomes = 36. Same number: (1,1),(2,2)...(6,6) = 6. P = 6/36 = 1/6. In LRDI, this appears in game-based sets with dice mechanics."
+    },
+    {
+      "id": "l047",
+      "topic": "Binary Logic",
+      "question": "'At least one is a liar and at least one tells truth' — how to use?",
+      "answer": "Eliminates 2 scenarios: all truth-tellers AND all liars. Test remaining combos: (1T,2L), (2T,1L). Only 6 combinations for 3 people. Usually only 1 is consistent with all statements."
+    },
+    {
+      "id": "l048",
+      "topic": "Binary Logic",
+      "question": "A says B lies, B says C lies, C says A lies — who lies?",
+      "answer": "If A=truth → B=liar → C=truth → A=liar. CONTRADICTION. So A=liar → B=truth → C=liar → A=truth. CONTRADICTION again. Means exactly 1 or 2 liars — test each systematically."
+    },
+    {
+      "id": "l049",
+      "topic": "LRDI Strategy",
+      "question": "How to practice LRDI effectively?",
+      "answer": "1. Solve sets TIMED (15-20 min max). 2. If stuck after 10 min, look at the approach, not the answer. 3. Categorize weak areas. 4. Do 2 full sets daily. 5. Review wrong answers — find WHERE your logic broke."
+    },
+    {
+      "id": "l050",
+      "topic": "LRDI Strategy",
+      "question": "CAT LRDI section — ideal time allocation?",
+      "answer": "Total: 40 minutes for ~4-5 sets. Scan all sets: 3-4 min. Best set: 8-10 min. Second: 10-12 min. Third: 10-12 min. Fourth (partial): remaining time. NEVER spend >15 min on one set."
+    },
+    {
+      "id": "l051",
+      "topic": "Logical Connectives",
+      "question": "'P only if Q' means?",
+      "answer": "P → Q (same as 'if P then Q'). NOT 'if Q then P'. Trap: 'only if' reverses intuition. Think: P can happen ONLY IF Q is true, meaning P requires Q."
+    },
+    {
+      "id": "l052",
+      "topic": "Logical Connectives",
+      "question": "'P if and only if Q' (biconditional)?",
+      "answer": "P → Q AND Q → P. Both true together or false together. If P is true, Q must be true. If P is false, Q must be false. They're logically equivalent."
+    },
+    {
+      "id": "l053",
+      "topic": "Logical Connectives",
+      "question": "Negation of 'All cats are black'?",
+      "answer": "'Some cats are not black.' NOT 'no cats are black'. Negation of ALL = SOME...NOT. Negation of SOME = NONE."
+    },
+    {
+      "id": "l054",
+      "topic": "Logical Connectives",
+      "question": "Negation of 'If it rains, the ground is wet'?",
+      "answer": "'It rains AND the ground is NOT wet.' Negation of (P → Q) = P ∧ ¬Q. An implication is false only when premise is true but conclusion is false."
+    },
+    {
+      "id": "l055",
+      "topic": "LRDI Strategy",
+      "question": "'Definitely true' vs 'possibly true' — what's the difference?",
+      "answer": "'Definitely true' = true in ALL valid scenarios. Even one exception = not definite. 'Possibly true' = true in AT LEAST ONE scenario. CAT loves mixing these in options. Always check all configurations."
     }
   ],
   "summary": {
