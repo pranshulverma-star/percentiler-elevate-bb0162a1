@@ -7,12 +7,12 @@ interface Props {
 }
 
 const tiles = [
-  { icon: GraduationCap, label: "Courses", to: "/courses/cat-omet" },
-  { icon: ClipboardList, label: "Test Series", to: "/test-series" },
-  { icon: Users, label: "Mentorship", to: "/mentorship" },
-  { icon: Wrench, label: "Workshops", to: "/workshops" },
-  { icon: BookOpen, label: "Free Courses", to: "/free-courses" },
-  { icon: Phone, label: "Strategy Call", to: "/mentorship" },
+  { icon: GraduationCap, label: "Courses", to: "/courses/cat-omet", color: "hsl(var(--primary))" },
+  { icon: ClipboardList, label: "Test Series", to: "/test-series", color: "hsl(220 70% 55%)" },
+  { icon: Users, label: "Mentorship", to: "/mentorship", color: "hsl(280 60% 55%)" },
+  { icon: Wrench, label: "Workshops", to: "/workshops", color: "hsl(160 60% 45%)" },
+  { icon: BookOpen, label: "Free Courses", to: "/free-courses", color: "hsl(45 93% 47%)" },
+  { icon: Phone, label: "Strategy Call", to: "/mentorship", color: "hsl(340 65% 55%)" },
 ];
 
 export default function DashboardQuickAccess({ converted: _converted, mentorshipActive: _mentorshipActive }: Props) {
@@ -26,9 +26,9 @@ export default function DashboardQuickAccess({ converted: _converted, mentorship
             <Link
               key={t.label}
               to={t.to}
-              className="flex flex-col items-center gap-1.5 py-3 rounded-xl hover:bg-secondary/60 transition-colors group"
+              className="flex flex-col items-center gap-1.5 py-3.5 rounded-xl bg-card/60 backdrop-blur-sm border border-border/20 hover:border-primary/20 hover:bg-card/90 transition-all duration-200 group"
             >
-              <Icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+              <Icon className="h-5 w-5 text-muted-foreground group-hover:scale-110 transition-transform" style={{ color: t.color }} />
               <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center leading-tight">{t.label}</span>
             </Link>
           );

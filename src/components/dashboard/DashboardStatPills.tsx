@@ -12,18 +12,18 @@ interface Props {
   loading: boolean;
 }
 
-const pills: { key: string; icon: typeof Flame; iconColor: string; field: string; label: string; suffix?: string }[] = [
-  { key: "streak", icon: Flame, iconColor: "text-primary", field: "currentStreak", label: "Streak" },
-  { key: "best", icon: Trophy, iconColor: "text-amber-500", field: "longestStreak", label: "Best" },
-  { key: "quizzes", icon: Zap, iconColor: "text-primary", field: "totalQuizzes", label: "Quizzes" },
-  { key: "accuracy", icon: TrendingUp, iconColor: "text-emerald-500", field: "avgAccuracy", label: "Accuracy", suffix: "%" },
+const pills: { key: string; icon: typeof Flame; color: string; field: string; label: string; suffix?: string }[] = [
+  { key: "streak", icon: Flame, color: "hsl(var(--primary))", field: "currentStreak", label: "Streak" },
+  { key: "best", icon: Trophy, color: "hsl(45 93% 47%)", field: "longestStreak", label: "Best" },
+  { key: "quizzes", icon: Zap, color: "hsl(var(--primary))", field: "totalQuizzes", label: "Quizzes" },
+  { key: "accuracy", icon: TrendingUp, color: "hsl(160 60% 45%)", field: "avgAccuracy", label: "Accuracy", suffix: "%" },
 ];
 
 export default function DashboardStatPills({ streakData, loading }: Props) {
   if (loading) {
     return (
       <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
-        {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-9 w-24 rounded-full shrink-0" />)}
+        {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-10 w-24 rounded-full shrink-0" />)}
       </div>
     );
   }
@@ -32,8 +32,8 @@ export default function DashboardStatPills({ streakData, loading }: Props) {
     return (
       <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
         {pills.map(p => (
-          <div key={p.key} className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-secondary/70 shrink-0">
-            <p.icon className={`h-3.5 w-3.5 text-muted-foreground`} />
+          <div key={p.key} className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-card/80 backdrop-blur-sm border border-border/30 shrink-0">
+            <p.icon className="h-3.5 w-3.5 text-muted-foreground" />
             <span className="text-xs font-medium text-muted-foreground">0</span>
             <span className="text-[10px] text-muted-foreground">{p.label}</span>
           </div>
@@ -53,9 +53,10 @@ export default function DashboardStatPills({ streakData, loading }: Props) {
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1, duration: 0.35, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-secondary/70 shrink-0"
+            className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-full bg-card/80 backdrop-blur-sm border border-border/30 shrink-0 shadow-sm"
+            style={{ borderColor: `color-mix(in srgb, ${p.color} 20%, transparent)` }}
           >
-            <Icon className={`h-3.5 w-3.5 ${p.iconColor}`} />
+            <Icon className="h-3.5 w-3.5" style={{ color: p.color }} />
             <span className="text-xs font-semibold text-foreground">{val}{p.suffix || ""}</span>
             <span className="text-[10px] text-muted-foreground">{p.label}</span>
           </motion.div>
