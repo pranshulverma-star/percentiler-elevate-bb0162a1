@@ -2,24 +2,20 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
-import { useLeadPhone } from "@/hooks/useLeadPhone";
-import Navbar from "@/components/Navbar";
-import DashboardHero from "@/components/dashboard/DashboardHero";
-import DashboardLeaderboard from "@/components/dashboard/DashboardLeaderboard";
-import DashboardStats from "@/components/dashboard/DashboardStats";
-import DashboardMission from "@/components/dashboard/DashboardMission";
-import DashboardProgress from "@/components/dashboard/DashboardProgress";
-import DashboardLevelUp from "@/components/dashboard/DashboardLevelUp";
-import DashboardExplore from "@/components/dashboard/DashboardExplore";
-import WorkshopRecommendation, { getWeakSectionWorkshop } from "@/components/WorkshopRecommendation";
-import DashboardTodaysBattle from "@/components/dashboard/DashboardTodaysBattle";
+import DashboardTopBar from "@/components/dashboard/DashboardTopBar";
+import DashboardStreakHero from "@/components/dashboard/DashboardStreakHero";
+import DashboardTodayAction from "@/components/dashboard/DashboardTodayAction";
+import DashboardStatPills from "@/components/dashboard/DashboardStatPills";
+import DashboardProgressCompact from "@/components/dashboard/DashboardProgressCompact";
+import DashboardLeaderboardCompact from "@/components/dashboard/DashboardLeaderboardCompact";
+import DashboardRecommendations from "@/components/dashboard/DashboardRecommendations";
+import DashboardQuickAccess from "@/components/dashboard/DashboardQuickAccess";
+import DashboardBottomNav from "@/components/dashboard/DashboardBottomNav";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
-  const { refetch: refetchPhone } = useLeadPhone();
-  const _email = user?.email || "";
   const userId = user?.id || "";
 
   const [lead, setLead] = useState<any>(null);
@@ -29,23 +25,19 @@ export default function Dashboard() {
   const [practiceAttempts, setPracticeAttempts] = useState<any[]>([]);
   const [streakData, setStreakData] = useState<any>(null);
 
-  const [loadingLead, setLoadingLead] = useState(true);
+  const [, setLoadingLead] = useState(true);
   const [loadingPlanner, setLoadingPlanner] = useState(true);
-  const [loadingMasterclass, setLoadingMasterclass] = useState(true);
-  const [loadingCampaign, setLoadingCampaign] = useState(true);
   const [loadingPractice, setLoadingPractice] = useState(true);
   const [loadingStreaks, setLoadingStreaks] = useState(true);
 
   const fetchLead = async () => {
-    console.log("[Dashboard] fetchLead START", { userId });
-    if (!userId) { console.log("[Dashboard] fetchLead SKIP (no userId)"); return; }
+    if (!userId) return;
     setLoadingLead(true);
     try {
-      const { data, error } = await (supabase.from("leads") as any)
+      const { data } = await (supabase.from("leads") as any)
         .select("name, email, phone_number")
         .eq("user_id", userId)
         .maybeSingle();
-      console.log("[Dashboard] fetchLead DONE", { data, error });
       setLead(data);
     } catch (e) { console.error("[Dashboard] fetchLead ERROR", e); }
     setLoadingLead(false);
@@ -53,8 +45,7 @@ export default function Dashboard() {
 
   const fetchPlanner = async () => {
     const phone = localStorage.getItem("percentilers_phone");
-    console.log("[Dashboard] fetchPlanner START", { phone });
-    if (!phone) { console.log("[Dashboard] fetchPlanner SKIP (no phone)"); setLoadingPlanner(false); return; }
+    if (!phone) { setLoadingPlanner(false); return; }
     setLoadingPlanner(true);
     try {
       const [statsRes, heatRes, activityRes] = await Promise.all([
@@ -62,7 +53,6 @@ export default function Dashboard() {
         (supabase.from("planner_heat_score") as any).select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", phone).maybeSingle(),
         (supabase.from("planner_activity") as any).select("date").eq("phone_number", phone).gte("date", getWeekStart()),
       ]);
-      console.log("[Dashboard] fetchPlanner DONE", { stats: statsRes.data, heat: heatRes.data });
       setPlannerData({
         stats: statsRes.data,
         heat: heatRes.data,
@@ -72,49 +62,15 @@ export default function Dashboard() {
     setLoadingPlanner(false);
   };
 
-  const fetchMasterclass = async () => {
-    const phone = localStorage.getItem("percentilers_phone");
-    console.log("[Dashboard] fetchMasterclass START", { phone });
-    if (!phone) { console.log("[Dashboard] fetchMasterclass SKIP (no phone)"); setLoadingMasterclass(false); return; }
-    setLoadingMasterclass(true);
-    try {
-      const { data, error } = await (supabase.from("webinar_engagement") as any)
-        .select("watch_percentage, completed")
-        .eq("phone_number", phone)
-        .maybeSingle();
-      console.log("[Dashboard] fetchMasterclass DONE", { data, error });
-      setEngagement(data);
-    } catch (e) { console.error("[Dashboard] fetchMasterclass ERROR", e); }
-    setLoadingMasterclass(false);
-  };
-
-  const fetchCampaign = async () => {
-    const phone = localStorage.getItem("percentilers_phone");
-    console.log("[Dashboard] fetchCampaign START", { phone });
-    if (!phone) { console.log("[Dashboard] fetchCampaign SKIP (no phone)"); setLoadingCampaign(false); setCampaign(null); return; }
-    setLoadingCampaign(true);
-    try {
-      const { data, error } = await (supabase.from("campaign_state") as any)
-        .select("call_booked_at, converted_at, workflow_status, mentorship_active")
-        .eq("phone_number", phone)
-        .maybeSingle();
-      console.log("[Dashboard] fetchCampaign DONE", { data, error });
-      setCampaign(data);
-    } catch (e) { console.error("[Dashboard] fetchCampaign ERROR", e); }
-    setLoadingCampaign(false);
-  };
-
   const fetchPractice = async () => {
-    console.log("[Dashboard] fetchPractice START", { userId });
-    if (!userId) { console.log("[Dashboard] fetchPractice SKIP (no userId)"); setLoadingPractice(false); return; }
+    if (!userId) { setLoadingPractice(false); return; }
     setLoadingPractice(true);
     try {
-      const { data, error } = await (supabase.from("practice_lab_attempts") as any)
+      const { data } = await (supabase.from("practice_lab_attempts") as any)
         .select("section_id, chapter_slug, score_pct, total_questions, correct, time_used_seconds, created_at")
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(50);
-      console.log("[Dashboard] fetchPractice DONE", { count: data?.length, error });
       const attempts = data || [];
       setPracticeAttempts(attempts.slice(0, 20));
 
@@ -128,14 +84,37 @@ export default function Dashboard() {
     setLoadingPractice(false);
   };
 
+  const fetchCampaign = async () => {
+    const phone = localStorage.getItem("percentilers_phone");
+    if (!phone) { setCampaign(null); return; }
+    try {
+      const { data } = await (supabase.from("campaign_state") as any)
+        .select("call_booked_at, converted_at, workflow_status, mentorship_active")
+        .eq("phone_number", phone)
+        .maybeSingle();
+      setCampaign(data);
+    } catch (e) { console.error("[Dashboard] fetchCampaign ERROR", e); }
+  };
+
+  const fetchMasterclass = async () => {
+    const phone = localStorage.getItem("percentilers_phone");
+    if (!phone) { setEngagement(null); return; }
+    try {
+      const { data } = await (supabase.from("webinar_engagement") as any)
+        .select("watch_percentage, completed")
+        .eq("phone_number", phone)
+        .maybeSingle();
+      setEngagement(data);
+    } catch (e) { console.error("[Dashboard] fetchMasterclass ERROR", e); }
+  };
+
   useEffect(() => {
-    console.log("[Dashboard] useEffect trigger", { userId, authUser: !!user });
     if (userId) {
       fetchLead();
       fetchPlanner();
-      fetchMasterclass();
-      fetchCampaign();
       fetchPractice();
+      fetchCampaign();
+      fetchMasterclass();
     }
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -149,109 +128,79 @@ export default function Dashboard() {
     navigate("/");
   };
 
-  const stageVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: { delay: i * 0.1, duration: 0.4, ease: [0, 0, 0.2, 1] as const },
-    }),
-  };
+  const fade = (i: number) => ({
+    initial: { opacity: 0, y: 16, filter: "blur(4px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+    transition: { delay: i * 0.08, duration: 0.5, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
+  });
 
   return (
     <>
       <SEO title="Dashboard | Percentilers" description="Your personalized CAT preparation dashboard" canonical="https://percentilers.in/dashboard" />
-      <Navbar />
-      <main className="min-h-screen bg-background pt-4 pb-28">
-        <div className="container mx-auto px-4 max-w-lg">
 
-          {/* Hero */}
-          <motion.div custom={0} initial="hidden" animate="visible" variants={stageVariants}>
-            <DashboardHero
-              firstName={firstName}
-              lead={lead}
-              loadingLead={loadingLead}
-              streakData={streakData}
-              onSignOut={handleSignOut}
-              onPhoneUpdated={() => { fetchLead(); refetchPhone(); fetchCampaign(); }}
+      {/* Sticky top bar */}
+      <DashboardTopBar
+        firstName={firstName}
+        streakCount={streakData?.currentStreak ?? 0}
+        onSignOut={handleSignOut}
+      />
+
+      <main className="min-h-screen bg-background pt-16 pb-24">
+        <div className="mx-auto px-4 max-w-lg">
+
+          {/* Section 1: Greeting + Streak Hero */}
+          <motion.div {...fade(0)} className="mt-4">
+            <h1 className="text-xl font-bold text-foreground tracking-tight leading-tight">
+              Hey {firstName} 👋
+            </h1>
+            <p className="text-xs text-muted-foreground mt-0.5 mb-4">Let's keep the momentum going</p>
+            <DashboardStreakHero streakData={streakData} loading={loadingStreaks} />
+          </motion.div>
+
+          {/* Section 2: Today's Action */}
+          <motion.div {...fade(1)} className="mt-6">
+            <DashboardTodayAction engagement={engagement} />
+          </motion.div>
+
+          {/* Section 3: Stat Pills */}
+          <motion.div {...fade(2)} className="mt-6">
+            <DashboardStatPills streakData={streakData} loading={loadingStreaks} />
+          </motion.div>
+
+          {/* Section 4: Progress */}
+          <motion.div {...fade(3)} className="mt-6">
+            <DashboardProgressCompact
+              plannerData={plannerData}
+              loadingPlanner={loadingPlanner}
+              practiceAttempts={practiceAttempts}
+              loadingPractice={loadingPractice}
             />
           </motion.div>
 
-          {/* Journey stages with connectors */}
-          <div className="relative mt-6">
-            {/* Vertical connector line */}
-            <div className="absolute left-5 top-0 bottom-0 w-px bg-border hidden md:block" />
+          {/* Section 5: Leaderboard */}
+          <motion.div {...fade(4)} className="mt-6">
+            <DashboardLeaderboardCompact />
+          </motion.div>
 
-            {/* Stage 1: Stats */}
-            <motion.div custom={1} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={1} label="YOUR STATS" />
-              <DashboardStats streakData={streakData} loading={loadingStreaks} />
-            </motion.div>
+          {/* Section 6: Recommendations */}
+          <motion.div {...fade(5)} className="mt-6">
+            <DashboardRecommendations practiceAttempts={practiceAttempts} />
+          </motion.div>
 
-            {/* Quiz of the Day */}
-            <motion.div custom={2} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={2} label="QUIZ OF THE DAY" />
-              <DashboardTodaysBattle />
-              <div className="mt-4">
-                <DashboardLeaderboard />
-              </div>
-            </motion.div>
-
-            {/* Stage 3: Today's Mission */}
-            <motion.div custom={3} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={3} label="TODAY'S MISSION" />
-              <DashboardMission engagement={engagement} loadingMasterclass={loadingMasterclass} />
-            </motion.div>
-
-            {/* Stage 4: Progress */}
-            <motion.div custom={4} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={4} label="PROGRESS" />
-              <DashboardProgress
-                plannerData={plannerData}
-                loadingPlanner={loadingPlanner}
-                practiceAttempts={practiceAttempts}
-                loadingPractice={loadingPractice}
-              />
-            </motion.div>
-
-            {/* Weak Area (between Progress and Level Up) */}
-            {(() => {
-              const weakWorkshop = getWeakSectionWorkshop(practiceAttempts);
-              return weakWorkshop ? (
-                <motion.div custom={3.5} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-                  <WorkshopRecommendation
-                    workshops={[weakWorkshop]}
-                    title="Improve Your Weak Area"
-                    subtitle="Based on your practice history:"
-                  />
-                </motion.div>
-              ) : null;
-            })()}
-
-            {/* Stage 5: Level Up */}
-            <motion.div custom={5} initial="hidden" animate="visible" variants={stageVariants} className="relative mb-8">
-              <StageLabel number={5} label="LEVEL UP" />
-              <DashboardLevelUp />
-            </motion.div>
-
-          </div>
+          {/* Section 7: Quick Access */}
+          <motion.div {...fade(6)} className="mt-6 mb-4">
+            <DashboardQuickAccess converted={converted} mentorshipActive={mentorshipActive} />
+          </motion.div>
         </div>
       </main>
-      <DashboardExplore converted={converted} mentorshipActive={mentorshipActive} />
+
+      {/* Bottom nav - 4 items */}
+      <DashboardBottomNav />
     </>
   );
 }
 
-function StageLabel({ number, label }: { number: number; label: string }) {
-  return (
-    <div className="flex items-center gap-3 mb-3 md:ml-0">
-      <div className="relative z-10 flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 border border-primary/20">
-        <span className="text-xs font-bold text-primary">{number}</span>
-      </div>
-      <span className="text-[10px] font-semibold tracking-[0.15em] uppercase text-muted-foreground">{label}</span>
-    </div>
-  );
-}
+// --- Helpers (unchanged logic) ---
 
 function fmtLocal(date: Date): string {
   const y = date.getFullYear();
@@ -284,9 +233,7 @@ function computeStreaks(attempts: any[]) {
     if (dates.includes(dateStr)) {
       currentStreak++;
       checkDate.setDate(checkDate.getDate() - 1);
-    } else {
-      break;
-    }
+    } else break;
   }
   let longestStreak = 0;
   let tempStreak = 1;
@@ -295,12 +242,8 @@ function computeStreaks(attempts: any[]) {
     const prev = new Date(sortedDates[i - 1]);
     const curr = new Date(sortedDates[i]);
     const diffDays = (curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24);
-    if (diffDays === 1) {
-      tempStreak++;
-    } else {
-      longestStreak = Math.max(longestStreak, tempStreak);
-      tempStreak = 1;
-    }
+    if (diffDays === 1) tempStreak++;
+    else { longestStreak = Math.max(longestStreak, tempStreak); tempStreak = 1; }
   }
   longestStreak = Math.max(longestStreak, tempStreak);
   const weekStart = getWeekStart();
@@ -308,8 +251,7 @@ function computeStreaks(attempts: any[]) {
   for (let i = 0; i < 7; i++) {
     const d = new Date(weekStart);
     d.setDate(d.getDate() + i);
-    const ds = fmtLocal(d);
-    weeklyActivity.push(dates.includes(ds));
+    weeklyActivity.push(dates.includes(fmtLocal(d)));
   }
   let recentTrend: "up" | "down" | "stable" = "stable";
   if (attempts.length >= 10) {
