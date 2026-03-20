@@ -125,6 +125,7 @@ export default function ResultsView({
 }: ResultsViewProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { recordActivity } = useStreaks();
   const [pastAttempts, setPastAttempts] = useState<{ score_pct: number; correct: number; total_questions: number; time_used_seconds: number; created_at: string }[]>([]);
   const [leaderboard, setLeaderboard] = useState<{ name: string; score: number; isMe: boolean }[]>([]);
   const savedRef = useRef(false);
