@@ -21,6 +21,7 @@
 /study-buddy                        /index.html  200
 /daily-sprint                       /index.html  200
 /flashcards                         /index.html  200
+/flashcards/*                       /index.html  200
 /auth/error                         /index.html  200
 
 /*  https://old.percentilers.in/:splat  301
