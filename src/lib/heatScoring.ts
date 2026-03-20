@@ -129,7 +129,7 @@ export async function recalculateHeatScore(
 
   const heatData: HeatScoreData = {
     total_active_days: totalActiveDays,
-    consistency_score: Math.round(consistencyScore * 10) / 10,
+    consistency_score: Math.round(consistencyScore * 1000) / 1000,
     mock_attempts: mockAttempts,
     crash_mode: crashMode,
     days_since_join: daysSinceJoin,
