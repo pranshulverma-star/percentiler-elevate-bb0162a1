@@ -52,7 +52,7 @@ export default function DashboardStatPills({ streakData, loading }: Props) {
             key={p.key}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: i * 0.1, duration: 0.35, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
             className="flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-secondary/70 shrink-0"
           >
             <Icon className={`h-3.5 w-3.5 ${p.iconColor}`} />
