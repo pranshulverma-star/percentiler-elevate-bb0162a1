@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreaks } from "@/hooks/useStreaks";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardTopBar from "@/components/dashboard/DashboardTopBar";
 import DashboardStreakHero from "@/components/dashboard/DashboardStreakHero";
@@ -17,18 +18,17 @@ import { motion } from "framer-motion";
 export default function Dashboard() {
   const { user, signOut } = useAuth();
   const userId = user?.id || "";
+  const { currentStreak, longestStreak, weeklyActivity, loading: loadingStreaks } = useStreaks();
 
   const [lead, setLead] = useState<any>(null);
   const [plannerData, setPlannerData] = useState<any>(null);
   const [engagement, setEngagement] = useState<any>(null);
   const [campaign, setCampaign] = useState<any>(null);
   const [practiceAttempts, setPracticeAttempts] = useState<any[]>([]);
-  const [streakData, setStreakData] = useState<any>(null);
 
   const [, setLoadingLead] = useState(true);
   const [loadingPlanner, setLoadingPlanner] = useState(true);
   const [loadingPractice, setLoadingPractice] = useState(true);
-  const [loadingStreaks, setLoadingStreaks] = useState(true);
 
   const fetchLead = async () => {
     if (!userId) return;
@@ -71,15 +71,7 @@ export default function Dashboard() {
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(50);
-      const attempts = data || [];
-      setPracticeAttempts(attempts.slice(0, 20));
-
-      setLoadingStreaks(true);
-      if (attempts.length > 0) {
-        const streaks = computeStreaks(attempts);
-        setStreakData(streaks);
-      }
-      setLoadingStreaks(false);
+      setPracticeAttempts((data || []).slice(0, 20));
     } catch (e) { console.error("[Dashboard] fetchPractice ERROR", e); }
     setLoadingPractice(false);
   };
@@ -118,6 +110,25 @@ export default function Dashboard() {
     }
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Derive practice stats (accuracy, quiz count) from practice_lab_attempts
+  const practiceStats = useMemo(() => {
+    if (practiceAttempts.length === 0) return null;
+    const totalQuizzes = practiceAttempts.length;
+    const avgAccuracy = Math.round(practiceAttempts.reduce((s, a) => s + a.score_pct, 0) / totalQuizzes);
+    return { totalQuizzes, avgAccuracy };
+  }, [practiceAttempts]);
+
+  // Combine streak data + practice stats for components
+  const streakData = useMemo(() => {
+    return {
+      currentStreak,
+      longestStreak,
+      weeklyActivity,
+      totalQuizzes: practiceStats?.totalQuizzes ?? 0,
+      avgAccuracy: practiceStats?.avgAccuracy ?? 0,
+    };
+  }, [currentStreak, longestStreak, weeklyActivity, practiceStats]);
+
   const navigate = useNavigate();
   const firstName = lead?.name?.split(" ")[0] || user?.user_metadata?.full_name?.split(" ")[0] || "there";
   const converted = !!campaign?.converted_at;
@@ -141,7 +152,7 @@ export default function Dashboard() {
       {/* Sticky top bar */}
       <DashboardTopBar
         firstName={firstName}
-        streakCount={streakData?.currentStreak ?? 0}
+        streakCount={streakData.currentStreak}
         onSignOut={handleSignOut}
       />
 
@@ -200,7 +211,7 @@ export default function Dashboard() {
   );
 }
 
-// --- Helpers (unchanged logic) ---
+// --- Helpers ---
 
 function fmtLocal(date: Date): string {
   const y = date.getFullYear();
@@ -216,49 +227,4 @@ function getWeekStart(): string {
   const monday = new Date(now);
   monday.setDate(diff);
   return fmtLocal(monday);
-}
-
-function computeStreaks(attempts: any[]) {
-  const totalQuizzes = attempts.length;
-  const avgAccuracy = Math.round(attempts.reduce((s: number, a: any) => s + a.score_pct, 0) / totalQuizzes);
-  const dates = [...new Set(attempts.map((a: any) => a.created_at.split("T")[0]))].sort().reverse();
-  const today = fmtLocal(new Date());
-  let currentStreak = 0;
-  let checkDate = new Date();
-  if (dates[0] !== today) {
-    checkDate.setDate(checkDate.getDate() - 1);
-  }
-  for (let i = 0; i < 365; i++) {
-    const dateStr = fmtLocal(checkDate);
-    if (dates.includes(dateStr)) {
-      currentStreak++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    } else break;
-  }
-  let longestStreak = 0;
-  let tempStreak = 1;
-  const sortedDates = [...dates].sort();
-  for (let i = 1; i < sortedDates.length; i++) {
-    const prev = new Date(sortedDates[i - 1]);
-    const curr = new Date(sortedDates[i]);
-    const diffDays = (curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24);
-    if (diffDays === 1) tempStreak++;
-    else { longestStreak = Math.max(longestStreak, tempStreak); tempStreak = 1; }
-  }
-  longestStreak = Math.max(longestStreak, tempStreak);
-  const weekStart = getWeekStart();
-  const weeklyActivity: boolean[] = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(weekStart);
-    d.setDate(d.getDate() + i);
-    weeklyActivity.push(dates.includes(fmtLocal(d)));
-  }
-  let recentTrend: "up" | "down" | "stable" = "stable";
-  if (attempts.length >= 10) {
-    const recent5 = attempts.slice(0, 5).reduce((s: number, a: any) => s + a.score_pct, 0) / 5;
-    const prev5 = attempts.slice(5, 10).reduce((s: number, a: any) => s + a.score_pct, 0) / 5;
-    if (recent5 > prev5 + 5) recentTrend = "up";
-    else if (recent5 < prev5 - 5) recentTrend = "down";
-  }
-  return { currentStreak, longestStreak, totalQuizzes, avgAccuracy, weeklyActivity, recentTrend };
 }

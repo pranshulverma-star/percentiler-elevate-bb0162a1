@@ -4,6 +4,7 @@ import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreaks } from "@/hooks/useStreaks";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 // Input removed - no longer needed
@@ -688,6 +689,7 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
 // ─── Planner Dashboard ───
 
 function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: () => void }) {
+  const { recordActivity } = useStreaks();
   const daysLeft = getDaysUntilCAT(leadData.targetYear);
   const isCrashMode = daysLeft <= 50;
   const { hasPhone, refetch: refetchPhone } = useLeadPhone();
@@ -812,6 +814,9 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
       await logActivity(leadData.phone, date, subject);
       setCompletedDays(prev => new Set(prev).add(`${date}|${subject}`));
       setInactiveDays(0);
+
+      // Record unified streak (fire-and-forget, only works if user is auth'd)
+      recordActivity("quiz").catch(() => {});
 
       // Fire-and-forget: recalculate heat score in background (don't block UI)
       recalculateHeatScore(leadData.phone, isCrashMode, daysLeft)

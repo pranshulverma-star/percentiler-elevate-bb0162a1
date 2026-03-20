@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreaks } from "@/hooks/useStreaks";
 import { supabase } from "@/integrations/supabase/client";
 import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 import { practiceLabSections, type PracticeQuestion } from "@/data/practiceLabQuestions";
@@ -124,6 +125,7 @@ export default function ResultsView({
 }: ResultsViewProps) {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { recordActivity } = useStreaks();
   const [pastAttempts, setPastAttempts] = useState<{ score_pct: number; correct: number; total_questions: number; time_used_seconds: number; created_at: string }[]>([]);
   const [leaderboard, setLeaderboard] = useState<{ name: string; score: number; isMe: boolean }[]>([]);
   const savedRef = useRef(false);
@@ -185,6 +187,8 @@ export default function ResultsView({
           time_used_seconds: timeUsed,
           answers_json: answers,
         });
+        // Record unified streak
+        recordActivity("practice_lab").catch(() => {});
       }
       // Fetch personal history
       const { data } = await (supabase.from("practice_lab_attempts") as any)

@@ -5,6 +5,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreaks } from "@/hooks/useStreaks";
 import { useBuddyRealtimeToast } from "@/hooks/useBuddyRealtimeToast";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarCheck, Flame, Target } from "lucide-react";
@@ -69,6 +70,7 @@ function LandingState({ onSignIn }: { onSignIn: () => void }) {
 }
 
 function SprintDashboard({ userId }: { userId: string }) {
+  const { recordActivity } = useStreaks();
   const [goals, setGoals] = useState<SprintGoal[]>([]);
   const [weeklyGoals, setWeeklyGoals] = useState<SprintGoal[]>([]);
   const [historyGoals, setHistoryGoals] = useState<SprintGoal[]>([]);
@@ -142,7 +144,14 @@ function SprintDashboard({ userId }: { userId: string }) {
     setGoals((prev) => prev.map((g) => g.id === goalId ? { ...g, completed, completed_at: completed ? new Date().toISOString() : null } : g));
     try {
       await toggleGoal(goalId, completed);
-      if (completed) toast.success("Nice work! ✅");
+      if (completed) {
+        toast.success("Nice work! ✅");
+        // Check if all goals are now completed
+        const updatedGoals = goals.map(g => g.id === goalId ? { ...g, completed } : g);
+        if (updatedGoals.length > 0 && updatedGoals.every(g => g.completed)) {
+          recordActivity("sprint").catch(() => {});
+        }
+      }
     } catch {
       setGoals((prev) => prev.map((g) => g.id === goalId ? { ...g, completed: !completed } : g));
       toast.error("Failed to update goal.");

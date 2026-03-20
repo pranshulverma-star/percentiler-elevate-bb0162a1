@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreaks } from "@/hooks/useStreaks";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
@@ -729,6 +730,7 @@ export default function BattleRoomPage() {
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
+  const { recordActivity } = useStreaks();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
 
@@ -916,6 +918,8 @@ export default function BattleRoomPage() {
       .eq("user_id", user.id);
 
     setMyFinished(true);
+    // Record unified streak
+    recordActivity("quiz").catch(() => {});
 
     // Check if all players finished
     const { data: allPlayers } = await (supabase.from("battle_players") as any)
