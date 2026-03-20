@@ -1,4 +1,4 @@
-import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import type { User } from "@supabase/supabase-js";
@@ -13,9 +13,36 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
+/** Detect if we're inside a standalone/installed app (PWA) on iOS or Android */
+function isStandaloneApp() {
+  if (typeof window === "undefined") return false;
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (navigator as any).standalone === true ||
+    document.referrer.includes("android-app://")
+  );
+}
+
+/** Check if the current URL looks like an OAuth callback */
+function detectOAuthCallback() {
+  const hash = window.location.hash;
+  const search = window.location.search;
+  const path = window.location.pathname;
+  return (
+    path.startsWith("/~oauth") ||
+    hash.includes("access_token") ||
+    hash.includes("refresh_token") ||
+    new URLSearchParams(search).has("code")
+  );
+}
+
+/** Grace period (ms) after starting a sign-in flow — prevents re-trigger loops */
+const AUTH_FLOW_GRACE_MS = 45_000;
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const signInInProgressRef = useRef(false);
 
   useEffect(() => {
     // Catch OAuth error fragments and redirect to friendly error page
@@ -26,10 +53,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    // Detect if we're returning from an OAuth callback
-    const isOAuthCallback = hash.includes("access_token") ||
-      hash.includes("refresh_token") ||
-      new URLSearchParams(window.location.search).has("code");
+    const isOAuthCallback = detectOAuthCallback();
 
     let isMounted = true;
     let resolved = false;
@@ -39,6 +63,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(nextUser);
       resolved = true;
       setLoading(false);
+      // Clear sign-in markers on successful auth
+      if (nextUser) {
+        signInInProgressRef.current = false;
+        sessionStorage.removeItem("auth_flow_started_at");
+      }
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -76,19 +105,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       })
       .catch((err) => {
         console.error("Session bootstrap error:", err);
-        // On AbortError or any failure, unblock UI immediately
         if (isMounted) {
           setLoading(false);
         }
       });
 
-    // Safety timeout: unblock UI after 4s no matter what.
-    // iOS PWA session restoration can be slower after OAuth redirect.
+    // Safety timeout: unblock UI after 6s (longer for mobile OAuth callbacks)
+    const timeoutMs = isOAuthCallback ? 8000 : 4000;
     const fallbackTimer = window.setTimeout(() => {
       if (resolved || !isMounted) return;
-      console.warn("Auth timed out, unblocking UI");
+      console.warn("[Auth] Timed out, unblocking UI");
+      signInInProgressRef.current = false;
       setLoading(false);
-    }, 4000);
+    }, timeoutMs);
 
     return () => {
       isMounted = false;
@@ -98,6 +127,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signIn = useCallback(async (redirectPath?: string) => {
+    // Single-flight guard: prevent stacked sign-in calls
+    if (signInInProgressRef.current) {
+      console.log("[Auth] Sign-in already in progress, ignoring duplicate call");
+      return;
+    }
+
     const ua = navigator.userAgent || "";
     const isInAppBrowser = /FBAN|FBAV|Instagram|Line\/|Snapchat|Twitter|BytedanceWebview/i.test(ua);
 
@@ -107,13 +142,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    signInInProgressRef.current = true;
+    sessionStorage.setItem("auth_flow_started_at", String(Date.now()));
+
     const redirectUri = redirectPath
       ? (redirectPath.startsWith("http") ? redirectPath : `${window.location.origin}${redirectPath}`)
       : `${window.location.origin}${window.location.pathname}${window.location.search}`;
 
-    const isStandalone =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (navigator as any).standalone === true;
+    const standalone = isStandaloneApp();
 
     const startDirectRedirect = async () => {
       const { data, error } = await supabase.auth.signInWithOAuth({
@@ -127,6 +163,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) {
         console.error("[Auth] Direct redirect sign-in error:", error);
+        signInInProgressRef.current = false;
         throw error;
       }
 
@@ -135,6 +172,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      signInInProgressRef.current = false;
       throw new Error("[Auth] Missing OAuth redirect URL");
     };
 
@@ -149,18 +187,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       // Standalone PWA on iOS can fail popup/token handoff silently.
-      // Force a same-window OAuth redirect to keep the flow inside the PWA context.
-      if (isStandalone && !result?.redirected) {
+      if (standalone && !result?.redirected) {
         console.warn("[Auth] Standalone fallback to direct redirect flow");
         await startDirectRedirect();
       }
     } catch (err) {
-      if (isStandalone) {
+      if (standalone) {
         console.warn("[Auth] Standalone managed flow failed, retrying direct redirect", err);
         await startDirectRedirect();
         return;
       }
       console.error("[Auth] Sign-in error:", err);
+      signInInProgressRef.current = false;
       throw err;
     }
   }, []);
@@ -168,6 +206,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signOut = useCallback(async () => {
     await supabase.auth.signOut();
     localStorage.removeItem("percentilers_email");
+    signInInProgressRef.current = false;
+    sessionStorage.removeItem("auth_flow_started_at");
   }, []);
 
   const value = useMemo(
@@ -190,4 +230,11 @@ export function useAuth(): AuthState {
     throw new Error("useAuth must be used within AuthProvider");
   }
   return context;
+}
+
+/** Helper for other components to check if an auth flow is in progress */
+export function isAuthFlowActive(): boolean {
+  const startedAt = sessionStorage.getItem("auth_flow_started_at");
+  if (!startedAt) return false;
+  return (Date.now() - Number(startedAt)) < AUTH_FLOW_GRACE_MS;
 }

@@ -1,29 +1,40 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { Loader2, LogIn } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, isAuthFlowActive } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import { Button } from "@/components/ui/button";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 
 interface ProtectedRouteProps {
   children: ReactNode;
-  /** Whether a phone number is required to access this route */
   requirePhone?: boolean;
-  /** Source label for lead tracking */
   source?: string;
 }
 
-/**
- * Unified access guard for protected routes.
- *
- * State A — Not logged in → trigger sign-in, preserve return URL
- * State B — Logged in, phone missing → show phone capture modal (blocks content)
- * State C — Logged in + phone present → render children
- *
- * This is the ONLY component that should trigger sign-in redirects or phone modals
- * for gated content. No other component should duplicate this logic.
- */
+/** Detect if we're inside a standalone/installed app (PWA) on iOS or Android */
+function isStandaloneApp() {
+  if (typeof window === "undefined") return false;
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    (navigator as any).standalone === true ||
+    document.referrer.includes("android-app://")
+  );
+}
+
+/** Check if the current URL looks like an OAuth callback settling */
+function isOAuthCallbackInProgress() {
+  const hash = window.location.hash;
+  const search = window.location.search;
+  const path = window.location.pathname;
+  return (
+    path.startsWith("/~oauth") ||
+    hash.includes("access_token") ||
+    hash.includes("refresh_token") ||
+    new URLSearchParams(search).has("code")
+  );
+}
+
 export default function ProtectedRoute({ children, requirePhone = false, source = "protected" }: ProtectedRouteProps) {
   const location = useLocation();
   const { isAuthenticated, user, loading: authLoading, signIn } = useAuth();
@@ -32,27 +43,21 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
   const [authBootstrapTimedOut, setAuthBootstrapTimedOut] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
 
-  const isStandalone =
-    typeof window !== "undefined" &&
-    (window.matchMedia("(display-mode: standalone)").matches ||
-      (navigator as any).standalone === true);
+  const standalone = isStandaloneApp();
+  const oauthCallbackActive = isOAuthCallbackInProgress();
+  const authFlowActive = isAuthFlowActive();
 
   // State A: trigger sign-in once auth resolves as unauthenticated (browser only, not standalone PWA)
-  // Uses a cooldown to prevent redirect loops after OAuth callback
   useEffect(() => {
-    if (authLoading || isAuthenticated || signInTriggered.current || isStandalone) return;
-
-    // Check if we recently attempted sign-in (within 10s) — prevents redirect loop
-    const recentSignIn = sessionStorage.getItem("auth_signin_at");
-    const isRecentSignIn = recentSignIn && (Date.now() - Number(recentSignIn)) < 10000;
-    if (isRecentSignIn) return;
+    if (authLoading || isAuthenticated || signInTriggered.current || standalone) return;
+    // Don't trigger if OAuth callback is settling or a recent auth flow is in progress
+    if (oauthCallbackActive || authFlowActive) return;
 
     signInTriggered.current = true;
     const returnUrl = location.pathname + location.search;
     sessionStorage.setItem("pending_gate_source", source);
-    sessionStorage.setItem("auth_signin_at", String(Date.now()));
     void signIn(returnUrl);
-  }, [authLoading, isAuthenticated, signIn, location.pathname, location.search, source, isStandalone]);
+  }, [authLoading, isAuthenticated, signIn, location.pathname, location.search, source, standalone, oauthCallbackActive, authFlowActive]);
 
   // Clear stale session markers once user arrives at destination
   useEffect(() => {
@@ -70,20 +75,23 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     return () => window.clearTimeout(timer);
   }, [authLoading]);
 
-  // Debug logging
-  console.log("[ProtectedRoute]", { authLoading, isAuthenticated, isStandalone, authBootstrapTimedOut, userId: user?.id, path: location.pathname });
+  console.log("[ProtectedRoute]", { authLoading, isAuthenticated, standalone, authBootstrapTimedOut, oauthCallbackActive, authFlowActive, userId: user?.id, path: location.pathname });
 
   // --- Render decision tree ---
 
-  if (authLoading && !authBootstrapTimedOut) {
+  // If an OAuth callback is actively settling, always show a loading state
+  if (oauthCallbackActive || (authLoading && !authBootstrapTimedOut)) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-2">
         <Loader2 className="h-8 w-8 text-primary animate-spin" />
+        {oauthCallbackActive && (
+          <p className="text-sm text-muted-foreground">Completing sign-in…</p>
+        )}
       </div>
     );
   }
 
-  // Auth bootstrap timed out (common on standalone iOS PWA) -> show recovery actions
+  // Auth bootstrap timed out -> show recovery actions
   if (authLoading && authBootstrapTimedOut) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center gap-4">
@@ -110,73 +118,42 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // Not authenticated in standalone PWA → show sign-in button (can't auto-redirect)
-  if (!isAuthenticated && isStandalone) {
+  // Not authenticated in standalone PWA → show sign-in button
+  if (!isAuthenticated && standalone) {
     return (
-      <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center gap-4">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
-          <LogIn className="h-8 w-8 text-primary" />
-        </div>
-        <h2 className="text-xl font-bold text-foreground">Sign in to continue</h2>
-        <p className="text-sm text-muted-foreground max-w-xs">
-          Sign in with Google to access your {source === "dashboard" ? "dashboard" : source === "masterclass" ? "masterclass" : "content"}.
-        </p>
-        <Button
-          size="lg"
-          disabled={signingIn}
-          onClick={async () => {
+      <SignInScreen
+        source={source}
+        signingIn={signingIn}
+        onSignIn={async () => {
+          setSigningIn(true);
+          try {
+            await signIn(location.pathname + location.search);
+          } finally {
+            setSigningIn(false);
+          }
+        }}
+      />
+    );
+  }
+
+  // Not authenticated in browser
+  if (!isAuthenticated) {
+    // If auth flow is still within grace period, show "completing" state
+    if (authFlowActive) {
+      return (
+        <SignInScreen
+          source={source}
+          signingIn={signingIn}
+          message="It looks like your session wasn't restored. Please sign in again."
+          onSignIn={async () => {
             setSigningIn(true);
             try {
-              const returnUrl = location.pathname + location.search;
-              await signIn(returnUrl);
+              await signIn(location.pathname + location.search);
             } finally {
               setSigningIn(false);
             }
           }}
-          className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)]"
-        >
-          {signingIn ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <LogIn className="h-4 w-4 mr-2" />}
-          Sign in with Google
-        </Button>
-      </div>
-    );
-  }
-
-  // Not authenticated in browser — check if we just returned from OAuth (cooldown active)
-  if (!isAuthenticated) {
-    const recentSignIn = sessionStorage.getItem("auth_signin_at");
-    const isRecentSignIn = recentSignIn && (Date.now() - Number(recentSignIn)) < 10000;
-
-    if (isRecentSignIn) {
-      // Show manual sign-in button instead of auto-redirecting (breaks loop)
-      return (
-        <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center gap-4">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
-            <LogIn className="h-8 w-8 text-primary" />
-          </div>
-          <h2 className="text-xl font-bold text-foreground">Sign in to continue</h2>
-          <p className="text-sm text-muted-foreground max-w-xs">
-            It looks like your session wasn't restored. Please sign in again.
-          </p>
-          <Button
-            size="lg"
-            disabled={signingIn}
-            onClick={async () => {
-              setSigningIn(true);
-              try {
-                sessionStorage.setItem("auth_signin_at", String(Date.now()));
-                const returnUrl = location.pathname + location.search;
-                await signIn(returnUrl);
-              } finally {
-                setSigningIn(false);
-              }
-            }}
-            className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)]"
-          >
-            {signingIn ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <LogIn className="h-4 w-4 mr-2" />}
-            Sign in with Google
-          </Button>
-        </div>
+        />
       );
     }
 
@@ -197,7 +174,7 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // State B: phone required but missing → blocking modal with context
+  // State B: phone required but missing
   if (requirePhone && !hasPhone) {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center">
@@ -219,4 +196,38 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
 
   // State C: all checks passed
   return <>{children}</>;
+}
+
+/** Reusable sign-in screen to reduce duplication */
+function SignInScreen({
+  source,
+  signingIn,
+  message,
+  onSignIn,
+}: {
+  source: string;
+  signingIn: boolean;
+  message?: string;
+  onSignIn: () => void;
+}) {
+  return (
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center gap-4">
+      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
+        <LogIn className="h-8 w-8 text-primary" />
+      </div>
+      <h2 className="text-xl font-bold text-foreground">Sign in to continue</h2>
+      <p className="text-sm text-muted-foreground max-w-xs">
+        {message || `Sign in with Google to access your ${source === "dashboard" ? "dashboard" : source === "masterclass" ? "masterclass" : "content"}.`}
+      </p>
+      <Button
+        size="lg"
+        disabled={signingIn}
+        onClick={onSignIn}
+        className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)]"
+      >
+        {signingIn ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <LogIn className="h-4 w-4 mr-2" />}
+        Sign in with Google
+      </Button>
+    </div>
+  );
 }

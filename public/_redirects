@@ -1,5 +1,8 @@
 /llms.txt                            /llms.txt                                          200
 
+/~oauth                             /index.html  200
+/~oauth/*                           /index.html  200
+
 /terms                              /index.html  200
 /privacy-policy                     /index.html  200
 /refund-policy                      /index.html  200
