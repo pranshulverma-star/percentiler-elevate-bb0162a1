@@ -29,9 +29,9 @@ export function calculateHeatScore(params: {
   score += params.mockAttempts * 5;
 
   // Consistency bonuses
-  if (params.consistencyScore > 85) {
+  if (params.consistencyScore > 0.85) {
     score += 15;
-  } else if (params.consistencyScore > 70) {
+  } else if (params.consistencyScore > 0.70) {
     score += 10;
   }
 
@@ -116,7 +116,7 @@ export async function recalculateHeatScore(
     Math.ceil((today.getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24))
   );
 
-  const consistencyScore = (totalActiveDays / daysSinceJoin) * 100;
+  const consistencyScore = totalActiveDays / daysSinceJoin;
 
   const { heatScore, leadCategory } = calculateHeatScore({
     totalActiveDays,
@@ -129,7 +129,7 @@ export async function recalculateHeatScore(
 
   const heatData: HeatScoreData = {
     total_active_days: totalActiveDays,
-    consistency_score: Math.round(consistencyScore * 10) / 10,
+    consistency_score: Math.round(consistencyScore * 1000) / 1000,
     mock_attempts: mockAttempts,
     crash_mode: crashMode,
     days_since_join: daysSinceJoin,
