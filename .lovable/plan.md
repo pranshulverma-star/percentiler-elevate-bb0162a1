@@ -1,78 +1,86 @@
 
 
-# Plan: Flashcard Redesign, Smart Dashboard Promotions, Consistency Bug Fix
+# Dashboard Premium Redesign + Missing Features
 
-## 1. Fix Planner Consistency Score Bug (Critical)
+## Changes Overview
 
-**Root Cause**: `heatScoring.ts` line 119 computes `consistencyScore = (totalActiveDays / daysSinceJoin) * 100` — already a percentage (e.g., 100 for perfect). But `DashboardPlanner.tsx`, `DashboardProgressCompact.tsx`, and `AdminPlannerStats.tsx` all display it as `Math.round(consistency * 100)%`, multiplying by 100 again. A user with 100% consistency shows as **10000%**.
+### 1. Fix Bottom Nav Profile Icon
+Replace the non-functional `?tab=profile` link with a redirect to `/daily-sprint` (renamed "Sprint") since there's no profile page. This gives the 4th nav item a real destination.
 
-Additionally, `days_since_join` is stored as 1 for many users even after multiple days — the `recalculateHeatScore` function only runs when users actively use the planner page, so the stored value goes stale.
+**File**: `src/components/dashboard/DashboardBottomNav.tsx`
+- Change Profile nav item to Daily Sprint (icon: `CalendarCheck`, label: "Sprint", to: `/daily-sprint`)
 
-**Fix**: Change the storage format to store consistency as a 0-1 decimal (matching what the display code expects):
-- `heatScoring.ts` line 119: change `* 100` to just the raw ratio
-- `heatScoring.ts` line 132: remove the rounding that assumes percentage format
-- `calculateHeatScore` thresholds on lines 32-36: adjust from 85/70 to 0.85/0.70
+### 2. Add Study Buddy Widget to Dashboard
+The `BuddyMiniWidget` exists but is never rendered on the dashboard. Add it prominently after the streak hero, plus a "Find a Study Buddy" CTA card for users without a buddy.
 
-**Files**: `src/lib/heatScoring.ts`
+**File**: `src/pages/Dashboard.tsx`
+- Import `BuddyMiniWidget` and render it after the streak hero section (Section 1.5)
+- Add a new `DashboardBuddyCTA` component for users without an active buddy — a compact card with "Invite a Study Buddy" CTA linking to `/study-buddy`
 
----
+**New file**: `src/components/dashboard/DashboardBuddyCTA.tsx`
+- Glassmorphic card with `Users2` icon, tagline "Pair up for mutual accountability", and "Invite Buddy" + "Enter Code" buttons
+- Links to `/study-buddy`
 
-## 2. Redesign Flashcard Cards & Buttons
+### 3. Make Flashcards Prominent — Move Above Tabs
+Currently flashcards are hidden inside the expandable "Today's Action" section. Add a dedicated flashcard quick-access card right after Today's Action (visible without expanding).
 
-**Current issues**: Plain white glassmorphic cards look flat; buttons are basic colored rectangles; no visual depth.
+**File**: `src/pages/Dashboard.tsx`
+- Add a new section between Today's Action and Stat Pills: a compact flashcard banner card with "📚 Daily Flashcards — Review 5 cards in 2 min" and a CTA button to `/flashcards`
 
-**Changes to `FlashcardDisplay.tsx`**:
-- Add a subtle SVG mesh/gradient background pattern inside each card face (category-colored)
-- Increase card height to 340px for more breathing room
-- Add an animated gradient border that pulses subtly on the category color
-- Enhance glassmorphism: increase blur to 24px, add inner glow, stronger border opacity
-- Add a subtle radial gradient overlay behind the text area for depth
-- Category label gets a small pill/chip background
-- "Tap to reveal" gets a bouncing arrow animation
+### 4. Premium Dashboard Visual Overhaul
+Apply the project's premium glassmorphic aesthetic to the dashboard.
 
-**Changes to `ActionButtons.tsx`**:
-- Redesign as 3 pill-shaped buttons in a horizontal row with glassmorphic styling
-- "Didn't know" and "I knew it" get gradient backgrounds instead of flat colors
-- Add icon-only circular buttons for mobile (< 380px) with text on larger screens
-- Flip button becomes a centered circular icon button between the two
-- Add subtle scale + shadow transition on hover/active
+**File**: `src/pages/Dashboard.tsx`
+- Add a subtle gradient mesh background (soft warm gradient orbs like the flashcard practice mode but lighter, respecting light/dark theme)
+- Wrap main content area with a subtle noise texture overlay
 
-**Changes to `FlashcardPractice.tsx`**:
-- Score tracker gets a cleaner pill-style display integrated below the action buttons
+**File**: `src/components/dashboard/DashboardStreakHero.tsx`
+- Upgrade to glassmorphic card with backdrop-blur, subtle border glow, and animated gradient background
+- Add a pulsing ring around the flame icon when streak > 0
 
-**Files**: `src/components/flashcards/FlashcardDisplay.tsx`, `src/components/flashcards/ActionButtons.tsx`, `src/components/flashcards/FlashcardPractice.tsx`
+**File**: `src/components/dashboard/DashboardTodayAction.tsx`
+- Add gradient accent border on the left side
+- Upgrade CTA button with shimmer animation matching navbar CTAs
 
----
+**File**: `src/components/dashboard/DashboardRecommendations.tsx`
+- Make recommendation cards taller with gradient accent tops (category-colored)
+- Add subtle glow effect on hover
+- Increase card width and add a proper CTA button instead of just an arrow
 
-## 3. Smart Dashboard Promotions Based on Progress
+**File**: `src/components/dashboard/DashboardStatPills.tsx`
+- Add glassmorphic backgrounds with subtle colored borders matching each stat's icon color
 
-**Current state**: `DashboardRecommendations` only shows 1 weak-section workshop + 2 static free tool links. No mentorship or course promotion tied to user progress.
+**File**: `src/components/dashboard/DashboardQuickAccess.tsx`
+- Upgrade grid tiles with glassmorphic hover effects and subtle icon color accents
 
-**New `DashboardRecommendations` logic** — build a prioritized recommendation engine:
+### 5. Add Daily Sprint / Todo List Visibility
+Add a compact "Today's Goals" section on the dashboard showing sprint goals summary with a link to the full sprint page.
 
-1. **Low accuracy (< 50% avg)**: Promote mentorship ("Struggling? A mentor can help you crack your weak areas") + relevant workshop
-2. **Medium accuracy (50-70%)**: Promote weakest-section workshop + full course if not converted
-3. **Good accuracy (> 70%) but low streak (< 3 days)**: Promote mentorship for consistency coaching
-4. **No practice attempts**: Promote full course ("Start your CAT journey") + mentorship
-5. **Not converted**: Always include a compact course promotion card
-6. **Not on mentorship**: Include a mentorship nudge with contextual copy
+**New file**: `src/components/dashboard/DashboardSprintPreview.tsx`
+- Shows today's sprint goal count (e.g., "2/5 goals done") with a progress ring
+- "Set Today's Goals →" CTA if no goals set
+- Links to `/daily-sprint`
 
-**Card design**: Each recommendation gets a richer card with:
-- Contextual tagline based on user state (e.g., "Your LRDI accuracy is 42% — this workshop can help")
-- Category badge + price for paid items, "Free" badge for tools
-- Primary CTA button
+**File**: `src/pages/Dashboard.tsx`
+- Render `DashboardSprintPreview` after the flashcard card
 
-**Props change**: Pass `converted`, `mentorshipActive`, `practiceAttempts`, and `streakData` to `DashboardRecommendations`
+## Final Dashboard Section Order
+1. Greeting + Streak Hero (glassmorphic upgrade)
+2. **Study Buddy widget** (new — shows buddy status or invite CTA)
+3. Today's Action (visual upgrade)
+4. **Flashcard Quick Card** (new — prominent daily flashcards CTA)
+5. **Sprint Preview** (new — today's goals summary)
+6. Stat Pills (glassmorphic upgrade)
+7. Progress tabs (Practice/Planner)
+8. Recommendations (visual upgrade, highlighted)
+9. Leaderboard
+10. Quick Access grid
 
-**Files**: `src/components/dashboard/DashboardRecommendations.tsx`, `src/pages/Dashboard.tsx` (pass additional props)
+## Technical Details
 
----
+**Files to modify**: `Dashboard.tsx`, `DashboardBottomNav.tsx`, `DashboardStreakHero.tsx`, `DashboardTodayAction.tsx`, `DashboardRecommendations.tsx`, `DashboardStatPills.tsx`, `DashboardQuickAccess.tsx`
 
-## Technical Summary
+**New files**: `DashboardBuddyCTA.tsx`, `DashboardSprintPreview.tsx`
 
-| Task | Files | Complexity |
-|------|-------|-----------|
-| Consistency bug | `heatScoring.ts` | Small — change 3 lines |
-| Flashcard redesign | `FlashcardDisplay.tsx`, `ActionButtons.tsx`, `FlashcardPractice.tsx` | Medium — visual overhaul |
-| Smart promotions | `DashboardRecommendations.tsx`, `Dashboard.tsx` | Medium — new recommendation logic |
+**No database changes needed.** All data sources already exist — buddy status from `buddy_pairs`, sprint goals from `sprint_goals`, flashcard progress from localStorage.
 
