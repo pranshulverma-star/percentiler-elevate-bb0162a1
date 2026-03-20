@@ -1,75 +1,78 @@
 
 
-## Problem: Auth Login Loop After Cache Clear
+# Plan: Flashcard Redesign, Smart Dashboard Promotions, Consistency Bug Fix
 
-### Root Cause
+## 1. Fix Planner Consistency Score Bug (Critical)
 
-The auth logs confirm 6+ logins within 2 minutes for the same user — a clear redirect loop. Here's what happens:
+**Root Cause**: `heatScoring.ts` line 119 computes `consistencyScore = (totalActiveDays / daysSinceJoin) * 100` — already a percentage (e.g., 100 for perfect). But `DashboardPlanner.tsx`, `DashboardProgressCompact.tsx`, and `AdminPlannerStats.tsx` all display it as `Math.round(consistency * 100)%`, multiplying by 100 again. A user with 100% consistency shows as **10000%**.
 
-1. User clears cache → visits `/dashboard`
-2. `AuthProvider.getSession()` returns null → `loading=false`, `isAuthenticated=false`
-3. `ProtectedRoute` sees unauthenticated → immediately fires `signIn()` (or shows sign-in button in PWA)
-4. OAuth completes successfully (auth logs confirm status 200)
-5. User is redirected back to `/dashboard`
-6. **But**: The `signInTriggered` ref resets on page reload. Supabase may still be processing the callback hash/tokens when ProtectedRoute evaluates. So it fires `signIn()` again → loop
+Additionally, `days_since_join` is stored as 1 for many users even after multiple days — the `recalculateHeatScore` function only runs when users actively use the planner page, so the stored value goes stale.
 
-The core issue: **ProtectedRoute doesn't know it just returned from an OAuth redirect**, and there's no cooldown between sign-in attempts across page reloads.
+**Fix**: Change the storage format to store consistency as a 0-1 decimal (matching what the display code expects):
+- `heatScoring.ts` line 119: change `* 100` to just the raw ratio
+- `heatScoring.ts` line 132: remove the rounding that assumes percentage format
+- `calculateHeatScore` thresholds on lines 32-36: adjust from 85/70 to 0.85/0.70
 
-### Fix: 3 Changes
+**Files**: `src/lib/heatScoring.ts`
 
-#### 1. Add OAuth-return detection in AuthProvider
+---
 
-Before triggering any sign-in, check if the URL contains Supabase auth callback tokens (`access_token`, `refresh_token`, or `code` in hash/query). If so, wait for `onAuthStateChange` to process them instead of immediately declaring "unauthenticated."
+## 2. Redesign Flashcard Cards & Buttons
 
-#### 2. Add sign-in cooldown via sessionStorage in ProtectedRoute
+**Current issues**: Plain white glassmorphic cards look flat; buttons are basic colored rectangles; no visual depth.
 
-When `signIn()` is called, write `sessionStorage.setItem("auth_signin_at", Date.now())`. On next mount, if less than 10 seconds have passed, don't auto-trigger sign-in — show a "Sign in" button instead. This breaks the auto-redirect loop while still allowing manual retry.
+**Changes to `FlashcardDisplay.tsx`**:
+- Add a subtle SVG mesh/gradient background pattern inside each card face (category-colored)
+- Increase card height to 340px for more breathing room
+- Add an animated gradient border that pulses subtly on the category color
+- Enhance glassmorphism: increase blur to 24px, add inner glow, stronger border opacity
+- Add a subtle radial gradient overlay behind the text area for depth
+- Category label gets a small pill/chip background
+- "Tap to reveal" gets a bouncing arrow animation
 
-#### 3. Detect OAuth callback hash in AuthProvider and delay resolution
+**Changes to `ActionButtons.tsx`**:
+- Redesign as 3 pill-shaped buttons in a horizontal row with glassmorphic styling
+- "Didn't know" and "I knew it" get gradient backgrounds instead of flat colors
+- Add icon-only circular buttons for mobile (< 380px) with text on larger screens
+- Flip button becomes a centered circular icon button between the two
+- Add subtle scale + shadow transition on hover/active
 
-If `window.location.hash` contains `access_token` or the URL has a `code` param (PKCE flow), set a flag so `getSession()` null result doesn't immediately resolve loading=false. Instead, wait for `onAuthStateChange` to fire (which processes the tokens), with a 5s safety timeout.
+**Changes to `FlashcardPractice.tsx`**:
+- Score tracker gets a cleaner pill-style display integrated below the action buttons
 
-### Files to Modify
+**Files**: `src/components/flashcards/FlashcardDisplay.tsx`, `src/components/flashcards/ActionButtons.tsx`, `src/components/flashcards/FlashcardPractice.tsx`
 
-1. **`src/hooks/useAuth.ts`** — Add OAuth callback detection. If hash contains auth tokens, don't resolve loading until `onAuthStateChange` fires or 5s timeout.
+---
 
-2. **`src/components/ProtectedRoute.tsx`** — Add sessionStorage-based cooldown. If a sign-in was triggered within the last 10 seconds, show a manual sign-in button instead of auto-redirecting. Remove the auto-redirect for non-standalone too (always show button if just returned from OAuth).
+## 3. Smart Dashboard Promotions Based on Progress
 
-### Technical Details
+**Current state**: `DashboardRecommendations` only shows 1 weak-section workshop + 2 static free tool links. No mentorship or course promotion tied to user progress.
 
-**AuthProvider change:**
-```typescript
-// Detect if we're returning from an OAuth callback
-const hash = window.location.hash;
-const isOAuthCallback = hash.includes("access_token") || 
-  hash.includes("refresh_token") || 
-  new URLSearchParams(window.location.search).has("code");
+**New `DashboardRecommendations` logic** — build a prioritized recommendation engine:
 
-// If OAuth callback, don't resolve from getSession() alone — 
-// wait for onAuthStateChange which processes the tokens
-if (isOAuthCallback && !session) {
-  // Don't resolve yet, let onAuthStateChange handle it
-  return;
-}
-```
+1. **Low accuracy (< 50% avg)**: Promote mentorship ("Struggling? A mentor can help you crack your weak areas") + relevant workshop
+2. **Medium accuracy (50-70%)**: Promote weakest-section workshop + full course if not converted
+3. **Good accuracy (> 70%) but low streak (< 3 days)**: Promote mentorship for consistency coaching
+4. **No practice attempts**: Promote full course ("Start your CAT journey") + mentorship
+5. **Not converted**: Always include a compact course promotion card
+6. **Not on mentorship**: Include a mentorship nudge with contextual copy
 
-**ProtectedRoute change:**
-```typescript
-const recentSignIn = sessionStorage.getItem("auth_signin_at");
-const isRecentSignIn = recentSignIn && (Date.now() - Number(recentSignIn)) < 10000;
+**Card design**: Each recommendation gets a richer card with:
+- Contextual tagline based on user state (e.g., "Your LRDI accuracy is 42% — this workshop can help")
+- Category badge + price for paid items, "Free" badge for tools
+- Primary CTA button
 
-// Don't auto-trigger if we just attempted sign-in (breaks loop)
-if (!authLoading && !isAuthenticated && !isRecentSignIn && !isStandalone) {
-  sessionStorage.setItem("auth_signin_at", String(Date.now()));
-  signInTriggered.current = true;
-  void signIn(returnUrl);
-}
+**Props change**: Pass `converted`, `mentorshipActive`, `practiceAttempts`, and `streakData` to `DashboardRecommendations`
 
-// If recent sign-in failed, show manual button instead of auto-redirect
-if (!isAuthenticated && isRecentSignIn) {
-  return <ManualSignInButton />;
-}
-```
+**Files**: `src/components/dashboard/DashboardRecommendations.tsx`, `src/pages/Dashboard.tsx` (pass additional props)
 
-No database changes needed. No new dependencies.
+---
+
+## Technical Summary
+
+| Task | Files | Complexity |
+|------|-------|-----------|
+| Consistency bug | `heatScoring.ts` | Small — change 3 lines |
+| Flashcard redesign | `FlashcardDisplay.tsx`, `ActionButtons.tsx`, `FlashcardPractice.tsx` | Medium — visual overhaul |
+| Smart promotions | `DashboardRecommendations.tsx`, `Dashboard.tsx` | Medium — new recommendation logic |
 
