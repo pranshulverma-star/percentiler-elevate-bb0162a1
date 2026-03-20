@@ -195,7 +195,7 @@ export default function Dashboard() {
 
           {/* Section 6: Recommendations */}
           <motion.div {...fade(5)} className="mt-6">
-            <DashboardRecommendations practiceAttempts={practiceAttempts} />
+            <DashboardRecommendations practiceAttempts={practiceAttempts} converted={converted} mentorshipActive={mentorshipActive} streakData={streakData} />
           </motion.div>
 
           {/* Section 7: Quick Access */}
