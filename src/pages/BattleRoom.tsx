@@ -728,6 +728,7 @@ function BattleResults({
 
 // ─── Main Page ──────────────────────────────────────────────────────────────
 export default function BattleRoomPage() {
+  useBackToDashboard();
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();

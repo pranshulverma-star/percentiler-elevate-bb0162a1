@@ -708,6 +708,7 @@ function QuizView({
 
 // ─── Main Page ───────────────────────────────────────────────────────────────
 export default function PracticeLab() {
+  useBackToDashboard();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [phase, setPhase] = useState<Phase>("sections");

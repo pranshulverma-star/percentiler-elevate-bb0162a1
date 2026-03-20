@@ -64,6 +64,7 @@ function PracticeBg({ category }: { category: FlashcardCategory | null }) {
 }
 
 export default function FlashcardsPage() {
+  useBackToDashboard();
   const { user, loading: authLoading, signIn } = useAuth();
   const { loading, getTodayCount, getTodayCardIds, getRevisionCards, recordAnswer } = useFlashcardProgress();
 

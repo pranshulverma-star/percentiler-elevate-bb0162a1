@@ -216,6 +216,7 @@ function SprintDashboard({ userId }: { userId: string }) {
 }
 
 export default function DailySprint() {
+  useBackToDashboard();
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
 
   return (

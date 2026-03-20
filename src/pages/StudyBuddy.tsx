@@ -292,6 +292,7 @@ function DashboardState({
 
 // ─── Main Page ───
 export default function StudyBuddy() {
+  useBackToDashboard();
   const [searchParams] = useSearchParams();
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const inviteParam = searchParams.get("invite");
