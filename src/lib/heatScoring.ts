@@ -116,7 +116,7 @@ export async function recalculateHeatScore(
     Math.ceil((today.getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24))
   );
 
-  const consistencyScore = (totalActiveDays / daysSinceJoin) * 100;
+  const consistencyScore = totalActiveDays / daysSinceJoin;
 
   const { heatScore, leadCategory } = calculateHeatScore({
     totalActiveDays,
