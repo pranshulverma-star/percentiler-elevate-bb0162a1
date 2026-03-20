@@ -139,7 +139,7 @@ function PlannerContent({ data, loading }: { data: any; loading: boolean }) {
   return (
     <div className="space-y-4">
       <div className="flex items-baseline gap-2">
-        <span className="text-3xl font-bold text-foreground">{Math.round(consistency <= 1 ? consistency * 100 : consistency)}%</span>
+        <span className="text-3xl font-bold text-foreground">{Math.min(100, Math.round(consistency <= 1 ? consistency * 100 : consistency))}%</span>
         <span className="text-xs text-muted-foreground">Consistency</span>
         <Badge variant="secondary" className="text-[10px] ml-auto">
           {activeDaysThisWeek}/7 this week
