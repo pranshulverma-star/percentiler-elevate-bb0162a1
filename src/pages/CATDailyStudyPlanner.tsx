@@ -814,6 +814,9 @@ function PlannerDashboard({ leadData, onReset }: { leadData: LeadData; onReset: 
       setCompletedDays(prev => new Set(prev).add(`${date}|${subject}`));
       setInactiveDays(0);
 
+      // Record unified streak (fire-and-forget, only works if user is auth'd)
+      recordActivity("quiz").catch(() => {});
+
       // Fire-and-forget: recalculate heat score in background (don't block UI)
       recalculateHeatScore(leadData.phone, isCrashMode, daysLeft)
         .then(newHeat => setHeatData(newHeat))
