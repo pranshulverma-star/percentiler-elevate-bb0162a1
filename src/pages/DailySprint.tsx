@@ -144,7 +144,14 @@ function SprintDashboard({ userId }: { userId: string }) {
     setGoals((prev) => prev.map((g) => g.id === goalId ? { ...g, completed, completed_at: completed ? new Date().toISOString() : null } : g));
     try {
       await toggleGoal(goalId, completed);
-      if (completed) toast.success("Nice work! ✅");
+      if (completed) {
+        toast.success("Nice work! ✅");
+        // Check if all goals are now completed
+        const updatedGoals = goals.map(g => g.id === goalId ? { ...g, completed } : g);
+        if (updatedGoals.length > 0 && updatedGoals.every(g => g.completed)) {
+          recordActivity("sprint").catch(() => {});
+        }
+      }
     } catch {
       setGoals((prev) => prev.map((g) => g.id === goalId ? { ...g, completed: !completed } : g));
       toast.error("Failed to update goal.");

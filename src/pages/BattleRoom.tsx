@@ -918,6 +918,8 @@ export default function BattleRoomPage() {
       .eq("user_id", user.id);
 
     setMyFinished(true);
+    // Record unified streak
+    recordActivity("quiz").catch(() => {});
 
     // Check if all players finished
     const { data: allPlayers } = await (supabase.from("battle_players") as any)
