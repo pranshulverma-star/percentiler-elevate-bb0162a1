@@ -35,9 +35,9 @@ export default function ReviseTab({ revisionCards, onMarkKnown }: Props) {
 
   if (revisionCards.length === 0) {
     return (
-      <div className="flex flex-col items-center py-16 text-center">
-        <p className="text-lg font-semibold text-[#141414]">No cards to revise 🎉</p>
-        <p className="text-sm text-gray-500 mt-1">Practice some flashcards first and any you didn't know will appear here.</p>
+      <div className="flex flex-col items-center py-12 sm:py-16 text-center px-4">
+        <p className="text-base sm:text-lg font-semibold text-white">No cards to revise 🎉</p>
+        <p className="text-sm text-white/50 mt-1">Practice some flashcards first and any you didn't know will appear here.</p>
       </div>
     );
   }
@@ -45,7 +45,7 @@ export default function ReviseTab({ revisionCards, onMarkKnown }: Props) {
   return (
     <div className="w-full max-w-lg mx-auto">
       {/* Filter pills */}
-      <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide">
+      <div className="flex gap-2 overflow-x-auto pb-2 mb-5 sm:mb-6 scrollbar-hide -mx-1 px-1">
         {allCats.map((cat) => {
           const active = filter === cat;
           const color = cat === "all" ? "#FF6600" : CATEGORY_META[cat].color;
@@ -54,7 +54,7 @@ export default function ReviseTab({ revisionCards, onMarkKnown }: Props) {
             <button
               key={cat}
               onClick={() => setFilter(cat)}
-              className="flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-semibold transition-colors active:scale-[0.96]"
+              className="flex-shrink-0 px-3 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-semibold transition-colors active:scale-[0.96]"
               style={{
                 background: active ? color : "transparent",
                 color: active ? "#fff" : color,
@@ -68,10 +68,10 @@ export default function ReviseTab({ revisionCards, onMarkKnown }: Props) {
       </div>
 
       {filtered.length === 0 && (
-        <p className="text-center text-sm text-gray-400 py-8">No weak cards in this category.</p>
+        <p className="text-center text-sm text-white/40 py-8">No weak cards in this category.</p>
       )}
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2.5 sm:gap-3">
         {filtered.map((row) => {
           const card = findCard(row.card_id, row.category);
           if (!card) return null;
@@ -84,21 +84,25 @@ export default function ReviseTab({ revisionCards, onMarkKnown }: Props) {
           return (
             <div
               key={row.card_id}
-              className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden"
+              className="rounded-2xl overflow-hidden"
+              style={{
+                background: "rgba(255, 255, 255, 0.06)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+              }}
             >
               <button
                 onClick={() => setExpanded(isOpen ? null : row.card_id)}
-                className="w-full text-left p-4 flex items-start justify-between gap-2"
+                className="w-full text-left p-3.5 sm:p-4 flex items-start justify-between gap-2"
               >
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   {useLtx ? (
-                    <span className="font-bold text-[#141414]" dangerouslySetInnerHTML={{ __html: renderLatex(front) }} />
+                    <span className="font-bold text-white text-sm sm:text-base" dangerouslySetInnerHTML={{ __html: renderLatex(front) }} />
                   ) : (
-                    <span className="font-bold text-[#141414]">{front}</span>
+                    <span className="font-bold text-white text-sm sm:text-base">{front}</span>
                   )}
                 </div>
                 <span
-                  className="flex-shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full text-white"
+                  className="flex-shrink-0 text-[9px] sm:text-[10px] font-semibold px-2 py-0.5 rounded-full text-white"
                   style={{ background: CATEGORY_META[cat].color }}
                 >
                   {CATEGORY_META[cat].label}
@@ -106,13 +110,13 @@ export default function ReviseTab({ revisionCards, onMarkKnown }: Props) {
               </button>
 
               {isOpen && (
-                <div className="px-4 pb-4 border-t border-gray-50 pt-3">
+                <div className="px-3.5 sm:px-4 pb-3.5 sm:pb-4 border-t border-white/[0.06] pt-3">
                   {useLtx ? (
-                    <div className="text-sm text-[#141414] mb-2" dangerouslySetInnerHTML={{ __html: renderLatex(main) }} />
+                    <div className="text-sm text-white/80 mb-2" dangerouslySetInnerHTML={{ __html: renderLatex(main) }} />
                   ) : (
-                    <p className="text-sm text-[#141414] mb-2">{main}</p>
+                    <p className="text-sm text-white/80 mb-2">{main}</p>
                   )}
-                  {hint && <p className="text-xs text-gray-500 italic mb-3">💡 {hint}</p>}
+                  {hint && <p className="text-xs text-white/50 italic mb-3">💡 {hint}</p>}
 
                   <div className="flex gap-2">
                     <button
@@ -127,7 +131,11 @@ export default function ReviseTab({ revisionCards, onMarkKnown }: Props) {
                     </button>
                     <button
                       onClick={() => setExpanded(null)}
-                      className="px-4 py-2 rounded-xl text-xs font-semibold border border-gray-200 text-gray-500 active:scale-[0.96]"
+                      className="px-4 py-2 rounded-xl text-xs font-semibold active:scale-[0.96]"
+                      style={{
+                        border: "1px solid rgba(255,255,255,0.15)",
+                        color: "rgba(255,255,255,0.6)",
+                      }}
                     >
                       Still learning
                     </button>

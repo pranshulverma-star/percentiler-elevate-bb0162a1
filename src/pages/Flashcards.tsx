@@ -50,14 +50,13 @@ function PracticeBg({ category }: { category: FlashcardCategory | null }) {
   return (
     <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
       <div className="absolute inset-0" style={{ background: "#0A0A0F" }} />
-      {/* Mesh gradient orbs */}
       <div
-        className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full"
-        style={{ background: primary, filter: "blur(120px)", opacity: 0.15 }}
+        className="absolute top-0 right-0 w-[250px] h-[250px] sm:w-[400px] sm:h-[400px] rounded-full"
+        style={{ background: primary, filter: "blur(100px)", opacity: 0.15 }}
       />
       <div
-        className="absolute bottom-0 left-0 w-[350px] h-[350px] rounded-full"
-        style={{ background: secondary, filter: "blur(120px)", opacity: 0.12 }}
+        className="absolute bottom-0 left-0 w-[200px] h-[200px] sm:w-[350px] sm:h-[350px] rounded-full"
+        style={{ background: secondary, filter: "blur(100px)", opacity: 0.12 }}
       />
     </div>
   );
@@ -102,10 +101,9 @@ export default function FlashcardsPage() {
     setTab("practice");
   };
 
-  // Active category color for tab bar
   const activeColor = selectedCategory ? CATEGORY_META[selectedCategory].color : "#FF6600";
 
-  // Practice view (logged in only)
+  // Practice view
   if (view === "practice") {
     if (authLoading || loading) {
       return (
@@ -119,19 +117,19 @@ export default function FlashcardsPage() {
       <div className="flashcard-practice min-h-screen relative">
         <PracticeBg category={selectedCategory} />
 
-        <div className="relative z-10 max-w-xl mx-auto px-5 py-8">
+        <div className="relative z-10 max-w-xl mx-auto px-4 sm:px-5 py-6 sm:py-8 pb-[env(safe-area-inset-bottom,16px)]">
           <button
             onClick={handleBackToLanding}
-            className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors mb-6"
+            className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors mb-4 sm:mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Flashcards
           </button>
 
-          <h2 className="text-2xl font-bold text-white text-center mb-6">Flashcard Practice</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-white text-center mb-4 sm:mb-6">Flashcard Practice</h2>
 
           {/* Tab toggle */}
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-6 sm:mb-8">
             <div
               className="inline-flex rounded-full p-1"
               style={{ background: "rgba(255,255,255,0.06)" }}
@@ -140,7 +138,7 @@ export default function FlashcardsPage() {
                 <button
                   key={t}
                   onClick={() => { setTab(t); setSelectedCategory(null); }}
-                  className="px-6 py-2 rounded-full text-sm font-medium transition-all capitalize active:scale-[0.97]"
+                  className="px-5 sm:px-6 py-1.5 sm:py-2 rounded-full text-[13px] sm:text-sm font-medium transition-all capitalize active:scale-[0.97]"
                   style={{
                     background: tab === t ? activeColor : "transparent",
                     color: tab === t ? "#fff" : "rgba(255,255,255,0.5)",
@@ -178,7 +176,7 @@ export default function FlashcardsPage() {
     );
   }
 
-  // Landing page (public)
+  // Landing page
   return (
     <div className="min-h-screen bg-white">
       <Helmet>

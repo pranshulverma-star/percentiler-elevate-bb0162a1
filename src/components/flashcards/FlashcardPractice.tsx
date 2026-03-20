@@ -102,8 +102,8 @@ export default function FlashcardPractice({ category, todayCardIds, onRecord, on
 
   if (done && alreadyDone >= DAILY_LIMIT && total === 0) {
     return (
-      <div className="flex flex-col items-center text-center gap-4 py-12">
-        <p className="text-lg font-semibold text-white">
+      <div className="flex flex-col items-center text-center gap-4 py-8 sm:py-12 px-2">
+        <p className="text-base sm:text-lg font-semibold text-white">
           You've completed today's practice for {CATEGORY_META[category].label}!
         </p>
         <p className="text-sm text-white/50">Come back tomorrow for new cards, or revise your weak cards.</p>
@@ -137,14 +137,14 @@ export default function FlashcardPractice({ category, todayCardIds, onRecord, on
 
   return (
     <div className="flex flex-col items-center w-full">
-      <button onClick={onBack} className="self-start flex items-center gap-1 text-sm text-white/50 hover:text-white mb-4 active:scale-[0.97] transition-colors">
+      <button onClick={onBack} className="self-start flex items-center gap-1 text-sm text-white/50 hover:text-white mb-3 sm:mb-4 active:scale-[0.97] transition-colors">
         <ArrowLeft size={16} /> Back
       </button>
 
       <ProgressDots total={total} current={idx} color={color} />
 
       <div
-        className="w-full px-4"
+        className="w-full"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
@@ -165,7 +165,7 @@ export default function FlashcardPractice({ category, todayCardIds, onRecord, on
       />
 
       {/* Score tracker */}
-      <div className="flex items-center gap-4 mt-4 text-[13px] text-white/60">
+      <div className="flex items-center gap-4 mt-3 sm:mt-4 text-[13px] text-white/60">
         <span className="text-emerald-400">✓ {correct}</span>
         <span className="text-red-400">✗ {wrong}</span>
       </div>
