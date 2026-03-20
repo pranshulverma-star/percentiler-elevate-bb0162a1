@@ -9,7 +9,7 @@ const tools = [
   { icon: GraduationCap, name: "Free Courses", benefit: "Access free CAT preparation courses covering QA, VARC, LRDI, and more : completely free.", href: "/free-courses", isLink: true },
   { icon: ClipboardCheck, name: "CAT Readiness Assessment", benefit: "Evaluate your current performance level and identify gaps before your next mock test.", href: "/free-cat-readiness-assessment", isLink: true },
   { icon: Layers, name: "CAT Flashcards", benefit: "Master 557 concepts with mnemonic tricks — Vocab, Quant Formulas, Idioms & LRDI Tips. 5 cards a day.", href: "/flashcards", isLink: true },
-  { icon: ClipboardCheck, name: "Practice Lab", benefit: "Solve topic-wise CAT questions with instant scoring and detailed performance analytics.", href: "/practice-lab", isLink: true },
+  { icon: FlaskConical, name: "Practice Lab", benefit: "Solve topic-wise CAT questions with instant scoring and detailed performance analytics.", href: "/practice-lab", isLink: true },
   { icon: LayoutDashboard, name: "My Dashboard", benefit: "Track your streaks, quiz scores, and personalized study plan — all in one place.", href: "/dashboard", isLink: true, isDashboard: true },
 ];
 
