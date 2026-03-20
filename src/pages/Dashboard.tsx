@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
+import type { Transition } from "framer-motion";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import DashboardTopBar from "@/components/dashboard/DashboardTopBar";
 import DashboardStreakHero from "@/components/dashboard/DashboardStreakHero";
