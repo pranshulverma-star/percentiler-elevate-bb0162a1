@@ -38,9 +38,13 @@ export default function FlashcardDisplay({ card, category, flipped, onFlip, swip
       />
 
       <div
+        role="button"
+        tabIndex={0}
+        aria-label="Flip flashcard"
         className={`relative w-full max-w-[440px] h-[300px] cursor-pointer transition-all duration-500 ${exitClass}`}
         style={{ transformStyle: "preserve-3d", transition: swipeDir ? "transform 0.4s ease, opacity 0.4s ease" : undefined }}
         onClick={onFlip}
+        onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onFlip(); } }}
       >
         <div
           className="absolute inset-0 transition-transform duration-[550ms]"

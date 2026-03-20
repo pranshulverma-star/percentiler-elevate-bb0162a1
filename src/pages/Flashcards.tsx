@@ -95,7 +95,7 @@ export default function FlashcardsPage() {
             Back to Flashcards
           </button>
 
-          <h1 className="text-2xl font-bold text-[hsl(0,0%,8%)] text-center mb-6">Flashcard Practice</h1>
+          <h2 className="text-2xl font-bold text-[hsl(0,0%,8%)] text-center mb-6">Flashcard Practice</h2>
 
           {/* Tab toggle */}
           <div className="flex justify-center mb-8">

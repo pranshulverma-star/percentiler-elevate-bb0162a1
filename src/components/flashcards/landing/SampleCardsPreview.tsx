@@ -53,6 +53,9 @@ export default function SampleCardsPreview({ onSignUp }: Props) {
           {sampleCards.map((card, i) => (
             <div
               key={i}
+              role="button"
+              tabIndex={0}
+              aria-label={`Flip ${card.category} sample card`}
               className="relative h-[240px] cursor-pointer transition-all duration-700"
               style={{
                 perspective: "1200px",
@@ -61,6 +64,7 @@ export default function SampleCardsPreview({ onSignUp }: Props) {
                 transitionDelay: `${i * 100}ms`,
               }}
               onClick={() => handleFlip(i)}
+              onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleFlip(i); } }}
             >
               <div
                 className="w-full h-full transition-transform duration-[550ms]"
