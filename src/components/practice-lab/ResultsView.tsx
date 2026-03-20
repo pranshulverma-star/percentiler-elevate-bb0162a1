@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreaks } from "@/hooks/useStreaks";
 import { supabase } from "@/integrations/supabase/client";
 import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 import { practiceLabSections, type PracticeQuestion } from "@/data/practiceLabQuestions";
