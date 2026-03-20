@@ -279,3 +279,16 @@
     box-shadow: 0 2px 8px hsl(var(--primary) / 0.3);
   }
 }
+
+/* KaTeX white text in dark flashcard practice mode */
+.flashcard-practice .katex,
+.flashcard-practice .katex .mathnormal,
+.flashcard-practice .katex .mord,
+.flashcard-practice .katex .mbin,
+.flashcard-practice .katex .mrel,
+.flashcard-practice .katex .mopen,
+.flashcard-practice .katex .mclose,
+.flashcard-practice .katex .mpunct,
+.flashcard-practice .katex .minner {
+  color: #FFFFFF !important;
+}

@@ -16,12 +16,6 @@ const CATEGORY_ICONS: Record<FlashcardCategory, React.ElementType> = {
   lrdi_tips: BrainCircuit,
 };
 
-const CATEGORY_SECONDARY: Record<FlashcardCategory, string> = {
-  vocab: "#FF9944",
-  idioms: "#F472B6",
-  quant_formulas: "#818CF8",
-  lrdi_tips: "#2DD4BF",
-};
 
 export default function CategorySelector({ onSelect, getTodayCount }: Props) {
   return (
