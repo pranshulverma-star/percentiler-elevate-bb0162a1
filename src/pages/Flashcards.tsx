@@ -17,6 +17,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import { CATEGORY_META, type FlashcardCategory } from "@/data/flashcards";
 import { Loader2, ArrowLeft } from "lucide-react";
+import { useBackToDashboard } from "@/hooks/useBackToDashboard";
 import "katex/dist/katex.min.css";
 
 type View = "landing" | "practice";

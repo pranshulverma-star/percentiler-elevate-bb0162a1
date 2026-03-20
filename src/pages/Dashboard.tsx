@@ -18,8 +18,10 @@ import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { Layers, ArrowRight } from "lucide-react";
+import { useBackToDashboard } from "@/hooks/useBackToDashboard";
 
 export default function Dashboard() {
+  useBackToDashboard();
   const { user, signOut } = useAuth();
   const userId = user?.id || "";
   const { currentStreak, longestStreak, weeklyActivity, loading: loadingStreaks } = useStreaks();
