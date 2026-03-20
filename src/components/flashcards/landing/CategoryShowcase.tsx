@@ -21,19 +21,19 @@ export default function CategoryShowcase({ onPractice }: Props) {
   const { ref, inView } = useInView<HTMLElement>();
 
   return (
-    <section ref={ref} aria-label="Flashcard categories" className="py-16 md:py-24">
+    <section ref={ref} aria-label="Flashcard categories" className="py-10 sm:py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6 max-w-5xl">
         <div
-          className="text-center mb-12 transition-all duration-700"
+          className="text-center mb-8 sm:mb-12 transition-all duration-700"
           style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)" }}
         >
-          <h2 className="text-2xl md:text-3xl font-bold text-[hsl(0,0%,8%)] mb-3">Four pillars of CAT mastery</h2>
-          <p className="text-[hsl(0,0%,45%)] max-w-lg mx-auto">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-[hsl(0,0%,8%)] mb-2 sm:mb-3">Four pillars of CAT mastery</h2>
+          <p className="text-sm sm:text-base text-[hsl(0,0%,45%)] max-w-lg mx-auto">
             Pick a category. Practice 5 cards. Come back tomorrow. Consistency beats cramming.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 gap-3 sm:gap-5">
           {categories.map(({ key, icon: Icon }, i) => {
             const { label, color } = CATEGORY_META[key];
             const total = getTotalCards(key);
@@ -46,7 +46,7 @@ export default function CategoryShowcase({ onPractice }: Props) {
             return (
               <div
                 key={key}
-                className="relative rounded-2xl p-6 transition-all duration-700 cursor-pointer group active:scale-[0.97]"
+                className="relative rounded-xl sm:rounded-2xl p-4 sm:p-6 transition-all duration-700 cursor-pointer group active:scale-[0.97]"
                 style={{
                   opacity: inView ? 1 : 0,
                   transform: inView ? "translateY(0)" : "translateY(24px)",
@@ -55,39 +55,36 @@ export default function CategoryShowcase({ onPractice }: Props) {
                   backdropFilter: "blur(20px)",
                   border: "1px solid rgba(255,255,255,0.35)",
                   boxShadow: "0 4px 24px rgba(0,0,0,0.04)",
-                  borderTop: `4px solid ${color}`,
+                  borderTop: `3px solid ${color}`,
                 }}
                 onClick={() => onPractice(key)}
               >
-                {/* Glow */}
-                <div className="absolute -top-4 -right-4 w-24 h-24 rounded-full pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: color, filter: "blur(40px)", opacity: 0.1 }} />
-
-                <div className="flex items-start gap-4">
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${color}15` }}>
-                    <Icon className="w-5 h-5" style={{ color }} />
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0" style={{ background: `${color}15` }}>
+                    <Icon className="w-4 h-4 sm:w-5 sm:h-5" style={{ color }} />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-[hsl(0,0%,8%)] text-lg">{label}</h3>
-                    <p className="text-sm text-[hsl(0,0%,55%)] mt-0.5">{total} cards</p>
+                    <h3 className="font-bold text-[hsl(0,0%,8%)] text-sm sm:text-lg leading-tight">{label}</h3>
+                    <p className="text-[11px] sm:text-sm text-[hsl(0,0%,55%)] mt-0.5">{total} cards</p>
                   </div>
                 </div>
 
-                <p className="text-sm text-[hsl(0,0%,50%)] mt-4 italic line-clamp-2">"{sampleText}"</p>
+                <p className="text-[11px] sm:text-sm text-[hsl(0,0%,50%)] mt-3 sm:mt-4 italic line-clamp-2 hidden sm:block">"{sampleText}"</p>
 
                 {user && (
-                  <div className="mt-4 space-y-2">
-                    <div className="flex justify-between text-xs">
+                  <div className="mt-3 sm:mt-4 space-y-1.5 sm:space-y-2">
+                    <div className="flex justify-between text-[10px] sm:text-xs">
                       <span style={{ color }}>{todayCount}/5 today</span>
-                      <span className="text-[hsl(0,0%,55%)]">{mastered} mastered</span>
+                      <span className="text-[hsl(0,0%,55%)] hidden sm:inline">{mastered} mastered</span>
                     </div>
-                    <div className="h-1.5 rounded-full bg-[hsl(0,0%,95%)] overflow-hidden">
+                    <div className="h-1 sm:h-1.5 rounded-full bg-[hsl(0,0%,95%)] overflow-hidden">
                       <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: todayCount >= 5 ? "hsl(142,71%,45%)" : color }} />
                     </div>
                   </div>
                 )}
 
-                <p className="text-sm font-semibold mt-4 group-hover:underline" style={{ color }}>
-                  Practice Now →
+                <p className="text-xs sm:text-sm font-semibold mt-3 sm:mt-4 group-hover:underline" style={{ color }}>
+                  Practice →
                 </p>
               </div>
             );

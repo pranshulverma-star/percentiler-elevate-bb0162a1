@@ -39,24 +39,25 @@ export default function SampleCardsPreview({ onSignUp }: Props) {
   };
 
   return (
-    <section ref={ref} aria-label="Sample flashcard preview" className="py-16 md:py-24 bg-[hsl(0,0%,98%)]">
+    <section ref={ref} aria-label="Sample flashcard preview" className="py-10 sm:py-16 md:py-24 bg-[hsl(0,0%,98%)]">
       <div className="container mx-auto px-4 md:px-6 max-w-5xl">
         <h2
-          className="text-2xl md:text-3xl font-bold text-[hsl(0,0%,8%)] text-center mb-4 transition-all duration-700"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-[hsl(0,0%,8%)] text-center mb-2 sm:mb-4 transition-all duration-700"
           style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)" }}
         >
           Peek inside the deck
         </h2>
-        <p className="text-[hsl(0,0%,45%)] text-center mb-12 text-sm">Tap any card to flip it</p>
+        <p className="text-[hsl(0,0%,45%)] text-center mb-8 sm:mb-12 text-xs sm:text-sm">Tap any card to flip it</p>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+        {/* Horizontal scroll on mobile, grid on desktop */}
+        <div className="flex sm:grid sm:grid-cols-3 gap-4 sm:gap-6 overflow-x-auto snap-x snap-mandatory pb-2 sm:pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 relative">
           {sampleCards.map((card, i) => (
             <div
               key={i}
               role="button"
               tabIndex={0}
               aria-label={`Flip ${card.category} sample card`}
-              className="relative h-[240px] cursor-pointer transition-all duration-700"
+              className="relative h-[200px] sm:h-[240px] cursor-pointer transition-all duration-700 shrink-0 w-[75vw] sm:w-auto snap-center"
               style={{
                 perspective: "1200px",
                 opacity: inView ? 1 : 0,
@@ -76,27 +77,27 @@ export default function SampleCardsPreview({ onSignUp }: Props) {
               >
                 {/* Front */}
                 <div
-                  className="absolute inset-0 rounded-2xl p-5 flex flex-col justify-center items-center text-center"
+                  className="absolute inset-0 rounded-xl sm:rounded-2xl p-4 sm:p-5 flex flex-col justify-center items-center text-center"
                   style={{
                     backfaceVisibility: "hidden",
                     background: "rgba(255,255,255,0.6)",
                     backdropFilter: "blur(20px)",
                     border: "1px solid rgba(255,255,255,0.4)",
                     boxShadow: "0 8px 32px rgba(0,0,0,0.06)",
-                    borderTop: `4px solid ${card.color}`,
+                    borderTop: `3px solid ${card.color}`,
                   }}
                 >
-                  <span className="text-xs font-semibold uppercase tracking-wider mb-3" style={{ color: card.color }}>{card.category}</span>
+                  <span className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-2 sm:mb-3" style={{ color: card.color }}>{card.category}</span>
                   {card.latex ? (
-                    <div className="text-lg font-bold text-[hsl(0,0%,8%)]" dangerouslySetInnerHTML={{ __html: renderLatex(card.front) }} />
+                    <div className="text-base sm:text-lg font-bold text-[hsl(0,0%,8%)]" dangerouslySetInnerHTML={{ __html: renderLatex(card.front) }} />
                   ) : (
-                    <p className="text-xl font-bold text-[hsl(0,0%,8%)]">{card.front}</p>
+                    <p className="text-lg sm:text-xl font-bold text-[hsl(0,0%,8%)]">{card.front}</p>
                   )}
-                  <span className="text-xs text-[hsl(0,0%,70%)] mt-auto">Tap to reveal</span>
+                  <span className="text-[10px] sm:text-xs text-[hsl(0,0%,70%)] mt-auto">Tap to reveal</span>
                 </div>
                 {/* Back */}
                 <div
-                  className="absolute inset-0 rounded-2xl p-5 flex flex-col justify-center items-center text-center"
+                  className="absolute inset-0 rounded-xl sm:rounded-2xl p-4 sm:p-5 flex flex-col justify-center items-center text-center"
                   style={{
                     backfaceVisibility: "hidden",
                     transform: "rotateY(180deg)",
@@ -104,15 +105,15 @@ export default function SampleCardsPreview({ onSignUp }: Props) {
                     backdropFilter: "blur(20px)",
                     border: "1px solid rgba(255,255,255,0.4)",
                     boxShadow: "0 8px 32px rgba(0,0,0,0.06)",
-                    borderTop: `4px solid ${card.color}`,
+                    borderTop: `3px solid ${card.color}`,
                   }}
                 >
                   {card.latex ? (
-                    <div className="text-lg font-semibold text-[hsl(0,0%,8%)]" dangerouslySetInnerHTML={{ __html: renderLatex(card.back) }} />
+                    <div className="text-base sm:text-lg font-semibold text-[hsl(0,0%,8%)]" dangerouslySetInnerHTML={{ __html: renderLatex(card.back) }} />
                   ) : (
-                    <p className="text-lg font-semibold text-[hsl(0,0%,8%)]">{card.back}</p>
+                    <p className="text-base sm:text-lg font-semibold text-[hsl(0,0%,8%)]">{card.back}</p>
                   )}
-                  {card.hint && <p className="text-sm text-[hsl(0,0%,50%)] mt-3 italic">💡 {card.hint}</p>}
+                  {card.hint && <p className="text-xs sm:text-sm text-[hsl(0,0%,50%)] mt-2 sm:mt-3 italic">💡 {card.hint}</p>}
                 </div>
               </div>
             </div>
@@ -122,8 +123,8 @@ export default function SampleCardsPreview({ onSignUp }: Props) {
           {showCTA && (
             <div className="absolute inset-0 flex items-center justify-center rounded-2xl z-10" style={{ background: "rgba(255,255,255,0.85)", backdropFilter: "blur(8px)" }}>
               <div className="text-center px-6">
-                <p className="text-lg font-bold text-[hsl(0,0%,8%)] mb-2">Sign up to unlock all 557 cards</p>
-                <p className="text-sm text-[hsl(0,0%,45%)] mb-5">Free forever. No credit card.</p>
+                <p className="text-base sm:text-lg font-bold text-[hsl(0,0%,8%)] mb-2">Sign up to unlock all 557 cards</p>
+                <p className="text-xs sm:text-sm text-[hsl(0,0%,45%)] mb-4 sm:mb-5">Free forever. No credit card.</p>
                 <button
                   onClick={onSignUp}
                   className="px-8 py-3 rounded-xl text-white font-semibold active:scale-[0.97] transition-transform"
