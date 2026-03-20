@@ -1,48 +1,78 @@
 
 
-## Problem Analysis
+## Problem: Two Disconnected Streak Systems
 
-I identified **4 distinct issues** with the buddy system:
+The codebase has **two separate, incompatible streak systems** that don't talk to each other:
 
-### Issue 1: Inviter stuck on "Waiting for buddy to join"
-The `BuddyInviteCard` shows a spinner and "Waiting for your buddy to join…" but has **no realtime subscription**. When the buddy accepts the invite and the pair is created, the inviter's page never knows. They must manually refresh.
+### System 1: `daily_streaks` table + `useStreaks` hook
+- A dedicated `daily_streaks` table exists with `(user_id, activity_date, activity_type)`.
+- `useStreaks` hook reads from it and exposes `recordActivity()` for types: quiz, test, flashcards, practice_lab, sprint.
+- **Only used in 2 places:**
+  - `FlashcardHero.tsx` — reads `currentStreak` for display
+  - `useFlashcardProgress.ts` — writes "flashcards" streak after 5 cards practiced
 
-### Issue 2: Sprint goals not visible to buddy
-The RLS policy on `daily_sprint_goals` correctly allows buddies to read each other's goals. However, the `/study-buddy` dashboard (`DashboardState`) only shows **planner activity and quiz data** from `buddy_activity_log` — it does **not** display sprint goals at all. The buddy's sprint goals are only visible on `/daily-sprint` via `SprintBuddyView`, but there's no link or navigation to get there from the buddy dashboard.
+### System 2: `computeStreaks()` in Dashboard.tsx
+- Dashboard computes streaks **entirely from `practice_lab_attempts`** timestamps.
+- Ignores the `daily_streaks` table completely.
+- This means: flashcard activity, daily sprint completions, planner activity, and battle room completions are **invisible** to the dashboard streak.
 
-### Issue 3: No cross-navigation between Study Buddy and Daily Sprint
-After pairing, neither page links to the other in a prominent way. The buddy has no way to discover that sprint goals exist on `/daily-sprint`.
+### What's NOT recording streaks at all:
+| Feature | Writes to `daily_streaks`? | Used by Dashboard? |
+|---|---|---|
+| Practice Lab quiz completion | **No** | Yes (via `practice_lab_attempts` dates) |
+| Battle Room completion | **No** | No |
+| Flashcard practice (5+ cards) | **Yes** | **No** (dashboard ignores it) |
+| Daily Sprint goal completion | **No** | No |
+| Study Planner activity | **No** | No |
 
-### Issue 4: Realtime toast depends on buddy resolution that may not exist yet
-In `DailySprint.tsx`, the buddy resolution happens in a useEffect but a freshly paired user who navigates to `/daily-sprint` may hit a race where the pair isn't loaded yet.
-
----
-
-## Plan
-
-### Step 1: Add realtime listener for invite acceptance
-In `BuddyInviteCard`, subscribe to Supabase Realtime on `buddy_invites` table filtered by the inviter's invite code. When the status changes to `accepted`, automatically call `onPaired()` to reload the page into the paired dashboard state. This eliminates the need for manual refresh.
-
-### Step 2: Add Sprint Goals section to Study Buddy dashboard
-In `DashboardState` (inside `StudyBuddy.tsx`), add a section below the existing progress card that shows:
-- The buddy's today's sprint goals (using `getBuddyGoals` from sprint-utils)
-- A prominent link to `/daily-sprint` ("Go to Daily Sprint")
-
-This way the buddy can immediately see the inviter's tasks right from the buddy dashboard.
-
-### Step 3: Add link from Daily Sprint buddy section to Study Buddy page
-In `SprintBuddyView`, add a small "View full buddy dashboard" link to `/study-buddy` for easy cross-navigation.
-
-### Step 4: Enable realtime on buddy_invites table
-Create a migration to add `buddy_invites` to `supabase_realtime` publication so the realtime subscription works.
+**Result**: The dashboard shows a streak based only on Practice Lab quiz dates. A student who practices flashcards and uses the planner daily but skips quizzes sees a **0-day streak**.
 
 ---
 
-### Technical Details
+## Plan: Unify Around `daily_streaks` Table
+
+### Step 1: Wire streak recording into all activity completion points
+
+Add `useStreaks().recordActivity()` calls at these existing save points:
+
+- **Practice Lab** (`ResultsView.tsx`): After the `practice_lab_attempts` insert succeeds, call `recordActivity("practice_lab")`
+- **Battle Room** (`BattleRoom.tsx`): After battle results are saved, call `recordActivity("quiz")`
+- **Daily Sprint** (`DailySprint.tsx` / `sprint-utils.ts`): When all daily goals are completed, call `recordActivity("sprint")`
+- **Study Planner** (`CATDailyStudyPlanner.tsx`): When a day's tasks are marked complete, call `recordActivity("quiz")` (reuse "quiz" type since planner tasks are study tasks)
+- **Flashcards**: Already wired — no change needed
+
+### Step 2: Rewrite Dashboard to use `daily_streaks` as the single source of truth
+
+Replace `computeStreaks(attempts)` in `Dashboard.tsx` with `useStreaks()` hook data. The dashboard will:
+- Call `useStreaks()` to get `currentStreak`, `todayActivities`, and `loading`
+- Compute `weeklyActivity` (7-day boolean array) from `daily_streaks` data
+- Compute `longestStreak`, `totalQuizzes`, `avgAccuracy` by combining `daily_streaks` (for streak/activity) with `practice_lab_attempts` (for accuracy stats only)
+
+### Step 3: Enhance `useStreaks` hook to return richer data
+
+Extend the hook to also return:
+- `weeklyActivity: boolean[]` — 7-day Mon-Sun array for the streak hero calendar
+- `longestStreak: number` — computed from all `daily_streaks` history
+
+This way `DashboardStreakHero`, `DashboardStatPills`, and `DashboardTopBar` all consume one unified source.
+
+### Step 4: Remove the duplicate `computeStreaks` function
+
+Delete the local `computeStreaks()` from `Dashboard.tsx` entirely. Accuracy/quiz stats will still come from `practice_lab_attempts` but streak logic will be solely from `daily_streaks`.
+
+---
+
+## Technical Details
 
 **Files to modify:**
-- `src/components/buddy/BuddyInviteCard.tsx` — Add `useEffect` with Supabase realtime channel on `buddy_invites` for `UPDATE` events where `invite_code` matches, triggering `onPaired()` when status becomes `accepted`
-- `src/pages/StudyBuddy.tsx` — In `DashboardState`, fetch buddy's sprint goals via `getBuddyGoals(buddyId)` and render them with `SprintGoalList` (read-only). Add a "Go to Daily Sprint" button.
-- `src/components/sprint/SprintBuddyView.tsx` — Add a small link to `/study-buddy`
-- New migration — `ALTER PUBLICATION supabase_realtime ADD TABLE public.buddy_invites;`
+1. `src/hooks/useStreaks.ts` — Add `weeklyActivity` and `longestStreak` to return value
+2. `src/pages/Dashboard.tsx` — Replace `computeStreaks` with `useStreaks()`, keep practice stats separate
+3. `src/components/practice-lab/ResultsView.tsx` — Add `useStreaks().recordActivity("practice_lab")` after save
+4. `src/pages/BattleRoom.tsx` — Add `recordActivity("quiz")` after battle save
+5. `src/pages/DailySprint.tsx` — Add `recordActivity("sprint")` when all goals done
+6. `src/pages/CATDailyStudyPlanner.tsx` — Add `recordActivity("quiz")` on task completion
+
+**No database changes needed** — `daily_streaks` table already has the right schema and RLS policies.
+
+**No new dependencies** — just wiring existing hook into existing completion handlers.
 
