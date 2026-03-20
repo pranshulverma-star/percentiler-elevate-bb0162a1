@@ -1,5 +1,5 @@
 import { Lightbulb, ArrowRight, GraduationCap, Users, BookOpen, Zap } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { getWeakSectionWorkshop } from "@/components/WorkshopRecommendation";
 import { useMemo } from "react";
@@ -20,6 +20,7 @@ interface Rec {
   free: boolean;
   external?: boolean;
   priority: number;
+  accentColor: string;
 }
 
 const MENTORSHIP_LINK = "/mentorship";
@@ -31,140 +32,48 @@ export default function DashboardRecommendations({ practiceAttempts, converted, 
     const avgAccuracy = streakData?.avgAccuracy ?? 0;
     const currentStreak = streakData?.currentStreak ?? 0;
     const hasAttempts = practiceAttempts.length > 0;
-
-    // Weak section workshop
     const weakWorkshop = getWeakSectionWorkshop(practiceAttempts);
 
-    // 1. No practice attempts → promote course + mentorship
     if (!hasAttempts) {
       if (!converted) {
-        recs.push({
-          name: "CAT + OMET Complete",
-          tagline: "Start your CAT journey with a structured course",
-          type: "Course",
-          icon: GraduationCap,
-          to: COURSES_LINK,
-          free: false,
-          priority: 1,
-        });
+        recs.push({ name: "CAT + OMET Complete", tagline: "Start your CAT journey with a structured course", type: "Course", icon: GraduationCap, to: COURSES_LINK, free: false, priority: 1, accentColor: "hsl(var(--primary))" });
       }
       if (!mentorshipActive) {
-        recs.push({
-          name: "1-on-1 Mentorship",
-          tagline: "Get a personalized strategy from an expert",
-          type: "Mentorship",
-          icon: Users,
-          to: MENTORSHIP_LINK,
-          free: false,
-          priority: 2,
-        });
+        recs.push({ name: "1-on-1 Mentorship", tagline: "Get a personalized strategy from an expert", type: "Mentorship", icon: Users, to: MENTORSHIP_LINK, free: false, priority: 2, accentColor: "hsl(280 60% 55%)" });
       }
-      recs.push({
-        name: "Practice Lab",
-        tagline: "Start with free section-wise quizzes",
-        type: "Free",
-        icon: Zap,
-        to: "/practice-lab",
-        free: true,
-        priority: 3,
-      });
+      recs.push({ name: "Practice Lab", tagline: "Start with free section-wise quizzes", type: "Free", icon: Zap, to: "/practice-lab", free: true, priority: 3, accentColor: "hsl(160 60% 45%)" });
       return recs.slice(0, 3);
     }
 
-    // 2. Low accuracy (<50%) → mentorship + workshop
     if (avgAccuracy < 50) {
       if (!mentorshipActive) {
-        recs.push({
-          name: "1-on-1 Mentorship",
-          tagline: `Your accuracy is ${avgAccuracy}% — a mentor can help`,
-          type: "Mentorship",
-          icon: Users,
-          to: MENTORSHIP_LINK,
-          free: false,
-          priority: 1,
-        });
+        recs.push({ name: "1-on-1 Mentorship", tagline: `Your accuracy is ${avgAccuracy}% — a mentor can help`, type: "Mentorship", icon: Users, to: MENTORSHIP_LINK, free: false, priority: 1, accentColor: "hsl(280 60% 55%)" });
       }
       if (weakWorkshop) {
-        recs.push({
-          name: weakWorkshop.name,
-          tagline: `Boost your weakest section`,
-          type: `₹${weakWorkshop.salePrice}`,
-          icon: BookOpen,
-          to: weakWorkshop.link,
-          free: false,
-          external: true,
-          priority: 2,
-        });
+        recs.push({ name: weakWorkshop.name, tagline: `Boost your weakest section`, type: `₹${weakWorkshop.salePrice}`, icon: BookOpen, to: weakWorkshop.link, free: false, external: true, priority: 2, accentColor: "hsl(220 70% 55%)" });
       }
     }
 
-    // 3. Medium accuracy (50-70%) → workshop + course
     if (avgAccuracy >= 50 && avgAccuracy < 70) {
       if (weakWorkshop) {
-        recs.push({
-          name: weakWorkshop.name,
-          tagline: `Target your weak area for 80%+`,
-          type: `₹${weakWorkshop.salePrice}`,
-          icon: BookOpen,
-          to: weakWorkshop.link,
-          free: false,
-          external: true,
-          priority: 1,
-        });
+        recs.push({ name: weakWorkshop.name, tagline: `Target your weak area for 80%+`, type: `₹${weakWorkshop.salePrice}`, icon: BookOpen, to: weakWorkshop.link, free: false, external: true, priority: 1, accentColor: "hsl(220 70% 55%)" });
       }
       if (!converted) {
-        recs.push({
-          name: "Full Course Access",
-          tagline: "Structured prep to push past 90%ile",
-          type: "Course",
-          icon: GraduationCap,
-          to: COURSES_LINK,
-          free: false,
-          priority: 2,
-        });
+        recs.push({ name: "Full Course Access", tagline: "Structured prep to push past 90%ile", type: "Course", icon: GraduationCap, to: COURSES_LINK, free: false, priority: 2, accentColor: "hsl(var(--primary))" });
       }
     }
 
-    // 4. Good accuracy (>70%) but low streak → consistency coaching
     if (avgAccuracy >= 70 && currentStreak < 3 && !mentorshipActive) {
-      recs.push({
-        name: "Consistency Coaching",
-        tagline: `${avgAccuracy}% accuracy but only ${currentStreak} day streak — stay on track`,
-        type: "Mentorship",
-        icon: Users,
-        to: MENTORSHIP_LINK,
-        free: false,
-        priority: 1,
-      });
+      recs.push({ name: "Consistency Coaching", tagline: `${avgAccuracy}% accuracy but only ${currentStreak} day streak — stay on track`, type: "Mentorship", icon: Users, to: MENTORSHIP_LINK, free: false, priority: 1, accentColor: "hsl(280 60% 55%)" });
     }
 
-    // 5. Always include course if not converted
     if (!converted && !recs.some((r) => r.type === "Course")) {
-      recs.push({
-        name: "CAT + OMET Complete",
-        tagline: "Unlock full course access for comprehensive prep",
-        type: "Course",
-        icon: GraduationCap,
-        to: COURSES_LINK,
-        free: false,
-        priority: 10,
-      });
+      recs.push({ name: "CAT + OMET Complete", tagline: "Unlock full course access for comprehensive prep", type: "Course", icon: GraduationCap, to: COURSES_LINK, free: false, priority: 10, accentColor: "hsl(var(--primary))" });
     }
 
-    // 6. Always include a free tool
-    recs.push({
-      name: "QA Flashcards",
-      tagline: "Quick daily formula revision",
-      type: "Free",
-      icon: Zap,
-      to: "/flashcards",
-      free: true,
-      priority: 20,
-    });
+    recs.push({ name: "QA Flashcards", tagline: "Quick daily formula revision", type: "Free", icon: Zap, to: "/flashcards", free: true, priority: 20, accentColor: "hsl(160 60% 45%)" });
 
-    // Sort by priority and take top 3
     recs.sort((a, b) => a.priority - b.priority);
-    // Deduplicate by name
     const seen = new Set<string>();
     return recs.filter((r) => { if (seen.has(r.name)) return false; seen.add(r.name); return true; }).slice(0, 3);
   }, [practiceAttempts, converted, mentorshipActive, streakData]);
@@ -177,37 +86,36 @@ export default function DashboardRecommendations({ practiceAttempts, converted, 
         <Lightbulb className="h-4 w-4 text-primary" />
         <span className="text-sm font-semibold text-foreground">Recommended for you</span>
       </div>
-      <p className="text-[11px] text-muted-foreground mb-3">Based on your progress</p>
 
       <div className="flex gap-3 overflow-x-auto scrollbar-none pb-1">
         {recommendations.map((rec) => {
           const Icon = rec.icon;
           const inner = (
-            <div className="flex flex-col h-full">
-              <div className="flex items-center gap-1.5 mb-2">
-                <Icon className="h-3.5 w-3.5 text-primary shrink-0" />
-                <p className="text-xs font-medium text-foreground line-clamp-1 leading-tight">{rec.name}</p>
+            <div className="relative overflow-hidden rounded-xl border border-border/40 bg-card/80 backdrop-blur-sm p-4 w-48 shrink-0 group hover:border-primary/30 hover:shadow-lg transition-all duration-300">
+              {/* Top accent line */}
+              <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: rec.accentColor }} />
+              {/* Glow */}
+              <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full blur-xl opacity-20 pointer-events-none" style={{ background: rec.accentColor }} />
+
+              <div className="flex items-center gap-1.5 mb-2 mt-1">
+                <Icon className="h-4 w-4 shrink-0" style={{ color: rec.accentColor }} />
+                <p className="text-xs font-semibold text-foreground line-clamp-1 leading-tight">{rec.name}</p>
               </div>
-              <p className="text-[10px] text-muted-foreground leading-snug line-clamp-2 mb-auto">{rec.tagline}</p>
-              <div className="flex items-center justify-between mt-2">
-                <Badge variant={rec.free ? "secondary" : "outline"} className="text-[8px]">
+              <p className="text-[11px] text-muted-foreground leading-snug line-clamp-2 mb-3">{rec.tagline}</p>
+
+              <div className="flex items-center justify-between">
+                <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${rec.free ? "bg-emerald-500/15 text-emerald-600" : "bg-primary/10 text-primary"}`}>
                   {rec.free ? "Free" : rec.type}
-                </Badge>
-                <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                </span>
+                <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
             </div>
           );
 
-          const cls = "shrink-0 w-40 rounded-xl border border-border/40 bg-card p-3 hover:border-primary/30 transition-colors group";
-
           return rec.external ? (
-            <a key={rec.name} href={rec.to} target="_blank" rel="noopener noreferrer" className={cls}>
-              {inner}
-            </a>
+            <a key={rec.name} href={rec.to} target="_blank" rel="noopener noreferrer">{inner}</a>
           ) : (
-            <Link key={rec.name} to={rec.to} className={cls}>
-              {inner}
-            </Link>
+            <Link key={rec.name} to={rec.to}>{inner}</Link>
           );
         })}
       </div>

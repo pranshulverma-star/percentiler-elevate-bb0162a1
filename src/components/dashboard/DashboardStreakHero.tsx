@@ -23,24 +23,27 @@ export default function DashboardStreakHero({ streakData, loading }: Props) {
   const best = streakData?.longestStreak ?? 0;
   const weekly = streakData?.weeklyActivity ?? Array(7).fill(false);
 
-  // Determine today's index (0=Mon, 6=Sun)
   const now = new Date();
-  const jsDay = now.getDay(); // 0=Sun
+  const jsDay = now.getDay();
   const todayIdx = jsDay === 0 ? 6 : jsDay - 1;
 
   return (
-    <div
-      className="rounded-2xl p-5 relative overflow-hidden"
-      style={{
-        background: streak > 0
-          ? "linear-gradient(135deg, hsl(30 60% 98%), hsl(25 80% 94%))"
-          : "hsl(var(--secondary))",
-      }}
-    >
+    <div className="relative overflow-hidden rounded-2xl p-5 border border-border/30 bg-card/80 backdrop-blur-sm shadow-[0_2px_20px_rgba(0,0,0,0.06)]">
+      {/* Gradient glow orbs */}
+      {streak > 0 && (
+        <>
+          <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-primary/5 blur-2xl pointer-events-none" />
+        </>
+      )}
+
       {/* Fire + streak number */}
-      <div className="flex items-center gap-3 mb-3">
-        <div className={`flex items-center justify-center w-12 h-12 rounded-xl ${streak > 0 ? "bg-primary/15" : "bg-muted"}`}>
-          <Flame className={`h-7 w-7 ${streak > 0 ? "text-primary animate-[pulse_2s_ease-in-out_infinite]" : "text-muted-foreground"}`} />
+      <div className="flex items-center gap-3 mb-3 relative">
+        <div className={`relative flex items-center justify-center w-12 h-12 rounded-xl ${streak > 0 ? "bg-primary/15" : "bg-muted"}`}>
+          {streak > 0 && (
+            <div className="absolute inset-0 rounded-xl border-2 border-primary/30 animate-[pulse_2s_ease-in-out_infinite]" />
+          )}
+          <Flame className={`h-7 w-7 ${streak > 0 ? "text-primary" : "text-muted-foreground"}`} />
         </div>
         <div>
           <div className="text-2xl font-bold text-foreground leading-none">
@@ -60,7 +63,7 @@ export default function DashboardStreakHero({ streakData, loading }: Props) {
       </div>
 
       {/* Weekly calendar */}
-      <div className="flex gap-2">
+      <div className="flex gap-2 relative">
         {weekly.map((done, i) => {
           const isToday = i === todayIdx;
           const isPast = i < todayIdx;
@@ -70,14 +73,13 @@ export default function DashboardStreakHero({ streakData, loading }: Props) {
               <div
                 className={`w-full aspect-square rounded-full flex items-center justify-center transition-all duration-300 ${
                   done
-                    ? "bg-emerald-500 scale-100"
+                    ? "bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]"
                     : isToday
                       ? "border-2 border-primary bg-primary/10"
                       : isPast
                         ? "bg-muted-foreground/15"
                         : "bg-muted/60"
                 }`}
-                style={done ? { animation: "pop 0.3s ease-out" } : undefined}
               >
                 {done && <span className="text-white text-[10px]">✓</span>}
                 {isToday && !done && <span className="text-primary text-[10px] font-bold">!</span>}
@@ -89,14 +91,6 @@ export default function DashboardStreakHero({ streakData, loading }: Props) {
           );
         })}
       </div>
-
-      <style>{`
-        @keyframes pop {
-          0% { transform: scale(0); }
-          70% { transform: scale(1.15); }
-          100% { transform: scale(1); }
-        }
-      `}</style>
     </div>
   );
 }

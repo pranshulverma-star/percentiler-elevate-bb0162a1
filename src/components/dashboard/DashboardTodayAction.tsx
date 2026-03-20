@@ -21,8 +21,11 @@ export default function DashboardTodayAction({ engagement }: Props) {
   const info = sectionLabels[idx];
 
   return (
-    <div className="rounded-2xl bg-card border border-border/40 p-5 shadow-[0_2px_12px_rgba(0,0,0,0.04)]">
-      <div className="flex items-start gap-3 mb-4">
+    <div className="relative overflow-hidden rounded-2xl bg-card/80 backdrop-blur-sm border border-border/40 p-5 shadow-[0_2px_16px_rgba(0,0,0,0.05)]">
+      {/* Left accent */}
+      <div className="absolute left-0 top-3 bottom-3 w-1 rounded-full bg-gradient-to-b from-primary via-primary/60 to-transparent" />
+
+      <div className="flex items-start gap-3 mb-4 pl-2">
         <span className="text-2xl">{info.icon}</span>
         <div className="flex-1 min-w-0">
           <h2 className="text-base font-bold text-foreground">Daily Quiz</h2>
@@ -31,10 +34,12 @@ export default function DashboardTodayAction({ engagement }: Props) {
       </div>
 
       <Button
-        className="w-full h-12 text-sm font-semibold rounded-xl shadow-sm shadow-primary/15 active:scale-[0.98] transition-transform"
+        className="relative w-full h-12 text-sm font-semibold rounded-xl shadow-sm shadow-primary/15 active:scale-[0.98] transition-transform overflow-hidden"
         onClick={() => navigate("/practice-lab?daily=true")}
       >
-        Start Today's Quiz <ArrowRight className="ml-2 h-4 w-4" />
+        {/* Shimmer */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite]" />
+        <span className="relative z-10 flex items-center">Start Today's Quiz <ArrowRight className="ml-2 h-4 w-4" /></span>
       </Button>
 
       {/* Expandable extra activities */}
@@ -89,6 +94,13 @@ export default function DashboardTodayAction({ engagement }: Props) {
           )}
         </div>
       )}
+
+      <style>{`
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `}</style>
     </div>
   );
 }
