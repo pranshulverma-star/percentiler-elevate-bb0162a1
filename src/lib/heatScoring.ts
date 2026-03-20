@@ -29,9 +29,9 @@ export function calculateHeatScore(params: {
   score += params.mockAttempts * 5;
 
   // Consistency bonuses
-  if (params.consistencyScore > 85) {
+  if (params.consistencyScore > 0.85) {
     score += 15;
-  } else if (params.consistencyScore > 70) {
+  } else if (params.consistencyScore > 0.70) {
     score += 10;
   }
 
