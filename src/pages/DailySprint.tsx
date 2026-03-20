@@ -5,6 +5,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreaks } from "@/hooks/useStreaks";
 import { useBuddyRealtimeToast } from "@/hooks/useBuddyRealtimeToast";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarCheck, Flame, Target } from "lucide-react";
