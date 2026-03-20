@@ -21,7 +21,9 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
   const [joinCode, setJoinCode] = useState("");
   const [joining, setJoining] = useState(false);
 
-  const stableOnPaired = useCallback(onPaired, []);
+  // Use a ref so the realtime callback always calls the latest onPaired
+  const onPairedRef = useRef(onPaired);
+  useEffect(() => { onPairedRef.current = onPaired; }, [onPaired]);
 
   // Realtime listener: auto-detect when buddy accepts the invite
   useEffect(() => {
