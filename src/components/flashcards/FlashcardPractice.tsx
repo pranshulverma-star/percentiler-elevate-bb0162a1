@@ -163,9 +163,13 @@ export default function FlashcardPractice({ category, todayCardIds, onRecord, on
       />
 
       {/* Score tracker */}
-      <div className="flex items-center gap-4 mt-4 text-sm font-semibold">
-        <span style={{ color: "#22C55E" }}>✓ {correct}</span>
-        <span style={{ color: "#EF4444" }}>✗ {wrong}</span>
+      <div className="flex items-center gap-3 mt-4">
+        <span className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600">
+          ✓ {correct}
+        </span>
+        <span className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-destructive/10 text-destructive">
+          ✗ {wrong}
+        </span>
       </div>
     </div>
   );
