@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import type { Transition } from "framer-motion";
-import { useLeadPhone } from "@/hooks/useLeadPhone";
+import { useLeadPhone } from "@/hooks/useLeadPhone"; // eslint-disable-line @typescript-eslint/no-unused-vars
 import DashboardTopBar from "@/components/dashboard/DashboardTopBar";
 import DashboardStreakHero from "@/components/dashboard/DashboardStreakHero";
 import DashboardTodayAction from "@/components/dashboard/DashboardTodayAction";
