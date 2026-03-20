@@ -181,13 +181,8 @@ export default function Dashboard() {
             <DashboardBuddyCTA />
           </motion.div>
 
-          {/* 3. Today's Action */}
+          {/* 3. Flashcard Quick Card */}
           <motion.div {...fade(2)} className="mt-5">
-            <DashboardTodayAction engagement={engagement} />
-          </motion.div>
-
-          {/* 4. Flashcard Quick Card */}
-          <motion.div {...fade(3)} className="mt-5">
             <Link to="/flashcards" className="block">
               <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-card/80 backdrop-blur-sm p-4 group hover:border-primary/30 transition-all duration-300 shadow-sm">
                 <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-amber-500/10 blur-2xl pointer-events-none" />
@@ -205,9 +200,14 @@ export default function Dashboard() {
             </Link>
           </motion.div>
 
-          {/* 5. Sprint Preview */}
-          <motion.div {...fade(4)} className="mt-5">
+          {/* 4. Sprint Preview */}
+          <motion.div {...fade(3)} className="mt-5">
             <DashboardSprintPreview />
+          </motion.div>
+
+          {/* 5. Today's Action (Daily Quiz) */}
+          <motion.div {...fade(4)} className="mt-5">
+            <DashboardTodayAction engagement={engagement} />
           </motion.div>
 
           {/* 6. Stat Pills */}
