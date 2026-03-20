@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -21,7 +21,9 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
   const [joinCode, setJoinCode] = useState("");
   const [joining, setJoining] = useState(false);
 
-  const stableOnPaired = useCallback(onPaired, []);
+  // Use a ref so the realtime callback always calls the latest onPaired
+  const onPairedRef = useRef(onPaired);
+  useEffect(() => { onPairedRef.current = onPaired; }, [onPaired]);
 
   // Realtime listener: auto-detect when buddy accepts the invite
   useEffect(() => {
@@ -40,7 +42,7 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
           const newRow = payload.new as { status?: string };
           if (newRow.status === "accepted") {
             toast.success("Your buddy joined! 🎉");
-            stableOnPaired();
+            onPairedRef.current();
           }
         }
       )
@@ -49,7 +51,7 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [invite?.invite_code, stableOnPaired]);
+  }, [invite?.invite_code]);
 
   const handleGenerate = async () => {
     setCreating(true);
