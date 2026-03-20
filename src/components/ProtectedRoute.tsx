@@ -38,12 +38,19 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
       (navigator as any).standalone === true);
 
   // State A: trigger sign-in once auth resolves as unauthenticated (browser only, not standalone PWA)
+  // Uses a cooldown to prevent redirect loops after OAuth callback
   useEffect(() => {
     if (authLoading || isAuthenticated || signInTriggered.current || isStandalone) return;
+
+    // Check if we recently attempted sign-in (within 10s) — prevents redirect loop
+    const recentSignIn = sessionStorage.getItem("auth_signin_at");
+    const isRecentSignIn = recentSignIn && (Date.now() - Number(recentSignIn)) < 10000;
+    if (isRecentSignIn) return;
 
     signInTriggered.current = true;
     const returnUrl = location.pathname + location.search;
     sessionStorage.setItem("pending_gate_source", source);
+    sessionStorage.setItem("auth_signin_at", String(Date.now()));
     void signIn(returnUrl);
   }, [authLoading, isAuthenticated, signIn, location.pathname, location.search, source, isStandalone]);
 

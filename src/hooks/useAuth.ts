@@ -26,6 +26,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
+    // Detect if we're returning from an OAuth callback
+    const isOAuthCallback = hash.includes("access_token") ||
+      hash.includes("refresh_token") ||
+      new URLSearchParams(window.location.search).has("code");
+
     let isMounted = true;
     let resolved = false;
 
@@ -61,6 +66,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Initial session bootstrap
     supabase.auth.getSession()
       .then(({ data: { session } }) => {
+        // If this is an OAuth callback and session is null, don't resolve yet —
+        // onAuthStateChange will process the tokens in the hash
+        if (isOAuthCallback && !session?.user) {
+          console.log("[Auth] OAuth callback detected, waiting for onAuthStateChange");
+          return;
+        }
         resolveAuth(session?.user ?? null);
       })
       .catch((err) => {
