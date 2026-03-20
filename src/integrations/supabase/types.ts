@@ -335,6 +335,30 @@ export type Database = {
         }
         Relationships: []
       }
+      daily_streaks: {
+        Row: {
+          activity_date: string
+          activity_type: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          activity_date?: string
+          activity_type: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          activity_date?: string
+          activity_type?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       flashcard_progress: {
         Row: {
           card_id: string
