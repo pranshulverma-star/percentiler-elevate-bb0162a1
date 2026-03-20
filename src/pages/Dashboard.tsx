@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useStreaks } from "@/hooks/useStreaks";
 import { supabase } from "@/integrations/supabase/client";
@@ -12,8 +12,12 @@ import DashboardLeaderboardCompact from "@/components/dashboard/DashboardLeaderb
 import DashboardRecommendations from "@/components/dashboard/DashboardRecommendations";
 import DashboardQuickAccess from "@/components/dashboard/DashboardQuickAccess";
 import DashboardBottomNav from "@/components/dashboard/DashboardBottomNav";
+import DashboardBuddyCTA from "@/components/dashboard/DashboardBuddyCTA";
+import DashboardSprintPreview from "@/components/dashboard/DashboardSprintPreview";
+import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
+import { Layers, ArrowRight } from "lucide-react";
 
 export default function Dashboard() {
   const { user, signOut } = useAuth();
@@ -110,7 +114,6 @@ export default function Dashboard() {
     }
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Derive practice stats (accuracy, quiz count) from practice_lab_attempts
   const practiceStats = useMemo(() => {
     if (practiceAttempts.length === 0) return null;
     const totalQuizzes = practiceAttempts.length;
@@ -118,7 +121,6 @@ export default function Dashboard() {
     return { totalQuizzes, avgAccuracy };
   }, [practiceAttempts]);
 
-  // Combine streak data + practice stats for components
   const streakData = useMemo(() => {
     return {
       currentStreak,
@@ -149,17 +151,22 @@ export default function Dashboard() {
     <>
       <SEO title="Dashboard | Percentilers" description="Your personalized CAT preparation dashboard" canonical="https://percentilers.in/dashboard" />
 
-      {/* Sticky top bar */}
       <DashboardTopBar
         firstName={firstName}
         streakCount={streakData.currentStreak}
         onSignOut={handleSignOut}
       />
 
-      <main className="min-h-screen bg-background pt-16 pb-24">
-        <div className="mx-auto px-4 max-w-lg">
+      <main className="min-h-screen bg-background pt-16 pb-24 relative">
+        {/* Subtle gradient mesh */}
+        <div className="fixed inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-20 -right-20 w-80 h-80 rounded-full bg-primary/[0.04] blur-[100px]" />
+          <div className="absolute bottom-40 -left-20 w-60 h-60 rounded-full bg-primary/[0.03] blur-[80px]" />
+        </div>
 
-          {/* Section 1: Greeting + Streak Hero */}
+        <div className="mx-auto px-4 max-w-lg relative">
+
+          {/* 1. Greeting + Streak Hero */}
           <motion.div {...fade(0)} className="mt-4">
             <h1 className="text-xl font-bold text-foreground tracking-tight leading-tight">
               Hey {firstName} 👋
@@ -168,18 +175,48 @@ export default function Dashboard() {
             <DashboardStreakHero streakData={streakData} loading={loadingStreaks} />
           </motion.div>
 
-          {/* Section 2: Today's Action */}
-          <motion.div {...fade(1)} className="mt-6">
+          {/* 2. Study Buddy */}
+          <motion.div {...fade(1)} className="mt-5">
+            <BuddyMiniWidget />
+            <DashboardBuddyCTA />
+          </motion.div>
+
+          {/* 3. Today's Action */}
+          <motion.div {...fade(2)} className="mt-5">
             <DashboardTodayAction engagement={engagement} />
           </motion.div>
 
-          {/* Section 3: Stat Pills */}
-          <motion.div {...fade(2)} className="mt-6">
+          {/* 4. Flashcard Quick Card */}
+          <motion.div {...fade(3)} className="mt-5">
+            <Link to="/flashcards" className="block">
+              <div className="relative overflow-hidden rounded-2xl border border-border/40 bg-card/80 backdrop-blur-sm p-4 group hover:border-primary/30 transition-all duration-300 shadow-sm">
+                <div className="absolute -top-6 -right-6 w-24 h-24 rounded-full bg-amber-500/10 blur-2xl pointer-events-none" />
+                <div className="flex items-center gap-3 relative">
+                  <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-amber-500/15 shrink-0">
+                    <Layers className="h-5 w-5 text-amber-500" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold text-foreground">Daily Flashcards</p>
+                    <p className="text-[11px] text-muted-foreground leading-snug">Review 5 cards in 2 min — build retention</p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+
+          {/* 5. Sprint Preview */}
+          <motion.div {...fade(4)} className="mt-5">
+            <DashboardSprintPreview />
+          </motion.div>
+
+          {/* 6. Stat Pills */}
+          <motion.div {...fade(5)} className="mt-5">
             <DashboardStatPills streakData={streakData} loading={loadingStreaks} />
           </motion.div>
 
-          {/* Section 4: Progress */}
-          <motion.div {...fade(3)} className="mt-6">
+          {/* 7. Progress */}
+          <motion.div {...fade(6)} className="mt-5">
             <DashboardProgressCompact
               plannerData={plannerData}
               loadingPlanner={loadingPlanner}
@@ -188,36 +225,26 @@ export default function Dashboard() {
             />
           </motion.div>
 
-          {/* Section 5: Leaderboard */}
-          <motion.div {...fade(4)} className="mt-6">
-            <DashboardLeaderboardCompact />
-          </motion.div>
-
-          {/* Section 6: Recommendations */}
-          <motion.div {...fade(5)} className="mt-6">
+          {/* 8. Recommendations */}
+          <motion.div {...fade(7)} className="mt-5">
             <DashboardRecommendations practiceAttempts={practiceAttempts} converted={converted} mentorshipActive={mentorshipActive} streakData={streakData} />
           </motion.div>
 
-          {/* Section 7: Quick Access */}
-          <motion.div {...fade(6)} className="mt-6 mb-4">
+          {/* 9. Leaderboard */}
+          <motion.div {...fade(8)} className="mt-5">
+            <DashboardLeaderboardCompact />
+          </motion.div>
+
+          {/* 10. Quick Access */}
+          <motion.div {...fade(9)} className="mt-5 mb-4">
             <DashboardQuickAccess converted={converted} mentorshipActive={mentorshipActive} />
           </motion.div>
         </div>
       </main>
 
-      {/* Bottom nav - 4 items */}
       <DashboardBottomNav />
     </>
   );
-}
-
-// --- Helpers ---
-
-function fmtLocal(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
 }
 
 function getWeekStart(): string {
@@ -226,5 +253,8 @@ function getWeekStart(): string {
   const diff = now.getDate() - day + (day === 0 ? -6 : 1);
   const monday = new Date(now);
   monday.setDate(diff);
-  return fmtLocal(monday);
+  const y = monday.getFullYear();
+  const m = String(monday.getMonth() + 1).padStart(2, "0");
+  const d = String(monday.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
 }
