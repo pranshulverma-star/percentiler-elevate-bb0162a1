@@ -18,7 +18,6 @@ const DAILY_LIMIT = 5;
 
 function pickCards(category: FlashcardCategory, excludeIds: string[]): AnyCard[] {
   const pool = flashcardData[category].filter((c) => !excludeIds.includes(c.id));
-  // Shuffle & pick up to DAILY_LIMIT
   const shuffled = [...pool].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, DAILY_LIMIT - excludeIds.length);
 }
@@ -74,7 +73,6 @@ export default function FlashcardPractice({ category, todayCardIds, onRecord, on
   const handleKnew = useCallback(() => {
     if (!flipped) {
       setFlipped(true);
-      // Wait for flip, then register
       setTimeout(() => {
         setCorrect((c) => c + 1);
         onRecord(cards[idx].id, category, true);
@@ -105,15 +103,19 @@ export default function FlashcardPractice({ category, todayCardIds, onRecord, on
   if (done && alreadyDone >= DAILY_LIMIT && total === 0) {
     return (
       <div className="flex flex-col items-center text-center gap-4 py-12">
-        <p className="text-lg font-semibold text-[#141414]">
+        <p className="text-lg font-semibold text-white">
           You've completed today's practice for {CATEGORY_META[category].label}!
         </p>
-        <p className="text-sm text-gray-500">Come back tomorrow for new cards, or revise your weak cards.</p>
+        <p className="text-sm text-white/50">Come back tomorrow for new cards, or revise your weak cards.</p>
         <div className="flex gap-3 mt-2">
-          <button onClick={onBack} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white active:scale-[0.97]" style={{ background: "#FF6600" }}>
+          <button onClick={onBack} className="px-5 py-2.5 rounded-[14px] text-sm font-semibold text-white active:scale-[0.97]" style={{ background: "#FF6600" }}>
             Other categories
           </button>
-          <button onClick={onSwitchToRevise} className="px-5 py-2.5 rounded-xl text-sm font-semibold border border-gray-300 bg-white active:scale-[0.97]">
+          <button
+            onClick={onSwitchToRevise}
+            className="px-5 py-2.5 rounded-[14px] text-sm font-semibold active:scale-[0.97]"
+            style={{ background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.15)", color: "white" }}
+          >
             Revise weak cards
           </button>
         </div>
@@ -135,7 +137,7 @@ export default function FlashcardPractice({ category, todayCardIds, onRecord, on
 
   return (
     <div className="flex flex-col items-center w-full">
-      <button onClick={onBack} className="self-start flex items-center gap-1 text-sm text-gray-500 hover:text-[#141414] mb-4 active:scale-[0.97]">
+      <button onClick={onBack} className="self-start flex items-center gap-1 text-sm text-white/50 hover:text-white mb-4 active:scale-[0.97] transition-colors">
         <ArrowLeft size={16} /> Back
       </button>
 
@@ -163,13 +165,9 @@ export default function FlashcardPractice({ category, todayCardIds, onRecord, on
       />
 
       {/* Score tracker */}
-      <div className="flex items-center gap-3 mt-4">
-        <span className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600">
-          ✓ {correct}
-        </span>
-        <span className="flex items-center gap-1 text-sm font-semibold px-3 py-1 rounded-full bg-destructive/10 text-destructive">
-          ✗ {wrong}
-        </span>
+      <div className="flex items-center gap-4 mt-4 text-[13px] text-white/60">
+        <span className="text-emerald-400">✓ {correct}</span>
+        <span className="text-red-400">✗ {wrong}</span>
       </div>
     </div>
   );

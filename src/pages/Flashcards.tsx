@@ -15,7 +15,7 @@ import FlashcardPractice from "@/components/flashcards/FlashcardPractice";
 import ReviseTab from "@/components/flashcards/ReviseTab";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import type { FlashcardCategory } from "@/data/flashcards";
+import { CATEGORY_META, type FlashcardCategory } from "@/data/flashcards";
 import { Loader2, ArrowLeft } from "lucide-react";
 import "katex/dist/katex.min.css";
 
@@ -34,6 +34,34 @@ const SCHEMA_JSON_LD = {
   inLanguage: "en",
   about: ["CAT Preparation", "MBA Entrance Exam", "Quantitative Aptitude", "Verbal Ability", "Logical Reasoning", "Data Interpretation"],
 };
+
+const CATEGORY_SECONDARY: Record<FlashcardCategory, string> = {
+  vocab: "#FF9944",
+  idioms: "#F472B6",
+  quant_formulas: "#818CF8",
+  lrdi_tips: "#2DD4BF",
+};
+
+function PracticeBg({ category }: { category: FlashcardCategory | null }) {
+  const cat = category || "vocab";
+  const primary = CATEGORY_META[cat].color;
+  const secondary = CATEGORY_SECONDARY[cat];
+
+  return (
+    <div className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+      <div className="absolute inset-0" style={{ background: "#0A0A0F" }} />
+      {/* Mesh gradient orbs */}
+      <div
+        className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full"
+        style={{ background: primary, filter: "blur(120px)", opacity: 0.15 }}
+      />
+      <div
+        className="absolute bottom-0 left-0 w-[350px] h-[350px] rounded-full"
+        style={{ background: secondary, filter: "blur(120px)", opacity: 0.12 }}
+      />
+    </div>
+  );
+}
 
 export default function FlashcardsPage() {
   const { user, loading: authLoading, signIn } = useAuth();
@@ -74,40 +102,48 @@ export default function FlashcardsPage() {
     setTab("practice");
   };
 
+  // Active category color for tab bar
+  const activeColor = selectedCategory ? CATEGORY_META[selectedCategory].color : "#FF6600";
+
   // Practice view (logged in only)
   if (view === "practice") {
     if (authLoading || loading) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-white">
-          <Loader2 className="w-7 h-7 animate-spin" style={{ color: "hsl(24,100%,50%)" }} />
+        <div className="min-h-screen flex items-center justify-center" style={{ background: "#0A0A0F" }}>
+          <Loader2 className="w-7 h-7 animate-spin" style={{ color: "#FF6600" }} />
         </div>
       );
     }
 
     return (
-      <div className="min-h-screen bg-white">
-        <div className="max-w-xl mx-auto px-4 py-8">
+      <div className="flashcard-practice min-h-screen relative">
+        <PracticeBg category={selectedCategory} />
+
+        <div className="relative z-10 max-w-xl mx-auto px-5 py-8">
           <button
             onClick={handleBackToLanding}
-            className="flex items-center gap-2 text-sm text-[hsl(0,0%,50%)] hover:text-[hsl(0,0%,8%)] transition-colors mb-6"
+            className="flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Flashcards
           </button>
 
-          <h2 className="text-2xl font-bold text-[hsl(0,0%,8%)] text-center mb-6">Flashcard Practice</h2>
+          <h2 className="text-2xl font-bold text-white text-center mb-6">Flashcard Practice</h2>
 
           {/* Tab toggle */}
           <div className="flex justify-center mb-8">
-            <div className="inline-flex rounded-full border border-[hsl(0,0%,90%)] p-1 bg-[hsl(0,0%,97%)]">
+            <div
+              className="inline-flex rounded-full p-1"
+              style={{ background: "rgba(255,255,255,0.06)" }}
+            >
               {(["practice", "revise"] as Tab[]).map((t) => (
                 <button
                   key={t}
                   onClick={() => { setTab(t); setSelectedCategory(null); }}
-                  className="px-6 py-2 rounded-full text-sm font-semibold transition-colors capitalize active:scale-[0.97]"
+                  className="px-6 py-2 rounded-full text-sm font-medium transition-all capitalize active:scale-[0.97]"
                   style={{
-                    background: tab === t ? "hsl(24,100%,50%)" : "transparent",
-                    color: tab === t ? "#fff" : "hsl(0,0%,8%)",
+                    background: tab === t ? activeColor : "transparent",
+                    color: tab === t ? "#fff" : "rgba(255,255,255,0.5)",
                   }}
                 >
                   {t}
