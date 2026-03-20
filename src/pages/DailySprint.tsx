@@ -5,6 +5,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
+import { useBackToDashboard } from "@/hooks/useBackToDashboard";
 import { useStreaks } from "@/hooks/useStreaks";
 import { useBuddyRealtimeToast } from "@/hooks/useBuddyRealtimeToast";
 import { Button } from "@/components/ui/button";
@@ -215,6 +216,7 @@ function SprintDashboard({ userId }: { userId: string }) {
 }
 
 export default function DailySprint() {
+  useBackToDashboard();
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
 
   return (

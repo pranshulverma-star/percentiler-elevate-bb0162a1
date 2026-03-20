@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
+import { useBackToDashboard } from "@/hooks/useBackToDashboard";
 import { useStreaks } from "@/hooks/useStreaks";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
@@ -727,6 +728,7 @@ function BattleResults({
 
 // ─── Main Page ──────────────────────────────────────────────────────────────
 export default function BattleRoomPage() {
+  useBackToDashboard();
   const { code } = useParams<{ code: string }>();
   const navigate = useNavigate();
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
