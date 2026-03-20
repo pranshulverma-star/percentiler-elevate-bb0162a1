@@ -187,6 +187,8 @@ export default function ResultsView({
           time_used_seconds: timeUsed,
           answers_json: answers,
         });
+        // Record unified streak
+        recordActivity("practice_lab").catch(() => {});
       }
       // Fetch personal history
       const { data } = await (supabase.from("practice_lab_attempts") as any)

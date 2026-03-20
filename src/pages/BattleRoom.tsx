@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/useAuth";
+import { useStreaks } from "@/hooks/useStreaks";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
