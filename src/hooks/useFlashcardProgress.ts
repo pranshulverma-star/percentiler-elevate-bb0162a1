@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import type { FlashcardCategory } from "@/data/flashcards";
@@ -14,6 +14,7 @@ export function useFlashcardProgress() {
   const { user } = useAuth();
   const [progress, setProgress] = useState<ProgressRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const streakRecorded = useRef(false);
 
   const fetchProgress = useCallback(async () => {
     if (!user) { setLoading(false); return; }
@@ -42,7 +43,6 @@ export function useFlashcardProgress() {
   );
 
   const getRevisionCards = useCallback(() => {
-    // Group by card_id, pick latest entry per card
     const latestByCard = new Map<string, ProgressRow>();
     for (const p of progress) {
       const existing = latestByCard.get(p.card_id);
@@ -53,6 +53,22 @@ export function useFlashcardProgress() {
     return Array.from(latestByCard.values()).filter((p) => !p.knew);
   }, [progress]);
 
+  // Check if streak should be recorded after progress changes
+  const maybeRecordStreak = useCallback(async (updatedProgress: ProgressRow[]) => {
+    if (!user || streakRecorded.current) return;
+    const categories: FlashcardCategory[] = ["vocab", "idioms", "quant_formulas", "lrdi_tips"];
+    const hasFiveInAny = categories.some(
+      (cat) => updatedProgress.filter((p) => p.category === cat && p.practiced_at.slice(0, 10) === todayStr).length >= 5
+    );
+    if (hasFiveInAny) {
+      streakRecorded.current = true;
+      await (supabase.from("daily_streaks") as any).upsert(
+        { user_id: user.id, activity_date: todayStr, activity_type: "flashcards" },
+        { onConflict: "user_id,activity_date,activity_type" }
+      ).catch(() => {});
+    }
+  }, [user, todayStr]);
+
   const recordAnswer = useCallback(
     async (cardId: string, category: FlashcardCategory, knew: boolean) => {
       if (!user) return;
@@ -62,13 +78,12 @@ export function useFlashcardProgress() {
         category,
         knew,
       });
-      // Optimistic update
-      setProgress((prev) => [
-        { card_id: cardId, category, knew, practiced_at: new Date().toISOString() },
-        ...prev,
-      ]);
+      const newRow = { card_id: cardId, category, knew, practiced_at: new Date().toISOString() };
+      const updated = [newRow, ...progress];
+      setProgress(updated);
+      maybeRecordStreak(updated);
     },
-    [user]
+    [user, progress, maybeRecordStreak]
   );
 
   return { progress, loading, getTodayCount, getTodayCardIds, getRevisionCards, recordAnswer, refetch: fetchProgress };
