@@ -7,7 +7,7 @@ interface Props {
   flipped: boolean;
 }
 
-export default function ActionButtons({ onDidntKnow, onFlip, onKnewIt, flipped }: Props) {
+export default function ActionButtons({ onDidntKnow, onFlip, onKnewIt, flipped: _flipped }: Props) {
   return (
     <div className="flex items-center justify-center gap-3 mt-6">
       {/* Didn't know */}
