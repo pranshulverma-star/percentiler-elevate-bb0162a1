@@ -38,12 +38,19 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
       (navigator as any).standalone === true);
 
   // State A: trigger sign-in once auth resolves as unauthenticated (browser only, not standalone PWA)
+  // Uses a cooldown to prevent redirect loops after OAuth callback
   useEffect(() => {
     if (authLoading || isAuthenticated || signInTriggered.current || isStandalone) return;
+
+    // Check if we recently attempted sign-in (within 10s) — prevents redirect loop
+    const recentSignIn = sessionStorage.getItem("auth_signin_at");
+    const isRecentSignIn = recentSignIn && (Date.now() - Number(recentSignIn)) < 10000;
+    if (isRecentSignIn) return;
 
     signInTriggered.current = true;
     const returnUrl = location.pathname + location.search;
     sessionStorage.setItem("pending_gate_source", source);
+    sessionStorage.setItem("auth_signin_at", String(Date.now()));
     void signIn(returnUrl);
   }, [authLoading, isAuthenticated, signIn, location.pathname, location.search, source, isStandalone]);
 
@@ -135,8 +142,45 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     );
   }
 
-  // Not authenticated in browser — show spinner while redirect happens
+  // Not authenticated in browser — check if we just returned from OAuth (cooldown active)
   if (!isAuthenticated) {
+    const recentSignIn = sessionStorage.getItem("auth_signin_at");
+    const isRecentSignIn = recentSignIn && (Date.now() - Number(recentSignIn)) < 10000;
+
+    if (isRecentSignIn) {
+      // Show manual sign-in button instead of auto-redirecting (breaks loop)
+      return (
+        <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center gap-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
+            <LogIn className="h-8 w-8 text-primary" />
+          </div>
+          <h2 className="text-xl font-bold text-foreground">Sign in to continue</h2>
+          <p className="text-sm text-muted-foreground max-w-xs">
+            It looks like your session wasn't restored. Please sign in again.
+          </p>
+          <Button
+            size="lg"
+            disabled={signingIn}
+            onClick={async () => {
+              setSigningIn(true);
+              try {
+                sessionStorage.setItem("auth_signin_at", String(Date.now()));
+                const returnUrl = location.pathname + location.search;
+                await signIn(returnUrl);
+              } finally {
+                setSigningIn(false);
+              }
+            }}
+            className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)]"
+          >
+            {signingIn ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <LogIn className="h-4 w-4 mr-2" />}
+            Sign in with Google
+          </Button>
+        </div>
+      );
+    }
+
+    // First attempt — show spinner while redirect happens
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <Loader2 className="h-8 w-8 text-primary animate-spin" />
