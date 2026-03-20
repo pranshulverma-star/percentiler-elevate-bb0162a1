@@ -1,78 +1,75 @@
 
 
-## Problem: Two Disconnected Streak Systems
+## Problem: Auth Login Loop After Cache Clear
 
-The codebase has **two separate, incompatible streak systems** that don't talk to each other:
+### Root Cause
 
-### System 1: `daily_streaks` table + `useStreaks` hook
-- A dedicated `daily_streaks` table exists with `(user_id, activity_date, activity_type)`.
-- `useStreaks` hook reads from it and exposes `recordActivity()` for types: quiz, test, flashcards, practice_lab, sprint.
-- **Only used in 2 places:**
-  - `FlashcardHero.tsx` — reads `currentStreak` for display
-  - `useFlashcardProgress.ts` — writes "flashcards" streak after 5 cards practiced
+The auth logs confirm 6+ logins within 2 minutes for the same user — a clear redirect loop. Here's what happens:
 
-### System 2: `computeStreaks()` in Dashboard.tsx
-- Dashboard computes streaks **entirely from `practice_lab_attempts`** timestamps.
-- Ignores the `daily_streaks` table completely.
-- This means: flashcard activity, daily sprint completions, planner activity, and battle room completions are **invisible** to the dashboard streak.
+1. User clears cache → visits `/dashboard`
+2. `AuthProvider.getSession()` returns null → `loading=false`, `isAuthenticated=false`
+3. `ProtectedRoute` sees unauthenticated → immediately fires `signIn()` (or shows sign-in button in PWA)
+4. OAuth completes successfully (auth logs confirm status 200)
+5. User is redirected back to `/dashboard`
+6. **But**: The `signInTriggered` ref resets on page reload. Supabase may still be processing the callback hash/tokens when ProtectedRoute evaluates. So it fires `signIn()` again → loop
 
-### What's NOT recording streaks at all:
-| Feature | Writes to `daily_streaks`? | Used by Dashboard? |
-|---|---|---|
-| Practice Lab quiz completion | **No** | Yes (via `practice_lab_attempts` dates) |
-| Battle Room completion | **No** | No |
-| Flashcard practice (5+ cards) | **Yes** | **No** (dashboard ignores it) |
-| Daily Sprint goal completion | **No** | No |
-| Study Planner activity | **No** | No |
+The core issue: **ProtectedRoute doesn't know it just returned from an OAuth redirect**, and there's no cooldown between sign-in attempts across page reloads.
 
-**Result**: The dashboard shows a streak based only on Practice Lab quiz dates. A student who practices flashcards and uses the planner daily but skips quizzes sees a **0-day streak**.
+### Fix: 3 Changes
 
----
+#### 1. Add OAuth-return detection in AuthProvider
 
-## Plan: Unify Around `daily_streaks` Table
+Before triggering any sign-in, check if the URL contains Supabase auth callback tokens (`access_token`, `refresh_token`, or `code` in hash/query). If so, wait for `onAuthStateChange` to process them instead of immediately declaring "unauthenticated."
 
-### Step 1: Wire streak recording into all activity completion points
+#### 2. Add sign-in cooldown via sessionStorage in ProtectedRoute
 
-Add `useStreaks().recordActivity()` calls at these existing save points:
+When `signIn()` is called, write `sessionStorage.setItem("auth_signin_at", Date.now())`. On next mount, if less than 10 seconds have passed, don't auto-trigger sign-in — show a "Sign in" button instead. This breaks the auto-redirect loop while still allowing manual retry.
 
-- **Practice Lab** (`ResultsView.tsx`): After the `practice_lab_attempts` insert succeeds, call `recordActivity("practice_lab")`
-- **Battle Room** (`BattleRoom.tsx`): After battle results are saved, call `recordActivity("quiz")`
-- **Daily Sprint** (`DailySprint.tsx` / `sprint-utils.ts`): When all daily goals are completed, call `recordActivity("sprint")`
-- **Study Planner** (`CATDailyStudyPlanner.tsx`): When a day's tasks are marked complete, call `recordActivity("quiz")` (reuse "quiz" type since planner tasks are study tasks)
-- **Flashcards**: Already wired — no change needed
+#### 3. Detect OAuth callback hash in AuthProvider and delay resolution
 
-### Step 2: Rewrite Dashboard to use `daily_streaks` as the single source of truth
+If `window.location.hash` contains `access_token` or the URL has a `code` param (PKCE flow), set a flag so `getSession()` null result doesn't immediately resolve loading=false. Instead, wait for `onAuthStateChange` to fire (which processes the tokens), with a 5s safety timeout.
 
-Replace `computeStreaks(attempts)` in `Dashboard.tsx` with `useStreaks()` hook data. The dashboard will:
-- Call `useStreaks()` to get `currentStreak`, `todayActivities`, and `loading`
-- Compute `weeklyActivity` (7-day boolean array) from `daily_streaks` data
-- Compute `longestStreak`, `totalQuizzes`, `avgAccuracy` by combining `daily_streaks` (for streak/activity) with `practice_lab_attempts` (for accuracy stats only)
+### Files to Modify
 
-### Step 3: Enhance `useStreaks` hook to return richer data
+1. **`src/hooks/useAuth.ts`** — Add OAuth callback detection. If hash contains auth tokens, don't resolve loading until `onAuthStateChange` fires or 5s timeout.
 
-Extend the hook to also return:
-- `weeklyActivity: boolean[]` — 7-day Mon-Sun array for the streak hero calendar
-- `longestStreak: number` — computed from all `daily_streaks` history
+2. **`src/components/ProtectedRoute.tsx`** — Add sessionStorage-based cooldown. If a sign-in was triggered within the last 10 seconds, show a manual sign-in button instead of auto-redirecting. Remove the auto-redirect for non-standalone too (always show button if just returned from OAuth).
 
-This way `DashboardStreakHero`, `DashboardStatPills`, and `DashboardTopBar` all consume one unified source.
+### Technical Details
 
-### Step 4: Remove the duplicate `computeStreaks` function
+**AuthProvider change:**
+```typescript
+// Detect if we're returning from an OAuth callback
+const hash = window.location.hash;
+const isOAuthCallback = hash.includes("access_token") || 
+  hash.includes("refresh_token") || 
+  new URLSearchParams(window.location.search).has("code");
 
-Delete the local `computeStreaks()` from `Dashboard.tsx` entirely. Accuracy/quiz stats will still come from `practice_lab_attempts` but streak logic will be solely from `daily_streaks`.
+// If OAuth callback, don't resolve from getSession() alone — 
+// wait for onAuthStateChange which processes the tokens
+if (isOAuthCallback && !session) {
+  // Don't resolve yet, let onAuthStateChange handle it
+  return;
+}
+```
 
----
+**ProtectedRoute change:**
+```typescript
+const recentSignIn = sessionStorage.getItem("auth_signin_at");
+const isRecentSignIn = recentSignIn && (Date.now() - Number(recentSignIn)) < 10000;
 
-## Technical Details
+// Don't auto-trigger if we just attempted sign-in (breaks loop)
+if (!authLoading && !isAuthenticated && !isRecentSignIn && !isStandalone) {
+  sessionStorage.setItem("auth_signin_at", String(Date.now()));
+  signInTriggered.current = true;
+  void signIn(returnUrl);
+}
 
-**Files to modify:**
-1. `src/hooks/useStreaks.ts` — Add `weeklyActivity` and `longestStreak` to return value
-2. `src/pages/Dashboard.tsx` — Replace `computeStreaks` with `useStreaks()`, keep practice stats separate
-3. `src/components/practice-lab/ResultsView.tsx` — Add `useStreaks().recordActivity("practice_lab")` after save
-4. `src/pages/BattleRoom.tsx` — Add `recordActivity("quiz")` after battle save
-5. `src/pages/DailySprint.tsx` — Add `recordActivity("sprint")` when all goals done
-6. `src/pages/CATDailyStudyPlanner.tsx` — Add `recordActivity("quiz")` on task completion
+// If recent sign-in failed, show manual button instead of auto-redirect
+if (!isAuthenticated && isRecentSignIn) {
+  return <ManualSignInButton />;
+}
+```
 
-**No database changes needed** — `daily_streaks` table already has the right schema and RLS policies.
-
-**No new dependencies** — just wiring existing hook into existing completion handlers.
+No database changes needed. No new dependencies.
 
