@@ -70,6 +70,7 @@ function LandingState({ onSignIn }: { onSignIn: () => void }) {
 }
 
 function SprintDashboard({ userId }: { userId: string }) {
+  const { recordActivity } = useStreaks();
   const [goals, setGoals] = useState<SprintGoal[]>([]);
   const [weeklyGoals, setWeeklyGoals] = useState<SprintGoal[]>([]);
   const [historyGoals, setHistoryGoals] = useState<SprintGoal[]>([]);
