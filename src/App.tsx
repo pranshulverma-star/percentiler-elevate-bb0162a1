@@ -83,7 +83,9 @@ const App = () => (
             <BrowserRouter>
               <ScrollToHash />
               <Suspense fallback={<PageLoader />}>
-                <Routes>
+              <Routes>
+                  <Route path="/~oauth" element={<PageLoader />} />
+                  <Route path="/~oauth/*" element={<PageLoader />} />
                   <Route path="/" element={<Index />} />
                   <Route path="/masterclass" element={<Masterclass />} />
                   <Route path="/mentorship" element={<MentorshipPage />} />
