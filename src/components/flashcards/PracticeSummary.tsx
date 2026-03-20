@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import { CATEGORY_META, type FlashcardCategory } from "@/data/flashcards";
+import { motion } from "framer-motion";
 
 interface Props {
   correct: number;
@@ -12,46 +14,64 @@ export default function PracticeSummary({ correct, total, category, onPracticeAn
   const color = CATEGORY_META[category].color;
   const pct = Math.round((correct / total) * 100);
   const circumference = 2 * Math.PI * 42;
-  const offset = circumference - (pct / 100) * circumference;
+  const [offset, setOffset] = useState(circumference);
+  const perfect = correct === total;
+
+  useEffect(() => {
+    const timer = setTimeout(() => setOffset(circumference - (pct / 100) * circumference), 100);
+    return () => clearTimeout(timer);
+  }, [pct, circumference]);
 
   return (
-    <div className="flex flex-col items-center text-center gap-6 py-8">
-      <h2 className="text-2xl font-bold text-[#141414]">Session Complete!</h2>
+    <motion.div
+      className="flex flex-col items-center text-center gap-6 py-8"
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
+      <h2 className="text-2xl font-bold text-white">
+        {perfect ? "✨ Perfect!" : "✨ Nice work!"}
+      </h2>
 
-      {/* Progress ring */}
       <div className="relative w-28 h-28">
         <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-          <circle cx="50" cy="50" r="42" fill="none" stroke="#E5E7EB" strokeWidth="8" />
+          <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="8" />
           <circle
             cx="50" cy="50" r="42" fill="none" stroke={color} strokeWidth="8"
             strokeDasharray={circumference} strokeDashoffset={offset}
-            strokeLinecap="round" className="transition-all duration-700"
+            strokeLinecap="round"
+            style={{ transition: "stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1)" }}
           />
         </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-xl font-bold text-[#141414]">
+        <span className="absolute inset-0 flex items-center justify-center text-xl font-bold text-white">
           {correct}/{total}
         </span>
       </div>
 
-      <p className="text-gray-500">
+      <p className="text-white/60">
         You knew <strong style={{ color }}>{correct}</strong> out of {total} cards
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={onPracticeAnother}
-          className="px-6 py-3 rounded-xl text-sm font-semibold text-white active:scale-[0.97] transition-transform"
+          className="px-6 py-3 rounded-[14px] text-sm font-semibold text-white active:scale-[0.97] transition-transform"
           style={{ background: "#FF6600" }}
         >
           Practice another category
         </button>
         <button
           onClick={onRevise}
-          className="px-6 py-3 rounded-xl text-sm font-semibold border border-gray-300 text-[#141414] bg-white hover:bg-gray-50 active:scale-[0.97] transition-transform"
+          className="px-6 py-3 rounded-[14px] text-sm font-semibold active:scale-[0.97] transition-transform"
+          style={{
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.15)",
+            color: "white",
+          }}
         >
           Revise weak cards
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
