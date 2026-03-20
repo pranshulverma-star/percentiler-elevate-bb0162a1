@@ -335,6 +335,33 @@ export type Database = {
         }
         Relationships: []
       }
+      flashcard_progress: {
+        Row: {
+          card_id: string
+          category: string
+          id: string
+          knew: boolean
+          practiced_at: string
+          user_id: string
+        }
+        Insert: {
+          card_id: string
+          category: string
+          id?: string
+          knew: boolean
+          practiced_at?: string
+          user_id: string
+        }
+        Update: {
+          card_id?: string
+          category?: string
+          id?: string
+          knew?: boolean
+          practiced_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       leads: {
         Row: {
           created_at: string
@@ -742,6 +769,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      extract_date_from_timestamptz: { Args: { ts: string }; Returns: string }
       is_buddy_pair_member: {
         Args: { _pair_id: string; _user_id: string }
         Returns: boolean
