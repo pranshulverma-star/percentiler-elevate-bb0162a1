@@ -1,36 +1,54 @@
 
+Goal: stop the Android login loop (Gmail account picker repeating) and make sign-in complete reliably inside the installed app.
 
-# Back-to-Dashboard Navigation for Logged-in Mobile Users
+1) Fix OAuth callback route handling (highest priority)
+- Update `public/_redirects` to explicitly allow OAuth callback paths before the catch-all redirect:
+  - `"/~oauth  /index.html 200"`
+  - `"/~oauth/*  /index.html 200"`
+- Add explicit route(s) in `src/App.tsx` for `"/~oauth"` (and `"/~oauth/*"` if needed) to render a neutral loading screen instead of falling into `*`.
+- Update `src/components/NotFoundRedirect.tsx` so it does NOT redirect `"/~oauth"` (or other auth-system paths) to `old.percentilers.in`.
 
-## Problem
-When a logged-in user navigates to sub-pages (flashcards, practice lab, study buddy, etc.) and swipes back on mobile, they go through their full browser history instead of returning to the dashboard.
+Why: right now unknown paths go to legacy redirect logic, which can break callback completion and restart auth.
 
-## Approach
-Use `history.replaceState` on the Dashboard page to clear the back-stack, so any back gesture from the dashboard goes to `/` (homepage). Then, on all sub-pages accessed from the dashboard, use `navigate("/dashboard")` on back instead of `history.back()`. The key mechanism:
+2) Harden auth flow against redirect loops
+- In `src/hooks/useAuth.ts`:
+  - Add a single-flight guard (`signInInProgressRef`) so multiple `signIn()` calls cannot stack.
+  - Persist an auth-attempt marker in `sessionStorage` (`auth_flow_started_at`, `auth_target`) before redirect.
+  - On successful `SIGNED_IN`, clear those markers.
+  - During OAuth callback detection, keep auth in loading state longer (mobile-safe timeout) before declaring failure.
+- Replace current 10s retry window with a longer guarded window (e.g. 45–60s) to avoid immediate re-trigger loops on slower Android callback cycles.
 
-1. **Dashboard replaces history entry** — When Dashboard mounts for an authenticated user, call `window.history.replaceState(null, "", "/dashboard")` to make the dashboard the history root. This means the hardware back button from the dashboard goes to the browser's start (effectively nowhere useful, which is correct).
+3) Improve protected-route behavior during callback window
+- In `src/components/ProtectedRoute.tsx`:
+  - If OAuth callback is in progress (URL callback params/hash or recent auth marker), do NOT trigger another `signIn`.
+  - Show “Completing sign-in…” state instead of firing redirect again.
+  - Only show manual “Sign in again” CTA after callback window expires.
 
-2. **Sub-pages navigate to /dashboard on back** — Create a small `useBackToDashboard` hook that listens for the `popstate` event. When a logged-in user triggers a back gesture from any protected/dashboard-linked page, it intercepts and redirects to `/dashboard` using `navigate("/dashboard", { replace: true })`.
+4) Align sign-in strategy for installed mobile app
+- Keep one consistent OAuth path in `useAuth.signIn` and avoid fallback paths that can re-open Google unnecessarily while callback is still settling.
+- Expand standalone/app-context detection to include Android installed-app context signals (not just iOS `navigator.standalone`).
 
-## Technical Details
+5) Validate end-to-end (must pass before closing)
+- Test matrix:
+  - Android installed app: `/dashboard`, `/flashcards`, `/study-buddy` entry points.
+  - Mobile browser (non-installed).
+  - Desktop browser.
+- Expected:
+  - One account selection → one successful session.
+  - No repeated Gmail chooser loop.
+  - Protected route lands on intended target page after login.
+- Confirm in auth logs that one login attempt maps to one successful completion (no rapid repeated token cycles).
 
-**New file**: `src/hooks/useBackToDashboard.ts`
-- Custom hook that pushes a sentinel history entry on mount
-- Listens for `popstate` — when the sentinel is popped, navigates to `/dashboard`
-- Only activates when user is authenticated (checks `useAuth`)
-- Cleans up listener on unmount
-
-**Modified file**: `src/pages/Dashboard.tsx`
-- On mount (when authenticated), push a duplicate history entry so the first back gesture stays on dashboard
-- Call `useBackToDashboard()` hook
-
-**Modified files** (sub-pages that are dashboard-linked):
-- `src/pages/Flashcards.tsx`
-- `src/pages/PracticeLab.tsx`  
-- `src/pages/StudyBuddy.tsx`
-- `src/pages/DailySprint.tsx`
-- `src/pages/BattleRoom.tsx`
-- Each calls `useBackToDashboard()` so back gesture → dashboard
-
-This approach uses the standard `popstate` + sentinel pattern — no library needed, works with iOS swipe-back and Android hardware back button.
-
+Technical details (implementation targets)
+- Files to modify:
+  - `public/_redirects`
+  - `src/App.tsx`
+  - `src/components/NotFoundRedirect.tsx`
+  - `src/hooks/useAuth.ts`
+  - `src/components/ProtectedRoute.tsx`
+- Key state guards:
+  - `signInInProgressRef` (in-memory)
+  - `auth_flow_started_at` / `auth_target` (sessionStorage)
+  - `isOAuthCallback` + “callback grace period” gate in `ProtectedRoute`
+- Non-goals:
+  - No backend schema/policy changes required.
