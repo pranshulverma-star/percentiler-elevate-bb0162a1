@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import type { } from "react";
 import type { AnyCard, FlashcardCategory } from "@/data/flashcards";
 import { getCardFront, getCardBack, CATEGORY_META } from "@/data/flashcards";
 import { renderLatex } from "@/lib/renderLatex";

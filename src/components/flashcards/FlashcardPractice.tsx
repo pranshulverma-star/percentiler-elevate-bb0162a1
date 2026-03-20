@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useRef } from "react";
 import { flashcardData, CATEGORY_META, type FlashcardCategory, type AnyCard } from "@/data/flashcards";
 import FlashcardDisplay from "./FlashcardDisplay";
 import ProgressDots from "./ProgressDots";

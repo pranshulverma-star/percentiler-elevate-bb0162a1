@@ -56,6 +56,7 @@ const PracticeLab = lazy(() => import("./pages/PracticeLab"));
 const BattleRoom = lazy(() => import("./pages/BattleRoom"));
 const StudyBuddy = lazy(() => import("./pages/StudyBuddy"));
 const DailySprint = lazy(() => import("./pages/DailySprint"));
+const Flashcards = lazy(() => import("./pages/Flashcards"));
 const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
