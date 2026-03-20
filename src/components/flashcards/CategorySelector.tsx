@@ -16,10 +16,9 @@ const CATEGORY_ICONS: Record<FlashcardCategory, React.ElementType> = {
   lrdi_tips: BrainCircuit,
 };
 
-
 export default function CategorySelector({ onSelect, getTodayCount }: Props) {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-2xl mx-auto">
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-2xl mx-auto">
       {categories.map((cat, i) => {
         const { label, color } = CATEGORY_META[cat];
         const total = getTotalCards(cat);
@@ -31,7 +30,7 @@ export default function CategorySelector({ onSelect, getTodayCount }: Props) {
           <motion.button
             key={cat}
             onClick={() => onSelect(cat)}
-            className="relative flex flex-col items-center text-center rounded-[20px] p-5 overflow-hidden
+            className="relative flex flex-col items-center text-center rounded-[18px] sm:rounded-[20px] p-4 sm:p-5 overflow-hidden
               active:scale-[0.97] transition-all duration-200
               hover:border-white/20"
             style={{
@@ -46,16 +45,16 @@ export default function CategorySelector({ onSelect, getTodayCount }: Props) {
           >
             {/* Glow orb behind */}
             <div
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120px] h-[120px] rounded-full pointer-events-none"
-              style={{ background: color, filter: "blur(60px)", opacity: 0.15 }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80px] h-[80px] sm:w-[120px] sm:h-[120px] rounded-full pointer-events-none"
+              style={{ background: color, filter: "blur(40px)", opacity: 0.15 }}
             />
 
-            <Icon size={48} style={{ color, opacity: 0.6 }} className="mb-3 relative z-10" />
-            <p className="font-bold text-white text-base leading-tight relative z-10">{label}</p>
-            <p className="text-[13px] text-white/40 mt-1 relative z-10">{total} cards</p>
+            <Icon className="w-9 h-9 sm:w-12 sm:h-12 mb-2 sm:mb-3 relative z-10" style={{ color, opacity: 0.6 }} />
+            <p className="font-bold text-white text-sm sm:text-base leading-tight relative z-10">{label}</p>
+            <p className="text-[11px] sm:text-[13px] text-white/40 mt-0.5 sm:mt-1 relative z-10">{total} cards</p>
 
             <span
-              className="mt-2.5 text-[11px] font-medium uppercase tracking-[0.5px] px-2.5 py-1 rounded-full relative z-10"
+              className="mt-2 sm:mt-2.5 text-[10px] sm:text-[11px] font-medium uppercase tracking-[0.5px] px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full relative z-10"
               style={{
                 color: done ? "#22C55E" : color,
                 background: done ? "rgba(34,197,94,0.15)" : `${color}1A`,

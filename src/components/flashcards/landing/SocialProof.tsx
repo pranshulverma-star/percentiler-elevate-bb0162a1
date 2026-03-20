@@ -40,16 +40,16 @@ export default function SocialProof() {
   const { ref, inView } = useInView<HTMLElement>();
 
   return (
-    <section ref={ref} aria-label="Social proof and statistics" className="py-16 md:py-24">
+    <section ref={ref} aria-label="Social proof and statistics" className="py-10 sm:py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6 max-w-5xl">
         <h2
-          className="text-2xl md:text-3xl font-bold text-[hsl(0,0%,8%)] text-center mb-14 transition-all duration-700"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-[hsl(0,0%,8%)] text-center mb-8 sm:mb-14 transition-all duration-700"
           style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)" }}
         >
           Join thousands already building their CAT vocabulary
         </h2>
 
-        <div className="grid grid-cols-3 gap-6 mb-16">
+        <div className="grid grid-cols-3 gap-4 sm:gap-6 mb-10 sm:mb-16">
           {stats.map(({ value, suffix, label }, i) => (
             <div
               key={label}
@@ -60,19 +60,19 @@ export default function SocialProof() {
                 transitionDelay: `${i * 100}ms`,
               }}
             >
-              <p className="text-3xl md:text-4xl font-bold" style={{ color: "hsl(24,100%,50%)" }}>
+              <p className="text-2xl sm:text-3xl md:text-4xl font-bold" style={{ color: "hsl(24,100%,50%)" }}>
                 <AnimatedCounter target={value} suffix={suffix} />
               </p>
-              <p className="text-sm text-[hsl(0,0%,50%)] mt-1">{label}</p>
+              <p className="text-[10px] sm:text-sm text-[hsl(0,0%,50%)] mt-0.5 sm:mt-1">{label}</p>
             </div>
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           {testimonials.map(({ quote, author }, i) => (
             <div
               key={i}
-              className="rounded-2xl p-6 transition-all duration-700"
+              className="rounded-xl sm:rounded-2xl p-4 sm:p-6 transition-all duration-700"
               style={{
                 opacity: inView ? 1 : 0,
                 transform: inView ? "translateY(0)" : "translateY(20px)",
@@ -81,8 +81,8 @@ export default function SocialProof() {
                 border: "1px solid hsl(0,0%,93%)",
               }}
             >
-              <p className="text-[hsl(0,0%,25%)] italic leading-relaxed mb-3">"{quote}"</p>
-              <p className="text-sm font-semibold text-[hsl(0,0%,50%)]">— {author}</p>
+              <p className="text-sm sm:text-base text-[hsl(0,0%,25%)] italic leading-relaxed mb-2 sm:mb-3">"{quote}"</p>
+              <p className="text-xs sm:text-sm font-semibold text-[hsl(0,0%,50%)]">— {author}</p>
             </div>
           ))}
         </div>

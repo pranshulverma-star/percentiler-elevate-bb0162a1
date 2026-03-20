@@ -16,26 +16,26 @@ export default function FlashcardFAQ() {
   const { ref, inView } = useInView<HTMLElement>();
 
   return (
-    <section ref={ref} aria-label="Frequently asked questions" className="py-16 md:py-24">
+    <section ref={ref} aria-label="Frequently asked questions" className="py-10 sm:py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6 max-w-3xl">
         <h2
-          className="text-2xl md:text-3xl font-bold text-[hsl(0,0%,8%)] text-center mb-14 transition-all duration-700"
+          className="text-xl sm:text-2xl md:text-3xl font-bold text-[hsl(0,0%,8%)] text-center mb-8 sm:mb-14 transition-all duration-700"
           style={{ opacity: inView ? 1 : 0, transform: inView ? "translateY(0)" : "translateY(20px)" }}
         >
           Frequently Asked Questions
         </h2>
 
-        <Accordion type="single" collapsible className="w-full space-y-3">
+        <Accordion type="single" collapsible className="w-full space-y-2 sm:space-y-3">
           {faqs.map((f, i) => (
             <AccordionItem
               key={i}
               value={`faq-${i}`}
-              className="border-b border-[hsl(0,0%,92%)] data-[state=open]:border-l-[3px] data-[state=open]:border-l-[hsl(24,100%,50%)] data-[state=open]:pl-4 transition-all"
+              className="border-b border-[hsl(0,0%,92%)] data-[state=open]:border-l-[3px] data-[state=open]:border-l-[hsl(24,100%,50%)] data-[state=open]:pl-3 sm:data-[state=open]:pl-4 transition-all"
             >
-              <AccordionTrigger className="text-left text-[hsl(0,0%,8%)] hover:text-[hsl(24,100%,50%)] transition-colors py-5">
+              <AccordionTrigger className="text-left text-sm sm:text-base text-[hsl(0,0%,8%)] hover:text-[hsl(24,100%,50%)] transition-colors py-4 sm:py-5">
                 {f.q}
               </AccordionTrigger>
-              <AccordionContent className="text-[hsl(0,0%,40%)] leading-relaxed pb-5">
+              <AccordionContent className="text-xs sm:text-sm text-[hsl(0,0%,40%)] leading-relaxed pb-4 sm:pb-5">
                 {f.a}
               </AccordionContent>
             </AccordionItem>
