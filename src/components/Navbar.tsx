@@ -15,6 +15,7 @@ const navLinks = [
   { label: "Results", href: "/#results", external: false },
   { label: "Free Tools", href: "/#tools", external: false },
   { label: "Practice Lab", href: "/practice-lab", external: false },
+  { label: "Flashcards", href: "/flashcards", external: false },
   { label: "Blogs", href: "https://old.percentilers.in/blog/", external: true },
 ];
 
