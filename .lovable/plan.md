@@ -1,86 +1,36 @@
 
 
-# Dashboard Premium Redesign + Missing Features
+# Back-to-Dashboard Navigation for Logged-in Mobile Users
 
-## Changes Overview
+## Problem
+When a logged-in user navigates to sub-pages (flashcards, practice lab, study buddy, etc.) and swipes back on mobile, they go through their full browser history instead of returning to the dashboard.
 
-### 1. Fix Bottom Nav Profile Icon
-Replace the non-functional `?tab=profile` link with a redirect to `/daily-sprint` (renamed "Sprint") since there's no profile page. This gives the 4th nav item a real destination.
+## Approach
+Use `history.replaceState` on the Dashboard page to clear the back-stack, so any back gesture from the dashboard goes to `/` (homepage). Then, on all sub-pages accessed from the dashboard, use `navigate("/dashboard")` on back instead of `history.back()`. The key mechanism:
 
-**File**: `src/components/dashboard/DashboardBottomNav.tsx`
-- Change Profile nav item to Daily Sprint (icon: `CalendarCheck`, label: "Sprint", to: `/daily-sprint`)
+1. **Dashboard replaces history entry** — When Dashboard mounts for an authenticated user, call `window.history.replaceState(null, "", "/dashboard")` to make the dashboard the history root. This means the hardware back button from the dashboard goes to the browser's start (effectively nowhere useful, which is correct).
 
-### 2. Add Study Buddy Widget to Dashboard
-The `BuddyMiniWidget` exists but is never rendered on the dashboard. Add it prominently after the streak hero, plus a "Find a Study Buddy" CTA card for users without a buddy.
-
-**File**: `src/pages/Dashboard.tsx`
-- Import `BuddyMiniWidget` and render it after the streak hero section (Section 1.5)
-- Add a new `DashboardBuddyCTA` component for users without an active buddy — a compact card with "Invite a Study Buddy" CTA linking to `/study-buddy`
-
-**New file**: `src/components/dashboard/DashboardBuddyCTA.tsx`
-- Glassmorphic card with `Users2` icon, tagline "Pair up for mutual accountability", and "Invite Buddy" + "Enter Code" buttons
-- Links to `/study-buddy`
-
-### 3. Make Flashcards Prominent — Move Above Tabs
-Currently flashcards are hidden inside the expandable "Today's Action" section. Add a dedicated flashcard quick-access card right after Today's Action (visible without expanding).
-
-**File**: `src/pages/Dashboard.tsx`
-- Add a new section between Today's Action and Stat Pills: a compact flashcard banner card with "📚 Daily Flashcards — Review 5 cards in 2 min" and a CTA button to `/flashcards`
-
-### 4. Premium Dashboard Visual Overhaul
-Apply the project's premium glassmorphic aesthetic to the dashboard.
-
-**File**: `src/pages/Dashboard.tsx`
-- Add a subtle gradient mesh background (soft warm gradient orbs like the flashcard practice mode but lighter, respecting light/dark theme)
-- Wrap main content area with a subtle noise texture overlay
-
-**File**: `src/components/dashboard/DashboardStreakHero.tsx`
-- Upgrade to glassmorphic card with backdrop-blur, subtle border glow, and animated gradient background
-- Add a pulsing ring around the flame icon when streak > 0
-
-**File**: `src/components/dashboard/DashboardTodayAction.tsx`
-- Add gradient accent border on the left side
-- Upgrade CTA button with shimmer animation matching navbar CTAs
-
-**File**: `src/components/dashboard/DashboardRecommendations.tsx`
-- Make recommendation cards taller with gradient accent tops (category-colored)
-- Add subtle glow effect on hover
-- Increase card width and add a proper CTA button instead of just an arrow
-
-**File**: `src/components/dashboard/DashboardStatPills.tsx`
-- Add glassmorphic backgrounds with subtle colored borders matching each stat's icon color
-
-**File**: `src/components/dashboard/DashboardQuickAccess.tsx`
-- Upgrade grid tiles with glassmorphic hover effects and subtle icon color accents
-
-### 5. Add Daily Sprint / Todo List Visibility
-Add a compact "Today's Goals" section on the dashboard showing sprint goals summary with a link to the full sprint page.
-
-**New file**: `src/components/dashboard/DashboardSprintPreview.tsx`
-- Shows today's sprint goal count (e.g., "2/5 goals done") with a progress ring
-- "Set Today's Goals →" CTA if no goals set
-- Links to `/daily-sprint`
-
-**File**: `src/pages/Dashboard.tsx`
-- Render `DashboardSprintPreview` after the flashcard card
-
-## Final Dashboard Section Order
-1. Greeting + Streak Hero (glassmorphic upgrade)
-2. **Study Buddy widget** (new — shows buddy status or invite CTA)
-3. Today's Action (visual upgrade)
-4. **Flashcard Quick Card** (new — prominent daily flashcards CTA)
-5. **Sprint Preview** (new — today's goals summary)
-6. Stat Pills (glassmorphic upgrade)
-7. Progress tabs (Practice/Planner)
-8. Recommendations (visual upgrade, highlighted)
-9. Leaderboard
-10. Quick Access grid
+2. **Sub-pages navigate to /dashboard on back** — Create a small `useBackToDashboard` hook that listens for the `popstate` event. When a logged-in user triggers a back gesture from any protected/dashboard-linked page, it intercepts and redirects to `/dashboard` using `navigate("/dashboard", { replace: true })`.
 
 ## Technical Details
 
-**Files to modify**: `Dashboard.tsx`, `DashboardBottomNav.tsx`, `DashboardStreakHero.tsx`, `DashboardTodayAction.tsx`, `DashboardRecommendations.tsx`, `DashboardStatPills.tsx`, `DashboardQuickAccess.tsx`
+**New file**: `src/hooks/useBackToDashboard.ts`
+- Custom hook that pushes a sentinel history entry on mount
+- Listens for `popstate` — when the sentinel is popped, navigates to `/dashboard`
+- Only activates when user is authenticated (checks `useAuth`)
+- Cleans up listener on unmount
 
-**New files**: `DashboardBuddyCTA.tsx`, `DashboardSprintPreview.tsx`
+**Modified file**: `src/pages/Dashboard.tsx`
+- On mount (when authenticated), push a duplicate history entry so the first back gesture stays on dashboard
+- Call `useBackToDashboard()` hook
 
-**No database changes needed.** All data sources already exist — buddy status from `buddy_pairs`, sprint goals from `sprint_goals`, flashcard progress from localStorage.
+**Modified files** (sub-pages that are dashboard-linked):
+- `src/pages/Flashcards.tsx`
+- `src/pages/PracticeLab.tsx`  
+- `src/pages/StudyBuddy.tsx`
+- `src/pages/DailySprint.tsx`
+- `src/pages/BattleRoom.tsx`
+- Each calls `useBackToDashboard()` so back gesture → dashboard
+
+This approach uses the standard `popstate` + sentinel pattern — no library needed, works with iOS swipe-back and Android hardware back button.
 
