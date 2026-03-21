@@ -128,7 +128,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           <DialogTitle>{title || "One Last Step"}</DialogTitle>
           <DialogDescription>{description || "Share your phone number so we can personalize your experience."}</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4 mt-2">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-2" data-track-conversion>
           {userName && (
             <div className="text-sm text-muted-foreground">
               Hi <span className="font-semibold text-foreground">{userName}</span> 👋
