@@ -517,20 +517,49 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
                 <div className="space-y-4">
                   <div className="bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 rounded-2xl p-5 text-center space-y-2">
                     <Sparkles className="w-6 h-6 text-primary mx-auto" />
-                    <h3 className="text-base font-bold text-foreground">Want a Personalized CAT Execution Roadmap?</h3>
-                    <p className="text-xs text-muted-foreground">Get a structured improvement plan based on your profile.</p>
+                    <h3 className="text-base font-bold text-foreground">Your Personalized CAT Execution Roadmap</h3>
+                    <p className="text-xs text-muted-foreground">A structured improvement plan based on your profile.</p>
                   </div>
 
                   {roadmapLoading && !roadmapText && (
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground py-4">
-                      <Loader2 className="h-4 w-4 animate-spin text-primary" />
-                      Generating your personalized roadmap...
+                    <div className="flex flex-col items-center gap-3 py-8">
+                      <div className="relative">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                        </div>
+                      </div>
+                      <p className="text-sm font-medium text-muted-foreground">Generating your personalized roadmap...</p>
+                      <p className="text-xs text-muted-foreground/60">This takes a few seconds</p>
                     </div>
                   )}
 
                   {roadmapText && (
-                    <div className="prose prose-sm dark:prose-invert max-w-none text-sm text-muted-foreground [&_strong]:text-foreground [&_h1]:text-base [&_h2]:text-sm [&_h3]:text-sm [&_h1]:font-bold [&_h2]:font-semibold [&_h3]:font-semibold [&_ul]:space-y-1 [&_ol]:space-y-1 [&_p]:leading-relaxed">
-                      <ReactMarkdown>{roadmapText}</ReactMarkdown>
+                    <div className="bg-card border border-border/50 rounded-xl overflow-hidden">
+                      <div className="prose prose-sm dark:prose-invert max-w-none p-4 sm:p-5 text-[13px] leading-relaxed text-muted-foreground
+                        [&_strong]:text-foreground [&_strong]:font-semibold
+                        [&_h1]:text-base [&_h1]:font-bold [&_h1]:text-foreground [&_h1]:mt-4 [&_h1]:mb-2 [&_h1]:pb-1.5 [&_h1]:border-b [&_h1]:border-primary/15
+                        [&_h2]:text-sm [&_h2]:font-bold [&_h2]:text-foreground [&_h2]:mt-4 [&_h2]:mb-1.5 [&_h2]:flex [&_h2]:items-center [&_h2]:gap-1.5
+                        [&_h3]:text-[13px] [&_h3]:font-semibold [&_h3]:text-foreground [&_h3]:mt-3 [&_h3]:mb-1
+                        [&_ul]:space-y-1.5 [&_ul]:my-2 [&_ul]:pl-1
+                        [&_ol]:space-y-1.5 [&_ol]:my-2
+                        [&_li]:text-muted-foreground [&_li]:leading-relaxed
+                        [&_li::marker]:text-primary/60
+                        [&_p]:leading-relaxed [&_p]:my-1.5
+                        [&_hr]:my-3 [&_hr]:border-border/40
+                        [&_blockquote]:border-l-2 [&_blockquote]:border-primary/30 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:text-muted-foreground/80
+                        [&_code]:bg-muted [&_code]:px-1 [&_code]:py-0.5 [&_code]:rounded [&_code]:text-xs
+                        [&_table]:w-full [&_table]:text-xs [&_table]:border-collapse
+                        [&_th]:bg-muted/50 [&_th]:px-2 [&_th]:py-1.5 [&_th]:text-left [&_th]:font-semibold [&_th]:text-foreground [&_th]:border [&_th]:border-border/40
+                        [&_td]:px-2 [&_td]:py-1.5 [&_td]:border [&_td]:border-border/40
+                      ">
+                        <ReactMarkdown>{roadmapText}</ReactMarkdown>
+                      </div>
+                      {roadmapLoading && (
+                        <div className="px-4 pb-3 flex items-center gap-2 text-xs text-muted-foreground/60">
+                          <Loader2 className="h-3 w-3 animate-spin text-primary/60" />
+                          Still generating...
+                        </div>
+                      )}
                     </div>
                   )}
 
