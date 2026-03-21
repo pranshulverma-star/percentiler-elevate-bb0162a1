@@ -24,7 +24,7 @@ const fade = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] },
+  transition: { duration: 0.55, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
 });
 
 const features = [
@@ -103,7 +103,7 @@ export default function StudyBuddyLanding({ onSignIn }: { onSignIn: () => void }
           <motion.div {...fade(0.2)} className="flex items-center justify-center gap-4 py-6">
             <div className="relative w-16 h-16 rounded-full bg-primary/15 flex items-center justify-center ring-2 ring-primary/20">
               <Users2 className="h-7 w-7 text-primary" />
-              <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-background" />
+              <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-primary border-2 border-background" />
             </div>
             <div className="flex items-center gap-1">
               {[...Array(5)].map((_, i) => (
@@ -117,7 +117,7 @@ export default function StudyBuddyLanding({ onSignIn }: { onSignIn: () => void }
             </div>
             <div className="relative w-16 h-16 rounded-full bg-primary/15 flex items-center justify-center ring-2 ring-primary/20">
               <Users2 className="h-7 w-7 text-primary" />
-              <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-green-500 border-2 border-background" />
+              <span className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-primary border-2 border-background" />
             </div>
           </motion.div>
 
