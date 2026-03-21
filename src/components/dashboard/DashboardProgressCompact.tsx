@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ArrowRight, TrendingUp, TrendingDown } from "lucide-react";
+import { ArrowRight, TrendingUp, TrendingDown, FlaskConical, Target, Flame, BarChart3, CalendarCheck, BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -19,24 +19,34 @@ export default function DashboardProgressCompact({ plannerData, loadingPlanner, 
   const [tab, setTab] = useState<"practice" | "planner">("practice");
 
   return (
-    <div className="rounded-2xl bg-card border border-border/40 shadow-[0_2px_12px_rgba(0,0,0,0.04)] overflow-hidden">
+    <div className="rounded-2xl overflow-hidden shadow-[0_2px_16px_rgba(0,0,0,0.06)]">
       {/* Tab toggle */}
-      <div className="flex border-b border-border/40">
+      <div className="flex">
         <button
           onClick={() => setTab("practice")}
-          className={`flex-1 text-xs font-medium py-2.5 transition-colors ${tab === "practice" ? "text-foreground border-b-2 border-primary" : "text-muted-foreground"}`}
+          className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-3 transition-all duration-300 ${
+            tab === "practice"
+              ? "bg-card text-foreground shadow-sm"
+              : "bg-muted/40 text-muted-foreground hover:text-foreground"
+          }`}
         >
+          <FlaskConical className="h-3.5 w-3.5" />
           Practice
         </button>
         <button
           onClick={() => setTab("planner")}
-          className={`flex-1 text-xs font-medium py-2.5 transition-colors ${tab === "planner" ? "text-foreground border-b-2 border-primary" : "text-muted-foreground"}`}
+          className={`flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold py-3 transition-all duration-300 ${
+            tab === "planner"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-muted/40 text-muted-foreground hover:text-foreground"
+          }`}
         >
+          <Target className="h-3.5 w-3.5" />
           Planner
         </button>
       </div>
 
-      <div className="p-4">
+      <div className={`p-5 transition-colors duration-300 ${tab === "planner" ? "bg-primary/[0.06] border border-primary/20 rounded-b-2xl" : "bg-card border border-border/40 rounded-b-2xl"}`}>
         {tab === "practice" ? (
           <PracticeContent attempts={practiceAttempts} loading={loadingPractice} />
         ) : (
@@ -53,6 +63,9 @@ function PracticeContent({ attempts, loading }: { attempts: any[]; loading: bool
   if (attempts.length === 0) {
     return (
       <div className="text-center py-6">
+        <div className="mx-auto w-14 h-14 rounded-2xl bg-secondary flex items-center justify-center mb-3">
+          <FlaskConical className="h-7 w-7 text-muted-foreground" />
+        </div>
         <p className="text-xs text-muted-foreground mb-3">No quizzes attempted yet</p>
         <Button asChild size="sm" className="rounded-xl">
           <Link to="/practice-lab">Start Practicing <ArrowRight className="ml-1 h-3.5 w-3.5" /></Link>
@@ -80,31 +93,45 @@ function PracticeContent({ attempts, loading }: { attempts: any[]; loading: bool
     sectionScores[a.section_id].count++;
   }
 
+  const sectionIcons: Record<string, typeof BarChart3> = { qa: BarChart3, lrdi: BookOpen, varc: BookOpen };
+
   return (
     <div className="space-y-4">
-      {/* Headline stat */}
-      <div className="flex items-baseline gap-2">
-        <span className="text-3xl font-bold text-foreground">{avgScore}%</span>
-        <span className="text-xs text-muted-foreground">Overall Accuracy</span>
+      {/* Headline stat with icon */}
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 rounded-2xl bg-secondary flex items-center justify-center shrink-0">
+          <FlaskConical className="h-6 w-6 text-foreground" />
+        </div>
+        <div className="flex-1">
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-bold text-foreground">{avgScore}%</span>
+            <span className="text-xs text-muted-foreground">Accuracy</span>
+          </div>
+          <p className="text-[10px] text-muted-foreground">{totalAttempts} quizzes completed</p>
+        </div>
         {trendPct !== 0 && (
-          <Badge variant="secondary" className={`text-[10px] gap-0.5 ml-auto ${trendPct > 0 ? "text-emerald-600" : "text-destructive"}`}>
+          <Badge variant="secondary" className={`text-[10px] gap-0.5 ${trendPct > 0 ? "text-emerald-600" : "text-destructive"}`}>
             {trendPct > 0 ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
-            {trendPct > 0 ? "+" : ""}{trendPct}% this week
+            {trendPct > 0 ? "+" : ""}{trendPct}%
           </Badge>
         )}
       </div>
 
-      {/* Section bars */}
+      {/* Section bars with icons */}
       <div className="space-y-2.5">
         {Object.entries(sectionScores).map(([sid, data]) => {
           const avg = Math.round(data.total / data.count);
+          const Icon = sectionIcons[sid] || BarChart3;
           return (
             <div key={sid}>
-              <div className="flex justify-between text-[11px] mb-1">
-                <span className="text-muted-foreground font-medium">{sectionNames[sid] || sid}</span>
+              <div className="flex items-center justify-between text-[11px] mb-1">
+                <span className="text-muted-foreground font-medium flex items-center gap-1.5">
+                  <Icon className="h-3 w-3" />
+                  {sectionNames[sid] || sid}
+                </span>
                 <span className="text-foreground font-semibold">{avg}%</span>
               </div>
-              <Progress value={avg} className="h-1" />
+              <Progress value={avg} className="h-1.5" />
             </div>
           );
         })}
@@ -123,8 +150,11 @@ function PlannerContent({ data, loading }: { data: any; loading: boolean }) {
   if (!data?.stats) {
     return (
       <div className="text-center py-6">
+        <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/15 flex items-center justify-center mb-3">
+          <CalendarCheck className="h-7 w-7 text-primary" />
+        </div>
         <p className="text-xs text-muted-foreground mb-3">Haven't started the Study Planner yet</p>
-        <Button asChild size="sm" className="rounded-xl">
+        <Button asChild size="sm" className="rounded-xl bg-primary hover:bg-primary/90">
           <Link to="/cat-daily-study-planner">Start Planning <ArrowRight className="ml-1 h-3.5 w-3.5" /></Link>
         </Button>
       </div>
@@ -138,22 +168,35 @@ function PlannerContent({ data, loading }: { data: any; loading: boolean }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-baseline gap-2">
-        <span className="text-3xl font-bold text-foreground">{Math.min(100, Math.round(consistency <= 1 ? consistency * 100 : consistency))}%</span>
-        <span className="text-xs text-muted-foreground">Consistency</span>
-        <Badge variant="secondary" className="text-[10px] ml-auto">
-          {activeDaysThisWeek}/7 this week
-        </Badge>
+      {/* Headline with flame icon */}
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 rounded-2xl bg-primary/15 flex items-center justify-center shrink-0">
+          <Flame className="h-6 w-6 text-primary" />
+        </div>
+        <div className="flex-1">
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-bold text-foreground">{Math.min(100, Math.round(consistency <= 1 ? consistency * 100 : consistency))}%</span>
+            <span className="text-xs text-muted-foreground">Consistency</span>
+          </div>
+          <p className="text-[10px] text-muted-foreground">{activeDaysThisWeek}/7 days active this week</p>
+        </div>
       </div>
 
+      {/* Stat cards */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl bg-secondary/50 p-3 text-center">
-          <div className="text-lg font-bold text-foreground">{heatScore}</div>
-          <p className="text-[10px] text-muted-foreground">Heat Score</p>
+        <div className="rounded-xl bg-primary/10 p-3 text-center">
+          <div className="flex items-center justify-center gap-1">
+            <Flame className="h-4 w-4 text-primary" />
+            <span className="text-lg font-bold text-foreground">{heatScore}</span>
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-0.5">Heat Score</p>
         </div>
-        <div className="rounded-xl bg-secondary/50 p-3 text-center">
-          <div className="text-lg font-bold text-foreground">{totalDays}</div>
-          <p className="text-[10px] text-muted-foreground">Active Days</p>
+        <div className="rounded-xl bg-primary/10 p-3 text-center">
+          <div className="flex items-center justify-center gap-1">
+            <CalendarCheck className="h-4 w-4 text-primary" />
+            <span className="text-lg font-bold text-foreground">{totalDays}</span>
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-0.5">Active Days</p>
         </div>
       </div>
 
