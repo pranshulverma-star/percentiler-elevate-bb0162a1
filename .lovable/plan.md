@@ -1,49 +1,33 @@
 
 
-## Plan: Add Scroll-Snap Between Sections Site-Wide
+## Diagnosis: Why Scroll Snap Is Not Working on Homepage
 
-### Important Consideration
+### Root Causes Identified
 
-Many sections on the site are **taller than the viewport** (especially on mobile at 393×587px) — for example, FAQ accordions, testimonials, course listings, and forms. Using `mandatory` scroll-snap on these would **trap users mid-section**, unable to scroll to see content below the fold within that section.
+1. **`content-visibility: auto` conflicts with scroll snap.** The `.content-auto` class uses `content-visibility: auto` with `contain-intrinsic-size: auto 600px`. This tells the browser to skip rendering off-screen sections and estimate their height at 600px. Scroll snap requires knowing the exact position of snap points — with estimated heights, snap targets are wrong and the browser can't snap correctly.
 
-**Recommended approach**: Use `scroll-snap-type: y proximity` instead of `mandatory`. This gives the "snap to next section" feel when scrolling near section boundaries, but still allows free scrolling through tall sections. It's the industry-standard approach for content-heavy marketing sites.
+2. **Multiple components grouped in one snap target.** Several snap-section divs contain 2-3 components (e.g., TrustStrip + ResultsSection, WebinarSection + CoursesSection + FacultySection). These create very tall snap targets that don't produce a "one scroll = one section" feel.
+
+3. **Fixed navbar offset.** The 64px fixed navbar means snap-align `start` puts content behind the navbar. Needs `scroll-padding-top: 4rem` on `html`.
+
+### Fix
+
+**1. `src/index.css`**
+- Add `scroll-padding-top: 4rem` to `html` (accounts for fixed navbar)
+- Remove `content-visibility: auto` from `.content-auto`, OR create a new class that doesn't use it for snap sections. The performance benefit of `content-visibility` is incompatible with scroll snap.
+
+**2. `src/pages/Index.tsx`**
+- Remove `content-auto` class from all snap-section divs (scroll snap needs real layout sizes)
+- Split grouped sections so each major component gets its own snap-section wrapper (e.g., TrustStrip and ResultsSection become separate snap targets)
 
 ### Changes
 
-**1. `src/index.css` — Add global snap styles**
-- Add `scroll-snap-type: y proximity` to the `html` element
-- Add a utility class `.snap-section` with `scroll-snap-align: start`
-- Add `scroll-behavior: smooth` for polished transitions
+**File 1: `src/index.css`** — Add `scroll-padding-top: 4rem` to the `html` rule. Remove `content-visibility` from snap sections (keep the `.content-auto` class for non-snap uses but don't combine it with `.snap-section`).
 
-**2. `src/pages/Index.tsx` — Add snap class to each section wrapper**
-- Add `snap-section` class to each `SectionErrorBoundary` / `div.content-auto` wrapper and to `HeroSection`, `FeaturedStrip`, `Footer`
-
-**3. All major page components** — Add snap class to top-level section elements across:
-- `StudyBuddy.tsx` (each landing section)
-- `Flashcards.tsx`, `PracticeLab.tsx`, `Dashboard.tsx`, etc.
-- Each page's major `<section>` elements get the `snap-section` class
-
-**4. `src/components/buddy/StudyBuddyLanding.tsx`** — Add `snap-section` to each `<section>`
-
-### Technical Detail
-
-```css
-/* index.css */
-html {
-  scroll-snap-type: y proximity;
-  scroll-behavior: smooth;
-}
-
-.snap-section {
-  scroll-snap-align: start;
-}
-```
-
-`proximity` means: snap only when the user stops scrolling near a section boundary. Free scrolling within tall sections works normally. This avoids the common pitfall of mandatory snap trapping users in oversized sections.
-
-### Files to edit
-1. `src/index.css` — global snap rules
-2. `src/pages/Index.tsx` — add snap classes to section wrappers
-3. `src/components/buddy/StudyBuddyLanding.tsx` — add snap classes
-4. Other page files with distinct sections (StudyBuddy, Flashcards, PracticeLab, Dashboard, etc.)
+**File 2: `src/pages/Index.tsx`** — Remove `content-auto` from all snap-section wrappers. Split multi-component snap divs into individual snap-section wrappers per component:
+- `TrustStrip` and `ResultsSection` → two separate snap-sections
+- `FreeToolsSection` and `PercentilePlannerSection` → two separate snap-sections  
+- `WebinarSection`, `CoursesSection`, `FacultySection` → three separate snap-sections
+- `WhyDifferentSection`, `FAQSection`, `FinalCTASection` → three separate snap-sections
+- Each wrapped in its own `SectionErrorBoundary` + `Suspense`
 
