@@ -370,14 +370,17 @@ export default function StudyBuddy() {
               userName={userName}
             />
           ) : (
-            <div className="max-w-md mx-auto">
+            <StudyBuddyLanding
+              onSignIn={handleSignIn}
+              ctaLabel="Find Your Study Buddy"
+            >
               <BuddyInviteCard
                 userId={user!.id}
                 userName={userName}
                 pendingInvite={pendingInvite}
                 onPaired={() => loadState()}
               />
-            </div>
+            </StudyBuddyLanding>
           )}
         </div>
       </main>

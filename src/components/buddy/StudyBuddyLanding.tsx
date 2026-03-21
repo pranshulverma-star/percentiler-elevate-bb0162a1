@@ -64,7 +64,24 @@ const faqJsonLd = {
   })),
 };
 
-export default function StudyBuddyLanding({ onSignIn }: { onSignIn: () => void }) {
+interface StudyBuddyLandingProps {
+  onSignIn: () => void;
+  ctaLabel?: string;
+  children?: React.ReactNode;
+}
+
+export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: StudyBuddyLandingProps) {
+  const heroCta = ctaLabel || "Get Your Study Buddy — Free";
+  const finalCta = ctaLabel || "Get Started — It's Free";
+
+  const handleCtaClick = () => {
+    if (children) {
+      document.getElementById("invite-section")?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      onSignIn();
+    }
+  };
+
   return (
     <>
       <Helmet>
@@ -122,8 +139,8 @@ export default function StudyBuddyLanding({ onSignIn }: { onSignIn: () => void }
           </motion.div>
 
           <motion.div {...fade(0.25)}>
-            <Button size="lg" onClick={onSignIn} className="gap-2 text-base px-8 h-12">
-              Get Your Study Buddy — Free <ArrowRight className="h-4 w-4" />
+            <Button size="lg" onClick={handleCtaClick} className="gap-2 text-base px-8 h-12">
+              {heroCta} <ArrowRight className="h-4 w-4" />
             </Button>
             <p className="text-xs text-muted-foreground mt-3">
               Already have an invite link? It will auto-pair you after sign-in.
@@ -215,11 +232,18 @@ export default function StudyBuddyLanding({ onSignIn }: { onSignIn: () => void }
           CAT prep is a marathon. Don't run it alone.
         </motion.p>
         <motion.div {...fade(0.15)}>
-          <Button size="lg" onClick={onSignIn} className="gap-2 text-base px-8 h-12">
-            Get Started — It's Free <ArrowRight className="h-4 w-4" />
-          </Button>
+           <Button size="lg" onClick={handleCtaClick} className="gap-2 text-base px-8 h-12">
+             {finalCta} <ArrowRight className="h-4 w-4" />
+           </Button>
         </motion.div>
-      </section>
+       </section>
+
+      {/* ── Invite Section (for authenticated users) ── */}
+      {children && (
+        <section id="invite-section" className="py-14 md:py-20 max-w-md mx-auto">
+          {children}
+        </section>
+      )}
     </>
   );
 }
