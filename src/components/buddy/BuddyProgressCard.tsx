@@ -24,7 +24,7 @@ interface Props {
 
 function ProgressColumn({ data, isYou }: { data: UserProgress; isYou: boolean }) {
   return (
-    <div className="flex-1 space-y-4 p-4 md:p-5">
+    <div className="flex-1 space-y-3 md:space-y-4 p-3 md:p-5">
       <div className="flex items-center gap-2">
         <span className="text-sm font-bold text-foreground truncate">
           {isYou ? "YOU" : "YOUR BUDDY"}
@@ -94,8 +94,8 @@ export default function BuddyProgressCard({ pair, currentUserId, myProgress, bud
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       <Card className="overflow-hidden border-primary/20">
         <CardContent className="p-0">
-          <div className="bg-primary/5 px-4 py-3 border-b border-border">
-            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+          <div className="bg-primary/5 px-3 md:px-4 py-2.5 md:py-3 border-b border-border">
+            <h3 className="text-xs md:text-sm font-bold text-foreground flex items-center gap-2">
               📊 Today's Progress
             </h3>
           </div>
@@ -105,13 +105,13 @@ export default function BuddyProgressCard({ pair, currentUserId, myProgress, bud
             <ProgressColumn data={buddyProgress} isYou={false} />
           </div>
 
-          <div className="bg-secondary/50 px-4 py-3 border-t border-border text-center space-y-1">
+          <div className="bg-secondary/50 px-3 md:px-4 py-2.5 md:py-3 border-t border-border text-center space-y-0.5 md:space-y-1">
             {bothActive ? (
-              <p className="text-sm font-semibold text-primary">🎯 Both active today = 2x streak bonus!</p>
+              <p className="text-xs md:text-sm font-semibold text-primary">🎯 Both active today = 2x streak bonus!</p>
             ) : (
-              <p className="text-sm text-muted-foreground">🎯 Both active today = 2x streak bonus!</p>
+              <p className="text-xs md:text-sm text-muted-foreground">🎯 Both active today = 2x streak bonus!</p>
             )}
-            <p className="text-xs text-muted-foreground">
+            <p className="text-[10px] md:text-xs text-muted-foreground">
               Buddy since {new Date(pair.created_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })} · {daysTogether} day{daysTogether !== 1 ? "s" : ""} together
             </p>
           </div>

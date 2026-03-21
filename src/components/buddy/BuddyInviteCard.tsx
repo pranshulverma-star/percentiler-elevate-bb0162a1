@@ -114,13 +114,13 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
       <Card className="border-primary/20 bg-card">
-        <CardContent className="p-6 space-y-6">
-          <div className="text-center space-y-2">
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mx-auto">
-              <UserPlus className="h-6 w-6 text-primary" />
+        <CardContent className="p-4 md:p-6 space-y-4 md:space-y-6">
+          <div className="text-center space-y-1.5 md:space-y-2">
+            <div className="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 mx-auto">
+              <UserPlus className="h-5 w-5 md:h-6 md:w-6 text-primary" />
             </div>
-            <h2 className="text-xl font-bold text-foreground">Invite a Study Buddy</h2>
-            <p className="text-sm text-muted-foreground">Share the link with a friend to start tracking progress together.</p>
+            <h2 className="text-lg md:text-xl font-bold text-foreground">Invite a Study Buddy</h2>
+            <p className="text-xs md:text-sm text-muted-foreground">Share the link with a friend to start tracking progress together.</p>
           </div>
 
           {!invite ? (

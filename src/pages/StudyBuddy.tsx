@@ -140,7 +140,7 @@ function DashboardState({
   const buddyIsActive = !!(buddyActivityData?.planner_completed || buddyActivityData?.quiz_attempted);
 
   return (
-    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-6">
+    <motion.div {...fadeUp} className="max-w-2xl mx-auto space-y-4 md:space-y-6">
       {nudgeReceived && (
         <motion.div
           initial={{ opacity: 0, y: -12 }}
@@ -331,8 +331,8 @@ export default function StudyBuddy() {
         canonical="https://percentilers.in/study-buddy"
       />
       <Navbar />
-      <main className="pt-6 pb-16 px-4 md:px-6">
-        <div className="max-w-5xl mx-auto py-8 md:py-16">
+      <main className="pt-2 pb-12 px-3 md:pt-6 md:pb-16 md:px-6">
+        <div className="max-w-5xl mx-auto py-4 md:py-16">
           {isLoading ? (
             <div className="flex items-center justify-center py-20">
               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
