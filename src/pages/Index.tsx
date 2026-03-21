@@ -73,6 +73,13 @@ const Index = () => (
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
           <div className="content-auto">
+            <DashboardCTASection />
+          </div>
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <div className="content-auto">
             <WebinarSection />
             <CoursesSection />
             <FacultySection />
