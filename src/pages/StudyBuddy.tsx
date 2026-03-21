@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/dialog";
 import {
   Users2,
-  Eye,
   Flame,
   Bell,
   ArrowRight,
