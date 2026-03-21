@@ -36,20 +36,20 @@ const Index = () => (
     <Navbar />
     <main>
       {/* Act 1: Hook & Trust — above the fold, eagerly loaded */}
-      <HeroSection />
-      <FeaturedStrip />
+      <div className="snap-section"><HeroSection /></div>
+      <div className="snap-section"><FeaturedStrip /></div>
 
       {/* Everything below is lazy loaded + error-bounded */}
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto">
+          <div className="content-auto snap-section">
             <PreparationPathSection />
           </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto">
+          <div className="content-auto snap-section">
             <TrustStrip />
             <ResultsSection />
           </div>
@@ -57,7 +57,7 @@ const Index = () => (
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto">
+          <div className="content-auto snap-section">
             <FreeToolsSection />
             <PercentilePlannerSection />
           </div>
@@ -65,21 +65,21 @@ const Index = () => (
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto">
+          <div className="content-auto snap-section">
             <TestimonialsSection />
           </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto">
+          <div className="content-auto snap-section">
             <DashboardCTASection />
           </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto">
+          <div className="content-auto snap-section">
             <WebinarSection />
             <CoursesSection />
             <FacultySection />
@@ -88,14 +88,14 @@ const Index = () => (
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto">
+          <div className="content-auto snap-section">
             <FounderSection />
           </div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto">
+          <div className="content-auto snap-section">
             <WhyDifferentSection />
             <FAQSection />
             <FinalCTASection />

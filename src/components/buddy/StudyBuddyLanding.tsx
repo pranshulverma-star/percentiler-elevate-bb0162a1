@@ -89,7 +89,7 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
       </Helmet>
 
       {/* ── Hero ── */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
+      <section className="snap-section relative py-16 md:py-24 overflow-hidden">
         {/* Decorative blobs */}
         <div className="absolute -top-32 -left-32 w-72 h-72 rounded-full bg-primary/10 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-24 -right-24 w-64 h-64 rounded-full bg-primary/5 blur-3xl pointer-events-none" />
@@ -150,7 +150,7 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
       </section>
 
       {/* ── How It Works ── */}
-      <section className="py-14 md:py-20">
+      <section className="snap-section py-14 md:py-20">
         <motion.h2 {...fade()} className="text-2xl md:text-3xl font-bold text-center text-foreground mb-10">
           How It Works
         </motion.h2>
@@ -172,7 +172,7 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
       </section>
 
       {/* ── Feature Showcase ── */}
-      <section className="py-14 md:py-20 relative">
+      <section className="snap-section py-14 md:py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/[0.03] to-transparent pointer-events-none" />
         <motion.h2 {...fade()} className="relative text-2xl md:text-3xl font-bold text-center text-foreground mb-10">
           Everything You Get
@@ -195,7 +195,7 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
       </section>
 
       {/* ── Stats Strip ── */}
-      <section className="py-12 md:py-16">
+      <section className="snap-section py-12 md:py-16">
         <div className="max-w-3xl mx-auto grid grid-cols-3 gap-4 text-center">
           {stats.map((s, i) => (
             <motion.div key={s.label} {...fade(i * 0.1)} className="space-y-1">
@@ -207,7 +207,7 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
       </section>
 
       {/* ── FAQ ── */}
-      <section className="py-14 md:py-20 max-w-2xl mx-auto">
+      <section className="snap-section py-14 md:py-20 max-w-2xl mx-auto">
         <motion.h2 {...fade()} className="text-2xl md:text-3xl font-bold text-center text-foreground mb-8">
           Frequently Asked Questions
         </motion.h2>
@@ -224,7 +224,7 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="py-14 md:py-20 text-center space-y-5">
+      <section className="snap-section py-14 md:py-20 text-center space-y-5">
         <motion.h2 {...fade()} className="text-2xl md:text-3xl font-bold text-foreground">
           Your future self will thank you.
         </motion.h2>
@@ -240,7 +240,7 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
 
       {/* ── Invite Section (for authenticated users) ── */}
       {children && (
-        <section id="invite-section" className="py-14 md:py-20 max-w-md mx-auto">
+        <section id="invite-section" className="snap-section py-14 md:py-20 max-w-md mx-auto">
           {children}
         </section>
       )}

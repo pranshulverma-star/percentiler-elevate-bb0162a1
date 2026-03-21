@@ -164,6 +164,10 @@
     contain-intrinsic-size: auto 600px;
   }
 
+  .snap-section {
+    scroll-snap-align: start;
+  }
+
   /* IntersectionObserver-driven animations */
   .fade-in-up {
     opacity: 0;
