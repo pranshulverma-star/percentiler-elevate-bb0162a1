@@ -42,64 +42,72 @@ const Index = () => (
       {/* Everything below is lazy loaded + error-bounded */}
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto snap-section">
-            <PreparationPathSection />
-          </div>
+          <div className="snap-section"><PreparationPathSection /></div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto snap-section">
-            <TrustStrip />
-            <ResultsSection />
-          </div>
+          <div className="snap-section"><TrustStrip /></div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto snap-section">
-            <FreeToolsSection />
-            <PercentilePlannerSection />
-          </div>
+          <div className="snap-section"><ResultsSection /></div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto snap-section">
-            <TestimonialsSection />
-          </div>
+          <div className="snap-section"><FreeToolsSection /></div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto snap-section">
-            <DashboardCTASection />
-          </div>
+          <div className="snap-section"><PercentilePlannerSection /></div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto snap-section">
-            <WebinarSection />
-            <CoursesSection />
-            <FacultySection />
-          </div>
+          <div className="snap-section"><TestimonialsSection /></div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto snap-section">
-            <FounderSection />
-          </div>
+          <div className="snap-section"><DashboardCTASection /></div>
         </Suspense>
       </SectionErrorBoundary>
       <SectionErrorBoundary>
         <Suspense fallback={<LazyFallback />}>
-          <div className="content-auto snap-section">
-            <WhyDifferentSection />
-            <FAQSection />
-            <FinalCTASection />
-          </div>
+          <div className="snap-section"><WebinarSection /></div>
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <div className="snap-section"><CoursesSection /></div>
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <div className="snap-section"><FacultySection /></div>
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <div className="snap-section"><FounderSection /></div>
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <div className="snap-section"><WhyDifferentSection /></div>
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <div className="snap-section"><FAQSection /></div>
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <div className="snap-section"><FinalCTASection /></div>
         </Suspense>
       </SectionErrorBoundary>
     </main>
