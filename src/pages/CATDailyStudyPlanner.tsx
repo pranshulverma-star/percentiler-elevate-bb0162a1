@@ -609,13 +609,13 @@ function StickyCTABar({ heatData, inactiveDays }: { heatData: HeatScoreData | nu
             <div className="absolute -top-8 left-1/4 w-40 h-16 bg-primary/20 blur-2xl rounded-full" />
             <div className="absolute -top-8 right-1/4 w-32 h-12 bg-primary/10 blur-2xl rounded-full" />
           </div>
-          <div className="relative max-w-2xl mx-auto px-4 py-3.5 flex items-center gap-3">
-            <div className="flex items-center gap-2.5 flex-1 min-w-0">
+          <div className="relative max-w-2xl mx-auto px-4 py-3.5 flex items-center justify-center md:justify-between gap-3">
+            <div className="hidden md:flex items-center gap-2.5 flex-1 min-w-0">
               <div className="shrink-0 w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center">
                 {ctaContent.icon}
               </div>
               <div className="min-w-0">
-                <p className="text-xs md:text-sm font-semibold text-background leading-tight truncate">
+                <p className="text-sm font-semibold text-background leading-tight truncate">
                   {ctaContent.headline}
                 </p>
               </div>
