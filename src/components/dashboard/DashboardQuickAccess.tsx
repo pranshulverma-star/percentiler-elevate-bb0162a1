@@ -1,4 +1,4 @@
-import { GraduationCap, Users, ClipboardList, Wrench, BookOpen, Phone } from "lucide-react";
+import { GraduationCap, Users, ClipboardList, Wrench, BookOpen, Phone, Compass } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -17,16 +17,19 @@ const tiles = [
 
 export default function DashboardQuickAccess({ converted: _converted, mentorshipActive: _mentorshipActive }: Props) {
   return (
-    <div>
-      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Explore</p>
-      <div className="grid grid-cols-3 gap-2">
+    <div className="rounded-2xl border border-border/50 bg-card/90 backdrop-blur-sm p-5 shadow-[0_2px_16px_rgba(0,0,0,0.06)]">
+      <div className="flex items-center gap-2 mb-4">
+        <Compass className="h-4 w-4 text-primary" />
+        <p className="text-sm font-semibold text-foreground">Explore</p>
+      </div>
+      <div className="grid grid-cols-3 gap-2.5">
         {tiles.map((t) => {
           const Icon = t.icon;
           return (
             <Link
               key={t.label}
               to={t.to}
-              className="flex flex-col items-center gap-1.5 py-3.5 rounded-xl bg-card/60 backdrop-blur-sm border border-border/20 hover:border-primary/20 hover:bg-card/90 transition-all duration-200 group"
+              className="flex flex-col items-center gap-1.5 py-3.5 rounded-xl bg-secondary/50 border border-border/20 hover:border-primary/20 hover:bg-secondary transition-all duration-200 group"
             >
               <Icon className="h-5 w-5 text-muted-foreground group-hover:scale-110 transition-transform" style={{ color: t.color }} />
               <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center leading-tight">{t.label}</span>
