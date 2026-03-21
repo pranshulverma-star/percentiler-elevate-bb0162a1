@@ -98,6 +98,7 @@
 
   html {
     scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
   }
 
   html, body {
@@ -161,6 +162,10 @@
   .content-auto {
     content-visibility: auto;
     contain-intrinsic-size: auto 600px;
+  }
+
+  .snap-section {
+    scroll-snap-align: start;
   }
 
   /* IntersectionObserver-driven animations */
