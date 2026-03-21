@@ -1,31 +1,49 @@
 
 
-## Plan: Show Study Buddy Landing Page for All Users First
+## Plan: Add Scroll-Snap Between Sections Site-Wide
 
-### Problem
-Currently, authenticated users without a buddy pair skip the new premium landing page and go straight to the bare `BuddyInviteCard`. The rich landing experience we just built is only visible to logged-out users.
+### Important Consideration
 
-### Solution
-Restructure `StudyBuddy.tsx` so that **all users** (authenticated or not) see the `StudyBuddyLanding` page first. The invite/pair flow becomes a secondary step.
+Many sections on the site are **taller than the viewport** (especially on mobile at 393×587px) — for example, FAQ accordions, testimonials, course listings, and forms. Using `mandatory` scroll-snap on these would **trap users mid-section**, unable to scroll to see content below the fold within that section.
 
-### Changes to `src/pages/StudyBuddy.tsx`
+**Recommended approach**: Use `scroll-snap-type: y proximity` instead of `mandatory`. This gives the "snap to next section" feel when scrolling near section boundaries, but still allows free scrolling through tall sections. It's the industry-standard approach for content-heavy marketing sites.
 
-1. **Authenticated users without a pair** — show `StudyBuddyLanding` instead of jumping to `BuddyInviteCard`. The CTA button text changes to "Find Your Study Buddy" (instead of "Sign Up Free") and clicking it scrolls down or opens the invite card inline below the landing sections.
+### Changes
 
-2. **Authenticated users with an active pair** — continue showing `DashboardState` as today (no change).
+**1. `src/index.css` — Add global snap styles**
+- Add `scroll-snap-type: y proximity` to the `html` element
+- Add a utility class `.snap-section` with `scroll-snap-align: start`
+- Add `scroll-behavior: smooth` for polished transitions
 
-3. **Invite param flow** — remains unchanged (auto-accept logic).
+**2. `src/pages/Index.tsx` — Add snap class to each section wrapper**
+- Add `snap-section` class to each `SectionErrorBoundary` / `div.content-auto` wrapper and to `HeroSection`, `FeaturedStrip`, `Footer`
 
-4. **Unauthenticated users** — see the same landing with "Sign Up Free" CTA (no change).
+**3. All major page components** — Add snap class to top-level section elements across:
+- `StudyBuddy.tsx` (each landing section)
+- `Flashcards.tsx`, `PracticeLab.tsx`, `Dashboard.tsx`, etc.
+- Each page's major `<section>` elements get the `snap-section` class
 
-### Implementation Detail
+**4. `src/components/buddy/StudyBuddyLanding.tsx`** — Add `snap-section` to each `<section>`
 
-In the render logic of `StudyBuddy.tsx`:
-- When authenticated + no pair + no invite param → render `<StudyBuddyLanding>` with a `<BuddyInviteCard>` appended below the Final CTA section
-- Pass a different CTA label/callback to `StudyBuddyLanding` for authenticated users: button says "Get Your Invite Link" and smooth-scrolls to the invite card section below
-- Add an `id="invite-section"` anchor div wrapping `BuddyInviteCard` at the bottom of the landing
+### Technical Detail
+
+```css
+/* index.css */
+html {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+
+.snap-section {
+  scroll-snap-align: start;
+}
+```
+
+`proximity` means: snap only when the user stops scrolling near a section boundary. Free scrolling within tall sections works normally. This avoids the common pitfall of mandatory snap trapping users in oversized sections.
 
 ### Files to edit
-1. `src/pages/StudyBuddy.tsx` — adjust render conditions to show landing + invite card for authed users without a pair
-2. `src/components/buddy/StudyBuddyLanding.tsx` — accept optional props for custom CTA label and an optional `children` slot or `renderBottom` for the invite card section
+1. `src/index.css` — global snap rules
+2. `src/pages/Index.tsx` — add snap classes to section wrappers
+3. `src/components/buddy/StudyBuddyLanding.tsx` — add snap classes
+4. Other page files with distinct sections (StudyBuddy, Flashcards, PracticeLab, Dashboard, etc.)
 
