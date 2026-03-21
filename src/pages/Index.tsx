@@ -19,6 +19,7 @@ const PercentilePlannerSection = lazy(() => import("@/components/PercentilePlann
 const FreeToolsSection = lazy(() => import("@/components/FreeToolsSection"));
 const FAQSection = lazy(() => import("@/components/FAQSection"));
 const WhyDifferentSection = lazy(() => import("@/components/WhyDifferentSection"));
+const DashboardCTASection = lazy(() => import("@/components/DashboardCTASection"));
 const FinalCTASection = lazy(() => import("@/components/FinalCTASection"));
 const WhatsAppButton = lazy(() => import("@/components/WhatsAppButton"));
 const ScrollCTAPanel = lazy(() => import("@/components/ScrollCTAPanel"));
@@ -66,6 +67,13 @@ const Index = () => (
         <Suspense fallback={<LazyFallback />}>
           <div className="content-auto">
             <TestimonialsSection />
+          </div>
+        </Suspense>
+      </SectionErrorBoundary>
+      <SectionErrorBoundary>
+        <Suspense fallback={<LazyFallback />}>
+          <div className="content-auto">
+            <DashboardCTASection />
           </div>
         </Suspense>
       </SectionErrorBoundary>
