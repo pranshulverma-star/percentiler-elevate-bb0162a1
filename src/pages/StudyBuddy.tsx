@@ -3,6 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import SEO from "@/components/SEO";
+import StudyBuddyLanding from "@/components/buddy/StudyBuddyLanding";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
