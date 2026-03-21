@@ -3,6 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import SEO from "@/components/SEO";
+import StudyBuddyLanding from "@/components/buddy/StudyBuddyLanding";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
@@ -20,7 +21,6 @@ import {
 } from "@/components/ui/dialog";
 import {
   Users2,
-  Eye,
   Flame,
   Bell,
   ArrowRight,
@@ -48,51 +48,7 @@ import {
 
 const fadeUp = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } };
 
-// ─── State 1: Landing (Not logged in) ───
-function LandingState({ onSignIn }: { onSignIn: () => void }) {
-  const features = [
-    { icon: Eye, title: "Shared Progress", desc: "See your buddy's daily planner and quiz activity in real-time." },
-    { icon: Flame, title: "2x Streak Bonus", desc: "Both active today? Double the points for both of you." },
-    { icon: Bell, title: "Gentle Nudges", desc: "Get notified when your buddy needs a little motivation." },
-  ];
-
-  return (
-    <motion.div {...fadeUp} className="max-w-3xl mx-auto space-y-10 text-center">
-      <div className="space-y-4">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider">
-          <Users2 className="h-4 w-4" /> New Feature
-        </div>
-        <h1 className="text-3xl md:text-5xl font-black tracking-tight text-foreground">
-          Find Your CAT <span className="text-primary">Study Buddy</span>
-        </h1>
-        <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto">
-          Pair up with a friend. Track each other's daily progress. Stay accountable together.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {features.map((f) => (
-          <Card key={f.title} className="text-left border-border">
-            <CardContent className="p-5 space-y-3">
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-primary/10">
-                <f.icon className="h-5 w-5 text-primary" />
-              </div>
-              <h3 className="font-bold text-foreground">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.desc}</p>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <div className="space-y-3">
-        <Button size="lg" onClick={onSignIn} className="gap-2">
-          Get Started — Sign in with Google <ArrowRight className="h-4 w-4" />
-        </Button>
-        <p className="text-xs text-muted-foreground">Already have an invite link? It will auto-pair you after sign-in.</p>
-      </div>
-    </motion.div>
-  );
-}
+// LandingState moved to src/components/buddy/StudyBuddyLanding.tsx
 
 // ─── State 3: Dashboard (Buddy paired) ───
 function DashboardState({
@@ -370,8 +326,8 @@ export default function StudyBuddy() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Study Buddy — Find Your CAT Accountability Partner | Percentilers"
-        description="Pair up with a friend for CAT preparation. Track daily progress, earn streak bonuses, and stay accountable together."
+        title="CAT Study Buddy — Find Your Accountability Partner | Percentilers"
+        description="Pair up with a friend for CAT 2026 preparation. Track daily progress, earn streak bonuses, and stay accountable together. Free forever."
         canonical="https://percentilers.in/study-buddy"
       />
       <Navbar />
@@ -394,7 +350,7 @@ export default function StudyBuddy() {
                 </Button>
               </motion.div>
             ) : (
-              <LandingState onSignIn={handleSignIn} />
+              <StudyBuddyLanding onSignIn={handleSignIn} />
             )
           ) : inviteError ? (
             <motion.div {...fadeUp} className="max-w-md mx-auto text-center space-y-6">
