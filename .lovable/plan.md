@@ -1,47 +1,31 @@
 
 
-## Plan: Redesign Study Buddy Landing Page
+## Plan: Show Study Buddy Landing Page for All Users First
 
 ### Problem
-The current Study Buddy page has a minimal landing state for unauthenticated users — just 3 feature cards and a sign-in button. It doesn't sell the concept or match the premium visual identity of the rest of the site.
+Currently, authenticated users without a buddy pair skip the new premium landing page and go straight to the bare `BuddyInviteCard`. The rich landing experience we just built is only visible to logged-out users.
 
-### What we're building
-A visually rich, mobile-first landing page that replaces the current `LandingState` component inside `StudyBuddy.tsx`. The authenticated states (invite card, dashboard) remain untouched.
+### Solution
+Restructure `StudyBuddy.tsx` so that **all users** (authenticated or not) see the `StudyBuddyLanding` page first. The invite/pair flow becomes a secondary step.
 
-### New Landing Sections (top to bottom)
+### Changes to `src/pages/StudyBuddy.tsx`
 
-1. **Hero** — Bold headline ("Your CAT Prep Partner in Crime"), subtext about accountability, primary CTA ("Get Your Study Buddy — Free"), and a decorative illustration area with two animated avatar silhouettes connected by a dotted line (CSS-only).
+1. **Authenticated users without a pair** — show `StudyBuddyLanding` instead of jumping to `BuddyInviteCard`. The CTA button text changes to "Find Your Study Buddy" (instead of "Sign Up Free") and clicking it scrolls down or opens the invite card inline below the landing sections.
 
-2. **How It Works** — 3-step horizontal timeline (mobile: vertical): (1) Share invite link → (2) Buddy joins → (3) Track together. Numbered circles with connecting lines, icon + short copy per step.
+2. **Authenticated users with an active pair** — continue showing `DashboardState` as today (no change).
 
-3. **Feature Showcase** — 4 glassmorphic cards in a 2×2 grid (mobile: stacked): Shared Progress Tracking, 2x Streak Bonus, Daily Sprint Visibility, Gentle Nudges. Each with a Lucide icon, bold title, and one-line description.
+3. **Invite param flow** — remains unchanged (auto-accept logic).
 
-4. **Social Proof / Stats Strip** — Animated counter-style stats: "500+ buddy pairs formed", "2x more consistent", "87% complete daily goals". Adds credibility without real testimonials.
+4. **Unauthenticated users** — see the same landing with "Sign Up Free" CTA (no change).
 
-5. **FAQ Accordion** — 4-5 questions (Is it free? Can I change buddies? What does my buddy see? Do I need to share my phone number?) using the existing `accordion` UI component. SEO-friendly with FAQ structured data.
+### Implementation Detail
 
-6. **Final CTA** — Repeated sign-in button with urgency copy ("Your future self will thank you").
+In the render logic of `StudyBuddy.tsx`:
+- When authenticated + no pair + no invite param → render `<StudyBuddyLanding>` with a `<BuddyInviteCard>` appended below the Final CTA section
+- Pass a different CTA label/callback to `StudyBuddyLanding` for authenticated users: button says "Get Your Invite Link" and smooth-scrolls to the invite card section below
+- Add an `id="invite-section"` anchor div wrapping `BuddyInviteCard` at the bottom of the landing
 
-### SEO Enhancements
-- Unique H1 with target keyword "CAT Study Buddy"
-- Update SEO component meta title/description for search intent
-- Add FAQPage JSON-LD structured data in the component
-- Proper heading hierarchy (H1 → H2 → H3)
-
-### Visual Style (matching brand)
-- Gradient background sections (primary/10 → transparent)
-- Decorative blur blobs (consistent with DashboardCTASection)
-- Glassmorphic card borders with `backdrop-blur`
-- `framer-motion` fadeUp animations per section
-- Mobile-first: single-column stacks, tight padding (py-10), tracking-tight headlines
-
-### Files to change
-1. **Edit** `src/pages/StudyBuddy.tsx` — Replace `LandingState` with the new multi-section landing, add JSON-LD FAQ schema
-2. No new files needed — everything stays within the existing page component
-
-### What stays the same
-- All authenticated states (invite card, buddy dashboard, error handling)
-- SEO canonical URL
-- Navbar + Footer wrapper
-- All buddy utility functions and data flow
+### Files to edit
+1. `src/pages/StudyBuddy.tsx` — adjust render conditions to show landing + invite card for authed users without a pair
+2. `src/components/buddy/StudyBuddyLanding.tsx` — accept optional props for custom CTA label and an optional `children` slot or `renderBottom` for the invite card section
 
