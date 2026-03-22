@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import { Loader2, LogIn } from "lucide-react";
+import { Loader2, LogIn, Lock } from "lucide-react";
 import { useAuth, isAuthFlowActive } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import { Button } from "@/components/ui/button";
@@ -172,7 +172,19 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
   return <>{children}</>;
 }
 
-/** Reusable sign-in screen */
+/** Context-aware heading map */
+function getSignInCopy(source: string) {
+  switch (source) {
+    case "dashboard":
+      return { heading: "Welcome to your Dashboard", sub: "Sign in to track progress, streaks & study plans." };
+    case "masterclass":
+      return { heading: "Watch the Masterclass", sub: "Sign in to access the free masterclass by Pranshul Verma." };
+    default:
+      return { heading: "Sign in to continue", sub: "Sign in to access your personalised content." };
+  }
+}
+
+/** Premium branded sign-in screen */
 function SignInScreen({
   source,
   loading,
@@ -186,22 +198,50 @@ function SignInScreen({
   message?: string;
   onSignIn: (provider: "google" | "apple") => void;
 }) {
+  const { heading, sub } = getSignInCopy(source);
+
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 text-center gap-4">
-      <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10">
-        <LogIn className="h-8 w-8 text-primary" />
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center px-4 relative overflow-hidden">
+      {/* Gradient mesh background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] rounded-full bg-primary/8 blur-3xl" />
+        <div className="absolute bottom-[-15%] right-[-10%] w-[50%] h-[50%] rounded-full bg-accent/10 blur-3xl" />
       </div>
-      <h2 className="text-xl font-bold text-foreground">Sign in to continue</h2>
-      <p className="text-sm text-muted-foreground max-w-xs">
-        {message || `Sign in to access your ${source === "dashboard" ? "dashboard" : source === "masterclass" ? "masterclass" : "content"}.`}
-      </p>
-      <div className="w-full max-w-xs">
-        <AuthButtons
-          onGoogle={() => onSignIn("google")}
-          onApple={() => onSignIn("apple")}
-          loading={loading}
-          loadingProvider={loadingProvider}
-        />
+
+      {/* Glassmorphic card */}
+      <div className="relative z-10 w-full max-w-sm bg-card/80 backdrop-blur-xl border border-border/50 rounded-2xl p-8 shadow-2xl flex flex-col items-center gap-5">
+        {/* Brand */}
+        <div className="flex flex-col items-center gap-1">
+          <span className="text-2xl font-bold tracking-tight text-foreground">Percentilers</span>
+          <span className="text-[11px] uppercase tracking-widest text-muted-foreground font-medium">by Pranshul Verma</span>
+        </div>
+
+        {/* Divider */}
+        <div className="w-12 h-px bg-border" />
+
+        {/* Copy */}
+        <div className="text-center space-y-1.5">
+          <h2 className="text-xl font-bold text-foreground">{heading}</h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {message || sub}
+          </p>
+        </div>
+
+        {/* Auth buttons */}
+        <div className="w-full mt-1">
+          <AuthButtons
+            onGoogle={() => onSignIn("google")}
+            onApple={() => onSignIn("apple")}
+            loading={loading}
+            loadingProvider={loadingProvider}
+          />
+        </div>
+
+        {/* Trust line */}
+        <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground/70 mt-1">
+          <Lock className="w-3 h-3" />
+          <span>Secure encrypted sign-in</span>
+        </div>
       </div>
     </div>
   );
