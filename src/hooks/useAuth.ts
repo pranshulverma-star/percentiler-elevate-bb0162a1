@@ -127,7 +127,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const signIn = useCallback(async (redirectPath?: string, provider: "google" | "apple" = "google") => {
-    // Single-flight guard: prevent stacked sign-in calls
+    // Staleness check: if the ref has been true for >30s, auto-clear it
+    const startedAt = sessionStorage.getItem("auth_flow_started_at");
+    if (signInInProgressRef.current && startedAt && (Date.now() - Number(startedAt)) > 30_000) {
+      console.warn("[Auth] Clearing stale signInInProgress guard");
+      signInInProgressRef.current = false;
+    }
+
     if (signInInProgressRef.current) {
       console.log("[Auth] Sign-in already in progress, ignoring duplicate call");
       return;
@@ -157,13 +163,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         options: {
           redirectTo: redirectUri,
           skipBrowserRedirect: true,
-          queryParams: { prompt: "select_account" },
+          queryParams: provider === "google" ? { prompt: "select_account" } : {},
         },
       });
 
       if (error) {
         console.error("[Auth] Direct redirect sign-in error:", error);
-        signInInProgressRef.current = false;
         throw error;
       }
 
@@ -172,7 +177,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      signInInProgressRef.current = false;
       throw new Error("[Auth] Missing OAuth redirect URL");
     };
 
@@ -186,7 +190,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw result.error;
       }
 
-      // Standalone PWA on iOS can fail popup/token handoff silently.
       if (standalone && !result?.redirected) {
         console.warn("[Auth] Standalone fallback to direct redirect flow");
         await startDirectRedirect();
@@ -194,11 +197,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch (err) {
       if (standalone) {
         console.warn("[Auth] Standalone managed flow failed, retrying direct redirect", err);
-        await startDirectRedirect();
+        try {
+          await startDirectRedirect();
+        } catch (innerErr) {
+          signInInProgressRef.current = false;
+          sessionStorage.removeItem("auth_flow_started_at");
+          throw innerErr;
+        }
         return;
       }
-      console.error("[Auth] Sign-in error:", err);
       signInInProgressRef.current = false;
+      sessionStorage.removeItem("auth_flow_started_at");
       throw err;
     }
   }, []);

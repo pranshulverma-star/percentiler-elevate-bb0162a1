@@ -4,6 +4,7 @@ import { Loader2, LogIn } from "lucide-react";
 import { useAuth, isAuthFlowActive } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import AuthButtons from "@/components/AuthButtons";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 
