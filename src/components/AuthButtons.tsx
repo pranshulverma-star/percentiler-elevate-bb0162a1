@@ -43,13 +43,14 @@ export default function AuthButtons({
       <button
         onClick={onGoogle}
         disabled={disabled}
-        className="flex-1 relative flex items-center justify-center gap-3 h-12 rounded-xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-border transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none group"
+        className="flex-1 relative flex items-center justify-center gap-3 h-[52px] rounded-xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-border transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none group"
       >
         {isGoogleLoading ? (
           <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
         ) : (
           <GoogleIcon />
         )}
+        <div className="w-px h-5 bg-border/60" />
         <span className="text-sm font-semibold text-foreground">Continue with Google</span>
       </button>
 
@@ -57,13 +58,14 @@ export default function AuthButtons({
       <button
         onClick={onApple}
         disabled={disabled}
-        className="flex-1 relative flex items-center justify-center gap-3 h-12 rounded-xl bg-foreground text-background shadow-sm hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+        className="flex-1 relative flex items-center justify-center gap-3 h-[52px] rounded-xl bg-foreground text-background shadow-sm hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
       >
         {isAppleLoading ? (
           <Loader2 className="h-5 w-5 animate-spin" />
         ) : (
           <AppleIcon />
         )}
+        <div className="w-px h-5 bg-background/20" />
         <span className="text-sm font-semibold">Continue with Apple</span>
       </button>
     </div>
