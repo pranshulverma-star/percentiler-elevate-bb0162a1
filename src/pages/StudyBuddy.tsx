@@ -9,6 +9,7 @@ import Footer from "@/components/Footer";
 import { useAuth } from "@/hooks/useAuth";
 import { useBackToDashboard } from "@/hooks/useBackToDashboard";
 import { Button } from "@/components/ui/button";
+import AuthButtons from "@/components/AuthButtons";
 import { Card, CardContent } from "@/components/ui/card";
 import SprintGoalList from "@/components/sprint/SprintGoalList";
 import { getBuddyGoals, type SprintGoal } from "@/lib/sprint-utils";
@@ -314,11 +315,11 @@ export default function StudyBuddy() {
     loadState();
   }, [authLoading, loadState]);
 
-  const handleSignIn = () => {
+  const handleSignIn = (provider: "google" | "apple" = "google") => {
     const redirectPath = inviteParam
       ? `/study-buddy?invite=${inviteParam}`
       : "/study-buddy";
-    signIn(redirectPath);
+    signIn(redirectPath, provider);
   };
 
   const isLoading = authLoading || pageLoading || joiningInvite;
@@ -345,9 +346,10 @@ export default function StudyBuddy() {
                   <h1 className="text-2xl font-bold text-foreground">Join as a Study Buddy</h1>
                   <p className="text-muted-foreground">Sign in to join your friend's study group.</p>
                 </div>
-                <Button size="lg" onClick={handleSignIn} className="gap-2">
-                  Sign in with Google <ArrowRight className="h-4 w-4" />
-                </Button>
+                <AuthButtons
+                  onGoogle={() => handleSignIn("google")}
+                  onApple={() => handleSignIn("apple")}
+                />
               </motion.div>
             ) : (
               <StudyBuddyLanding onSignIn={handleSignIn} />

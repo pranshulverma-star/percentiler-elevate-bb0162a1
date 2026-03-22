@@ -41,6 +41,7 @@ import Footer from "@/components/Footer";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
+import AuthButtons from "@/components/AuthButtons";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import {
   generateFullPlan,
@@ -194,11 +195,11 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
     }
   };
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (provider: "google" | "apple" = "google") => {
     setSigningIn(true);
     sessionStorage.setItem("pending_gate_source", "planner");
     try {
-      await signIn();
+      await signIn(undefined, provider);
     } catch (err) {
       console.error("Sign-in failed:", err);
       setSigningIn(false);
@@ -235,14 +236,13 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
         ) : !isAuthenticated ? (
           <Card className="rounded-2xl shadow-xl border-0 bg-card/80 backdrop-blur-sm">
             <CardContent className="p-6 md:p-8 text-center space-y-5">
-              <p className="text-sm text-muted-foreground">Sign in with Google to create your personalized study plan.</p>
-              <Button
-                className="w-full h-13 rounded-xl text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all"
-                onClick={handleSignIn}
-                disabled={signingIn}
-              >
-                {signingIn ? "Signing in..." : "Continue with Google"} <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <p className="text-sm text-muted-foreground">Sign in to create your personalized study plan.</p>
+              <AuthButtons
+                onGoogle={() => handleSignIn("google")}
+                onApple={() => handleSignIn("apple")}
+                loading={signingIn}
+                loadingProvider={signingIn ? "google" : null}
+              />
             </CardContent>
           </Card>
         ) : (

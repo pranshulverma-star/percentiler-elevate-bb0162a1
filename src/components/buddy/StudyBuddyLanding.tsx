@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet-async";
 import { Button } from "@/components/ui/button";
+import AuthButtons from "@/components/AuthButtons";
 import {
   Accordion,
   AccordionContent,
@@ -65,7 +66,7 @@ const faqJsonLd = {
 };
 
 interface StudyBuddyLandingProps {
-  onSignIn: () => void;
+  onSignIn: (provider?: "google" | "apple") => void;
   ctaLabel?: string;
   children?: React.ReactNode;
 }
@@ -139,9 +140,17 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
           </motion.div>
 
           <motion.div {...fade(0.25)}>
-            <Button size="lg" onClick={handleCtaClick} className="gap-2 text-sm md:text-base px-6 md:px-8 h-11 md:h-12">
-              {heroCta} <ArrowRight className="h-4 w-4" />
-            </Button>
+            {children ? (
+              <Button size="lg" onClick={handleCtaClick} className="gap-2 text-sm md:text-base px-6 md:px-8 h-11 md:h-12">
+                {heroCta} <ArrowRight className="h-4 w-4" />
+              </Button>
+            ) : (
+              <AuthButtons
+                onGoogle={() => onSignIn("google")}
+                onApple={() => onSignIn("apple")}
+                className="max-w-sm mx-auto"
+              />
+            )}
             <p className="text-[11px] md:text-xs text-muted-foreground mt-2 md:mt-3">
               Already have an invite link? It will auto-pair you after sign-in.
             </p>
@@ -231,9 +240,17 @@ export default function StudyBuddyLanding({ onSignIn, ctaLabel, children }: Stud
           CAT prep is a marathon. Don't run it alone.
         </motion.p>
         <motion.div {...fade(0.15)}>
-           <Button size="lg" onClick={handleCtaClick} className="gap-2 text-sm md:text-base px-6 md:px-8 h-11 md:h-12">
-             {finalCta} <ArrowRight className="h-4 w-4" />
-           </Button>
+          {children ? (
+            <Button size="lg" onClick={handleCtaClick} className="gap-2 text-sm md:text-base px-6 md:px-8 h-11 md:h-12">
+              {finalCta} <ArrowRight className="h-4 w-4" />
+            </Button>
+          ) : (
+            <AuthButtons
+              onGoogle={() => onSignIn("google")}
+              onApple={() => onSignIn("apple")}
+              className="max-w-sm mx-auto"
+            />
+          )}
         </motion.div>
        </section>
 

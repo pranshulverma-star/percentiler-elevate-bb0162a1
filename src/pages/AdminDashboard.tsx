@@ -122,7 +122,7 @@ export default function AdminDashboard() {
         </div>
         <h1 className="text-2xl font-bold text-foreground">Admin Console</h1>
         <p className="text-muted-foreground text-sm max-w-xs text-center">
-          Sign in with your authorized Google account to access the dashboard.
+          Sign in with your authorized account to access the dashboard.
         </p>
         <Button size="lg" onClick={() => signIn("/admin")} className="gap-2">
           <LogIn className="h-4 w-4" />
