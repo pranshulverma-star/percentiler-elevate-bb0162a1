@@ -10,6 +10,7 @@ import { useStreaks } from "@/hooks/useStreaks";
 import { useBuddyRealtimeToast } from "@/hooks/useBuddyRealtimeToast";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarCheck, Flame, Target } from "lucide-react";
+import AuthButtons from "@/components/AuthButtons";
 import SprintGoalForm from "@/components/sprint/SprintGoalForm";
 import SprintGoalList from "@/components/sprint/SprintGoalList";
 
@@ -30,7 +31,7 @@ import {
 const fadeUp = { initial: { opacity: 0, y: 24 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.5 } };
 const MAX_GOALS = 5;
 
-function LandingState({ onSignIn }: { onSignIn: () => void }) {
+function LandingState({ onSignIn }: { onSignIn: (provider: "google" | "apple") => void }) {
   const features = [
     { icon: CalendarCheck, title: "Daily Goals", desc: "Set 3–5 focused study targets each day. Your plan, your pace." },
     { icon: Target, title: "Track & Complete", desc: "Check off goals as you finish. See your progress in real-time." },
@@ -63,9 +64,11 @@ function LandingState({ onSignIn }: { onSignIn: () => void }) {
         ))}
       </div>
 
-      <Button size="lg" onClick={onSignIn} className="gap-2">
-        Get Started — Sign in with Google <ArrowRight className="h-4 w-4" />
-      </Button>
+      <AuthButtons
+        onGoogle={() => onSignIn("google")}
+        onApple={() => onSignIn("apple")}
+        className="max-w-sm mx-auto"
+      />
     </motion.div>
   );
 }
@@ -234,7 +237,7 @@ export default function DailySprint() {
               <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
             </div>
           ) : !isAuthenticated ? (
-            <LandingState onSignIn={() => signIn("/daily-sprint")} />
+            <LandingState onSignIn={(provider) => signIn("/daily-sprint", provider)} />
           ) : (
             <SprintDashboard userId={user!.id} />
           )}

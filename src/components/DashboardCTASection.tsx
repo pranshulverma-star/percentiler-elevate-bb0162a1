@@ -41,7 +41,7 @@ export default function DashboardCTASection() {
         </h2>
 
         <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-xl mx-auto mb-8">
-          Sign in with Google and instantly unlock streaks, flashcards, a practice lab, and a personalized study plan — all built for serious CAT aspirants.
+          Sign in and instantly unlock streaks, flashcards, a practice lab, and a personalized study plan — all built for serious CAT aspirants.
         </p>
 
         {/* Feature pills */}
