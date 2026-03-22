@@ -1,30 +1,23 @@
 
 
-## Plan: Add "Plan" Tab with Study Planner + Study Buddy
+## Plan: Premium Sign-In Screen
 
-Add a 4th bottom nav tab called "Plan" that combines the Study Planner dashboard and Study Buddy dashboard into one scrollable view.
+The current `SignInScreen` in `ProtectedRoute.tsx` is bare — a plain icon, text, and two buttons on a flat background. It needs to feel like a branded, polished gate.
 
 ### Changes
 
-**1. `src/components/dashboard/DashboardBottomNav.tsx`**
-- Add `"plan"` to the `DashboardTab` union type
-- Add a 4th nav item: `{ icon: CalendarCheck, label: "Plan", tab: "plan" }` (using `CalendarCheck` from lucide)
+**1. `src/components/ProtectedRoute.tsx` — Redesign `SignInScreen`**
+- Add the "Percentilers" brand name/logo at the top
+- Wrap the sign-in content in a glassmorphic card (`bg-card/80 backdrop-blur border rounded-2xl shadow-lg`) centered on screen
+- Add a subtle gradient mesh background (matching dashboard style)
+- Improve spacing: logo → headline → subtext → auth buttons → footer note
+- Add a small "secure sign-in" trust line at the bottom (lock icon + text)
+- Context-aware headline: "Welcome to your Dashboard" for dashboard source, "Watch the Masterclass" for masterclass, etc.
 
-**2. Create `src/components/dashboard/PlanTab.tsx`**
-- New component that stacks two sections vertically in a scrollable container:
-  - **Study Planner section** — renders `DashboardPlanner` with the planner data + loading state passed as props
-  - **Study Buddy section** — renders `SprintBuddyView` (shows buddy's sprint goals) and `BuddyMiniWidget` (shows buddy status/activity)
-- If no buddy paired, shows the "Find a Buddy" CTA card
-- If no planner started, shows the "Start Planning" CTA card (already handled by `DashboardPlanner`)
-- Full-height flex layout with `overflow-y-auto`
+**2. `src/components/AuthButtons.tsx` — Minor polish**
+- Increase button height from `h-12` to `h-13` (52px) for better tap targets on mobile
+- Add subtle left-aligned icon with a thin separator line before the label for a more professional look
+- Slightly larger border-radius consistency
 
-**3. `src/pages/Dashboard.tsx`**
-- Import `PlanTab`
-- Add `activeTab === "plan"` conditional rendering
-- Pass `plannerData`, `loadingPlanner`, and `userId` to `PlanTab`
-
-**4. `src/components/dashboard/HomeTab.tsx`**
-- Remove the `BuddyMiniWidget` from the Home tab (it now lives in the Plan tab)
-
-### No backend changes needed. Existing data fetching in Dashboard.tsx already loads planner and buddy data.
+### No backend changes needed.
 
