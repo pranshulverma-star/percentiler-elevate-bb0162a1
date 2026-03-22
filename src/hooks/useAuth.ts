@@ -7,7 +7,7 @@ interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
   loading: boolean;
-  signIn: (redirectPath?: string) => Promise<void>;
+  signIn: (redirectPath?: string, provider?: "google" | "apple") => Promise<void>;
   signOut: () => Promise<void>;
 }
 
