@@ -1,48 +1,30 @@
 
 
-## Plan: Fill Viewport — Bigger, Bolder Components Across All 3 Tabs
+## Plan: Add "Plan" Tab with Study Planner + Study Buddy
 
-The current components are compact (designed for the old scrollable layout), leaving significant blank space in the fixed `h-full` container (~460px available). The fix: make each component expand to fill the viewport using `flex-1` growth and bigger sizing.
+Add a 4th bottom nav tab called "Plan" that combines the Study Planner dashboard and Study Buddy dashboard into one scrollable view.
 
-### Tab 1 — Home
+### Changes
 
-**Streak Hero** — Expand from ~100px to ~130px
-- Larger flame icon (w-12 h-12), bigger streak text (text-lg), larger weekly dots (max-w-[36px]), add an animated gradient background band
+**1. `src/components/dashboard/DashboardBottomNav.tsx`**
+- Add `"plan"` to the `DashboardTab` union type
+- Add a 4th nav item: `{ icon: CalendarCheck, label: "Plan", tab: "plan" }` (using `CalendarCheck` from lucide)
 
-**Quick Actions (Flashcards + Sprint)** — Expand from ~56px to ~80px each
-- Taller cards (p-4), larger icons (w-10 h-10), bigger text (text-sm), add a motivational subtitle line, subtle gradient background per card
+**2. Create `src/components/dashboard/PlanTab.tsx`**
+- New component that stacks two sections vertically in a scrollable container:
+  - **Study Planner section** — renders `DashboardPlanner` with the planner data + loading state passed as props
+  - **Study Buddy section** — renders `SprintBuddyView` (shows buddy's sprint goals) and `BuddyMiniWidget` (shows buddy status/activity)
+- If no buddy paired, shows the "Find a Buddy" CTA card
+- If no planner started, shows the "Start Planning" CTA card (already handled by `DashboardPlanner`)
+- Full-height flex layout with `overflow-y-auto`
 
-**Study Buddy** — Expand from ~48px to ~70px
-- Taller padding, larger icon, add animated "Find a buddy" shimmer CTA
+**3. `src/pages/Dashboard.tsx`**
+- Import `PlanTab`
+- Add `activeTab === "plan"` conditional rendering
+- Pass `plannerData`, `loadingPlanner`, and `userId` to `PlanTab`
 
-**Leaderboard** — Use `flex-1` to fill remaining space
-- Larger row height (py-2.5), bigger text (text-xs → text-sm), add rank badges with colored backgrounds, add a glowing border on "Your" row, animated entry
+**4. `src/components/dashboard/HomeTab.tsx`**
+- Remove the `BuddyMiniWidget` from the Home tab (it now lives in the Plan tab)
 
-### Tab 2 — Practice
-
-**Daily Quiz CTA** — Expand from ~140px to ~180px
-- Bigger icon (w-14 h-14), larger heading (text-lg), taller button (h-14), add pulsing glow ring around the icon
-
-**Stat Pills** — Already good, minor size bump
-
-**Progress section** — `flex-1` fills remaining, already has overflow-y-auto (fine)
-
-### Tab 3 — Explore
-
-**Recommended cards** — Expand from w-40 to w-48, taller (p-4), larger text
-- Add gradient backgrounds per card instead of plain bg-card
-- Bigger icons and bolder taglines
-
-**Explore Grid** — Use `flex-1`, expand tiles
-- Taller tiles (py-6), larger icons (h-7 w-7), bigger labels (text-xs)
-- Add colored gradient backgrounds matching each tile's accent color
-- Add subtle glow/shadow on hover
-
-### Files Changed
-
-1. **`src/components/dashboard/HomeTab.tsx`** — Expand all sections, bigger typography, larger icons, animated streak gradient, leaderboard fills remaining space
-2. **`src/components/dashboard/ExploreTab.tsx`** — Wider recommendation cards, taller grid tiles with gradient fills, grid uses flex-1
-3. **`src/components/dashboard/PracticeTab.tsx`** — Bigger daily quiz CTA, larger button, pulsing glow on icon
-
-No new files, no backend changes. Pure visual expansion to eliminate blank space.
+### No backend changes needed. Existing data fetching in Dashboard.tsx already loads planner and buddy data.
 
