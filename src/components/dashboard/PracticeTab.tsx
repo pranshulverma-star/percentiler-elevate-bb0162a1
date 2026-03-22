@@ -35,29 +35,30 @@ export default function PracticeTab({ engagement: _engagement, streakData, loadi
 
   return (
     <div className="flex flex-col gap-3 h-full">
-      {/* Big Daily Quiz CTA */}
+      {/* Big Daily Quiz CTA — expanded */}
       <motion.div {...fade(0)}>
-        <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.08] to-card backdrop-blur-xl p-5 shadow-[0_4px_32px_rgba(0,0,0,0.08)]">
-          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
+        <div className="relative overflow-hidden rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/[0.10] via-card to-primary/[0.04] backdrop-blur-xl p-6 shadow-[0_4px_32px_rgba(0,0,0,0.08)]">
+          <div className="absolute -top-16 -right-16 w-48 h-48 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-10 -left-10 w-28 h-28 rounded-full bg-primary/10 blur-2xl pointer-events-none" />
 
-          <div className="flex items-center gap-3 mb-4 relative">
-            <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center shrink-0 shadow-[0_0_20px_rgba(var(--primary-rgb),0.3)]">
-              <Zap className="h-6 w-6 text-primary" />
+          <div className="flex items-center gap-4 mb-5 relative">
+            <div className="relative w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center shrink-0 shadow-[0_0_24px_hsl(var(--primary)/0.3)]">
+              <div className="absolute inset-0 rounded-2xl border-2 border-primary/20 animate-[pulse_2.5s_ease-in-out_infinite]" />
+              <Zap className="h-7 w-7 text-primary" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-foreground">Daily Quiz</h2>
-              <p className="text-[11px] text-muted-foreground">{info.name} · {info.tag}</p>
+              <h2 className="text-lg font-bold text-foreground">Daily Quiz</h2>
+              <p className="text-xs text-muted-foreground mt-0.5">{info.name} · {info.tag}</p>
             </div>
           </div>
 
           <Button
-            className="relative w-full h-12 text-sm font-bold rounded-xl shadow-[0_0_20px_hsl(var(--primary)/0.3)] active:scale-[0.97] transition-all overflow-hidden"
+            className="relative w-full h-14 text-base font-bold rounded-xl shadow-[0_0_24px_hsl(var(--primary)/0.3)] active:scale-[0.97] transition-all overflow-hidden"
             onClick={() => navigate("/practice-lab?daily=true")}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent -translate-x-full animate-[shimmer_3s_ease-in-out_infinite]" />
             <span className="relative z-10 flex items-center gap-2">
-              Start Today's Quiz <ArrowRight className="h-4 w-4" />
+              Start Today's Quiz <ArrowRight className="h-5 w-5" />
             </span>
           </Button>
         </div>
@@ -68,7 +69,7 @@ export default function PracticeTab({ engagement: _engagement, streakData, loadi
         <DashboardStatPills streakData={streakData} loading={loadingStreaks} />
       </motion.div>
 
-      {/* Progress Section */}
+      {/* Progress Section — flex-1 fills remaining */}
       <motion.div {...fade(2)} className="flex-1 min-h-0 overflow-y-auto scrollbar-none">
         <DashboardProgressCompact
           plannerData={plannerData}
