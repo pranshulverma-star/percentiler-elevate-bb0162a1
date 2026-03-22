@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { Flame, Layers, CalendarCheck, Users2, Crown, ArrowRight, Loader2 } from "lucide-react";
+import { Flame, Layers, CalendarCheck, Crown, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
+
 
 interface StreakData {
   currentStreak: number;
@@ -213,22 +213,6 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
         </Link>
       </motion.div>
 
-      {/* Buddy Widget */}
-      <motion.div {...fade(2)}>
-        <BuddyMiniWidget />
-        <Link to="/study-buddy" className="block">
-          <div className="relative overflow-hidden rounded-xl border border-primary/20 bg-gradient-to-r from-primary/[0.06] to-card backdrop-blur-xl p-3.5 flex items-center gap-3 group hover:border-primary/40 transition-all">
-            <div className="w-10 h-10 rounded-xl bg-primary/15 flex items-center justify-center shrink-0">
-              <Users2 className="h-5 w-5 text-primary" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-foreground">Study Buddy</p>
-              <p className="text-[10px] text-muted-foreground">Pair up & compete together</p>
-            </div>
-            <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" />
-          </div>
-        </Link>
-      </motion.div>
 
       {/* Dynamic Leaderboard — flex-1 fills remaining */}
       <motion.div {...fade(3)} className="flex-1 min-h-0">

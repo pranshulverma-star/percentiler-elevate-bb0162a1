@@ -1,11 +1,12 @@
-import { Home, Zap, Compass } from "lucide-react";
+import { Home, Zap, Compass, CalendarCheck } from "lucide-react";
 
-export type DashboardTab = "home" | "practice" | "explore";
+export type DashboardTab = "home" | "practice" | "explore" | "plan";
 
 const navItems: { icon: typeof Home; label: string; tab: DashboardTab }[] = [
   { icon: Home, label: "Home", tab: "home" },
   { icon: Zap, label: "Practice", tab: "practice" },
   { icon: Compass, label: "Explore", tab: "explore" },
+  { icon: CalendarCheck, label: "Plan", tab: "plan" },
 ];
 
 interface Props {
