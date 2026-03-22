@@ -1,86 +1,48 @@
 
 
-## Plan: 3-Tab Non-Scrollable Dashboard with Gamified UI
+## Plan: Fill Viewport — Bigger, Bolder Components Across All 3 Tabs
 
-Restructure the entire dashboard from a single scrollable feed into 3 fixed-height tabs with a bottom nav. Each tab fills exactly the viewport (no scroll). The visual style shifts to a more gamified, premium look with deeper gradients, glowing accents, and bolder typography.
+The current components are compact (designed for the old scrollable layout), leaving significant blank space in the fixed `h-full` container (~460px available). The fix: make each component expand to fill the viewport using `flex-1` growth and bigger sizing.
 
-### Tab Layout
+### Tab 1 — Home
 
-```text
-┌──────────────────────────┐
-│  Top Bar (sticky)        │
-├──────────────────────────┤
-│                          │
-│   TAB CONTENT            │
-│   (viewport height,      │
-│    no scroll)            │
-│                          │
-├──────────────────────────┤
-│  🏠 Home │ ⚡ Practice │ 🧭 Explore │
-└──────────────────────────┘
-```
+**Streak Hero** — Expand from ~100px to ~130px
+- Larger flame icon (w-12 h-12), bigger streak text (text-lg), larger weekly dots (max-w-[36px]), add an animated gradient background band
 
-### Tab 1 — Home (default)
-Content fits in ~460px available height (587 - 56 top - 56 bottom - ~15 padding):
-- **Greeting** (1 line) + **Streak Hero** (compact: flame + streak count + weekly dots — squeezed to ~80px)
-- **Daily Flashcards** card (compact ~56px)
-- **Set Today's Goals** / Sprint preview (compact ~56px)
-- **Study Buddy** widget (compact ~56px)
-- **Leaderboard snapshot** (top 3 + your rank, compact ~140px)
+**Quick Actions (Flashcards + Sprint)** — Expand from ~56px to ~80px each
+- Taller cards (p-4), larger icons (w-10 h-10), bigger text (text-sm), add a motivational subtitle line, subtle gradient background per card
 
-All components get condensed "compact" variants to fit without scrolling.
+**Study Buddy** — Expand from ~48px to ~70px
+- Taller padding, larger icon, add animated "Find a buddy" shimmer CTA
+
+**Leaderboard** — Use `flex-1` to fill remaining space
+- Larger row height (py-2.5), bigger text (text-xs → text-sm), add rank badges with colored backgrounds, add a glowing border on "Your" row, animated entry
 
 ### Tab 2 — Practice
-- **Daily Quiz** card with prominent "Start Quiz" CTA (the existing DashboardTodayAction, restyled)
-- **Stat Pills** row (streak, best, quizzes, accuracy)
-- **Progress section** (Practice/Planner tabs — existing DashboardProgressCompact)
+
+**Daily Quiz CTA** — Expand from ~140px to ~180px
+- Bigger icon (w-14 h-14), larger heading (text-lg), taller button (h-14), add pulsing glow ring around the icon
+
+**Stat Pills** — Already good, minor size bump
+
+**Progress section** — `flex-1` fills remaining, already has overflow-y-auto (fine)
 
 ### Tab 3 — Explore
-- **Recommended for You** cards (horizontal scroll row)
-- **Explore grid** (Courses, Test Series, Mentorship, Workshops, Free Courses, Strategy Call)
 
-### File Changes
+**Recommended cards** — Expand from w-40 to w-48, taller (p-4), larger text
+- Add gradient backgrounds per card instead of plain bg-card
+- Bigger icons and bolder taglines
 
-**1. `src/pages/Dashboard.tsx`** — Major rewrite
-- Replace the scrollable `<main>` with a tab-state system (`useState<"home"|"practice"|"explore">`)
-- Render only the active tab's content
-- Add `overflow-hidden h-screen` to prevent any scroll
-- Pass `activeTab` to `DashboardBottomNav`
+**Explore Grid** — Use `flex-1`, expand tiles
+- Taller tiles (py-6), larger icons (h-7 w-7), bigger labels (text-xs)
+- Add colored gradient backgrounds matching each tile's accent color
+- Add subtle glow/shadow on hover
 
-**2. `src/components/dashboard/DashboardBottomNav.tsx`** — Change to 3 tabs
-- Home (Home icon), Practice (Zap icon), Explore (Compass icon)
-- Accept `activeTab` and `onTabChange` props instead of using route-based Links
-- Tabs switch content in-page rather than navigating to different routes
-- More prominent styling: larger icons, active tab has a glowing pill indicator
+### Files Changed
 
-**3. `src/components/dashboard/DashboardStreakHero.tsx`** — Compact variant
-- Reduce padding, make the weekly dots smaller, inline the streak count
-- Target height: ~80px instead of current ~140px
+1. **`src/components/dashboard/HomeTab.tsx`** — Expand all sections, bigger typography, larger icons, animated streak gradient, leaderboard fills remaining space
+2. **`src/components/dashboard/ExploreTab.tsx`** — Wider recommendation cards, taller grid tiles with gradient fills, grid uses flex-1
+3. **`src/components/dashboard/PracticeTab.tsx`** — Bigger daily quiz CTA, larger button, pulsing glow on icon
 
-**4. `src/components/dashboard/DashboardLeaderboardCompact.tsx`** — Compact snapshot
-- Always show exactly top 3 + "Your" row (no expand button)
-- Tighter row spacing, target ~130px total
-
-**5. `src/components/dashboard/DashboardSprintPreview.tsx`** — Compact
-- Reduce padding, single-line layout, target ~50px height
-
-**6. `src/components/dashboard/DashboardTodayAction.tsx`** — Premium restyle
-- Remove the expand section (flashcards/masterclass extras)
-- Make the "Start Quiz" button larger and more prominent with glow effects
-
-**7. `src/components/dashboard/DashboardStatPills.tsx`** — No changes needed (already compact)
-
-**8. Gamified Visual Upgrades** (applied across all tabs)
-- Deeper gradient mesh backgrounds with animated subtle glow orbs
-- Glassmorphic cards with `backdrop-blur-xl` and neon-ish border accents
-- Primary buttons get a pulsing glow shadow
-- Streak fire gets animated gradient coloring
-- XP/stat numbers use a monospace-like bold weight
-- Bottom nav active indicator uses a glowing dot/pill
-
-### Technical Notes
-- The 3 tabs are in-page state, not separate routes — `/dashboard` is the only route
-- Content uses `flex flex-col` with carefully sized components to fill exactly the available viewport height
-- Practice and Sprint pages remain accessible via their own routes (from bottom nav links on those pages), but within the dashboard they're embedded as tab content
-- No database or backend changes needed
+No new files, no backend changes. Pure visual expansion to eliminate blank space.
 
