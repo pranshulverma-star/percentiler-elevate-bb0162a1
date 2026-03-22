@@ -8,6 +8,7 @@ import DashboardBottomNav, { type DashboardTab } from "@/components/dashboard/Da
 import HomeTab from "@/components/dashboard/HomeTab";
 import PracticeTab from "@/components/dashboard/PracticeTab";
 import ExploreTab from "@/components/dashboard/ExploreTab";
+import PlanTab from "@/components/dashboard/PlanTab";
 import SEO from "@/components/SEO";
 import { useBackToDashboard } from "@/hooks/useBackToDashboard";
 
@@ -159,6 +160,13 @@ export default function Dashboard() {
               converted={converted}
               mentorshipActive={mentorshipActive}
               streakData={streakData}
+            />
+          )}
+          {activeTab === "plan" && (
+            <PlanTab
+              plannerData={plannerData}
+              loadingPlanner={loadingPlanner}
+              userId={userId}
             />
           )}
         </div>
