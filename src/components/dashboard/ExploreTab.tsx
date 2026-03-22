@@ -5,12 +5,12 @@ import { useMemo } from "react";
 import { getWeakSectionWorkshop } from "@/components/WorkshopRecommendation";
 
 const tiles = [
-  { icon: GraduationCap, label: "Courses", to: "/courses/cat-omet", color: "hsl(var(--primary))" },
-  { icon: ClipboardList, label: "Test Series", to: "/test-series", color: "hsl(220 70% 55%)" },
-  { icon: Users, label: "Mentorship", to: "/mentorship", color: "hsl(280 60% 55%)" },
-  { icon: Wrench, label: "Workshops", to: "/workshops", color: "hsl(160 60% 45%)" },
-  { icon: BookOpen, label: "Free Courses", to: "/free-courses", color: "hsl(45 93% 47%)" },
-  { icon: Phone, label: "Strategy Call", to: "/mentorship", color: "hsl(340 65% 55%)" },
+  { icon: GraduationCap, label: "Courses", to: "/courses/cat-omet", color: "hsl(var(--primary))", bg: "from-primary/10 to-primary/[0.02]" },
+  { icon: ClipboardList, label: "Test Series", to: "/test-series", color: "hsl(220 70% 55%)", bg: "from-blue-500/10 to-blue-500/[0.02]" },
+  { icon: Users, label: "Mentorship", to: "/mentorship", color: "hsl(280 60% 55%)", bg: "from-purple-500/10 to-purple-500/[0.02]" },
+  { icon: Wrench, label: "Workshops", to: "/workshops", color: "hsl(160 60% 45%)", bg: "from-emerald-500/10 to-emerald-500/[0.02]" },
+  { icon: BookOpen, label: "Free Courses", to: "/free-courses", color: "hsl(45 93% 47%)", bg: "from-amber-500/10 to-amber-500/[0.02]" },
+  { icon: Phone, label: "Strategy Call", to: "/mentorship", color: "hsl(340 65% 55%)", bg: "from-pink-500/10 to-pink-500/[0.02]" },
 ];
 
 interface Props {
@@ -46,15 +46,15 @@ export default function ExploreTab({ practiceAttempts, converted, mentorshipActi
     const weakWorkshop = getWeakSectionWorkshop(practiceAttempts);
 
     if (!hasAttempts) {
-      if (!converted) recs.push({ name: "CAT + OMET Complete", tagline: "Start your CAT journey", type: "Course", icon: GraduationCap, to: "/cat-omet-courses", free: false, accentColor: "hsl(var(--primary))" });
-      if (!mentorshipActive) recs.push({ name: "1-on-1 Mentorship", tagline: "Get expert strategy", type: "Mentorship", icon: Users, to: "/mentorship", free: false, accentColor: "hsl(280 60% 55%)" });
-      recs.push({ name: "Practice Lab", tagline: "Free section-wise quizzes", type: "Free", icon: Zap, to: "/practice-lab", free: true, accentColor: "hsl(160 60% 45%)" });
+      if (!converted) recs.push({ name: "CAT + OMET Complete", tagline: "Start your CAT journey with full access", type: "Course", icon: GraduationCap, to: "/cat-omet-courses", free: false, accentColor: "hsl(var(--primary))" });
+      if (!mentorshipActive) recs.push({ name: "1-on-1 Mentorship", tagline: "Get expert strategy & guidance", type: "Mentorship", icon: Users, to: "/mentorship", free: false, accentColor: "hsl(280 60% 55%)" });
+      recs.push({ name: "Practice Lab", tagline: "Free section-wise quizzes to start", type: "Free", icon: Zap, to: "/practice-lab", free: true, accentColor: "hsl(160 60% 45%)" });
     } else {
       if (avgAccuracy < 50 && !mentorshipActive) recs.push({ name: "1-on-1 Mentorship", tagline: `Accuracy ${avgAccuracy}% — a mentor helps`, type: "Mentorship", icon: Users, to: "/mentorship", free: false, accentColor: "hsl(280 60% 55%)" });
-      if (weakWorkshop) recs.push({ name: weakWorkshop.name, tagline: "Boost your weak section", type: `₹${weakWorkshop.salePrice}`, icon: BookOpen, to: weakWorkshop.link, free: false, external: true, accentColor: "hsl(220 70% 55%)" });
+      if (weakWorkshop) recs.push({ name: weakWorkshop.name, tagline: "Boost your weak section fast", type: `₹${weakWorkshop.salePrice}`, icon: BookOpen, to: weakWorkshop.link, free: false, external: true, accentColor: "hsl(220 70% 55%)" });
       if (!converted) recs.push({ name: "Full Course Access", tagline: "Structured prep for 90%ile+", type: "Course", icon: GraduationCap, to: "/cat-omet-courses", free: false, accentColor: "hsl(var(--primary))" });
       if (avgAccuracy >= 70 && currentStreak < 3 && !mentorshipActive) recs.push({ name: "Consistency Coaching", tagline: "Stay on track daily", type: "Mentorship", icon: Users, to: "/mentorship", free: false, accentColor: "hsl(280 60% 55%)" });
-      recs.push({ name: "QA Flashcards", tagline: "Quick formula revision", type: "Free", icon: Zap, to: "/flashcards", free: true, accentColor: "hsl(160 60% 45%)" });
+      recs.push({ name: "QA Flashcards", tagline: "Quick formula revision anytime", type: "Free", icon: Zap, to: "/flashcards", free: true, accentColor: "hsl(160 60% 45%)" });
     }
 
     const seen = new Set<string>();
@@ -63,29 +63,31 @@ export default function ExploreTab({ practiceAttempts, converted, mentorshipActi
 
   return (
     <div className="flex flex-col gap-4 h-full">
-      {/* Recommended for You */}
+      {/* Recommended for You — expanded cards */}
       {recommendations.length > 0 && (
         <motion.div {...fade(0)}>
-          <div className="flex items-center gap-1.5 mb-2">
-            <Lightbulb className="h-3.5 w-3.5 text-primary" />
-            <span className="text-xs font-semibold text-foreground">Recommended</span>
+          <div className="flex items-center gap-2 mb-2.5">
+            <Lightbulb className="h-4 w-4 text-primary" />
+            <span className="text-sm font-bold text-foreground">Recommended</span>
           </div>
-          <div className="flex gap-2.5 overflow-x-auto scrollbar-none pb-1">
+          <div className="flex gap-3 overflow-x-auto scrollbar-none pb-1">
             {recommendations.map((rec) => {
               const Icon = rec.icon;
               const inner = (
-                <div className="relative overflow-hidden rounded-xl border border-border/40 bg-card/80 backdrop-blur-xl p-3 w-40 shrink-0 group hover:border-primary/30 transition-all">
-                  <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-xl" style={{ background: rec.accentColor }} />
-                  <div className="flex items-center gap-1.5 mb-1.5">
-                    <Icon className="h-3.5 w-3.5 shrink-0" style={{ color: rec.accentColor }} />
-                    <p className="text-[11px] font-semibold text-foreground line-clamp-1">{rec.name}</p>
+                <div className="relative overflow-hidden rounded-xl border border-border/40 bg-gradient-to-br from-card to-background backdrop-blur-xl p-4 w-48 shrink-0 group hover:border-primary/30 transition-all shadow-sm">
+                  <div className="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={{ background: rec.accentColor }} />
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: `${rec.accentColor}20` }}>
+                      <Icon className="h-4 w-4 shrink-0" style={{ color: rec.accentColor }} />
+                    </div>
+                    <p className="text-xs font-bold text-foreground line-clamp-1">{rec.name}</p>
                   </div>
-                  <p className="text-[9px] text-muted-foreground leading-snug line-clamp-2 mb-2">{rec.tagline}</p>
+                  <p className="text-[10px] text-muted-foreground leading-relaxed line-clamp-2 mb-3">{rec.tagline}</p>
                   <div className="flex items-center justify-between">
-                    <span className={`text-[9px] font-medium px-1.5 py-0.5 rounded-full ${rec.free ? "bg-emerald-500/15 text-emerald-600" : "bg-primary/10 text-primary"}`}>
+                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${rec.free ? "bg-emerald-500/15 text-emerald-600" : "bg-primary/10 text-primary"}`}>
                       {rec.free ? "Free" : rec.type}
                     </span>
-                    <ArrowRight className="h-3 w-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                    <ArrowRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
                 </div>
               );
@@ -99,23 +101,25 @@ export default function ExploreTab({ practiceAttempts, converted, mentorshipActi
         </motion.div>
       )}
 
-      {/* Explore Grid */}
-      <motion.div {...fade(1)} className="flex-1">
-        <div className="flex items-center gap-1.5 mb-2">
-          <Compass className="h-3.5 w-3.5 text-primary" />
-          <span className="text-xs font-semibold text-foreground">Explore</span>
+      {/* Explore Grid — flex-1, bigger tiles */}
+      <motion.div {...fade(1)} className="flex-1 min-h-0">
+        <div className="flex items-center gap-2 mb-2.5">
+          <Compass className="h-4 w-4 text-primary" />
+          <span className="text-sm font-bold text-foreground">Explore</span>
         </div>
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2.5 h-[calc(100%-28px)]">
           {tiles.map((t) => {
             const Icon = t.icon;
             return (
               <Link
                 key={t.label}
                 to={t.to}
-                className="flex flex-col items-center gap-1.5 py-3.5 rounded-xl bg-card/80 backdrop-blur-xl border border-border/30 hover:border-primary/20 hover:shadow-lg transition-all group"
+                className={`flex flex-col items-center justify-center gap-2 rounded-xl bg-gradient-to-br ${t.bg} backdrop-blur-xl border border-border/30 hover:border-primary/20 hover:shadow-lg transition-all group`}
               >
-                <Icon className="h-5 w-5 group-hover:scale-110 transition-transform" style={{ color: t.color }} />
-                <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center leading-tight">{t.label}</span>
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: `${t.color}15` }}>
+                  <Icon className="h-6 w-6 group-hover:scale-110 transition-transform" style={{ color: t.color }} />
+                </div>
+                <span className="text-xs font-semibold text-muted-foreground group-hover:text-foreground transition-colors text-center leading-tight">{t.label}</span>
               </Link>
             );
           })}
