@@ -126,7 +126,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  const signIn = useCallback(async (redirectPath?: string) => {
+  const signIn = useCallback(async (redirectPath?: string, provider: "google" | "apple" = "google") => {
     // Single-flight guard: prevent stacked sign-in calls
     if (signInInProgressRef.current) {
       console.log("[Auth] Sign-in already in progress, ignoring duplicate call");
@@ -138,7 +138,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (isInAppBrowser) {
       window.open(window.location.href, "_system");
-      alert("Please open this link in Safari or Chrome to sign in with Google. In-app browsers don't support Google Sign-In.");
+      alert("Please open this link in Safari or Chrome to sign in. In-app browsers don't support this sign-in method.");
       return;
     }
 
@@ -153,7 +153,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const startDirectRedirect = async () => {
       const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
+        provider,
         options: {
           redirectTo: redirectUri,
           skipBrowserRedirect: true,
@@ -177,9 +177,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     try {
-      const result = await lovable.auth.signInWithOAuth("google", {
+      const result = await lovable.auth.signInWithOAuth(provider, {
         redirect_uri: redirectUri,
-        extraParams: { prompt: "select_account" },
+        extraParams: provider === "google" ? { prompt: "select_account" } : {},
       });
 
       if (result?.error) {
