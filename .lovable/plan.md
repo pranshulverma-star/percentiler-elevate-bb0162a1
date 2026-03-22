@@ -1,31 +1,86 @@
 
 
-## Diagnosis: Sign-In Stuck on Dashboard
+## Plan: 3-Tab Non-Scrollable Dashboard with Gamified UI
 
-### Root Causes
+Restructure the entire dashboard from a single scrollable feed into 3 fixed-height tabs with a bottom nav. Each tab fills exactly the viewport (no scroll). The visual style shifts to a more gamified, premium look with deeper gradients, glowing accents, and bolder typography.
 
-1. **`signInInProgressRef` guard blocks retries silently.** When `signIn()` is called, it sets `signInInProgressRef.current = true`. If the OAuth popup/redirect fails silently (e.g., popup blocked, user cancels, network glitch), the ref may not get cleared in all code paths. Subsequent button clicks are silently ignored (line 131-133 returns immediately with no user feedback).
+### Tab Layout
 
-2. **Unhandled promise rejection in `handleSignIn`.** In `ProtectedRoute`, `handleSignIn` calls `await signIn(...)` which can throw (line 202). The `handleSignIn` function has no `catch` block — only a `finally`. The thrown error becomes an unhandled rejection, potentially leaving the UI in an inconsistent state.
+```text
+┌──────────────────────────┐
+│  Top Bar (sticky)        │
+├──────────────────────────┤
+│                          │
+│   TAB CONTENT            │
+│   (viewport height,      │
+│    no scroll)            │
+│                          │
+├──────────────────────────┤
+│  🏠 Home │ ⚡ Practice │ 🧭 Explore │
+└──────────────────────────┘
+```
 
-3. **`finally` block resets `signingIn` immediately after redirect starts.** When `signIn()` initiates a redirect via `window.location.assign()`, the promise resolves, `finally` runs and resets `signingIn` to `false`. For a brief window before navigation completes, the sign-in screen re-appears, making it look "stuck."
+### Tab 1 — Home (default)
+Content fits in ~460px available height (587 - 56 top - 56 bottom - ~15 padding):
+- **Greeting** (1 line) + **Streak Hero** (compact: flame + streak count + weekly dots — squeezed to ~80px)
+- **Daily Flashcards** card (compact ~56px)
+- **Set Today's Goals** / Sprint preview (compact ~56px)
+- **Study Buddy** widget (compact ~56px)
+- **Leaderboard snapshot** (top 3 + your rank, compact ~140px)
 
-### Fix
+All components get condensed "compact" variants to fit without scrolling.
 
-**File 1: `src/hooks/useAuth.ts`**
-- Wrap the entire `signIn` function body in a try/finally that always clears `signInInProgressRef` — prevents the ref from permanently blocking future sign-in attempts
-- Add a timeout safety net: if `signInInProgressRef` has been true for >30s, automatically reset it
+### Tab 2 — Practice
+- **Daily Quiz** card with prominent "Start Quiz" CTA (the existing DashboardTodayAction, restyled)
+- **Stat Pills** row (streak, best, quizzes, accuracy)
+- **Progress section** (Practice/Planner tabs — existing DashboardProgressCompact)
 
-**File 2: `src/components/ProtectedRoute.tsx`**
-- Add a `catch` block in `handleSignIn` to gracefully handle errors (show a toast or reset state cleanly) instead of letting them become unhandled rejections
-- After calling `signIn()` for a redirect flow, keep `signingIn = true` briefly (don't immediately reset in `finally`) to avoid the flash of sign-in screen before navigation
-- Reset `signInInProgressRef` guard check: at mount time, if the ref has been active too long (stale from a previous failed attempt), clear it so buttons work again
+### Tab 3 — Explore
+- **Recommended for You** cards (horizontal scroll row)
+- **Explore grid** (Courses, Test Series, Mentorship, Workshops, Free Courses, Strategy Call)
 
-**File 3: `src/components/AuthButtons.tsx`** (minor)
-- No changes needed, component is correct
+### File Changes
 
-### Summary of Changes
-- Make `signIn` more resilient by ensuring `signInInProgressRef` is always cleared on any exit path
-- Add proper error handling in `handleSignIn` so failures don't silently brick the buttons
-- Add a staleness check so that if a previous sign-in attempt left the guard active, it auto-clears on next render
+**1. `src/pages/Dashboard.tsx`** — Major rewrite
+- Replace the scrollable `<main>` with a tab-state system (`useState<"home"|"practice"|"explore">`)
+- Render only the active tab's content
+- Add `overflow-hidden h-screen` to prevent any scroll
+- Pass `activeTab` to `DashboardBottomNav`
+
+**2. `src/components/dashboard/DashboardBottomNav.tsx`** — Change to 3 tabs
+- Home (Home icon), Practice (Zap icon), Explore (Compass icon)
+- Accept `activeTab` and `onTabChange` props instead of using route-based Links
+- Tabs switch content in-page rather than navigating to different routes
+- More prominent styling: larger icons, active tab has a glowing pill indicator
+
+**3. `src/components/dashboard/DashboardStreakHero.tsx`** — Compact variant
+- Reduce padding, make the weekly dots smaller, inline the streak count
+- Target height: ~80px instead of current ~140px
+
+**4. `src/components/dashboard/DashboardLeaderboardCompact.tsx`** — Compact snapshot
+- Always show exactly top 3 + "Your" row (no expand button)
+- Tighter row spacing, target ~130px total
+
+**5. `src/components/dashboard/DashboardSprintPreview.tsx`** — Compact
+- Reduce padding, single-line layout, target ~50px height
+
+**6. `src/components/dashboard/DashboardTodayAction.tsx`** — Premium restyle
+- Remove the expand section (flashcards/masterclass extras)
+- Make the "Start Quiz" button larger and more prominent with glow effects
+
+**7. `src/components/dashboard/DashboardStatPills.tsx`** — No changes needed (already compact)
+
+**8. Gamified Visual Upgrades** (applied across all tabs)
+- Deeper gradient mesh backgrounds with animated subtle glow orbs
+- Glassmorphic cards with `backdrop-blur-xl` and neon-ish border accents
+- Primary buttons get a pulsing glow shadow
+- Streak fire gets animated gradient coloring
+- XP/stat numbers use a monospace-like bold weight
+- Bottom nav active indicator uses a glowing dot/pill
+
+### Technical Notes
+- The 3 tabs are in-page state, not separate routes — `/dashboard` is the only route
+- Content uses `flex flex-col` with carefully sized components to fill exactly the available viewport height
+- Practice and Sprint pages remain accessible via their own routes (from bottom nav links on those pages), but within the dashboard they're embedded as tab content
+- No database or backend changes needed
 
