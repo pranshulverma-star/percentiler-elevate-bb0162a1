@@ -41,6 +41,7 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
   const location = useLocation();
   const { isAuthenticated, user, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
+  const { toast } = useToast();
   const [authBootstrapTimedOut, setAuthBootstrapTimedOut] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
   const [signingInProvider, setSigningInProvider] = useState<"google" | "apple" | null>(null);
@@ -48,8 +49,6 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
   const standalone = isStandaloneApp();
   const oauthCallbackActive = isOAuthCallbackInProgress();
   const authFlowActive = isAuthFlowActive();
-
-  // No auto-trigger — always show sign-in screen with both options
 
   // Clear stale session markers once user arrives at destination
   useEffect(() => {
@@ -76,7 +75,14 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
       const returnUrl = location.pathname + location.search;
       sessionStorage.setItem("pending_gate_source", source);
       await signIn(returnUrl, provider);
-    } finally {
+      // If signIn initiated a redirect, keep loading state — page will navigate away
+    } catch (err) {
+      console.error("[ProtectedRoute] Sign-in failed:", err);
+      toast({
+        title: "Sign-in failed",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
       setSigningIn(false);
       setSigningInProvider(null);
     }
