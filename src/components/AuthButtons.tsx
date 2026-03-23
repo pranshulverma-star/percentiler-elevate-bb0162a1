@@ -38,12 +38,12 @@ export default function AuthButtons({
   const disabled = loading;
 
   return (
-    <div className={`flex ${layout === "stacked" ? "flex-col" : "flex-row"} gap-3 w-full ${className}`}>
+    <div className={`flex ${layout === "stacked" ? "flex-col" : "flex-row"} gap-3 w-full max-w-[280px] mx-auto ${className}`}>
       {/* Google — clean white card style */}
       <button
         onClick={onGoogle}
         disabled={disabled}
-        className="flex-1 relative flex items-center justify-center gap-2.5 h-11 rounded-lg bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-border transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none group"
+        className="w-full relative flex items-center justify-center gap-2.5 h-14 rounded-lg bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-border transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none group"
       >
         {isGoogleLoading ? (
           <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
@@ -57,7 +57,7 @@ export default function AuthButtons({
       <button
         onClick={onApple}
         disabled={disabled}
-        className="flex-1 relative flex items-center justify-center gap-2.5 h-11 rounded-lg bg-foreground text-background shadow-sm hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+        className="w-full relative flex items-center justify-center gap-2.5 h-14 rounded-lg bg-foreground text-background shadow-sm hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
       >
         {isAppleLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
