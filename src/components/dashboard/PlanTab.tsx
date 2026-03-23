@@ -162,24 +162,8 @@ export default function PlanTab({ plannerData, loadingPlanner, userId }: Props) 
         </div>
       </motion.div>
 
-      {/* Section 3: Study Buddy CTA */}
-      <motion.div {...fade(2)}>
-        <div className="rounded-[20px] p-5 text-center" style={{ background: "linear-gradient(135deg, #F8F4FF, #F0E6FF)", border: "1px solid #E0D0F0" }}>
-          <span className="text-4xl">👥</span>
-          <h3 className="text-base font-[800] mt-2" style={{ color: "#141414" }}>Study Buddy</h3>
-          <p className="text-xs leading-relaxed mt-1.5 mx-auto max-w-[260px]" style={{ color: "#8C7A6B" }}>
-            Pair with a buddy to see their daily sprint and stay accountable together!
-          </p>
-          <Link to="/study-buddy">
-            <button className="mt-3 px-5 py-2.5 text-[13px] font-[800] text-white rounded-[14px]" style={{ background: "#8B5CF6", boxShadow: "0 4px 15px rgba(139,92,246,0.3)" }}>
-              Find a Buddy
-            </button>
-          </Link>
-        </div>
-      </motion.div>
-
       {/* Existing widgets */}
-      <motion.div {...fade(3)}>
+      <motion.div {...fade(2)}>
         <BuddyMiniWidget />
         <div className="mt-3">
           <SprintBuddyView userId={userId} />

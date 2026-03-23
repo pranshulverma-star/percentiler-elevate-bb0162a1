@@ -48,10 +48,23 @@ export default function BuddyInviteCard({ userId, userName, pendingInvite, onPai
       )
       .subscribe();
 
+    // Polling fallback: check every 5s if a pair was created
+    const poll = setInterval(async () => {
+      try {
+        const { getActiveBuddy } = await import("@/lib/buddy-utils");
+        const pair = await getActiveBuddy(userId);
+        if (pair) {
+          toast.success("Your buddy joined! 🎉");
+          onPairedRef.current();
+        }
+      } catch {}
+    }, 5000);
+
     return () => {
       supabase.removeChannel(channel);
+      clearInterval(poll);
     };
-  }, [invite?.invite_code]);
+  }, [invite?.invite_code, userId]);
 
   const handleGenerate = async () => {
     setCreating(true);
