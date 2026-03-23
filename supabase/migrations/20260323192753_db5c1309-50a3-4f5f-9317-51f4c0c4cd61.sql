@@ -1,0 +1,1 @@
+ALTER TABLE public.buddy_invites REPLICA IDENTITY FULL;
