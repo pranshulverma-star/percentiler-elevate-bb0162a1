@@ -84,6 +84,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           localStorage.setItem("percentilers_email", email);
           if (name) localStorage.setItem("percentilers_name", name);
 
+          // Fire Meta Pixel Lead + Google Ads conversion (once per session)
+          const firedKey = "lead_pixel_fired";
+          if (!sessionStorage.getItem(firedKey)) {
+            sessionStorage.setItem(firedKey, "1");
+            const page = window.location.pathname.replace("/", "") || "home";
+            trackLead(`signin_${page}`);
+          }
+
           // Fire-and-forget: don't block auth state with DB call
           (supabase.from("leads") as any).upsert(
             { user_id: currentUser.id, email, name, source: "google_signin" },
