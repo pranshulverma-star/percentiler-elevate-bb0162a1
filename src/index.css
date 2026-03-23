@@ -136,6 +136,10 @@
   .dark ::-webkit-scrollbar-thumb:hover {
     background: hsl(25 100% 50% / 0.6);
   }
+
+  /* Dashboard: hide scrollbars */
+  .dashboard-scroll::-webkit-scrollbar { display: none; }
+  .dashboard-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 }
 
 @layer utilities {
