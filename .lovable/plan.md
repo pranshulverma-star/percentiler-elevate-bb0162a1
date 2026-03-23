@@ -1,34 +1,34 @@
 
 
-## Plan: Fire Facebook Lead Event on Sign-in (No Dashboard Changes)
+## Plan: Fix Study Buddy Pairing Visibility + Remove Duplicate Buddy UI
 
-### What you get
-When a user from a Facebook ad lands on `/flashcards` (or any page) and signs in via Google, Facebook will receive a **Lead** conversion event. This lets FB Ads attribute the sign-in to your campaign. No changes to your leads table or admin dashboard — the `source` field stays as-is.
+### Issue 1: Buddy pair not showing on your (inviter's) phone
 
-### Why it works
-The Meta Pixel is already installed and `fbq('track', 'PageView')` fires on every page load. Facebook automatically captures `fbclid` from the URL and associates it with the user's browser. So when we fire `fbq('track', 'Lead')` after sign-in, FB matches it to the ad click — no need to store `fbclid` ourselves.
+**Root cause**: When your friend accepts your invite link, the `buddy_invites` table is updated to `status = 'accepted'`. The `BuddyInviteCard` has a Supabase Realtime listener that watches for this update. However, the `buddy_invites` table likely lacks `REPLICA IDENTITY FULL`, which means filtered Realtime subscriptions (filtering by `invite_code`) don't receive the full row payload. The update event is silently dropped, so the inviter's page never auto-refreshes.
 
-### Changes
+Additionally, `getActiveBuddy()` uses `.or()` syntax which should work for both users. The pair IS being created in the database (your friend sees it), so the data is correct — it's just that the inviter's page never re-fetches.
 
-**`src/hooks/useAuth.ts`** — Fire pixel event on sign-in
-- In the `onAuthStateChange` handler, when `event === "SIGNED_IN"`, call `trackLead()` with the page path (e.g. `"signin_flashcards"`)
-- This fires `fbq('track', 'Lead')` which FB Ads picks up as a conversion
-- Also fires the Google Ads conversion tag (bonus)
-- Use a `sessionStorage` flag to fire only once per sign-in (avoid duplicate events on page refreshes)
+**Fix**:
+- Add a migration to set `REPLICA IDENTITY FULL` on `buddy_invites` table (required for filtered Realtime to work)
+- As a safety net, also add a periodic polling fallback in `BuddyInviteCard` — every 5 seconds, call `getActiveBuddy()` to check if a pair was created while the invite is pending
 
-**No other files change.** The leads table `source` column remains `"google_signin"` as before. Your admin dashboard is unaffected.
+**Files**: 
+- New migration SQL: `ALTER TABLE public.buddy_invites REPLICA IDENTITY FULL;`
+- `src/components/buddy/BuddyInviteCard.tsx` — add polling fallback
 
-### Technical Detail
+### Issue 2: Two Study Buddy sections on the Plan tab
 
-```typescript
-// In onAuthStateChange, after SIGNED_IN:
-const firedKey = "lead_pixel_fired";
-if (!sessionStorage.getItem(firedKey)) {
-  sessionStorage.setItem(firedKey, "1");
-  const page = window.location.pathname.replace("/", "") || "home";
-  trackLead(`signin_${page}`);
-}
-```
+**Root cause**: `PlanTab.tsx` renders THREE buddy-related components:
+1. A hardcoded "Study Buddy" CTA card (lines 166-179)
+2. `BuddyMiniWidget` (line 183)
+3. `SprintBuddyView` (line 185)
 
-Facebook matches the conversion to the ad click via the `fbclid` cookie already stored in the browser — zero extra work needed.
+This means users see a static "Find a Buddy" CTA card PLUS the `BuddyMiniWidget` which also shows buddy status — creating duplicate buddy UI.
+
+**Fix**:
+- Remove the hardcoded Study Buddy CTA card from `PlanTab.tsx`
+- Keep only `BuddyMiniWidget` (which already handles both paired/unpaired states) and `SprintBuddyView`
+- If the user has no buddy, `BuddyMiniWidget` returns null and `SprintBuddyView` shows its own "Find a Buddy" CTA — so one CTA is sufficient
+
+**Files**: `src/components/dashboard/PlanTab.tsx`
 
