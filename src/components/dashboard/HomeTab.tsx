@@ -3,7 +3,6 @@ import { Flame, Layers, CalendarCheck, Crown, Loader2, ChevronDown, ChevronUp } 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { supabase } from "@/integrations/supabase/client";
 
 
 interface StreakData {
