@@ -91,7 +91,6 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
         }
 
         const entries: LeaderboardEntry[] = [];
-        // Top 3
         for (let i = 0; i < Math.min(10, sorted.length); i++) {
           entries.push({
             rank: i + 1,
@@ -101,7 +100,7 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
           });
         }
 
-        // Add current user if not in top 3
+        // Add current user if not in top 10
         if (myId) {
           const myIdx = sorted.findIndex(s => s.uid === myId);
           if (myIdx >= 10) {
@@ -112,6 +111,20 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
               isYou: true,
             });
           }
+        }
+
+        // Fill remaining slots with pseudo entries up to 10
+        const pseudoNames = ["Aarav S.", "Priya M.", "Rohan K.", "Sneha D.", "Vikram R.", "Ananya T.", "Karan J.", "Meera P.", "Arjun B.", "Divya N."];
+        while (entries.filter(e => !e.isYou || e.rank <= 10).length < 10) {
+          const nextRank = entries.length + 1;
+          if (nextRank > 10) break;
+          const lastXP = entries.length > 0 ? entries[entries.length - 1].xp : 100;
+          entries.push({
+            rank: nextRank,
+            name: pseudoNames[(nextRank - 1) % pseudoNames.length],
+            xp: Math.max(0, lastXP - Math.floor(Math.random() * 20 + 5)),
+            isYou: false,
+          });
         }
 
         setLeaderboard(entries);
