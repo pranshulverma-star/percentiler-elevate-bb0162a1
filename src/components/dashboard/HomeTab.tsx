@@ -1,5 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Flame, Layers, CalendarCheck, Crown, Loader2 } from "lucide-react";
+import { Flame, Layers, CalendarCheck, Crown, Loader2, ChevronDown, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -48,6 +49,7 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
 
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loadingLB, setLoadingLB] = useState(true);
+  const [lbExpanded, setLbExpanded] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -91,7 +93,7 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
 
         const entries: LeaderboardEntry[] = [];
         // Top 3
-        for (let i = 0; i < Math.min(3, sorted.length); i++) {
+        for (let i = 0; i < Math.min(10, sorted.length); i++) {
           entries.push({
             rank: i + 1,
             name: nameMap[sorted[i].uid] || "Student",
@@ -103,7 +105,7 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
         // Add current user if not in top 3
         if (myId) {
           const myIdx = sorted.findIndex(s => s.uid === myId);
-          if (myIdx >= 3) {
+          if (myIdx >= 10) {
             entries.push({
               rank: myIdx + 1,
               name: "You",
@@ -214,9 +216,9 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
       </motion.div>
 
 
-      {/* Dynamic Leaderboard — flex-1 fills remaining */}
-      <motion.div {...fade(3)} className="flex-1 min-h-0">
-        <div className="rounded-xl border border-border/40 bg-card/80 backdrop-blur-xl overflow-hidden shadow-sm h-full flex flex-col">
+      {/* Dynamic Leaderboard */}
+      <motion.div {...fade(3)}>
+        <div className="rounded-xl border border-border/40 bg-card/80 backdrop-blur-xl overflow-hidden shadow-sm">
           <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/30">
             <div className="flex items-center gap-2">
               <Crown className="h-4 w-4 text-primary" />
@@ -226,36 +228,47 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
           </div>
 
           {loadingLB ? (
-            <div className="flex-1 flex items-center justify-center">
+            <div className="flex items-center justify-center py-6">
               <Loader2 className="h-5 w-5 text-muted-foreground animate-spin" />
             </div>
           ) : leaderboard.length === 0 ? (
-            <div className="flex-1 flex items-center justify-center px-4">
+            <div className="flex items-center justify-center px-4 py-6">
               <p className="text-xs text-muted-foreground text-center">Complete quizzes to appear on the leaderboard!</p>
             </div>
           ) : (
-            <div className="flex-1 flex flex-col justify-center">
-              {leaderboard.map((entry, i) => (
-                <motion.div
-                  key={entry.rank}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + i * 0.08, duration: 0.4 }}
-                  className={`flex items-center gap-2.5 px-4 py-2.5 border-b border-border/20 last:border-0 ${
-                    entry.isYou ? "bg-primary/[0.06] border-l-2 border-l-primary" : ""
-                  }`}
+            <>
+              <div>
+                {(lbExpanded ? leaderboard : leaderboard.slice(0, 5)).map((entry, i) => (
+                  <motion.div
+                    key={entry.rank}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + i * 0.08, duration: 0.4 }}
+                    className={`flex items-center gap-2.5 px-4 py-2.5 border-b border-border/20 last:border-0 ${
+                      entry.isYou ? "bg-primary/[0.06] border-l-2 border-l-primary" : ""
+                    }`}
+                  >
+                    <div className={`w-7 h-7 rounded-lg ${rankBgs[Math.min(i, rankBgs.length - 1)]} flex items-center justify-center`}>
+                      <span className="text-sm">{rankBadges[Math.min(entry.rank - 1, rankBadges.length - 1)]}</span>
+                    </div>
+                    <p className={`text-sm font-medium flex-1 truncate ${entry.isYou ? "font-bold text-primary" : "text-foreground"}`}>
+                      {entry.isYou ? `#${entry.rank} You` : entry.name}
+                    </p>
+                    <span className="text-sm font-bold text-primary tabular-nums">{entry.xp}</span>
+                    <span className="text-[9px] text-muted-foreground font-medium">XP</span>
+                  </motion.div>
+                ))}
+              </div>
+              {leaderboard.length > 5 && (
+                <button
+                  onClick={() => setLbExpanded(!lbExpanded)}
+                  className="w-full flex items-center justify-center gap-1 py-2 text-[11px] text-muted-foreground hover:text-foreground transition-colors border-t border-border/30"
                 >
-                  <div className={`w-7 h-7 rounded-lg ${rankBgs[Math.min(i, rankBgs.length - 1)]} flex items-center justify-center`}>
-                    <span className="text-sm">{rankBadges[Math.min(entry.rank - 1, rankBadges.length - 1)]}</span>
-                  </div>
-                  <p className={`text-sm font-medium flex-1 truncate ${entry.isYou ? "font-bold text-primary" : "text-foreground"}`}>
-                    {entry.isYou && entry.name !== "You" ? `#${entry.rank} You` : entry.isYou ? `#${entry.rank} You` : entry.name}
-                  </p>
-                  <span className="text-sm font-bold text-primary tabular-nums">{entry.xp}</span>
-                  <span className="text-[9px] text-muted-foreground font-medium">XP</span>
-                </motion.div>
-              ))}
-            </div>
+                  {lbExpanded ? <ChevronUp className="h-3 w-3" /> : <ChevronDown className="h-3 w-3" />}
+                  {lbExpanded ? "Show less" : "See Full Leaderboard"}
+                </button>
+              )}
+            </>
           )}
         </div>
       </motion.div>
