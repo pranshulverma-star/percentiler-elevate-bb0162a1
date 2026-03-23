@@ -1,12 +1,10 @@
-import { Home, Zap, Compass, CalendarCheck } from "lucide-react";
-
 export type DashboardTab = "home" | "practice" | "explore" | "plan";
 
-const navItems: { icon: typeof Home; label: string; tab: DashboardTab }[] = [
-  { icon: Home, label: "Home", tab: "home" },
-  { icon: Zap, label: "Practice", tab: "practice" },
-  { icon: Compass, label: "Explore", tab: "explore" },
-  { icon: CalendarCheck, label: "Plan", tab: "plan" },
+const navItems: { emoji: string; label: string; tab: DashboardTab }[] = [
+  { emoji: "🏠", label: "Home", tab: "home" },
+  { emoji: "⚡", label: "Practice", tab: "practice" },
+  { emoji: "🧭", label: "Explore", tab: "explore" },
+  { emoji: "📅", label: "Plan", tab: "plan" },
 ];
 
 interface Props {
@@ -16,27 +14,40 @@ interface Props {
 
 export default function DashboardBottomNav({ activeTab, onTabChange }: Props) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-xl border-t border-border/30">
+    <div
+      className="fixed bottom-0 left-0 right-0 z-40"
+      style={{
+        background: "rgba(255,255,255,0.95)",
+        backdropFilter: "blur(20px)",
+        borderTop: "1px solid #F0EBE6",
+        boxShadow: "0 -2px 20px rgba(0,0,0,0.04)",
+      }}
+    >
       <div className="mx-auto max-w-lg">
-        <div className="flex">
+        <div className="flex" style={{ paddingBottom: "env(safe-area-inset-bottom, 8px)" }}>
           {navItems.map((item) => {
-            const Icon = item.icon;
             const isActive = activeTab === item.tab;
             return (
               <button
                 key={item.tab}
                 onClick={() => onTabChange(item.tab)}
-                className={`flex-1 flex flex-col items-center gap-0.5 py-2.5 transition-all ${
-                  isActive ? "text-primary" : "text-muted-foreground"
-                }`}
+                className="flex-1 flex flex-col items-center gap-0.5 py-2.5 transition-all"
               >
                 <div className="relative">
-                  <Icon className={`h-5 w-5 transition-transform ${isActive ? "scale-110" : ""}`} />
+                  <span className={`text-lg ${isActive ? "" : "grayscale opacity-50"}`}>{item.emoji}</span>
                   {isActive && (
-                    <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary shadow-[0_0_6px_hsl(var(--primary))]" />
+                    <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full" style={{ background: "#FF6600" }} />
                   )}
                 </div>
-                <span className={`text-[10px] font-medium ${isActive ? "font-semibold" : ""}`}>{item.label}</span>
+                <span
+                  className="text-[10px]"
+                  style={{
+                    color: isActive ? "#FF6600" : "#BFB3A8",
+                    fontWeight: isActive ? 800 : 600,
+                  }}
+                >
+                  {item.label}
+                </span>
               </button>
             );
           })}
