@@ -1,5 +1,6 @@
 import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { trackLead } from "@/lib/tracking";
 import { lovable } from "@/integrations/lovable/index";
 import type { User } from "@supabase/supabase-js";
 
@@ -82,6 +83,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
           localStorage.setItem("percentilers_email", email);
           if (name) localStorage.setItem("percentilers_name", name);
+
+          // Fire Meta Pixel Lead + Google Ads conversion (once per session)
+          const firedKey = "lead_pixel_fired";
+          if (!sessionStorage.getItem(firedKey)) {
+            sessionStorage.setItem(firedKey, "1");
+            const page = window.location.pathname.replace("/", "") || "home";
+            trackLead(`signin_${page}`);
+          }
 
           // Fire-and-forget: don't block auth state with DB call
           (supabase.from("leads") as any).upsert(
