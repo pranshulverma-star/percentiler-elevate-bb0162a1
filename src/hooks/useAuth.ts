@@ -1,5 +1,6 @@
 import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { trackLead } from "@/lib/tracking";
 import { lovable } from "@/integrations/lovable/index";
 import type { User } from "@supabase/supabase-js";
 
