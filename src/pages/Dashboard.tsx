@@ -127,14 +127,8 @@ export default function Dashboard() {
 
       <DashboardTopBar firstName={firstName} streakCount={streakData.currentStreak} onSignOut={handleSignOut} />
 
-      <main className="h-screen overflow-hidden flex flex-col pt-14 pb-[56px]">
-        {/* Subtle gradient mesh */}
-        <div className="fixed inset-0 pointer-events-none overflow-hidden -z-10">
-          <div className="absolute top-20 -right-20 w-80 h-80 rounded-full bg-primary/[0.04] blur-[100px]" />
-          <div className="absolute bottom-40 -left-20 w-60 h-60 rounded-full bg-primary/[0.03] blur-[80px]" />
-        </div>
-
-        <div className="flex-1 mx-auto px-4 max-w-lg w-full py-3 overflow-hidden">
+      <main className="h-screen overflow-hidden flex flex-col pt-14 pb-[56px]" style={{ background: "#FAFAF7" }}>
+        <div className="flex-1 mx-auto px-4 max-w-[420px] w-full py-3 overflow-hidden">
           {activeTab === "home" && (
             <HomeTab
               firstName={firstName}
