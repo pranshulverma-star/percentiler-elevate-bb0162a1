@@ -259,8 +259,13 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
         </div>
       </motion.div>
 
-      {/* Section 4: Leaderboard */}
+      {/* Section 4: Bookmarks */}
       <motion.div {...fade(3)}>
+        <DashboardBookmarks bookmarks={bookmarks} loading={loadingBookmarks} onRemove={onRemoveBookmark} />
+      </motion.div>
+
+      {/* Section 5: Leaderboard */}
+      <motion.div {...fade(4)}>
         <div className="rounded-[20px] overflow-hidden" style={{ background: "#fff", border: "1px solid #F0EBE6", boxShadow: "0 2px 12px rgba(0,0,0,0.03)" }}>
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-2">

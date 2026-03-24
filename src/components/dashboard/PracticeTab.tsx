@@ -18,6 +18,7 @@ interface Props {
   loadingPlanner: boolean;
   practiceAttempts: any[];
   loadingPractice: boolean;
+  dailyStreaks: boolean[];
 }
 
 const fade = (i: number) => ({
@@ -80,7 +81,7 @@ const sectionColors: Record<string, { bg: string; text: string }> = {
   LRDI: { bg: "rgba(16,185,129,0.1)", text: "#10B981" },
 };
 
-export default function PracticeTab({ streakData, practiceAttempts }: Props) {
+export default function PracticeTab({ streakData, practiceAttempts, dailyStreaks }: Props) {
   const navigate = useNavigate();
   const idx = getTodaysSectionIndex();
   const info = sectionLabels[idx];
