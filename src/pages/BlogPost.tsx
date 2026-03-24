@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
@@ -9,6 +9,7 @@ import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
 import BlogJsonLd from "@/components/blog/BlogJsonLd";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import BlogCTABanner, { MidArticleCTA } from "@/components/blog/BlogCTABanner";
+import { ArrowLeft, Clock, User } from "lucide-react";
 
 interface BlogPostData {
   slug: string;
@@ -20,11 +21,9 @@ interface BlogPostData {
   published_at: string | null;
 }
 
-/** Split markdown roughly in half to inject a mid-article CTA */
 function splitMarkdown(md: string): [string, string] {
   const lines = md.split("\n");
   const mid = Math.floor(lines.length / 2);
-  // Find nearest blank line to split cleanly
   let splitAt = mid;
   for (let i = mid; i < Math.min(mid + 10, lines.length); i++) {
     if (lines[i].trim() === "") { splitAt = i; break; }
@@ -32,14 +31,17 @@ function splitMarkdown(md: string): [string, string] {
   return [lines.slice(0, splitAt).join("\n"), lines.slice(splitAt).join("\n")];
 }
 
-/** For HTML content, inject CTA div after ~50% of content */
 function splitHtml(html: string): [string, string] {
   const mid = Math.floor(html.length / 2);
-  // Find nearest closing tag to split cleanly
   const tagEnd = html.indexOf(">", mid);
   if (tagEnd === -1) return [html, ""];
   const splitAt = tagEnd + 1;
   return [html.slice(0, splitAt), html.slice(splitAt)];
+}
+
+function estimateReadTime(content: string): number {
+  const words = content.split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 220));
 }
 
 const BlogPost = () => {
@@ -50,24 +52,20 @@ const BlogPost = () => {
 
   useEffect(() => {
     if (!slug) return;
-
     const fetchPost = async () => {
       const { data, error } = await supabase
         .from("blog_posts")
         .select("slug, title, content_html, content_markdown, meta_description, featured_image, published_at")
         .eq("slug", slug)
         .maybeSingle();
-
       if (error || !data) {
         setNotFound(true);
         window.location.replace(`https://old.percentilers.in/${slug}${window.location.search}`);
         return;
       }
-
       setPost(data);
       setLoading(false);
     };
-
     fetchPost();
   }, [slug]);
 
@@ -82,6 +80,12 @@ const BlogPost = () => {
       return { type: "html" as const, first, second };
     }
     return null;
+  }, [post]);
+
+  const readTime = useMemo(() => {
+    if (!post) return 0;
+    const text = post.content_markdown || post.content_html || "";
+    return estimateReadTime(text);
   }, [post]);
 
   if (loading && !notFound) {
@@ -110,32 +114,69 @@ const BlogPost = () => {
         featuredImage={post.featured_image}
       />
       <Navbar />
-      <main className="min-h-screen bg-background pt-20">
-        <article className="max-w-3xl mx-auto px-4 py-8 sm:py-12">
-          <BlogBreadcrumb postTitle={post.title} />
-
-          {post.featured_image && (
+      <main className="min-h-screen bg-background">
+        {/* Hero section with featured image */}
+        {post.featured_image && (
+          <div className="relative w-full h-[280px] sm:h-[400px] overflow-hidden">
             <img
               src={post.featured_image}
               alt={post.title}
-              className="w-full rounded-xl mb-8 object-cover max-h-96"
+              className="w-full h-full object-cover"
             />
-          )}
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-4 leading-tight">
+            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
+          </div>
+        )}
+
+        <article className={`max-w-3xl mx-auto px-4 ${post.featured_image ? '-mt-20 relative z-10' : 'pt-24'}`}>
+          {/* Breadcrumb + back link */}
+          <div className="flex items-center gap-3 mb-5">
+            <Link
+              to="/blog"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors bg-primary/5 px-3 py-1.5 rounded-full border border-primary/20 hover:border-primary/40 shrink-0"
+            >
+              <ArrowLeft className="h-3 w-3" /> All Posts
+            </Link>
+            <BlogBreadcrumb postTitle={post.title} />
+          </div>
+
+          {/* Title */}
+          <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold text-foreground leading-[1.15] tracking-tight mb-5">
             {post.title}
           </h1>
-          {post.published_at && (
-            <p className="text-muted-foreground text-sm mb-8">
-              {new Date(post.published_at).toLocaleDateString("en-IN", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </p>
-          )}
 
-          {/* Blog content with mid-article CTA */}
-          <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-foreground prose-p:text-foreground/90 prose-a:text-primary">
+          {/* Meta strip */}
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 pb-8 border-b border-border">
+            <span className="inline-flex items-center gap-1.5">
+              <User className="h-3.5 w-3.5" /> Pranshul Verma
+            </span>
+            {post.published_at && (
+              <time dateTime={post.published_at} className="inline-flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+                {new Date(post.published_at).toLocaleDateString("en-IN", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </time>
+            )}
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="h-3.5 w-3.5" /> {readTime} min read
+            </span>
+          </div>
+
+          {/* Article body */}
+          <div className="prose prose-lg dark:prose-invert max-w-none
+            prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-foreground
+            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-l-4 prose-h2:border-primary prose-h2:pl-4
+            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
+            prose-p:text-foreground/85 prose-p:leading-[1.8]
+            prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
+            prose-strong:text-foreground prose-strong:font-bold
+            prose-li:text-foreground/85
+            prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:rounded-r-lg prose-blockquote:py-1 prose-blockquote:px-4
+            prose-img:rounded-xl prose-img:shadow-md
+            prose-table:text-sm
+          ">
             {contentParts?.type === "markdown" ? (
               <>
                 <ReactMarkdown>{contentParts.first}</ReactMarkdown>
@@ -158,6 +199,9 @@ const BlogPost = () => {
 
           {/* Related Posts */}
           <RelatedPosts currentSlug={post.slug} />
+
+          {/* Bottom spacing */}
+          <div className="h-16" />
         </article>
       </main>
       <Footer />

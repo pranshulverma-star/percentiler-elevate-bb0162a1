@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ArrowRight, Clock } from "lucide-react";
 
 interface BlogListItem {
   slug: string;
@@ -11,6 +12,12 @@ interface BlogListItem {
   meta_description: string | null;
   featured_image: string | null;
   published_at: string | null;
+  content_markdown: string | null;
+}
+
+function estimateReadTime(content: string | null): number {
+  if (!content) return 3;
+  return Math.max(1, Math.ceil(content.split(/\s+/).length / 220));
 }
 
 const BlogListing = () => {
@@ -21,7 +28,8 @@ const BlogListing = () => {
     const fetchPosts = async () => {
       const { data } = await supabase
         .from("blog_posts")
-        .select("slug, title, meta_description, featured_image, published_at")
+        .select("slug, title, meta_description, featured_image, published_at, content_markdown")
+        .not("title", "like", "%Page not found%")
         .order("published_at", { ascending: false });
 
       setPosts(data || []);
@@ -29,6 +37,9 @@ const BlogListing = () => {
     };
     fetchPosts();
   }, []);
+
+  const heroPost = posts[0];
+  const gridPosts = posts.slice(1);
 
   return (
     <>
@@ -38,53 +49,123 @@ const BlogListing = () => {
         canonical="https://percentilers.in/blog"
       />
       <Navbar />
-      <main className="min-h-screen bg-background pt-20">
-        <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-8">Blog</h1>
-          {loading ? (
-            <div className="flex justify-center py-12">
-              <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-            </div>
-          ) : posts.length === 0 ? (
-            <p className="text-muted-foreground">No blog posts yet.</p>
-          ) : (
-            <div className="grid gap-6 sm:grid-cols-2">
-              {posts.map((post) => (
-                <Link
-                  key={post.slug}
-                  to={`/${post.slug}`}
-                  className="group block rounded-xl border border-border bg-card p-4 hover:shadow-lg transition-shadow"
-                >
-                  {post.featured_image && (
-                    <img
-                      src={post.featured_image}
-                      alt={post.title}
-                      className="w-full h-40 object-cover rounded-lg mb-3"
-                      loading="lazy"
-                    />
-                  )}
-                  <h2 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
-                    {post.title}
-                  </h2>
-                  {post.meta_description && (
-                    <p className="text-sm text-muted-foreground mt-2 line-clamp-2">
-                      {post.meta_description}
-                    </p>
-                  )}
-                  {post.published_at && (
-                    <p className="text-xs text-muted-foreground mt-2">
-                      {new Date(post.published_at).toLocaleDateString("en-IN", {
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}
-                    </p>
-                  )}
-                </Link>
-              ))}
-            </div>
-          )}
+      <main className="min-h-screen bg-background">
+        {/* Header */}
+        <div className="pt-24 pb-10 sm:pb-14">
+          <div className="max-w-5xl mx-auto px-4">
+            <p className="text-primary font-semibold text-sm tracking-widest uppercase mb-3">Insights & Strategy</p>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-foreground tracking-tight leading-[1.1]">
+              The Percentilers Blog
+            </h1>
+            <p className="text-muted-foreground mt-3 text-lg max-w-xl">
+              Real talk on CAT prep, MBA admissions, and everything in between — no fluff, just gyaan.
+            </p>
+          </div>
         </div>
+
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : posts.length === 0 ? (
+          <p className="text-muted-foreground text-center py-16">No blog posts yet.</p>
+        ) : (
+          <div className="max-w-5xl mx-auto px-4 pb-16">
+            {/* Hero card — latest post */}
+            {heroPost && (
+              <Link
+                to={`/${heroPost.slug}`}
+                className="group relative block rounded-2xl overflow-hidden mb-10 border border-border bg-card hover:shadow-xl transition-shadow"
+              >
+                <div className="sm:flex">
+                  {heroPost.featured_image && (
+                    <div className="sm:w-1/2 h-56 sm:h-auto overflow-hidden">
+                      <img
+                        src={heroPost.featured_image}
+                        alt={heroPost.title}
+                        className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div className={`p-6 sm:p-8 flex flex-col justify-center ${heroPost.featured_image ? 'sm:w-1/2' : ''}`}>
+                    <span className="inline-block text-[10px] font-bold tracking-widest uppercase text-primary bg-primary/10 px-2.5 py-1 rounded-full w-fit mb-4">
+                      Latest
+                    </span>
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-foreground group-hover:text-primary transition-colors leading-tight mb-3">
+                      {heroPost.title}
+                    </h2>
+                    {heroPost.meta_description && (
+                      <p className="text-sm text-muted-foreground line-clamp-3 mb-4 leading-relaxed">
+                        {heroPost.meta_description}
+                      </p>
+                    )}
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground mt-auto">
+                      {heroPost.published_at && (
+                        <time>
+                          {new Date(heroPost.published_at).toLocaleDateString("en-IN", {
+                            year: "numeric", month: "short", day: "numeric",
+                          })}
+                        </time>
+                      )}
+                      <span className="inline-flex items-center gap-1">
+                        <Clock className="h-3 w-3" /> {estimateReadTime(heroPost.content_markdown)} min
+                      </span>
+                      <span className="ml-auto inline-flex items-center gap-1 text-primary font-medium group-hover:gap-2 transition-all">
+                        Read <ArrowRight className="h-3 w-3" />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )}
+
+            {/* Grid */}
+            {gridPosts.length > 0 && (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {gridPosts.map((post) => (
+                  <Link
+                    key={post.slug}
+                    to={`/${post.slug}`}
+                    className="group flex flex-col rounded-xl border border-border bg-card overflow-hidden hover:shadow-lg transition-shadow"
+                  >
+                    {post.featured_image && (
+                      <div className="h-40 overflow-hidden">
+                        <img
+                          src={post.featured_image}
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"
+                          loading="lazy"
+                        />
+                      </div>
+                    )}
+                    <div className="p-4 flex flex-col flex-1">
+                      <h2 className="text-base font-bold text-foreground group-hover:text-primary transition-colors line-clamp-2 mb-2 leading-snug">
+                        {post.title}
+                      </h2>
+                      {post.meta_description && (
+                        <p className="text-xs text-muted-foreground line-clamp-2 mb-3 leading-relaxed flex-1">
+                          {post.meta_description}
+                        </p>
+                      )}
+                      <div className="flex items-center justify-between text-[11px] text-muted-foreground mt-auto pt-3 border-t border-border/60">
+                        {post.published_at && (
+                          <time>
+                            {new Date(post.published_at).toLocaleDateString("en-IN", {
+                              year: "numeric", month: "short", day: "numeric",
+                            })}
+                          </time>
+                        )}
+                        <span className="inline-flex items-center gap-1">
+                          <Clock className="h-3 w-3" /> {estimateReadTime(post.content_markdown)} min
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </main>
       <Footer />
     </>
