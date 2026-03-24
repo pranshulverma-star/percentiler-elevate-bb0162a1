@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useStreaks } from "@/hooks/useStreaks";
+import { useBookmarks } from "@/hooks/useBookmarks";
 import { supabase } from "@/integrations/supabase/client";
 import DashboardTopBar from "@/components/dashboard/DashboardTopBar";
 import DashboardBottomNav, { type DashboardTab } from "@/components/dashboard/DashboardBottomNav";
@@ -17,6 +18,7 @@ export default function Dashboard() {
   const { user, signOut } = useAuth();
   const userId = user?.id || "";
   const { currentStreak, longestStreak, weeklyActivity, loading: loadingStreaks } = useStreaks();
+  const { bookmarks, loading: loadingBookmarks, removeBookmark } = useBookmarks();
 
   const [activeTab, setActiveTab] = useState<DashboardTab>("home");
   const [lead, setLead] = useState<any>(null);
@@ -135,6 +137,9 @@ export default function Dashboard() {
               streakData={streakData}
               loadingStreaks={loadingStreaks}
               sprintGoals={sprintGoals}
+              bookmarks={bookmarks}
+              loadingBookmarks={loadingBookmarks}
+              onRemoveBookmark={removeBookmark}
             />
           )}
           {activeTab === "practice" && (
@@ -146,6 +151,7 @@ export default function Dashboard() {
               loadingPlanner={loadingPlanner}
               practiceAttempts={practiceAttempts}
               loadingPractice={loadingPractice}
+              dailyStreaks={weeklyActivity}
             />
           )}
           {activeTab === "explore" && (
