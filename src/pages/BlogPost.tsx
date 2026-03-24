@@ -12,7 +12,7 @@ import RelatedPosts from "@/components/blog/RelatedPosts";
 import BlogCTABanner from "@/components/blog/BlogCTABanner";
 import BlogFAQAccordion from "@/components/blog/BlogFAQAccordion";
 import BlogTableOfContents, { type TocItem } from "@/components/blog/BlogTableOfContents";
-import { ArrowLeft, Clock, User, ArrowUp } from "lucide-react";
+import { ArrowLeft, Clock, User, ArrowUp, Zap } from "lucide-react";
 
 interface BlogPostData {
   slug: string;
@@ -233,6 +233,17 @@ const BlogPost = () => {
                 className="w-full rounded-xl max-h-[420px] object-cover"
               />
               <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-transparent via-transparent to-background" style={{ background: 'linear-gradient(to bottom, transparent 60%, hsl(var(--background)) 100%)' }} />
+            </div>
+          )}
+
+          {/* Quick Answer box for GEO / Speakable */}
+          {post.meta_description && (
+            <div className="quick-answer">
+              <div className="quick-answer-label">
+                <Zap className="h-3.5 w-3.5" />
+                Quick Answer
+              </div>
+              <p className="quick-answer-text">{post.meta_description}</p>
             </div>
           )}
 

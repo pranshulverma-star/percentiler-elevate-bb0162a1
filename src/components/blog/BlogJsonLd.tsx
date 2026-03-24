@@ -36,6 +36,10 @@ const BlogJsonLd = ({ title, description, slug, publishedAt, featuredImage }: Bl
       "@type": "WebPage",
       "@id": `https://percentilers.in/${slug}`,
     },
+    speakable: {
+      "@type": "SpeakableSpecification",
+      cssSelector: [".quick-answer", "h1"],
+    },
   };
 
   const breadcrumbSchema = {
