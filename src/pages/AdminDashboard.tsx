@@ -166,6 +166,10 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <meta name="robots" content="noindex, nofollow" />
+        <title>Admin Dashboard | Percentilers</title>
+      </Helmet>
       <div className="max-w-[1400px] mx-auto px-4 py-6 space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

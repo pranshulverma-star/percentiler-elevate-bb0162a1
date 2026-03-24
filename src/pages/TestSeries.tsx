@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
