@@ -74,7 +74,7 @@ function extractArticleContent(html: string): string {
   let headingCounter = 0;
   content = content.replace(/<(h[23])([^>]*)>([\s\S]*?)<\/\1>/gi, (_match, tag, attrs, inner) => {
     headingCounter++;
-    const text = inner.replace(/<[^>]+>/g, "").trim();
+    const _text = inner.replace(/<[^>]+>/g, "").trim();
     const id = `heading-${headingCounter}`;
     return `<${tag}${attrs} id="${id}">${inner}</${tag}>`;
   });
