@@ -4,7 +4,7 @@ import { pickGroupedRandom, pickOneSet } from "@/lib/pickGroupedQuestions";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { generateTodaysBattle } from "@/lib/todaysBattle";
 import { getTodaysSectionIndex } from "@/lib/todaySectionIndex";
-import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2 } from "lucide-react";
+import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2, Bookmark as BookmarkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
 import ResultsView from "@/components/practice-lab/ResultsView";
 import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
+import { useBookmarks } from "@/hooks/useBookmarks";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
