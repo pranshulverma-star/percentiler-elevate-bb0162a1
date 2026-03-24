@@ -11,6 +11,7 @@ import BlogJsonLd from "@/components/blog/BlogJsonLd";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import BlogCTABanner from "@/components/blog/BlogCTABanner";
 import BlogFAQAccordion from "@/components/blog/BlogFAQAccordion";
+import BlogTableOfContents, { type TocItem } from "@/components/blog/BlogTableOfContents";
 import { ArrowLeft, Clock, User, ArrowUp } from "lucide-react";
 
 interface BlogPostData {
@@ -55,6 +56,14 @@ function extractArticleContent(html: string): string {
   content = content.replace(/<figure[^>]*>[\s\S]*?<\/figure>/, "");
   // Remove tldr-box div (already shown as meta description)
   content = content.replace(/<div[^>]*class="[^"]*tldr-box[^"]*"[^>]*>[\s\S]*?<\/div>/, "");
+  // Add IDs to h2/h3 for TOC linking
+  let headingCounter = 0;
+  content = content.replace(/<(h[23])([^>]*)>([\s\S]*?)<\/\1>/gi, (_match, tag, attrs, inner) => {
+    headingCounter++;
+    const text = inner.replace(/<[^>]+>/g, "").trim();
+    const id = `heading-${headingCounter}`;
+    return `<${tag}${attrs} id="${id}">${inner}</${tag}>`;
+  });
   return content;
 }
 
