@@ -11,6 +11,7 @@ import BlogJsonLd from "@/components/blog/BlogJsonLd";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import BlogCTABanner from "@/components/blog/BlogCTABanner";
 import BlogFAQAccordion from "@/components/blog/BlogFAQAccordion";
+import BlogTableOfContents, { type TocItem } from "@/components/blog/BlogTableOfContents";
 import { ArrowLeft, Clock, User, ArrowUp } from "lucide-react";
 
 interface BlogPostData {
@@ -55,6 +56,14 @@ function extractArticleContent(html: string): string {
   content = content.replace(/<figure[^>]*>[\s\S]*?<\/figure>/, "");
   // Remove tldr-box div (already shown as meta description)
   content = content.replace(/<div[^>]*class="[^"]*tldr-box[^"]*"[^>]*>[\s\S]*?<\/div>/, "");
+  // Add IDs to h2/h3 for TOC linking
+  let headingCounter = 0;
+  content = content.replace(/<(h[23])([^>]*)>([\s\S]*?)<\/\1>/gi, (_match, tag, attrs, inner) => {
+    headingCounter++;
+    const text = inner.replace(/<[^>]+>/g, "").trim();
+    const id = `heading-${headingCounter}`;
+    return `<${tag}${attrs} id="${id}">${inner}</${tag}>`;
+  });
   return content;
 }
 
@@ -132,6 +141,21 @@ const BlogPost = () => {
     return null;
   }, [post]);
 
+  const tocItems = useMemo<TocItem[]>(() => {
+    if (!contentData) return [];
+    const html = contentData.main;
+    const items: TocItem[] = [];
+    const regex = /<h([23])[^>]*id="([^"]*)"[^>]*>([\s\S]*?)<\/h\1>/gi;
+    let match;
+    while ((match = regex.exec(html)) !== null) {
+      const text = match[3].replace(/<[^>]+>/g, "").trim();
+      if (text) {
+        items.push({ id: match[2], text, level: parseInt(match[1]) });
+      }
+    }
+    return items;
+  }, [contentData]);
+
   if (loading && !notFound) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
@@ -165,7 +189,8 @@ const BlogPost = () => {
       />
       <Navbar />
       <main className="min-h-screen bg-background">
-        <article className="max-w-[680px] mx-auto px-5 sm:px-5 pt-24 pb-16">
+        <div className="max-w-[1060px] mx-auto px-5 pt-24 pb-16 flex gap-10 items-start">
+        <article className="max-w-[680px] w-full mx-auto xl:mx-0">
           {/* Back link */}
           <Link
             to="/blog"
@@ -236,6 +261,8 @@ const BlogPost = () => {
 
           <div className="h-12" />
         </article>
+        <BlogTableOfContents items={tocItems} />
+        </div>
       </main>
       <Footer />
 
