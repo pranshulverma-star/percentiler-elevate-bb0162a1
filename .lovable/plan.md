@@ -1,51 +1,77 @@
 
 
-## Plan: Redesign Blog Listing + Post Pages
+## Plan: Comprehensive SEO & GEO Optimization
 
-### Overview
-Full visual redesign of both blog pages to match the warm, approachable brand aesthetic. Fix HTML content rendering and add FAQ accordion support.
+### What's Already Done
+- Homepage, Masterclass, Mentorship, BlogPost, BlogListing, Workshops, CATCoachingComparison, FreeCourses, CATDailyStudyPlanner, CATReadinessAssessment, PracticeLab, DailySprint, StudyBuddy, Flashcards, CATOMETCourses all have SEO tags
+- JSON-LD for EducationalOrganization + FAQPage in index.html
+- sitemap.xml, robots.txt, llms.txt all present
+
+### Issues to Fix
+
+**1. Pages missing SEO component entirely (no title/description/canonical):**
+- `Terms.tsx`
+- `PrivacyPolicy.tsx`
+- `RefundPolicy.tsx`
+- `Contact.tsx`
+- `TestSeries.tsx`
+
+**2. Wrong canonical domains** — some pages use `percentiler-elevate.lovable.app` instead of `percentilers.in`:
+- `BattleRoom.tsx` — canonical points to lovable.app
+- `PracticeLab.tsx` — canonical points to lovable.app
+
+**3. Missing JSON-LD structured data** on key pages:
+- **Masterclass** — add `Event` schema (free online event)
+- **Mentorship** — add `Course` schema
+- **CATOMETCourses** — add `Course` schema
+- **TestSeries** — add `Product` or `Course` schema
+- **Workshops** — add `Course` schema
+- **BlogListing** — add `CollectionPage` schema
+- **Flashcards** — already has `LearningResource` (good)
+- **CATDailyStudyPlanner** — add `WebApplication` schema
+- **CATReadinessAssessment** — add `WebApplication` schema
+- **FreeCourses** — add `ItemList` schema
+
+**4. Missing `<meta name="robots">` for noindex pages** — Dashboard, Admin, BattleRoom should be noindexed
+
+**5. Sitemap gaps:**
+- Missing: `/flashcards`, `/workshops`, `/study-buddy`, `/daily-sprint`, `/practice-lab`
+- Add `lastmod` dates to sitemap entries
+
+**6. GEO (Generative Engine Optimization):**
+- Update `llms.txt` to include all pages (flashcards, workshops, blog, study-buddy, daily-sprint, practice-lab, test-series)
+- Add structured "what we offer" descriptions for AI crawlers
 
 ### Files to Modify
 
-1. **`src/pages/BlogListing.tsx`** — Complete rewrite
-   - Centered header: "CAT Prep Insights 🎯" with warm subheading, orange underline accent
-   - Remove hero card pattern — uniform 3-col grid (2 tablet, 1 mobile)
-   - Each card: white bg, 12px radius, subtle shadow, 16:9 image top, orange category pill, bold title (2-line clamp), gray excerpt (2-line clamp), date left + "Read more →" orange right
-   - Hover: translateY(-4px), deeper shadow, 0.2s ease transition
-   - Max-width 1200px, no sidebar
-   - Keep category filter chips but restyle with orange active state
+| File | Changes |
+|------|---------|
+| `src/pages/Terms.tsx` | Add `<SEO>` with title/desc/canonical |
+| `src/pages/PrivacyPolicy.tsx` | Add `<SEO>` with title/desc/canonical |
+| `src/pages/RefundPolicy.tsx` | Add `<SEO>` with title/desc/canonical |
+| `src/pages/Contact.tsx` | Add `<SEO>` with title/desc/canonical |
+| `src/pages/TestSeries.tsx` | Add `<SEO>` + `Course` JSON-LD |
+| `src/pages/BattleRoom.tsx` | Fix canonical to percentilers.in |
+| `src/pages/PracticeLab.tsx` | Fix canonical to percentilers.in |
+| `src/pages/Masterclass.tsx` | Add `Event` JSON-LD |
+| `src/pages/Mentorship.tsx` | Add `Course` JSON-LD |
+| `src/pages/CATOMETCourses.tsx` | Add `Course` JSON-LD |
+| `src/pages/Workshops.tsx` | Add `Course` JSON-LD |
+| `src/pages/BlogListing.tsx` | Add `CollectionPage` JSON-LD |
+| `src/pages/FreeCourses.tsx` | Add `ItemList` JSON-LD |
+| `src/pages/CATDailyStudyPlanner.tsx` | Add `WebApplication` JSON-LD |
+| `src/pages/CATReadinessAssessment.tsx` | Add `WebApplication` JSON-LD |
+| `src/pages/Dashboard.tsx` | Add `noindex` meta via Helmet |
+| `src/pages/AdminDashboard.tsx` | Add `noindex` meta via Helmet |
+| `src/components/SEO.tsx` | Add optional `noindex` prop |
+| `public/sitemap.xml` | Add missing pages + `lastmod` |
+| `public/llms.txt` | Expand with all tools/pages |
+| `public/robots.txt` | Add `Disallow: /admin` and `Disallow: /dashboard` |
 
-2. **`src/pages/BlogPost.tsx`** — Major rewrite
-   - Single column, max-width 740px, padding 2rem desktop / 1rem mobile
-   - "← All Articles" back link top-left in orange
-   - Category pill, then H1 (2.25rem, weight 800, line-height 1.3, #1a1a1a)
-   - Meta row: date + read time (wordCount / 200)
-   - Featured image: full width, 12px radius, below meta
-   - **Content rendering fix**: Prefer `content_html` rendered via `dangerouslySetInnerHTML`. Fall back to markdown only if no HTML. Remove the split-in-half mid-article CTA approach — place CTA banner at bottom only
-   - FAQ section: Parse `.faq-section` from HTML content, extract Q&A pairs, render as accordion with orange chevron, #fff8f5 open bg, #ffe0cc border
-   - Bottom CTA banner: orange bg, white text, "Ready to crack CAT?" with white button linking to percentilers.in
+### Technical Approach
 
-3. **`src/index.css`** — Add blog-specific content styles
-   - `.blog-content p`: font-size 1.05rem, line-height 1.85, mb 1.4rem, color #2d2d2d
-   - `.blog-content h2`: 1.6rem, weight 700, 3px orange left border, 12px left padding
-   - `.blog-content h3`: 1.25rem, weight 600
-   - `.blog-content blockquote`: 4px orange left border, #fff8f5 bg, rounded right
-   - `.blog-content a`: color #FF6B35, underline on hover, weight 500
-   - `.blog-content ul/ol`: proper padding and spacing
-   - `.blog-content table`: keep existing responsive styles
-   - `.blog-faq` accordion styles
-
-4. **`src/components/blog/BlogCTABanner.tsx`** — Redesign bottom CTA
-   - Orange background banner, white text: "Ready to crack CAT? Get expert guidance at Percentilers →"
-   - White button with orange text, 12px radius, 1.5rem padding
-   - Remove the 3-card grid pattern, replace with single impactful banner
-
-5. **`src/components/blog/RelatedPosts.tsx`** — Restyle cards to match new listing card design (white bg, shadow, orange accents, "Read more →")
-
-### Technical Details
-- Use `dangerouslySetInnerHTML` for HTML content (already partially done)
-- FAQ accordion: parse the HTML string for `.faq-section` using regex or DOMParser, extract heading/content pairs, render with Radix Accordion component (already installed)
-- Read time: change divisor from 220 to 200 per spec
-- All transitions: 0.2s ease
-- No new fonts — DM Sans already in use
+- Add an optional `noindex?: boolean` prop to `SEO.tsx` that renders `<meta name="robots" content="noindex, nofollow" />`
+- JSON-LD added via `<Helmet><script type="application/ld+json">` inside each page — keeps schema co-located with the page
+- All canonicals use `https://percentilers.in/...`
+- Existing visible copy is not changed per project memory constraints
 
