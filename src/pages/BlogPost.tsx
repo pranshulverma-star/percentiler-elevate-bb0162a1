@@ -191,13 +191,7 @@ const BlogPost = () => {
       <main className="min-h-screen bg-background">
         <div className="max-w-[1060px] mx-auto px-5 pt-24 pb-16 flex gap-10 items-start">
         <article className="max-w-[680px] w-full mx-auto xl:mx-0">
-          {/* Back link */}
-          <Link
-            to="/blog"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors mb-6"
-          >
-            <ArrowLeft className="h-4 w-4" /> All Articles
-          </Link>
+          <BlogBreadcrumb postTitle={post.title} />
 
           {/* Title */}
           <h1 className="text-[2.25rem] font-extrabold text-foreground leading-[1.3] tracking-tight mb-5">
