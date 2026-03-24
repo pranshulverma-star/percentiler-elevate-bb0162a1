@@ -734,6 +734,45 @@ export type Database = {
         }
         Relationships: []
       }
+      question_bookmarks: {
+        Row: {
+          chapter_slug: string
+          correct_answer: string | null
+          created_at: string
+          id: string
+          options: Json | null
+          question_id: string
+          question_text: string
+          question_type: string | null
+          section_id: string
+          user_id: string
+        }
+        Insert: {
+          chapter_slug: string
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          options?: Json | null
+          question_id: string
+          question_text: string
+          question_type?: string | null
+          section_id: string
+          user_id: string
+        }
+        Update: {
+          chapter_slug?: string
+          correct_answer?: string | null
+          created_at?: string
+          id?: string
+          options?: Json | null
+          question_id?: string
+          question_text?: string
+          question_type?: string | null
+          section_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       readiness_quiz: {
         Row: {
           attempted_before: string

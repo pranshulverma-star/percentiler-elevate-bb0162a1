@@ -4,7 +4,7 @@ import { pickGroupedRandom, pickOneSet } from "@/lib/pickGroupedQuestions";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { generateTodaysBattle } from "@/lib/todaysBattle";
 import { getTodaysSectionIndex } from "@/lib/todaySectionIndex";
-import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2 } from "lucide-react";
+import { ArrowLeft, Clock, Zap, ChevronRight, Lock, Flame, Shield, Swords, Target, Crown, Users2, Bookmark as BookmarkIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +22,7 @@ import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
 import ResultsView from "@/components/practice-lab/ResultsView";
 import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
+import { useBookmarks } from "@/hooks/useBookmarks";
 
 type Phase = "sections" | "chapters" | "quiz" | "results";
 
@@ -383,12 +384,20 @@ function QuizView({
   duration,
   onFinish,
   onBack,
+  sectionId,
+  chapterSlug,
+  bookmarkedIds,
+  onToggleBookmark,
 }: {
   chapter: Chapter;
   questions: PracticeQuestion[];
   duration: number;
   onFinish: (answers: Record<number, number | string | null>, timeUsed: number) => void;
   onBack: () => void;
+  sectionId: string;
+  chapterSlug: string;
+  bookmarkedIds: Set<string>;
+  onToggleBookmark: (q: PracticeQuestion) => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
@@ -528,7 +537,14 @@ function QuizView({
                 transition={{ duration: 0.25 }}
               >
                 <Card className="p-4 md:p-6 border space-y-4 relative overflow-hidden">
-                  <div className="absolute top-0 right-0">
+                  <div className="absolute top-0 right-0 flex items-center">
+                    <button
+                      onClick={() => onToggleBookmark(q)}
+                      className="p-1.5 md:p-2 transition-colors"
+                      title={bookmarkedIds.has(String(q.id)) ? "Remove bookmark" : "Bookmark question"}
+                    >
+                      <BookmarkIcon className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${bookmarkedIds.has(String(q.id)) ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"}`} />
+                    </button>
                     <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
                       Q{currentIndex + 1}/{questions.length}
                     </div>
@@ -620,7 +636,14 @@ function QuizView({
               transition={{ duration: 0.25 }}
             >
               <Card className="p-4 md:p-8 border space-y-4 md:space-y-6 relative overflow-hidden">
-                <div className="absolute top-0 right-0">
+                <div className="absolute top-0 right-0 flex items-center">
+                  <button
+                    onClick={() => onToggleBookmark(q)}
+                    className="p-1.5 md:p-2 transition-colors"
+                    title={bookmarkedIds.has(String(q.id)) ? "Remove bookmark" : "Bookmark question"}
+                  >
+                    <BookmarkIcon className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${bookmarkedIds.has(String(q.id)) ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"}`} />
+                  </button>
                   <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
                     Q{currentIndex + 1}/{questions.length}
                   </div>
@@ -719,6 +742,19 @@ export default function PracticeLab() {
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
   const [battleDuration, setBattleDuration] = useState<number | null>(null);
+  const { bookmarkedIds, toggleBookmark } = useBookmarks();
+
+  const handleToggleBookmark = useCallback((q: PracticeQuestion) => {
+    toggleBookmark({
+      id: q.id,
+      question: q.question,
+      options: q.options,
+      correctAnswer: q.correctAnswer,
+      type: q.type,
+      sectionId: selectedSection?.id || "qa",
+      chapterSlug: selectedChapter?.slug || "",
+    });
+  }, [toggleBookmark, selectedSection, selectedChapter]);
 
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
@@ -901,6 +937,10 @@ export default function PracticeLab() {
                 duration={battleDuration || (selectedChapter && ONE_SET_SLUGS.has(selectedChapter.slug) ? QUIZ_DURATION_SHORT : QUIZ_DURATION_DEFAULT)}
                 onFinish={handleFinishQuiz}
                 onBack={handleBackToChapters}
+                sectionId={selectedSection?.id || "qa"}
+                chapterSlug={selectedChapter.slug}
+                bookmarkedIds={bookmarkedIds}
+                onToggleBookmark={handleToggleBookmark}
               />
             )}
             {phase === "results" && selectedChapter && selectedSection && (

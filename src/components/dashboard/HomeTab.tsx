@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
-
+import DashboardBookmarks from "./DashboardBookmarks";
+import type { Bookmark } from "@/hooks/useBookmarks";
 interface StreakData {
   currentStreak: number;
   longestStreak: number;
@@ -16,6 +17,9 @@ interface Props {
   streakData: StreakData;
   loadingStreaks: boolean;
   sprintGoals: { total: number; done: number } | null;
+  bookmarks: Bookmark[];
+  loadingBookmarks: boolean;
+  onRemoveBookmark: (questionId: string) => void;
 }
 
 const dayLabels = ["M", "T", "W", "T", "F", "S", "S"];
@@ -56,7 +60,7 @@ function AnimatedXP({ value }: { value: number }) {
   return <span ref={ref}>{display.toLocaleString()}</span>;
 }
 
-export default function HomeTab({ firstName, streakData, loadingStreaks: _, sprintGoals }: Props) {
+export default function HomeTab({ firstName, streakData, loadingStreaks: _, sprintGoals, bookmarks, loadingBookmarks, onRemoveBookmark }: Props) {
   const streak = streakData?.currentStreak ?? 0;
   const weekly = streakData?.weeklyActivity ?? Array(7).fill(false);
   const now = new Date();
@@ -255,8 +259,13 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
         </div>
       </motion.div>
 
-      {/* Section 4: Leaderboard */}
+      {/* Section 4: Bookmarks */}
       <motion.div {...fade(3)}>
+        <DashboardBookmarks bookmarks={bookmarks} loading={loadingBookmarks} onRemove={onRemoveBookmark} />
+      </motion.div>
+
+      {/* Section 5: Leaderboard */}
+      <motion.div {...fade(4)}>
         <div className="rounded-[20px] overflow-hidden" style={{ background: "#fff", border: "1px solid #F0EBE6", boxShadow: "0 2px 12px rgba(0,0,0,0.03)" }}>
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center gap-2">
