@@ -22,16 +22,27 @@ const BlogListing = () => {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
+  const [hasMore, setHasMore] = useState(true);
+  const PAGE_SIZE = 12;
+
+  const fetchPosts = async (offset = 0) => {
+    const { data } = await supabase
+      .from("blog_posts")
+      .select("slug, title, meta_description, featured_image, published_at, category")
+      .not("title", "like", "%Page not found%")
+      .order("published_at", { ascending: false })
+      .range(offset, offset + PAGE_SIZE - 1);
+    const results = data || [];
+    if (offset === 0) {
+      setPosts(results);
+    } else {
+      setPosts(prev => [...prev, ...results]);
+    }
+    setHasMore(results.length === PAGE_SIZE);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    const fetchPosts = async () => {
-      const { data } = await supabase
-        .from("blog_posts")
-        .select("slug, title, meta_description, featured_image, published_at, category")
-        .not("title", "like", "%Page not found%")
-        .order("published_at", { ascending: false });
-      setPosts(data || []);
-      setLoading(false);
-    };
     fetchPosts();
   }, []);
 

@@ -70,6 +70,10 @@ function extractArticleContent(html: string): string {
   content = content.replace(/<figure[^>]*>[\s\S]*?<\/figure>/, "");
   // Remove tldr-box div (already shown as meta description)
   content = content.replace(/<div[^>]*class="[^"]*tldr-box[^"]*"[^>]*>[\s\S]*?<\/div>/, "");
+  // Remove "You should also read" / "you may also like" sections (legacy scraped content)
+  content = content.replace(/<(?:div|section|aside)[^>]*>[\s\S]*?(?:You should also read|you may also like|You May Also Like|Related Posts)[\s\S]*?<\/(?:div|section|aside)>/gi, "");
+  // Remove any links pointing to old.percentilers or old.percentiles
+  content = content.replace(/<a[^>]*href="[^"]*old\.percentile[^"]*"[^>]*>[\s\S]*?<\/a>/gi, "");
   // Add IDs to h2/h3 for TOC linking
   let headingCounter = 0;
   content = content.replace(/<(h[23])([^>]*)>([\s\S]*?)<\/\1>/gi, (_match, tag, attrs, inner) => {
