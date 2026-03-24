@@ -1,18 +1,27 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
 import BlogJsonLd from "@/components/blog/BlogJsonLd";
-import RelatedPosts from "@/components/blog/RelatedPosts";
-import BlogCTABanner from "@/components/blog/BlogCTABanner";
-import BlogFAQAccordion from "@/components/blog/BlogFAQAccordion";
-import BlogTableOfContents, { type TocItem } from "@/components/blog/BlogTableOfContents";
 import { Clock, User, ArrowUp, Zap } from "lucide-react";
+
+const ReactMarkdown = lazy(() => import("react-markdown"));
+const Footer = lazy(() => import("@/components/Footer"));
+const RelatedPosts = lazy(() => import("@/components/blog/RelatedPosts"));
+const BlogCTABanner = lazy(() => import("@/components/blog/BlogCTABanner"));
+const BlogFAQAccordion = lazy(() => import("@/components/blog/BlogFAQAccordion"));
+const BlogTableOfContents = lazy(() => import("@/components/blog/BlogTableOfContents"));
+
+// Lazy load remark-gfm only when needed
+let remarkGfmPlugin: any = null;
+const getRemarkGfm = () => {
+  if (!remarkGfmPlugin) {
+    remarkGfmPlugin = import("remark-gfm").then(m => m.default);
+  }
+  return remarkGfmPlugin;
+};
 
 interface BlogPostData {
   slug: string;
