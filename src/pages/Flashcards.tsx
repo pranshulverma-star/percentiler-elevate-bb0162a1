@@ -1,5 +1,6 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useFlashcardProgress } from "@/hooks/useFlashcardProgress";
 import FlashcardHero from "@/components/flashcards/landing/FlashcardHero";
@@ -68,10 +69,21 @@ export default function FlashcardsPage() {
   const { user, loading: authLoading, signIn } = useAuth();
   const { loading, getTodayCount, getTodayCardIds, getRevisionCards, recordAnswer } = useFlashcardProgress();
 
-  const [view, setView] = useState<View>("landing");
-  const [tab, setTab] = useState<Tab>("practice");
+  const [searchParams] = useSearchParams();
+  const initialTab = searchParams.get("tab") === "revise" ? "revise" : "practice";
+  const initialView = searchParams.get("view") === "practice" || searchParams.get("tab") === "revise" ? "practice" : "landing";
+
+  const [view, setView] = useState<View>(initialView);
+  const [tab, setTab] = useState<Tab>(initialTab);
   const [selectedCategory, setSelectedCategory] = useState<FlashcardCategory | null>(null);
   const [sessionKey, setSessionKey] = useState(0);
+
+  // Handle deep-link: if view=practice but no user, trigger sign-in
+  useEffect(() => {
+    if (initialView === "practice" && !authLoading && !user) {
+      signIn("/flashcards?view=practice" + (initialTab === "revise" ? "&tab=revise" : ""));
+    }
+  }, [initialView, authLoading, user, signIn, initialTab]);
 
   const handleStartPracticing = useCallback(() => {
     if (!user) {
