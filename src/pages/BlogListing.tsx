@@ -1,11 +1,12 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import { ArrowRight, Clock } from "lucide-react";
+
+const Footer = lazy(() => import("@/components/Footer"));
 
 interface BlogListItem {
   slug: string;
@@ -32,7 +33,7 @@ const BlogListing = () => {
     const fetchPosts = async () => {
       const { data } = await supabase
         .from("blog_posts")
-        .select("slug, title, meta_description, featured_image, published_at, content_markdown, content_html, category")
+        .select("slug, title, meta_description, featured_image, published_at, category")
         .not("title", "like", "%Page not found%")
         .order("published_at", { ascending: false });
       setPosts(data || []);
@@ -183,7 +184,7 @@ const BlogListing = () => {
           </div>
         )}
       </main>
-      <Footer />
+      <Suspense fallback={<div className="min-h-[200px]" />}><Footer /></Suspense>
     </>
   );
 };
