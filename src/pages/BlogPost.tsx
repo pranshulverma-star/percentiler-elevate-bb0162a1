@@ -1,27 +1,19 @@
 import { useEffect, useState, useMemo, lazy, Suspense } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
 import BlogJsonLd from "@/components/blog/BlogJsonLd";
-import { Clock, User, ArrowUp, Zap } from "lucide-react";
+import { ArrowUp, Zap } from "lucide-react";
 
-const ReactMarkdown = lazy(() => import("react-markdown"));
 const Footer = lazy(() => import("@/components/Footer"));
 const RelatedPosts = lazy(() => import("@/components/blog/RelatedPosts"));
 const BlogCTABanner = lazy(() => import("@/components/blog/BlogCTABanner"));
 const BlogFAQAccordion = lazy(() => import("@/components/blog/BlogFAQAccordion"));
 const BlogTableOfContents = lazy(() => import("@/components/blog/BlogTableOfContents"));
 
-// Lazy load remark-gfm only when needed
-let remarkGfmPlugin: any = null;
-const getRemarkGfm = () => {
-  if (!remarkGfmPlugin) {
-    remarkGfmPlugin = import("remark-gfm").then(m => m.default);
-  }
-  return remarkGfmPlugin;
-};
+interface TocItem { id: string; text: string; level: number; }
 
 interface BlogPostData {
   slug: string;
