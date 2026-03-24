@@ -312,10 +312,11 @@ const MasterclassWatch = () => {
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: i * 0.06, duration: 0.3 }}
+                          onClick={() => isUnlocked && handleResourceClick(r)}
                           className={`relative flex-shrink-0 w-28 md:w-32 rounded-lg border p-2.5 text-center transition-all duration-200 ${
                             isUnlocked
                               ? "border-primary/30 bg-background shadow-sm hover:shadow-md cursor-pointer"
-                              : "border-border/40 bg-muted/20 opacity-70"
+                              : "border-border/40 bg-muted/20 opacity-70 pointer-events-none"
                           }`}
                         >
                           {isUnlocked && (
