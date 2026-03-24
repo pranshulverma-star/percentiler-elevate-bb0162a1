@@ -115,6 +115,7 @@ export default function PracticeTab({ streakData, practiceAttempts, dailyStreaks
   }, [practiceAttempts]);
 
   const filteredHistory = filter === "All" ? quizHistory : quizHistory.filter(q => q.section === filter);
+  const weeklyData = useMemo(() => getWeeklyDataFromStreaks(dailyStreaks, practiceAttempts), [dailyStreaks, practiceAttempts]);
   const maxQuizzes = Math.max(...weeklyData.map(d => d.quizzes), 1);
 
   return (
