@@ -179,6 +179,7 @@ const BlogPost = () => {
         description={post.meta_description || post.title}
         canonical={`https://percentilers.in/${post.slug}`}
         ogImage={post.featured_image || undefined}
+        ogType="article"
       />
       <BlogJsonLd
         title={post.title}
