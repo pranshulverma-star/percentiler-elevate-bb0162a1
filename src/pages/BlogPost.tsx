@@ -114,20 +114,14 @@ const BlogPost = () => {
         .maybeSingle();
       if (cancelled) return;
       if (error) {
-        // Network/transient error — retry before giving up
         if (retries > 0) {
           setTimeout(() => fetchPost(retries - 1), 800);
           return;
         }
-        // After retries exhausted, stay on page with error state
-        setLoading(false);
-        setNotFound(true);
-        return;
       }
       if (!data) {
-        // Genuinely not in DB — redirect to old site
         setNotFound(true);
-        window.location.replace(`https://old.percentilers.in/${slug}${window.location.search}`);
+        setLoading(false);
         return;
       }
       setPost(data);
