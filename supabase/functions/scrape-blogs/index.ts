@@ -6,6 +6,34 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
+/** Strip WordPress boilerplate from scraped markdown */
+function sanitizeMarkdown(md: string): string {
+  let cleaned = md;
+  // Remove gravatar images
+  cleaned = cleaned.replace(/!\[.*?\]\(https?:\/\/secure\.gravatar\.com[^\)]*\)/gi, "");
+  // Remove "Written by …" byline lines
+  cleaned = cleaned.replace(/^#+\s*Written by.*/gim, "");
+  cleaned = cleaned.replace(/^\*?\*?Written by\*?\*?.*/gim, "");
+  // Remove trailing chat widget text
+  cleaned = cleaned.replace(/\n+(Hello!?|Hi!?|Can we help you\??|Need help\??|Chat with us).*/gi, "");
+  // Remove WordPress sharing / related post blocks
+  cleaned = cleaned.replace(/### (Share this|Related Posts|Leave a Reply|About the Author).*/gis, "");
+  // Remove empty image references
+  cleaned = cleaned.replace(/!\[\]\(\s*\)/g, "");
+  // Remove multiple consecutive blank lines
+  cleaned = cleaned.replace(/\n{4,}/g, "\n\n\n");
+  return cleaned.trim();
+}
+
+function sanitizeHtml(html: string): string {
+  let cleaned = html;
+  // Remove gravatar images
+  cleaned = cleaned.replace(/<img[^>]*secure\.gravatar\.com[^>]*>/gi, "");
+  // Remove "Written by" sections
+  cleaned = cleaned.replace(/<[^>]*class="[^"]*author[^"]*"[^>]*>[\s\S]*?<\/[^>]+>/gi, "");
+  return cleaned.trim();
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
@@ -76,12 +104,16 @@ Deno.serve(async (req) => {
         const metaDescription = metadata.description || metadata.ogDescription || null;
         const featuredImage = metadata.ogImage || null;
 
+        // Sanitize content
+        const cleanMarkdown = data.markdown ? sanitizeMarkdown(data.markdown) : null;
+        const cleanHtml = data.html ? sanitizeHtml(data.html) : null;
+
         const { error: insertError } = await supabase.from("blog_posts").upsert(
           {
             slug,
             title,
-            content_html: data.html || null,
-            content_markdown: data.markdown || null,
+            content_html: cleanHtml,
+            content_markdown: cleanMarkdown,
             meta_description: metaDescription,
             featured_image: featuredImage,
             published_at: new Date().toISOString(),
