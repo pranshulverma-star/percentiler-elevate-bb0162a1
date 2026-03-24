@@ -185,6 +185,16 @@ const BlogListing = () => {
                 </Link>
               ))}
             </div>
+            {hasMore && !activeCategory && (
+              <div className="flex justify-center mt-10">
+                <button
+                  onClick={() => fetchPosts(posts.length)}
+                  className="px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:opacity-90 transition-opacity"
+                >
+                  Load More Articles
+                </button>
+              </div>
+            )}
           </div>
         )}
       </main>
