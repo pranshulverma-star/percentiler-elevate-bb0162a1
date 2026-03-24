@@ -163,7 +163,7 @@ const BlogListing = () => {
                           </time>
                         )}
                         <span className="inline-flex items-center gap-1">
-                          <Clock className="h-3 w-3" /> {estimateReadTime(post.content_markdown, post.content_html)} min
+                          <Clock className="h-3 w-3" /> 5 min
                         </span>
                       </div>
                       <span className="inline-flex items-center gap-1 text-primary font-semibold group-hover:gap-2 transition-all duration-200">
