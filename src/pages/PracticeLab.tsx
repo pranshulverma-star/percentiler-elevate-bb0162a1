@@ -537,7 +537,14 @@ function QuizView({
                 transition={{ duration: 0.25 }}
               >
                 <Card className="p-4 md:p-6 border space-y-4 relative overflow-hidden">
-                  <div className="absolute top-0 right-0">
+                  <div className="absolute top-0 right-0 flex items-center">
+                    <button
+                      onClick={() => onToggleBookmark(q)}
+                      className="p-1.5 md:p-2 transition-colors"
+                      title={bookmarkedIds.has(String(q.id)) ? "Remove bookmark" : "Bookmark question"}
+                    >
+                      <BookmarkIcon className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${bookmarkedIds.has(String(q.id)) ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"}`} />
+                    </button>
                     <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
                       Q{currentIndex + 1}/{questions.length}
                     </div>
@@ -629,7 +636,14 @@ function QuizView({
               transition={{ duration: 0.25 }}
             >
               <Card className="p-4 md:p-8 border space-y-4 md:space-y-6 relative overflow-hidden">
-                <div className="absolute top-0 right-0">
+                <div className="absolute top-0 right-0 flex items-center">
+                  <button
+                    onClick={() => onToggleBookmark(q)}
+                    className="p-1.5 md:p-2 transition-colors"
+                    title={bookmarkedIds.has(String(q.id)) ? "Remove bookmark" : "Bookmark question"}
+                  >
+                    <BookmarkIcon className={`w-4 h-4 md:w-5 md:h-5 transition-colors ${bookmarkedIds.has(String(q.id)) ? "fill-primary text-primary" : "text-muted-foreground hover:text-primary"}`} />
+                  </button>
                   <div className="bg-primary/10 text-primary text-[9px] md:text-[10px] font-bold px-2 md:px-3 py-0.5 md:py-1 rounded-bl-lg">
                     Q{currentIndex + 1}/{questions.length}
                   </div>
