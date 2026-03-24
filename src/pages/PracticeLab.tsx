@@ -937,6 +937,10 @@ export default function PracticeLab() {
                 duration={battleDuration || (selectedChapter && ONE_SET_SLUGS.has(selectedChapter.slug) ? QUIZ_DURATION_SHORT : QUIZ_DURATION_DEFAULT)}
                 onFinish={handleFinishQuiz}
                 onBack={handleBackToChapters}
+                sectionId={selectedSection?.id || "qa"}
+                chapterSlug={selectedChapter.slug}
+                bookmarkedIds={bookmarkedIds}
+                onToggleBookmark={handleToggleBookmark}
               />
             )}
             {phase === "results" && selectedChapter && selectedSection && (
