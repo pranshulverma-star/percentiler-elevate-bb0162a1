@@ -15,6 +15,19 @@ const BlogTableOfContents = lazy(() => import("@/components/blog/BlogTableOfCont
 
 interface TocItem { id: string; text: string; level: number; }
 
+function MarkdownRenderer({ content }: { content: string }) {
+  const [Comp, setComp] = useState<any>(null);
+  const [plugin, setPlugin] = useState<any>(null);
+  useEffect(() => {
+    Promise.all([
+      import("react-markdown").then(m => m.default),
+      import("remark-gfm").then(m => m.default),
+    ]).then(([md, gfm]) => { setComp(() => md); setPlugin(() => gfm); });
+  }, []);
+  if (!Comp) return <div className="blog-content animate-pulse"><div className="h-4 bg-muted rounded w-3/4 mb-3" /><div className="h-4 bg-muted rounded w-full mb-3" /><div className="h-4 bg-muted rounded w-5/6" /></div>;
+  return <div className="blog-content"><Comp remarkPlugins={[plugin]}>{content}</Comp></div>;
+}
+
 interface BlogPostData {
   slug: string;
   title: string;
