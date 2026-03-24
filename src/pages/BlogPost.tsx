@@ -12,7 +12,7 @@ import RelatedPosts from "@/components/blog/RelatedPosts";
 import BlogCTABanner from "@/components/blog/BlogCTABanner";
 import BlogFAQAccordion from "@/components/blog/BlogFAQAccordion";
 import BlogTableOfContents, { type TocItem } from "@/components/blog/BlogTableOfContents";
-import { ArrowLeft, Clock, User, ArrowUp, Zap } from "lucide-react";
+import { Clock, User, ArrowUp, Zap } from "lucide-react";
 
 interface BlogPostData {
   slug: string;
