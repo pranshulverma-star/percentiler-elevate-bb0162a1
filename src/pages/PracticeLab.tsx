@@ -384,12 +384,20 @@ function QuizView({
   duration,
   onFinish,
   onBack,
+  sectionId,
+  chapterSlug,
+  bookmarkedIds,
+  onToggleBookmark,
 }: {
   chapter: Chapter;
   questions: PracticeQuestion[];
   duration: number;
   onFinish: (answers: Record<number, number | string | null>, timeUsed: number) => void;
   onBack: () => void;
+  sectionId: string;
+  chapterSlug: string;
+  bookmarkedIds: Set<string>;
+  onToggleBookmark: (q: PracticeQuestion) => void;
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number | string | null>>({});
