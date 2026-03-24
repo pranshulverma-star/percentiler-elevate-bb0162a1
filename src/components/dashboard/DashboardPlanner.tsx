@@ -87,9 +87,9 @@ export default function DashboardPlanner({ data, loading }: Props) {
         <div>
           <div className="flex justify-between text-xs text-muted-foreground mb-1">
             <span>Consistency</span>
-            <span>{Math.round(consistency * 100)}%</span>
+            <span>{Math.min(100, Math.round(consistency * 100))}%</span>
           </div>
-          <Progress value={consistency * 100} className="h-2" />
+          <Progress value={Math.min(100, consistency * 100)} className="h-2" />
         </div>
 
         {stats.current_phase && (

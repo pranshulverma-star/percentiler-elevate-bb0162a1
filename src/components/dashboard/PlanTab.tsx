@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import BuddyMiniWidget from "@/components/buddy/BuddyMiniWidget";
 import SprintBuddyView from "@/components/sprint/SprintBuddyView";
 
 interface Props {
@@ -69,14 +68,14 @@ export default function PlanTab({ plannerData, loadingPlanner, userId }: Props) 
           <div className="mb-2">
             <div className="flex justify-between text-[10px] font-medium mb-1" style={{ color: "#8C7A6B" }}>
               <span>Consistency</span>
-              <span>{Math.round(consistency * 100)}%</span>
+              <span>{Math.min(100, Math.round(consistency * 100))}%</span>
             </div>
             <div className="w-full h-1.5 rounded-full" style={{ background: "#F0EBE6" }}>
               <motion.div
                 className="h-full rounded-full"
                 style={{ background: "#FF6600" }}
                 initial={{ width: 0 }}
-                animate={{ width: `${consistency * 100}%` }}
+                animate={{ width: `${Math.min(100, consistency * 100)}%` }}
                 transition={{ duration: 1, ease: "easeOut" }}
               />
             </div>
@@ -164,10 +163,7 @@ export default function PlanTab({ plannerData, loadingPlanner, userId }: Props) 
 
       {/* Existing widgets */}
       <motion.div {...fade(2)}>
-        <BuddyMiniWidget />
-        <div className="mt-3">
-          <SprintBuddyView userId={userId} />
-        </div>
+        <SprintBuddyView userId={userId} />
       </motion.div>
 
       <style>{`

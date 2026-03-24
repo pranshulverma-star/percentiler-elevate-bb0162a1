@@ -135,7 +135,7 @@ export default function PracticeTab({ streakData, practiceAttempts }: Props) {
       <motion.div {...fade(1)} className="flex flex-col gap-2">
         {[
           { emoji: "🎯", title: "Section Practice", desc: "Pick QA, LRDI or VARC to drill", to: "/practice-lab", color: "#FF6600" },
-          { emoji: "🧠", title: "Flashcard Revision", desc: "12 cards due · Quick formula & concept review", to: "/flashcards", color: "#8B5CF6" },
+          { emoji: "🧠", title: "Flashcard Revision", desc: "12 cards due · Quick formula & concept review", to: "/flashcards?view=practice&tab=revise", color: "#8B5CF6" },
         ].map((card) => (
           <Link key={card.title} to={card.to}>
             <div className="rounded-[16px] p-4 flex items-center gap-3.5 group transition-all hover:-translate-y-0.5" style={{ background: "#fff", border: "1px solid #F0EBE6" }}>

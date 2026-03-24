@@ -153,7 +153,7 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
   }, []);
 
   const quickActions = [
-    { emoji: "⚡", title: "Flashcards", line1: "12 due today", line2: "QA: 5 · VARC: 4 · LRDI: 3", to: "/flashcards", bg: "linear-gradient(135deg, #FFF5EB, #FFECD9)", border: "#FFD4A8" },
+    { emoji: "⚡", title: "Flashcards", line1: "12 due today", line2: "QA: 5 · VARC: 4 · LRDI: 3", to: "/flashcards?view=practice", bg: "linear-gradient(135deg, #FFF5EB, #FFECD9)", border: "#FFD4A8" },
     { emoji: "🎯", title: "Set Goals", line1: hasGoals ? `${sprintGoals!.done}/${sprintGoals!.total} goals hit` : "Weekly target", line2: hasGoals ? "Keep going!" : "3/5 goals hit this week", to: "/daily-sprint", bg: "linear-gradient(135deg, #F0FFF0, #E6F9E6)", border: "#B8E6B8" },
     { emoji: "📊", title: "Mock Tests", line1: "2 pending", line2: "Next: Full CAT Mock", to: "/test-series", bg: "linear-gradient(135deg, #F0F0FF, #E6E6F9)", border: "#B8B8E6" },
     { emoji: "📖", title: "Bookmarks", line1: "8 saved Qs", line2: "3 QA · 2 VARC · 3 LRDI", to: "/practice-lab", bg: "linear-gradient(135deg, #FFF0F5, #F9E6ED)", border: "#E6B8CC" },
