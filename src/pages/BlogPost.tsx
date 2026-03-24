@@ -261,6 +261,8 @@ const BlogPost = () => {
 
           <div className="h-12" />
         </article>
+        <BlogTableOfContents items={tocItems} />
+        </div>
       </main>
       <Footer />
 
