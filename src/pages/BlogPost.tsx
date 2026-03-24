@@ -30,31 +30,32 @@ function estimateReadTime(content: string): number {
 
 /** Strip WordPress/Divi wrapper and extract only the article body */
 function extractArticleContent(html: string): string {
+  let content = html;
   // If it looks like a full WordPress page, extract just the post content
-  if (html.includes("et_pb_post_content") || html.includes("<!DOCTYPE")) {
-    // Try to extract content from et_pb_post_content div
-    const postContentMatch = html.match(
+  if (content.includes("et_pb_post_content") || content.includes("<!DOCTYPE")) {
+    const postContentMatch = content.match(
       /<div[^>]*class="[^"]*et_pb_post_content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/div>\s*<\/div>/i
     );
     if (postContentMatch) {
-      return postContentMatch[1].trim();
-    }
-    // Fallback: extract everything between <body> tags, strip outer wrappers
-    const bodyMatch = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-    if (bodyMatch) {
-      // Strip known Divi wrapper divs and extract paragraphs/headings
-      let content = bodyMatch[1];
-      // Remove script/style tags
-      content = content.replace(/<script[\s\S]*?<\/script>/gi, "");
-      content = content.replace(/<style[\s\S]*?<\/style>/gi, "");
-      // Try to find meaningful content (paragraphs and headings)
-      const meaningful = content.match(/<(?:p|h[1-6]|ul|ol|blockquote|table|figure)[^>]*>[\s\S]*?<\/(?:p|h[1-6]|ul|ol|blockquote|table|figure)>/gi);
-      if (meaningful && meaningful.length > 2) {
-        return meaningful.join("\n");
+      content = postContentMatch[1].trim();
+    } else {
+      const bodyMatch = content.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+      if (bodyMatch) {
+        let body = bodyMatch[1];
+        body = body.replace(/<script[\s\S]*?<\/script>/gi, "");
+        body = body.replace(/<style[\s\S]*?<\/style>/gi, "");
+        const meaningful = body.match(/<(?:p|h[1-6]|ul|ol|blockquote|table|figure)[^>]*>[\s\S]*?<\/(?:p|h[1-6]|ul|ol|blockquote|table|figure)>/gi);
+        if (meaningful && meaningful.length > 2) {
+          content = meaningful.join("\n");
+        }
       }
     }
   }
-  return html;
+  // Remove the first <figure> containing the featured image to avoid duplication
+  content = content.replace(/<figure[^>]*>[\s\S]*?<\/figure>/, "");
+  // Remove tldr-box div (already shown as meta description)
+  content = content.replace(/<div[^>]*class="[^"]*tldr-box[^"]*"[^>]*>[\s\S]*?<\/div>/, "");
+  return content;
 }
 
 /** Extract FAQ section HTML and return [mainContent, faqHtml] */

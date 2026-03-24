@@ -126,6 +126,7 @@ const App = () => (
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/auth/error" element={<AuthError />} />
                   <Route path="/blog" element={<BlogListing />} />
+                  <Route path="/blogs" element={<BlogListing />} />
                   <Route path="/:slug" element={<BlogPost />} />
                   <Route path="*" element={<NotFoundRedirect />} />
                 </Routes>
