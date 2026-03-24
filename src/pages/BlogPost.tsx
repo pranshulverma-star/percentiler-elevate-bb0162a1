@@ -105,13 +105,27 @@ const BlogPost = () => {
 
   useEffect(() => {
     if (!slug) return;
-    const fetchPost = async () => {
+    let cancelled = false;
+    const fetchPost = async (retries = 2) => {
       const { data, error } = await supabase
         .from("blog_posts")
         .select("slug, title, content_html, content_markdown, meta_description, featured_image, published_at, category")
         .eq("slug", slug)
         .maybeSingle();
-      if (error || !data) {
+      if (cancelled) return;
+      if (error) {
+        // Network/transient error — retry before giving up
+        if (retries > 0) {
+          setTimeout(() => fetchPost(retries - 1), 800);
+          return;
+        }
+        // After retries exhausted, stay on page with error state
+        setLoading(false);
+        setNotFound(true);
+        return;
+      }
+      if (!data) {
+        // Genuinely not in DB — redirect to old site
         setNotFound(true);
         window.location.replace(`https://old.percentilers.in/${slug}${window.location.search}`);
         return;
@@ -120,6 +134,7 @@ const BlogPost = () => {
       setLoading(false);
     };
     fetchPost();
+    return () => { cancelled = true; };
   }, [slug]);
 
   const readTime = useMemo(() => {
