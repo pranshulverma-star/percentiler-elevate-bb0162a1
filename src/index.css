@@ -305,7 +305,7 @@
 
 /* ── Blog content styles ── */
 .blog-content {
-  font-size: 1.05rem;
+  font-size: 1rem;
   line-height: 1.85;
   color: hsl(0 0% 17%);
 }
@@ -315,15 +315,36 @@
 
 .blog-content p {
   margin-bottom: 1.4rem;
+  text-align: justify;
+}
+
+/* Drop cap on first paragraph */
+.blog-content > p:first-of-type::first-letter {
+  font-size: 3.5rem;
+  font-weight: 700;
+  float: left;
+  line-height: 0.8;
+  margin-right: 8px;
+  margin-top: 6px;
+  color: hsl(25 100% 60%);
+}
+
+/* First paragraph after every h2 */
+.blog-content h2 + p {
+  font-size: 1.05rem;
+  color: hsl(0 0% 10%);
+}
+.dark .blog-content h2 + p {
+  color: hsl(0 0% 92%);
 }
 
 .blog-content h2 {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
   margin-top: 2.5rem;
   margin-bottom: 0.75rem;
   color: hsl(0 0% 10%);
-  border-left: 3px solid hsl(25 100% 50%);
+  border-left: 3px solid hsl(25 100% 60%);
   padding-left: 12px;
 }
 .dark .blog-content h2 {
@@ -331,9 +352,9 @@
 }
 
 .blog-content h3 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 600;
-  margin-top: 2rem;
+  margin-top: 1.75rem;
   margin-bottom: 0.5rem;
   color: hsl(0 0% 10%);
 }
@@ -353,7 +374,7 @@
 }
 
 .blog-content a {
-  color: hsl(25 100% 50%);
+  color: hsl(25 100% 60%);
   font-weight: 500;
   text-decoration: none;
   transition: text-decoration 0.2s ease;
@@ -371,11 +392,12 @@
 }
 
 .blog-content blockquote {
-  border-left: 4px solid hsl(25 100% 50%);
+  border-left: 4px solid hsl(25 100% 60%);
   background: hsl(25 100% 98%);
   padding: 1rem 1.25rem;
   border-radius: 0 8px 8px 0;
   font-style: italic;
+  font-size: 1.05rem;
   margin: 1.5rem 0;
 }
 .dark .blog-content blockquote {
@@ -387,6 +409,22 @@
   margin: 1.5rem 0;
   max-width: 100%;
   height: auto;
+}
+
+/* Mobile overrides */
+@media (max-width: 639px) {
+  .blog-content p {
+    text-align: left;
+  }
+  .blog-content > p:first-of-type::first-letter {
+    font-size: inherit;
+    font-weight: inherit;
+    float: none;
+    line-height: inherit;
+    margin-right: 0;
+    margin-top: 0;
+    color: inherit;
+  }
 }
 
 /* Blog tables */
