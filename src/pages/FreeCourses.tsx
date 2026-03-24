@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
+import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, BookOpen, Brain, Calculator, FileText, Sparkles, Clock, Monitor, Users, Phone, Star } from "lucide-react";
@@ -106,6 +107,20 @@ const FreeCourses = () => {
         description="Access free CAT preparation courses including foundation building, mock strategies, and section-wise practice from one of the best online CAT coaching platforms."
         canonical="https://percentilers.in/free-courses"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Free CAT Courses",
+          "description": "Access free CAT preparation courses including foundation building, mock strategies, and section-wise practice.",
+          "url": "https://percentilers.in/free-courses",
+          "numberOfItems": 6,
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Course Introduction & Demo Videos" },
+            { "@type": "ListItem", "position": 2, "name": "Foundation Building Course" }
+          ]
+        })}</script>
+      </Helmet>
       <Navbar />
       <main>
         {/* Hero Section */}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -195,6 +196,15 @@ const Workshops = () => {
         description="Master every CAT topic with our advanced workshops — Arithmetic, Algebra, Geometry, LRDI, VARC & more. Expert-led, affordable, and built for serious aspirants."
         canonical="https://percentilers.in/workshops"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "Topic-wise Advanced Workshops for CAT",
+          "description": "Master every CAT topic with advanced workshops — Arithmetic, Algebra, Geometry, LRDI, VARC & more.",
+          "provider": { "@type": "Organization", "name": "Percentilers", "url": "https://percentilers.in" }
+        })}</script>
+      </Helmet>
       <Navbar />
       <main className="min-h-screen bg-background">
         {/* Hero */}

@@ -1,5 +1,6 @@
 import { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, Users, Award, Shield, Star, Play } from "lucide-react";
@@ -161,6 +162,21 @@ const Masterclass = () => {
         description="Watch a free CAT masterclass by a 7x 100 percentiler. Learn the exact preparation strategy, profile building tips, and coaching roadmap for CAT 2026. Start now."
         canonical="https://percentilers.in/masterclass"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Event",
+          "name": "Free CAT Masterclass – Strategy for 95+ Percentile",
+          "description": "Watch a free CAT masterclass by a 7x 100 percentiler. Learn the exact preparation strategy, profile building tips, and coaching roadmap for CAT 2026.",
+          "eventStatus": "https://schema.org/EventScheduled",
+          "eventAttendanceMode": "https://schema.org/OnlineEventAttendanceMode",
+          "location": { "@type": "VirtualLocation", "url": "https://percentilers.in/masterclass" },
+          "organizer": { "@type": "Organization", "name": "Percentilers", "url": "https://percentilers.in" },
+          "performer": { "@type": "Person", "name": "Pranshul Verma" },
+          "isAccessibleForFree": true,
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR", "availability": "https://schema.org/InStock" }
+        })}</script>
+      </Helmet>
       <header className="border-b border-border bg-background/95 backdrop-blur sticky top-0 z-50">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
           <a href="/" className="text-xl font-bold tracking-tight text-foreground">
