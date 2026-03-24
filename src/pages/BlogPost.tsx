@@ -267,9 +267,7 @@ const BlogPost = () => {
               dangerouslySetInnerHTML={{ __html: contentData.main }}
             />
           ) : contentData?.type === "markdown" ? (
-            <div className="blog-content">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentData.main}</ReactMarkdown>
-            </div>
+            <MarkdownRenderer content={contentData.main} />
           ) : (
             <p className="text-muted-foreground">No content available.</p>
           )}
