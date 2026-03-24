@@ -10,8 +10,72 @@
   <url><loc>https://percentilers.in/free-cat-readiness-assessment</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://percentilers.in/cat-daily-study-planner</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://percentilers.in/cat-coaching-comparison</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://percentilers.in/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://percentilers.in/contact</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://percentilers.in/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://percentilers.in/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://percentilers.in/refund-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+
+  <!-- Blog Posts -->
+  <url><loc>https://percentilers.in/algebra-cat</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/arithmetic-cat</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/best-mba-colleges-for-finance</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/best-mba-colleges-for-marketing</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-2025-preparation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-admit-card</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-coaching-real-talk-is-it-a-game-changer-or-just-hype</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-cut-off-for-iim</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-eligibility</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-exam</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/cat-exam-books</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-exam-date</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-exam-pattern</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-last-month-preparation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-mock-test</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-online-coaching</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-percentile-predictor</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-preparation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-preparation-for-working-professionals</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-preparation-strategy</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-preparation-without-coaching</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-question-paper</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-registration</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-result</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-score-vs-percentile</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cat-syllabus</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/cat-time-management</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/cmat-exam</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/data-interpretation-tips</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/dilr-preparation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/geometry-cat</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/gmat-exam</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/group-discussion-tips</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/how-to-crack-cat-exam</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iift-exam</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iim-ahmedabad-cutoff</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iim-bangalore-cutoff</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iim-calcutta-cutoff</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iim-fees</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iim-indore-cutoff</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iim-kozhikode-cutoff</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iim-lucknow-cutoff</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/iim-placement</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/logical-reasoning-tips</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/mat-exam</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/mba-after-engineering</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/mba-entrance-exams</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/mba-interview-preparation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/mba-salary</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/mba-specializations</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/mba-vs-ms</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/nmat-exam</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/number-system-cat</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/para-jumbles-tips</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/quant-preparation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/reading-comprehension-tips</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/score-99-percentile-in-cat</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/snap-exam</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/top-mba-colleges-in-india-beyond-the-iim-hype-real-talk-no-cap</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/varc-preparation</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/xat-exam</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>
