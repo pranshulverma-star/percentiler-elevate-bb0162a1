@@ -53,6 +53,7 @@ export default function ExploreTab({ practiceAttempts, converted, mentorshipActi
       if (avgAccuracy < 50 && !mentorshipActive) recs.push({ name: "1-on-1 Mentorship", tagline: `Accuracy ${avgAccuracy}% — a mentor helps`, type: "Mentorship", icon: Users, to: "/mentorship", free: false, accentColor: "hsl(280 60% 55%)" });
       if (weakWorkshop) recs.push({ name: weakWorkshop.name, tagline: "Boost your weak section fast", type: `₹${weakWorkshop.salePrice}`, icon: BookOpen, to: weakWorkshop.link, free: false, external: true, accentColor: "hsl(220 70% 55%)" });
       if (!converted) recs.push({ name: "Full Course Access", tagline: "Structured prep for 90%ile+", type: "Course", icon: GraduationCap, to: "/cat-omet-courses", free: false, accentColor: "hsl(var(--primary))" });
+      recs.push({ name: "Study Planner", tagline: "Your personalized daily study plan", type: "Free", icon: BookOpen, to: "/cat-daily-study-planner", free: true, accentColor: "hsl(25 95% 53%)" });
       if (avgAccuracy >= 70 && currentStreak < 3 && !mentorshipActive) recs.push({ name: "Consistency Coaching", tagline: "Stay on track daily", type: "Mentorship", icon: Users, to: "/mentorship", free: false, accentColor: "hsl(280 60% 55%)" });
       recs.push({ name: "QA Flashcards", tagline: "Quick formula revision anytime", type: "Free", icon: Zap, to: "/flashcards", free: true, accentColor: "hsl(160 60% 45%)" });
     }
