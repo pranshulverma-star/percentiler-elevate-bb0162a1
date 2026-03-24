@@ -9,7 +9,8 @@ import remarkGfm from "remark-gfm";
 import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
 import BlogJsonLd from "@/components/blog/BlogJsonLd";
 import RelatedPosts from "@/components/blog/RelatedPosts";
-import BlogCTABanner, { MidArticleCTA } from "@/components/blog/BlogCTABanner";
+import BlogCTABanner from "@/components/blog/BlogCTABanner";
+import BlogFAQAccordion from "@/components/blog/BlogFAQAccordion";
 import { ArrowLeft, Clock, User } from "lucide-react";
 
 interface BlogPostData {
@@ -23,27 +24,25 @@ interface BlogPostData {
   category: string | null;
 }
 
-function splitMarkdown(md: string): [string, string] {
-  const lines = md.split("\n");
-  const mid = Math.floor(lines.length / 2);
-  let splitAt = mid;
-  for (let i = mid; i < Math.min(mid + 10, lines.length); i++) {
-    if (lines[i].trim() === "") { splitAt = i; break; }
-  }
-  return [lines.slice(0, splitAt).join("\n"), lines.slice(splitAt).join("\n")];
-}
-
-function splitHtml(html: string): [string, string] {
-  const mid = Math.floor(html.length / 2);
-  const tagEnd = html.indexOf(">", mid);
-  if (tagEnd === -1) return [html, ""];
-  const splitAt = tagEnd + 1;
-  return [html.slice(0, splitAt), html.slice(splitAt)];
-}
-
 function estimateReadTime(content: string): number {
-  const words = content.split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / 220));
+  return Math.max(1, Math.ceil(content.split(/\s+/).length / 200));
+}
+
+/** Extract FAQ section HTML and return [mainContent, faqHtml] */
+function extractFaqFromHtml(html: string): [string, string | null] {
+  // Try to find a .faq-section or #faq div
+  const faqRegex = /<div[^>]*class="[^"]*faq-section[^"]*"[^>]*>([\s\S]*?)<\/div>\s*$/i;
+  const match = html.match(faqRegex);
+  if (match) {
+    return [html.slice(0, match.index), match[1]];
+  }
+  // Also try matching by heading pattern: h2/h3 with "FAQ" followed by structured content
+  const faqHeadingRegex = /(<h[23][^>]*>.*?(?:FAQ|Frequently Asked).*?<\/h[23]>[\s\S]*)$/i;
+  const headingMatch = html.match(faqHeadingRegex);
+  if (headingMatch && headingMatch.index && headingMatch.index > html.length * 0.6) {
+    return [html.slice(0, headingMatch.index), headingMatch[1]];
+  }
+  return [html, null];
 }
 
 const BlogPost = () => {
@@ -71,23 +70,22 @@ const BlogPost = () => {
     fetchPost();
   }, [slug]);
 
-  const contentParts = useMemo(() => {
-    if (!post) return null;
-    if (post.content_markdown) {
-      const [first, second] = splitMarkdown(post.content_markdown);
-      return { type: "markdown" as const, first, second };
-    }
-    if (post.content_html) {
-      const [first, second] = splitHtml(post.content_html);
-      return { type: "html" as const, first, second };
-    }
-    return null;
-  }, [post]);
-
   const readTime = useMemo(() => {
     if (!post) return 0;
-    const text = post.content_markdown || post.content_html || "";
-    return estimateReadTime(text);
+    return estimateReadTime(post.content_markdown || post.content_html || "");
+  }, [post]);
+
+  const contentData = useMemo(() => {
+    if (!post) return null;
+    // Prefer HTML
+    if (post.content_html) {
+      const [mainHtml, faqHtml] = extractFaqFromHtml(post.content_html);
+      return { type: "html" as const, main: mainHtml, faq: faqHtml };
+    }
+    if (post.content_markdown) {
+      return { type: "markdown" as const, main: post.content_markdown, faq: null };
+    }
+    return null;
   }, [post]);
 
   if (loading && !notFound) {
@@ -117,37 +115,29 @@ const BlogPost = () => {
       />
       <Navbar />
       <main className="min-h-screen bg-background">
-        {/* Hero section with featured image */}
-        {post.featured_image && (
-          <div className="relative w-full h-[280px] sm:h-[400px] overflow-hidden">
-            <img
-              src={post.featured_image}
-              alt={post.title}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-          </div>
-        )}
+        <article className="max-w-[740px] mx-auto px-4 sm:px-8 pt-24 pb-16">
+          {/* Back link */}
+          <Link
+            to="/blog"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors mb-6"
+          >
+            <ArrowLeft className="h-4 w-4" /> All Articles
+          </Link>
 
-        <article className={`max-w-3xl mx-auto px-4 ${post.featured_image ? '-mt-20 relative z-10' : 'pt-24'}`}>
-          {/* Breadcrumb + back link */}
-          <div className="flex items-center gap-3 mb-5">
-            <Link
-              to="/blog"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-primary hover:text-primary/80 transition-colors bg-primary/5 px-3 py-1.5 rounded-full border border-primary/20 hover:border-primary/40 shrink-0"
-            >
-              <ArrowLeft className="h-3 w-3" /> All Posts
-            </Link>
-            <BlogBreadcrumb postTitle={post.title} />
-          </div>
+          {/* Category pill */}
+          {post.category && (
+            <span className="inline-block text-[11px] font-bold tracking-wider uppercase text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
+              {post.category}
+            </span>
+          )}
 
           {/* Title */}
-          <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold text-foreground leading-[1.15] tracking-tight mb-5">
+          <h1 className="text-[2.25rem] font-extrabold text-foreground leading-[1.3] tracking-tight mb-5">
             {post.title}
           </h1>
 
           {/* Meta strip */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8 pb-8 border-b border-border">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
             <span className="inline-flex items-center gap-1.5">
               <User className="h-3.5 w-3.5" /> Pranshul Verma
             </span>
@@ -166,44 +156,39 @@ const BlogPost = () => {
             </span>
           </div>
 
-          {/* Article body */}
-          <div className="prose prose-lg dark:prose-invert max-w-none
-            prose-headings:font-extrabold prose-headings:tracking-tight prose-headings:text-foreground
-            prose-h2:text-2xl prose-h2:mt-10 prose-h2:mb-4 prose-h2:border-l-4 prose-h2:border-primary prose-h2:pl-4
-            prose-h3:text-xl prose-h3:mt-8 prose-h3:mb-3
-            prose-p:text-foreground/85 prose-p:leading-[1.8]
-            prose-a:text-primary prose-a:font-medium prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-foreground prose-strong:font-bold
-            prose-li:text-foreground/85
-            prose-blockquote:border-l-primary prose-blockquote:bg-primary/5 prose-blockquote:rounded-r-lg prose-blockquote:py-1 prose-blockquote:px-4
-            prose-img:rounded-xl prose-img:shadow-md
-            prose-table:text-sm
-          ">
-            {contentParts?.type === "markdown" ? (
-              <>
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentParts.first}</ReactMarkdown>
-                <MidArticleCTA />
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentParts.second}</ReactMarkdown>
-              </>
-            ) : contentParts?.type === "html" ? (
-              <>
-                <div dangerouslySetInnerHTML={{ __html: contentParts.first }} />
-                <MidArticleCTA />
-                <div dangerouslySetInnerHTML={{ __html: contentParts.second }} />
-              </>
-            ) : (
-              <p className="text-muted-foreground">No content available.</p>
-            )}
-          </div>
+          {/* Featured image */}
+          {post.featured_image && (
+            <img
+              src={post.featured_image}
+              alt={post.title}
+              className="w-full rounded-xl mb-8 shadow-sm"
+            />
+          )}
 
-          {/* Bottom CTAs */}
+          {/* Article body */}
+          {contentData?.type === "html" ? (
+            <div
+              className="blog-content"
+              dangerouslySetInnerHTML={{ __html: contentData.main }}
+            />
+          ) : contentData?.type === "markdown" ? (
+            <div className="blog-content">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentData.main}</ReactMarkdown>
+            </div>
+          ) : (
+            <p className="text-muted-foreground">No content available.</p>
+          )}
+
+          {/* CTA Banner */}
           <BlogCTABanner />
+
+          {/* FAQ Accordion */}
+          {contentData?.faq && <BlogFAQAccordion faqHtml={contentData.faq} />}
 
           {/* Related Posts */}
           <RelatedPosts currentSlug={post.slug} currentCategory={post.category} />
 
-          {/* Bottom spacing */}
-          <div className="h-16" />
+          <div className="h-12" />
         </article>
       </main>
       <Footer />
