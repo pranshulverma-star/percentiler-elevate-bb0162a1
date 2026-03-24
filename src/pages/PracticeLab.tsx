@@ -742,6 +742,19 @@ export default function PracticeLab() {
   const [quizTimeUsed, setQuizTimeUsed] = useState(0);
   const [phoneModalOpen, setPhoneModalOpen] = useState(false);
   const [battleDuration, setBattleDuration] = useState<number | null>(null);
+  const { bookmarkedIds, toggleBookmark } = useBookmarks();
+
+  const handleToggleBookmark = useCallback((q: PracticeQuestion) => {
+    toggleBookmark({
+      id: q.id,
+      question: q.question,
+      options: q.options,
+      correctAnswer: q.correctAnswer,
+      type: q.type,
+      sectionId: selectedSection?.id || "qa",
+      chapterSlug: selectedChapter?.slug || "",
+    });
+  }, [toggleBookmark, selectedSection, selectedChapter]);
 
   const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
