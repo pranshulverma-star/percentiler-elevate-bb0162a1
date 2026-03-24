@@ -141,6 +141,21 @@ const BlogPost = () => {
     return null;
   }, [post]);
 
+  const tocItems = useMemo<TocItem[]>(() => {
+    if (!contentData) return [];
+    const html = contentData.main;
+    const items: TocItem[] = [];
+    const regex = /<h([23])[^>]*id="([^"]*)"[^>]*>([\s\S]*?)<\/h\1>/gi;
+    let match;
+    while ((match = regex.exec(html)) !== null) {
+      const text = match[3].replace(/<[^>]+>/g, "").trim();
+      if (text) {
+        items.push({ id: match[2], text, level: parseInt(match[1]) });
+      }
+    }
+    return items;
+  }, [contentData]);
+
   if (loading && !notFound) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
