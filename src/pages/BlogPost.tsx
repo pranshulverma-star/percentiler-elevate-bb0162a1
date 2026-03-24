@@ -1,18 +1,32 @@
-import { useEffect, useState, useMemo } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useEffect, useState, useMemo, lazy, Suspense } from "react";
+import { useParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
 import BlogJsonLd from "@/components/blog/BlogJsonLd";
-import RelatedPosts from "@/components/blog/RelatedPosts";
-import BlogCTABanner from "@/components/blog/BlogCTABanner";
-import BlogFAQAccordion from "@/components/blog/BlogFAQAccordion";
-import BlogTableOfContents, { type TocItem } from "@/components/blog/BlogTableOfContents";
-import { Clock, User, ArrowUp, Zap } from "lucide-react";
+import { ArrowUp, Zap } from "lucide-react";
+
+const Footer = lazy(() => import("@/components/Footer"));
+const RelatedPosts = lazy(() => import("@/components/blog/RelatedPosts"));
+const BlogCTABanner = lazy(() => import("@/components/blog/BlogCTABanner"));
+const BlogFAQAccordion = lazy(() => import("@/components/blog/BlogFAQAccordion"));
+const BlogTableOfContents = lazy(() => import("@/components/blog/BlogTableOfContents"));
+
+interface TocItem { id: string; text: string; level: number; }
+
+function MarkdownRenderer({ content }: { content: string }) {
+  const [Comp, setComp] = useState<any>(null);
+  const [plugin, setPlugin] = useState<any>(null);
+  useEffect(() => {
+    Promise.all([
+      import("react-markdown").then(m => m.default),
+      import("remark-gfm").then(m => m.default),
+    ]).then(([md, gfm]) => { setComp(() => md); setPlugin(() => gfm); });
+  }, []);
+  if (!Comp) return <div className="blog-content animate-pulse"><div className="h-4 bg-muted rounded w-3/4 mb-3" /><div className="h-4 bg-muted rounded w-full mb-3" /><div className="h-4 bg-muted rounded w-5/6" /></div>;
+  return <div className="blog-content"><Comp remarkPlugins={[plugin]}>{content}</Comp></div>;
+}
 
 interface BlogPostData {
   slug: string;
@@ -60,7 +74,7 @@ function extractArticleContent(html: string): string {
   let headingCounter = 0;
   content = content.replace(/<(h[23])([^>]*)>([\s\S]*?)<\/\1>/gi, (_match, tag, attrs, inner) => {
     headingCounter++;
-    const text = inner.replace(/<[^>]+>/g, "").trim();
+    const _text = inner.replace(/<[^>]+>/g, "").trim();
     const id = `heading-${headingCounter}`;
     return `<${tag}${attrs} id="${id}">${inner}</${tag}>`;
   });
@@ -266,28 +280,26 @@ const BlogPost = () => {
               dangerouslySetInnerHTML={{ __html: contentData.main }}
             />
           ) : contentData?.type === "markdown" ? (
-            <div className="blog-content">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentData.main}</ReactMarkdown>
-            </div>
+            <MarkdownRenderer content={contentData.main} />
           ) : (
             <p className="text-muted-foreground">No content available.</p>
           )}
 
           {/* CTA Banner */}
-          <BlogCTABanner />
+          <Suspense fallback={null}><BlogCTABanner /></Suspense>
 
           {/* FAQ Accordion */}
-          {contentData?.faq && <BlogFAQAccordion faqHtml={contentData.faq} />}
+          {contentData?.faq && <Suspense fallback={null}><BlogFAQAccordion faqHtml={contentData.faq} /></Suspense>}
 
           {/* Related Posts */}
-          <RelatedPosts currentSlug={post.slug} currentCategory={post.category} />
+          <Suspense fallback={null}><RelatedPosts currentSlug={post.slug} currentCategory={post.category} /></Suspense>
 
           <div className="h-12" />
         </article>
-        <BlogTableOfContents items={tocItems} />
+        <Suspense fallback={null}><BlogTableOfContents items={tocItems} /></Suspense>
         </div>
       </main>
-      <Footer />
+      <Suspense fallback={<div className="min-h-[200px]" />}><Footer /></Suspense>
 
       {/* Back to top button */}
       <button
