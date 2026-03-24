@@ -286,20 +286,20 @@ const BlogPost = () => {
           )}
 
           {/* CTA Banner */}
-          <BlogCTABanner />
+          <Suspense fallback={null}><BlogCTABanner /></Suspense>
 
           {/* FAQ Accordion */}
-          {contentData?.faq && <BlogFAQAccordion faqHtml={contentData.faq} />}
+          {contentData?.faq && <Suspense fallback={null}><BlogFAQAccordion faqHtml={contentData.faq} /></Suspense>}
 
           {/* Related Posts */}
-          <RelatedPosts currentSlug={post.slug} currentCategory={post.category} />
+          <Suspense fallback={null}><RelatedPosts currentSlug={post.slug} currentCategory={post.category} /></Suspense>
 
           <div className="h-12" />
         </article>
-        <BlogTableOfContents items={tocItems} />
+        <Suspense fallback={null}><BlogTableOfContents items={tocItems} /></Suspense>
         </div>
       </main>
-      <Footer />
+      <Suspense fallback={<div className="min-h-[200px]" />}><Footer /></Suspense>
 
       {/* Back to top button */}
       <button
