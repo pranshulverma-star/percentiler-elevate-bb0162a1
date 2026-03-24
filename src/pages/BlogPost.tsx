@@ -181,9 +181,9 @@ const BlogPost = () => {
           ">
             {contentParts?.type === "markdown" ? (
               <>
-                <ReactMarkdown>{contentParts.first}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentParts.first}</ReactMarkdown>
                 <MidArticleCTA />
-                <ReactMarkdown>{contentParts.second}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentParts.second}</ReactMarkdown>
               </>
             ) : contentParts?.type === "html" ? (
               <>
