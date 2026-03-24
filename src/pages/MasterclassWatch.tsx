@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw, Flame, Sparkles } from "lucide-react";
+import { ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw, Flame, Sparkles, Gauge } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { trackInitiateCheckout } from "@/lib/tracking";
 import { motion } from "framer-motion";
@@ -58,6 +58,7 @@ const MasterclassWatch = () => {
   const [videoError, setVideoError] = useState(false);
   const [showTapToPlay, setShowTapToPlay] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const videoRef = useRef<HTMLVideoElement>(null);
   const engagementCreated = useRef(false);
   const lastMilestone = useRef(0);
@@ -164,7 +165,23 @@ const MasterclassWatch = () => {
     setVideoReady(true);
   }, []);
 
-  const videoClassName = `w-full h-full object-contain rounded-2xl${isFirstWatch ? " [&::-webkit-media-controls-timeline]:hidden" : ""}`;
+  const toggleSpeed = useCallback(() => {
+    const speeds = [1, 1.5, 2];
+    const nextIdx = (speeds.indexOf(playbackSpeed) + 1) % speeds.length;
+    const next = speeds[nextIdx];
+    setPlaybackSpeed(next);
+    if (videoRef.current) videoRef.current.playbackRate = next;
+  }, [playbackSpeed]);
+
+  const handleResourceClick = useCallback((r: typeof resources[0]) => {
+    if (r.action === "planner") {
+      navigate("/cat-daily-study-planner");
+    } else if (r.href) {
+      window.open(r.href, "_blank");
+    }
+  }, [navigate]);
+
+  const videoClassName = `w-full h-full object-contain rounded-2xl [&::-webkit-media-controls-timeline]:hidden [&::-webkit-media-controls-current-time-display]:hidden [&::-webkit-media-controls-time-remaining-display]:hidden`;
 
   const handleApply = useCallback(async () => {
     trackInitiateCheckout("masterclass_apply_95");
