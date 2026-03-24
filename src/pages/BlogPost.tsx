@@ -189,7 +189,8 @@ const BlogPost = () => {
       />
       <Navbar />
       <main className="min-h-screen bg-background">
-        <article className="max-w-[680px] mx-auto px-5 sm:px-5 pt-24 pb-16">
+        <div className="max-w-[1060px] mx-auto px-5 pt-24 pb-16 flex gap-10 items-start">
+        <article className="max-w-[680px] w-full mx-auto xl:mx-0">
           {/* Back link */}
           <Link
             to="/blog"
