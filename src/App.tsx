@@ -62,6 +62,8 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
 const Contact = lazy(() => import("./pages/Contact"));
 const AuthError = lazy(() => import("./pages/AuthError"));
+const BlogPost = lazy(() => import("./pages/BlogPost"));
+const BlogListing = lazy(() => import("./pages/BlogListing"));
 
 
 const queryClient = new QueryClient();
@@ -123,6 +125,8 @@ const App = () => (
                   <Route path="/cat-coaching-comparison" element={<CATCoachingComparison />} />
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/auth/error" element={<AuthError />} />
+                  <Route path="/blog" element={<BlogListing />} />
+                  <Route path="/:slug" element={<BlogPost />} />
                   <Route path="*" element={<NotFoundRedirect />} />
                 </Routes>
               </Suspense>
