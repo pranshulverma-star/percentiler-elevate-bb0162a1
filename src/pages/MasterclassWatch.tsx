@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw, Flame, Sparkles } from "lucide-react";
+import { ArrowRight, Download, FileText, BookOpen, BarChart3, PenTool, Gift, Loader2, Lock, Phone, PartyPopper, Play, RefreshCw, Flame, Sparkles, Gauge } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { trackInitiateCheckout } from "@/lib/tracking";
 import { motion } from "framer-motion";
@@ -10,11 +10,11 @@ import { useAuth } from "@/hooks/useAuth";
 
 
 const resources = [
-  { icon: FileText, label: "Ebook — Top Secrets to Crack CAT", action: "download", unlockAt: 20 },
+  { icon: FileText, label: "Ebook — Top Secrets to Crack CAT", action: "download", unlockAt: 20, href: "/resources/percentilers-ebook.pdf" },
   { icon: BarChart3, label: "Daily Study Planner", action: "planner", unlockAt: 40 },
   { icon: PenTool, label: "College ROI List", action: "download", unlockAt: 60 },
   { icon: BookOpen, label: "Coaching Shortlist Checklist", action: "download", unlockAt: 80 },
-  { icon: Download, label: "Handwritten Notes", action: "download", unlockAt: 90 },
+  { icon: Download, label: "Handwritten Notes", action: "download", unlockAt: 90, href: "/resources/formula-notes.pdf" },
 ];
 
 const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
@@ -58,6 +58,7 @@ const MasterclassWatch = () => {
   const [videoError, setVideoError] = useState(false);
   const [showTapToPlay, setShowTapToPlay] = useState(true);
   const [videoReady, setVideoReady] = useState(false);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const videoRef = useRef<HTMLVideoElement>(null);
   const engagementCreated = useRef(false);
   const lastMilestone = useRef(0);
@@ -164,7 +165,23 @@ const MasterclassWatch = () => {
     setVideoReady(true);
   }, []);
 
-  const videoClassName = `w-full h-full object-contain rounded-2xl${isFirstWatch ? " [&::-webkit-media-controls-timeline]:hidden" : ""}`;
+  const toggleSpeed = useCallback(() => {
+    const speeds = [1, 1.5, 2];
+    const nextIdx = (speeds.indexOf(playbackSpeed) + 1) % speeds.length;
+    const next = speeds[nextIdx];
+    setPlaybackSpeed(next);
+    if (videoRef.current) videoRef.current.playbackRate = next;
+  }, [playbackSpeed]);
+
+  const handleResourceClick = useCallback((r: typeof resources[0]) => {
+    if (r.action === "planner") {
+      navigate("/cat-daily-study-planner");
+    } else if (r.href) {
+      window.open(r.href, "_blank");
+    }
+  }, [navigate]);
+
+  const videoClassName = `w-full h-full object-contain rounded-2xl [&::-webkit-media-controls-timeline]:hidden [&::-webkit-media-controls-current-time-display]:hidden [&::-webkit-media-controls-time-remaining-display]:hidden`;
 
   const handleApply = useCallback(async () => {
     trackInitiateCheckout("masterclass_apply_95");
@@ -237,10 +254,25 @@ const MasterclassWatch = () => {
               onWaiting={() => setVideoLoading(true)}
               onPlaying={() => setVideoLoading(false)}
               onContextMenu={(e) => e.preventDefault()}
+              onSeeking={() => {
+                const v = videoRef.current;
+                if (!v || !isFirstWatch) return;
+                const maxTime = (v.duration * maxWatchPct) / 100;
+                if (v.currentTime > maxTime + 2) v.currentTime = maxTime;
+              }}
             >
               <source src={VIDEO_URL} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' onError={() => { setVideoError(true); setVideoLoading(false); }} />
               Your browser does not support the video tag.
             </video>
+            {/* Speed toggle overlay */}
+            <button
+              onClick={toggleSpeed}
+              className="absolute bottom-3 right-3 z-20 bg-black/70 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg backdrop-blur-sm hover:bg-black/90 transition-colors flex items-center gap-1"
+              aria-label="Change playback speed"
+            >
+              <Gauge className="h-3 w-3" />
+              {playbackSpeed}x
+            </button>
           </div>
 
           <div className="w-full bg-muted rounded-full h-1.5 mb-6">
@@ -280,10 +312,11 @@ const MasterclassWatch = () => {
                           initial={{ opacity: 0, scale: 0.95 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ delay: i * 0.06, duration: 0.3 }}
+                          onClick={() => isUnlocked && handleResourceClick(r)}
                           className={`relative flex-shrink-0 w-28 md:w-32 rounded-lg border p-2.5 text-center transition-all duration-200 ${
                             isUnlocked
                               ? "border-primary/30 bg-background shadow-sm hover:shadow-md cursor-pointer"
-                              : "border-border/40 bg-muted/20 opacity-70"
+                              : "border-border/40 bg-muted/20 opacity-70 pointer-events-none"
                           }`}
                         >
                           {isUnlocked && (
