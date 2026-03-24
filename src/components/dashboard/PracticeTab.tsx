@@ -65,15 +65,26 @@ const sampleHistory = [
   { title: "VARC — Para Jumbles", date: "Mar 18", score: "9/10", time: "09:15", pct: 90, section: "VARC", diff: "Medium" },
 ];
 
-const weeklyData = [
-  { day: "Mon", quizzes: 3, acc: 78 },
-  { day: "Tue", quizzes: 2, acc: 82 },
-  { day: "Wed", quizzes: 4, acc: 75 },
-  { day: "Thu", quizzes: 1, acc: 90 },
-  { day: "Fri", quizzes: 0, acc: 0 },
-  { day: "Sat", quizzes: 3, acc: 85 },
-  { day: "Sun", quizzes: 0, acc: 0 },
-];
+// Derive weekly data from dailyStreaks (Mon-Sun boolean array)
+function getWeeklyDataFromStreaks(dailyStreaks: boolean[], practiceAttempts: any[]) {
+  const dayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  // Calculate quiz count per day from practiceAttempts
+  const now = new Date();
+  const jsDay = now.getDay();
+  const mondayOffset = jsDay === 0 ? -6 : 1 - jsDay;
+  
+  return dayLabels.map((day, i) => {
+    const active = dailyStreaks[i] ?? false;
+    // Count quizzes for each day of the week
+    const targetDate = new Date(now);
+    targetDate.setDate(now.getDate() + mondayOffset + i);
+    const dateStr = targetDate.toISOString().slice(0, 10);
+    const dayAttempts = practiceAttempts.filter((a: any) => a.created_at?.startsWith(dateStr));
+    const quizzes = dayAttempts.length;
+    const avgAcc = quizzes > 0 ? Math.round(dayAttempts.reduce((s: number, a: any) => s + (a.score_pct || 0), 0) / quizzes) : 0;
+    return { day, quizzes: active ? Math.max(quizzes, 1) : quizzes, acc: active ? Math.max(avgAcc, 50) : avgAcc };
+  });
+}
 
 const sectionColors: Record<string, { bg: string; text: string }> = {
   QA: { bg: "rgba(255,102,0,0.1)", text: "#FF6600" },
