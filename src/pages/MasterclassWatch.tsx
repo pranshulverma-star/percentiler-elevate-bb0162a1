@@ -254,10 +254,25 @@ const MasterclassWatch = () => {
               onWaiting={() => setVideoLoading(true)}
               onPlaying={() => setVideoLoading(false)}
               onContextMenu={(e) => e.preventDefault()}
+              onSeeking={() => {
+                const v = videoRef.current;
+                if (!v || !isFirstWatch) return;
+                const maxTime = (v.duration * maxWatchPct) / 100;
+                if (v.currentTime > maxTime + 2) v.currentTime = maxTime;
+              }}
             >
               <source src={VIDEO_URL} type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' onError={() => { setVideoError(true); setVideoLoading(false); }} />
               Your browser does not support the video tag.
             </video>
+            {/* Speed toggle overlay */}
+            <button
+              onClick={toggleSpeed}
+              className="absolute bottom-3 right-3 z-20 bg-black/70 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg backdrop-blur-sm hover:bg-black/90 transition-colors flex items-center gap-1"
+              aria-label="Change playback speed"
+            >
+              <Gauge className="h-3 w-3" />
+              {playbackSpeed}x
+            </button>
           </div>
 
           <div className="w-full bg-muted rounded-full h-1.5 mb-6">
