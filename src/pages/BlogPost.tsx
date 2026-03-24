@@ -11,7 +11,7 @@ import BlogJsonLd from "@/components/blog/BlogJsonLd";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import BlogCTABanner from "@/components/blog/BlogCTABanner";
 import BlogFAQAccordion from "@/components/blog/BlogFAQAccordion";
-import { ArrowLeft, Clock, User } from "lucide-react";
+import { ArrowLeft, Clock, User, ArrowUp } from "lucide-react";
 
 interface BlogPostData {
   slug: string;
@@ -80,6 +80,19 @@ const BlogPost = () => {
   const [post, setPost] = useState<BlogPostData | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [readProgress, setReadProgress] = useState(0);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.body.scrollHeight - window.innerHeight;
+      setReadProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+      setShowBackToTop(scrollTop > 400);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   useEffect(() => {
     if (!slug) return;
@@ -131,6 +144,12 @@ const BlogPost = () => {
 
   return (
     <>
+      {/* Reading progress bar */}
+      <div
+        className="fixed top-0 left-0 h-[3px] z-[9999] bg-primary transition-[width] duration-100"
+        style={{ width: `${readProgress}%` }}
+      />
+
       <SEO
         title={`${post.title} | Percentilers`}
         description={post.meta_description || post.title}
@@ -146,7 +165,7 @@ const BlogPost = () => {
       />
       <Navbar />
       <main className="min-h-screen bg-background">
-        <article className="max-w-[740px] mx-auto px-4 sm:px-8 pt-24 pb-16">
+        <article className="max-w-[680px] mx-auto px-5 sm:px-5 pt-24 pb-16">
           {/* Back link */}
           <Link
             to="/blog"
@@ -155,26 +174,20 @@ const BlogPost = () => {
             <ArrowLeft className="h-4 w-4" /> All Articles
           </Link>
 
-          {/* Category pill */}
-          {post.category && (
-            <span className="inline-block text-[11px] font-bold tracking-wider uppercase text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
-              {post.category}
-            </span>
-          )}
-
           {/* Title */}
           <h1 className="text-[2.25rem] font-extrabold text-foreground leading-[1.3] tracking-tight mb-5">
             {post.title}
           </h1>
 
           {/* Meta strip */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-8">
-            <span className="inline-flex items-center gap-1.5">
-              <User className="h-3.5 w-3.5" /> Pranshul Verma
-            </span>
+          <div className="flex flex-wrap items-center gap-3 text-[0.85rem] text-muted-foreground mb-4">
+            {post.category && (
+              <span className="inline-block text-[0.75rem] font-bold uppercase text-primary-foreground bg-primary px-3 py-[3px] rounded-[20px]">
+                {post.category}
+              </span>
+            )}
             {post.published_at && (
-              <time dateTime={post.published_at} className="inline-flex items-center gap-1.5">
-                <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
+              <time dateTime={post.published_at}>
                 {new Date(post.published_at).toLocaleDateString("en-IN", {
                   year: "numeric",
                   month: "long",
@@ -182,18 +195,20 @@ const BlogPost = () => {
                 })}
               </time>
             )}
-            <span className="inline-flex items-center gap-1.5">
-              <Clock className="h-3.5 w-3.5" /> {readTime} min read
-            </span>
+            <span>📖 {readTime} min read</span>
           </div>
+          <div className="border-b border-border mb-8" />
 
-          {/* Featured image */}
+          {/* Featured image with gradient overlay */}
           {post.featured_image && (
-            <img
-              src={post.featured_image}
-              alt={post.title}
-              className="w-full rounded-xl mb-8 shadow-sm"
-            />
+            <div className="relative mb-10">
+              <img
+                src={post.featured_image}
+                alt={post.title}
+                className="w-full rounded-xl max-h-[420px] object-cover"
+              />
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-b from-transparent via-transparent to-background" style={{ background: 'linear-gradient(to bottom, transparent 60%, hsl(var(--background)) 100%)' }} />
+            </div>
           )}
 
           {/* Article body */}
@@ -223,6 +238,23 @@ const BlogPost = () => {
         </article>
       </main>
       <Footer />
+
+      {/* Back to top button */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className={`fixed bottom-8 sm:bottom-8 right-8 z-[999] w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transition-all duration-300 hover:scale-110 ${showBackToTop ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"}`}
+        style={{ bottom: undefined }}
+        aria-label="Back to top"
+      >
+        <ArrowUp className="h-5 w-5" />
+      </button>
+      <style>{`
+        @media (max-width: 639px) {
+          button[aria-label="Back to top"] {
+            bottom: 5rem !important;
+          }
+        }
+      `}</style>
     </>
   );
 };
