@@ -108,7 +108,8 @@ const BlogPost = () => {
     if (!post) return null;
     // Prefer HTML
     if (post.content_html) {
-      const [mainHtml, faqHtml] = extractFaqFromHtml(post.content_html);
+      const cleaned = extractArticleContent(post.content_html);
+      const [mainHtml, faqHtml] = extractFaqFromHtml(cleaned);
       return { type: "html" as const, main: mainHtml, faq: faqHtml };
     }
     if (post.content_markdown) {
