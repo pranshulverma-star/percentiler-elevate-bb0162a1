@@ -10,11 +10,11 @@ import { useAuth } from "@/hooks/useAuth";
 
 
 const resources = [
-  { icon: FileText, label: "Ebook — Top Secrets to Crack CAT", action: "download", unlockAt: 20 },
+  { icon: FileText, label: "Ebook — Top Secrets to Crack CAT", action: "download", unlockAt: 20, href: "/resources/percentilers-ebook.pdf" },
   { icon: BarChart3, label: "Daily Study Planner", action: "planner", unlockAt: 40 },
   { icon: PenTool, label: "College ROI List", action: "download", unlockAt: 60 },
   { icon: BookOpen, label: "Coaching Shortlist Checklist", action: "download", unlockAt: 80 },
-  { icon: Download, label: "Handwritten Notes", action: "download", unlockAt: 90 },
+  { icon: Download, label: "Handwritten Notes", action: "download", unlockAt: 90, href: "/resources/formula-notes.pdf" },
 ];
 
 const VIDEO_URL = "https://d7l58vt9hijvq.cloudfront.net/Webinar_compressed.mp4";
