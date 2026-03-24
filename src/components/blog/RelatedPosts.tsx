@@ -8,28 +8,51 @@ interface RelatedPost {
   meta_description: string | null;
   featured_image: string | null;
   published_at: string | null;
+  category: string | null;
 }
 
 interface RelatedPostsProps {
   currentSlug: string;
+  currentCategory: string | null;
 }
 
-const RelatedPosts = ({ currentSlug }: RelatedPostsProps) => {
+const RelatedPosts = ({ currentSlug, currentCategory }: RelatedPostsProps) => {
   const [posts, setPosts] = useState<RelatedPost[]>([]);
 
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await supabase
-        .from("blog_posts")
-        .select("slug, title, meta_description, featured_image, published_at")
-        .neq("slug", currentSlug)
-        .not("title", "like", "%Page not found%")
-        .order("published_at", { ascending: false })
-        .limit(3);
-      setPosts(data || []);
+    const fetchRelated = async () => {
+      let sameCategoryPosts: RelatedPost[] = [];
+
+      // First try: same category
+      if (currentCategory) {
+        const { data } = await supabase
+          .from("blog_posts")
+          .select("slug, title, meta_description, featured_image, published_at, category")
+          .neq("slug", currentSlug)
+          .eq("category", currentCategory)
+          .not("title", "like", "%Page not found%")
+          .order("published_at", { ascending: false })
+          .limit(3);
+        sameCategoryPosts = data || [];
+      }
+
+      // If not enough same-category posts, fill with recent ones
+      if (sameCategoryPosts.length < 3) {
+        const existingSlugs = [currentSlug, ...sameCategoryPosts.map((p) => p.slug)];
+        const { data } = await supabase
+          .from("blog_posts")
+          .select("slug, title, meta_description, featured_image, published_at, category")
+          .not("slug", "in", `(${existingSlugs.join(",")})`)
+          .not("title", "like", "%Page not found%")
+          .order("published_at", { ascending: false })
+          .limit(3 - sameCategoryPosts.length);
+        sameCategoryPosts = [...sameCategoryPosts, ...(data || [])];
+      }
+
+      setPosts(sameCategoryPosts);
     };
-    fetch();
-  }, [currentSlug]);
+    fetchRelated();
+  }, [currentSlug, currentCategory]);
 
   if (posts.length === 0) return null;
 
@@ -50,6 +73,11 @@ const RelatedPosts = ({ currentSlug }: RelatedPostsProps) => {
                 className="w-full h-32 object-cover rounded-lg mb-3"
                 loading="lazy"
               />
+            )}
+            {post.category && (
+              <span className="inline-block text-[10px] font-bold tracking-wider uppercase text-primary bg-primary/10 px-2 py-0.5 rounded-full mb-2">
+                {post.category}
+              </span>
             )}
             <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors line-clamp-2">
               {post.title}

@@ -102,6 +102,7 @@ export type Database = {
       }
       blog_posts: {
         Row: {
+          category: string | null
           content_html: string | null
           content_markdown: string | null
           created_at: string | null
@@ -113,6 +114,7 @@ export type Database = {
           title: string
         }
         Insert: {
+          category?: string | null
           content_html?: string | null
           content_markdown?: string | null
           created_at?: string | null
@@ -124,6 +126,7 @@ export type Database = {
           title: string
         }
         Update: {
+          category?: string | null
           content_html?: string | null
           content_markdown?: string | null
           created_at?: string | null

@@ -19,6 +19,7 @@ interface BlogPostData {
   meta_description: string | null;
   featured_image: string | null;
   published_at: string | null;
+  category: string | null;
 }
 
 function splitMarkdown(md: string): [string, string] {
@@ -55,7 +56,7 @@ const BlogPost = () => {
     const fetchPost = async () => {
       const { data, error } = await supabase
         .from("blog_posts")
-        .select("slug, title, content_html, content_markdown, meta_description, featured_image, published_at")
+        .select("slug, title, content_html, content_markdown, meta_description, featured_image, published_at, category")
         .eq("slug", slug)
         .maybeSingle();
       if (error || !data) {
@@ -198,7 +199,7 @@ const BlogPost = () => {
           <BlogCTABanner />
 
           {/* Related Posts */}
-          <RelatedPosts currentSlug={post.slug} />
+          <RelatedPosts currentSlug={post.slug} currentCategory={post.category} />
 
           {/* Bottom spacing */}
           <div className="h-16" />
