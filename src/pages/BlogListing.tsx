@@ -14,14 +14,7 @@ interface BlogListItem {
   meta_description: string | null;
   featured_image: string | null;
   published_at: string | null;
-  content_markdown: string | null;
-  content_html: string | null;
   category: string | null;
-}
-
-function estimateReadTime(md: string | null, html: string | null): number {
-  const text = md || html || "";
-  return Math.max(1, Math.ceil(text.split(/\s+/).length / 200));
 }
 
 const BlogListing = () => {
