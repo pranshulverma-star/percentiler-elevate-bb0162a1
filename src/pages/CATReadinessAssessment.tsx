@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
+import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -814,6 +815,19 @@ const CATReadinessAssessment = () => {
         description="Evaluate your CAT 2026 readiness in 15 minutes. Get a scored report with strengths, weaknesses, and a personalised improvement plan. 100% free."
         canonical="https://percentilers.in/free-cat-readiness-assessment"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Free CAT Readiness Assessment",
+          "description": "Evaluate your CAT 2026 readiness in 15 minutes with a scored report and personalised improvement plan.",
+          "url": "https://percentilers.in/free-cat-readiness-assessment",
+          "applicationCategory": "EducationalApplication",
+          "operatingSystem": "Web",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "provider": { "@type": "Organization", "name": "Percentilers", "url": "https://percentilers.in" }
+        })}</script>
+      </Helmet>
       <Navbar />
 
       {isLanding &&

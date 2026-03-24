@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -208,6 +209,20 @@ const Mentorship = () => {
         description="Join our personalized CAT mentorship program and experience structured online CAT coaching designed to help serious aspirants crack the CAT exam."
         canonical="https://percentilers.in/mentorship"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "CAT Mentorship Program",
+          "description": "Personalized CAT mentorship program with structured online coaching from IIM alumni.",
+          "provider": { "@type": "Organization", "name": "Percentilers", "url": "https://percentilers.in" },
+          "offers": [
+            { "@type": "Offer", "priceCurrency": "INR", "price": "999", "name": "Nudge" },
+            { "@type": "Offer", "priceCurrency": "INR", "price": "2999", "name": "Catalyst" },
+            { "@type": "Offer", "priceCurrency": "INR", "price": "4999", "name": "Apex" }
+          ]
+        })}</script>
+      </Helmet>
       <Navbar />
       <main>
         {/* Hero */}

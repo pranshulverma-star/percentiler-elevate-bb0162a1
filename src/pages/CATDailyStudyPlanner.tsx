@@ -1,5 +1,6 @@
 import { useState, useMemo, useEffect, useCallback, useRef } from "react";
 import { toast } from "sonner";
+import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
@@ -1102,6 +1103,19 @@ export default function CATDailyStudyPlanner() {
         description="Plan your CAT 2026 preparation day by day with a free AI-powered study planner. Get a structured roadmap for QA, VARC, and LRDI. Start planning today."
         canonical="https://percentilers.in/cat-daily-study-planner"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": "Free CAT Daily Study Planner",
+          "description": "AI-powered day-by-day CAT preparation schedule tailored to individual goals.",
+          "url": "https://percentilers.in/cat-daily-study-planner",
+          "applicationCategory": "EducationalApplication",
+          "operatingSystem": "Web",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "provider": { "@type": "Organization", "name": "Percentilers", "url": "https://percentilers.in" }
+        })}</script>
+      </Helmet>
       <Navbar />
       <div className="container mx-auto px-4 md:px-6 pt-4">
         <BuddyMiniWidget />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import { Card } from "@/components/ui/card";
@@ -153,6 +154,16 @@ const CATOMETCourses = () => {
         description="Explore CAT and OMET preparation courses with live classes, mock tests, and mentorship. Choose from Guarantee, Live, or Recorded programs. Enroll now."
         canonical="https://percentilers.in/courses/cat-omet"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "CAT + OMET Courses – 95%ile Guarantee Batch",
+          "description": "Explore CAT and OMET preparation courses with live classes, mock tests, and mentorship.",
+          "provider": { "@type": "Organization", "name": "Percentilers", "url": "https://percentilers.in" },
+          "offers": { "@type": "Offer", "priceCurrency": "INR", "price": "27999", "availability": "https://schema.org/InStock" }
+        })}</script>
+      </Helmet>
       <Navbar />
       <main>
         {/* Hero – compact */}

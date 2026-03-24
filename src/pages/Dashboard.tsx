@@ -123,7 +123,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <SEO title="Dashboard | Percentilers" description="Your personalized CAT preparation dashboard" canonical="https://percentilers.in/dashboard" />
+      <SEO title="Dashboard | Percentilers" description="Your personalized CAT preparation dashboard" canonical="https://percentilers.in/dashboard" noindex />
 
       <DashboardTopBar firstName={firstName} streakCount={streakData.currentStreak} onSignOut={handleSignOut} />
 

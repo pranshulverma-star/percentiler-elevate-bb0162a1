@@ -4,18 +4,37 @@
 
 ## About
 
-Percentilers is an ed-tech company focused on CAT (Common Admission Test) and other MBA entrance exam preparation. Founded by Pranshul Agrawal (IIM Ahmedabad alumnus), Percentilers offers structured mentorship, daily study plans, live masterclasses, and practice labs to help students crack top B-school admissions across India.
+Percentilers is an ed-tech company focused on CAT (Common Admission Test) and other MBA entrance exam preparation. Founded by Pranshul Agrawal (IIM Ahmedabad alumnus, 7x 100 percentiler in CAT), Percentilers offers structured mentorship, daily study plans, live masterclasses, and practice labs to help students crack top B-school admissions across India.
 
-## Core Offerings
+## What We Offer
 
-- **CAT & OMET Courses**: Comprehensive coaching for CAT, XAT, NMAT, SNAP, IIFT, and other MBA entrance exams.
-- **1-on-1 Mentorship**: Personalized guidance from IIM alumni and 99+ percentile scorers.
-- **Free Masterclass**: Strategy sessions on how to crack CAT and secure admission to top IIMs.
-- **Daily Study Planner**: AI-powered day-by-day CAT preparation schedule tailored to individual goals.
-- **Practice Lab**: Topic-wise practice questions with timed quizzes and performance analytics.
-- **CAT Readiness Assessment**: Free diagnostic tool to evaluate preparation level.
-- **Percentile Planner**: Profile-based tool estimating target percentiles needed for top B-schools.
-- **Test Series**: Full-length and sectional mock tests simulating actual CAT exam conditions.
+### Courses & Coaching
+- **95%ile Guarantee Course** — Full CAT coaching with a money-back guarantee if you don't score 95+ percentile. Includes live classes, recorded lectures, mock tests, and 1-on-1 mentorship. Price: ₹27,999.
+- **Live Online Course** — Weekly live classes with expert faculty across QA, VARC, and LRDI. Price: ₹14,999.
+- **Recorded Course** — Self-paced video lectures covering the entire CAT syllabus. Price: ₹7,999.
+- **Topic-wise Workshops** — Deep-dive workshops on Arithmetic, Algebra, Geometry, LRDI, VARC, and more. Prices from ₹999.
+
+### Free Tools & Resources
+- **Free Masterclass** — Strategy session on how to crack CAT and secure admission to top IIMs. Watch at: https://percentilers.in/masterclass
+- **Daily Study Planner** — AI-powered day-by-day CAT preparation schedule tailored to individual goals and target year. Generates a structured 26-week roadmap covering QA, VARC, and LRDI. URL: https://percentilers.in/cat-daily-study-planner
+- **Practice Lab** — Topic-wise timed practice quizzes across QA, LRDI, and VARC with performance analytics and battle mode for competitive practice. URL: https://percentilers.in/practice-lab
+- **CAT Readiness Assessment** — Free 15-minute diagnostic tool evaluating preparation level with a scored report, strengths/weaknesses analysis, and personalised improvement plan. URL: https://percentilers.in/free-cat-readiness-assessment
+- **Flashcards** — Spaced-repetition flashcards covering key CAT concepts across QA, VARC, LRDI, and GK for OMET exams. URL: https://percentilers.in/flashcards
+- **Percentile Planner** — Profile-based tool estimating target percentiles needed for top 10, top 20, and top 30 B-schools based on academic scores, work experience, and extracurriculars.
+- **Free Foundation Courses** — Video courses covering basics of all CAT sections. URL: https://percentilers.in/free-courses
+- **Study Buddy** — Pair up with another aspirant for mutual accountability, daily nudges, and streak tracking. URL: https://percentilers.in/study-buddy
+- **Daily Sprint** — Set and track daily study goals with gamified progress tracking. URL: https://percentilers.in/daily-sprint
+
+### Test Series
+- **CAT Mock Tests** — 30 full-length mocks simulating actual CAT exam conditions with percentile predictor and video solutions. Price: ₹899.
+- **OMET Mock Tests** — 20 mocks for NMAT, SNAP, XAT, and CUET-PG. Price: ₹499.
+- **Sectional Tests** — Free topic-wise tests for QA, VARC, and LRDI (25-30 tests each).
+- URL: https://percentilers.in/test-series
+
+### 1-on-1 Mentorship
+- Personalized guidance from IIM alumni and 99+ percentile scorers.
+- Three tiers: Nudge (₹999/month), Catalyst (₹2,999/month), and Apex (₹4,999/month).
+- URL: https://percentilers.in/mentorship
 
 ## Key Results
 
@@ -24,12 +43,17 @@ Percentilers is an ed-tech company focused on CAT (Common Admission Test) and ot
 
 ## Faculty & Mentors
 
-- **Pranshul Agrawal** — Founder, IIM Ahmedabad alumnus
+- **Pranshul Agrawal** — Founder, IIM Ahmedabad alumnus, 7x 100 percentiler
 - **Gaurav** — VARC specialist
 - **Shweta** — QA specialist
 - **Puru** — LRDI specialist
 
-## Pages
+## Blog
+
+Expert articles on CAT exam preparation, MBA admissions, study strategies, and career guidance. Topics include CAT syllabus breakdowns, mock test strategies, profile building, IIM call criteria, and exam-day tips.
+URL: https://percentilers.in/blog
+
+## All Pages
 
 - Homepage: https://percentilers.in/
 - Courses (CAT & OMET): https://percentilers.in/courses/cat-omet
@@ -38,9 +62,14 @@ Percentilers is an ed-tech company focused on CAT (Common Admission Test) and ot
 - Masterclass: https://percentilers.in/masterclass
 - Daily Study Planner: https://percentilers.in/cat-daily-study-planner
 - Practice Lab: https://percentilers.in/practice-lab
+- Flashcards: https://percentilers.in/flashcards
 - Test Series: https://percentilers.in/test-series
+- Workshops: https://percentilers.in/workshops
+- Study Buddy: https://percentilers.in/study-buddy
+- Daily Sprint: https://percentilers.in/daily-sprint
 - CAT Readiness Assessment: https://percentilers.in/free-cat-readiness-assessment
 - CAT Coaching Comparison: https://percentilers.in/cat-coaching-comparison
+- Blog: https://percentilers.in/blog
 - Contact: https://percentilers.in/contact
 - Privacy Policy: https://percentilers.in/privacy-policy
 - Terms: https://percentilers.in/terms
@@ -49,4 +78,7 @@ Percentilers is an ed-tech company focused on CAT (Common Admission Test) and ot
 ## Contact
 
 - Website: https://percentilers.in
+- Email: pranshul@percentilers.in
+- Phone: +91-9911928071
+- Location: New Delhi, India
 - WhatsApp: Available via floating button on site

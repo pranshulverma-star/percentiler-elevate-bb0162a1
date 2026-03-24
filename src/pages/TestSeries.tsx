@@ -1,4 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
+import SEO from "@/components/SEO";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -135,21 +137,6 @@ const TestSeries = () => {
   const [activeFilter, setActiveFilter] = useState<string>("All");
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
 
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.type = "application/ld+json";
-    script.textContent = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "Product",
-      "name": "CAT Mock Test Series",
-      "description": "Full-length CAT mock tests with sectional tests and detailed performance analysis dashboard.",
-      "brand": { "@type": "Brand", "name": "Percentilers" },
-      "offers": { "@type": "Offer", "priceCurrency": "INR", "price": "899", "availability": "https://schema.org/InStock" }
-    });
-    document.head.appendChild(script);
-    return () => { document.head.removeChild(script); };
-  }, []);
-
   const filters = ["All", "Free", "Sectional", "Full-Length"];
   const filtered = activeFilter === "All"
     ? testPacks
@@ -157,8 +144,21 @@ const TestSeries = () => {
       ? testPacks.filter(t => t.price === 0)
       : testPacks.filter(t => t.category === activeFilter);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "CAT Mock Test Series",
+    "description": "Full-length CAT mock tests with sectional tests and detailed performance analysis dashboard.",
+    "brand": { "@type": "Brand", "name": "Percentilers" },
+    "offers": { "@type": "Offer", "priceCurrency": "INR", "price": "899", "availability": "https://schema.org/InStock" }
+  };
+
   return (
     <>
+      <SEO title="CAT Test Series – Mock Tests & Sectional Tests | Percentilers" description="Practice with 125+ CAT mock tests, sectional tests, and topic-wise quizzes. Full-length mocks with percentile predictor and detailed analysis." canonical="https://percentilers.in/test-series" />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+      </Helmet>
       <Navbar />
       <main>
         {/* Hero */}

@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import { Helmet } from "react-helmet-async";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -58,6 +59,16 @@ const BlogListing = () => {
         description="Expert articles on CAT exam preparation, MBA admissions, and career guidance from Percentilers."
         canonical="https://percentilers.in/blog"
       />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "CAT Prep Insights – Blog",
+          "description": "Expert articles on CAT exam preparation, MBA admissions, and career guidance from Percentilers.",
+          "url": "https://percentilers.in/blog",
+          "publisher": { "@type": "Organization", "name": "Percentilers", "url": "https://percentilers.in" }
+        })}</script>
+      </Helmet>
       <Navbar />
       <main className="min-h-screen bg-background">
         {/* Header */}
