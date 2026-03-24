@@ -1,14 +1,12 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function NotFoundRedirect() {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    const path = window.location.pathname;
-
-    // Never redirect OAuth callback paths — they must be handled by the SPA
-    if (path.startsWith("/~oauth")) return;
-
-    window.location.replace("https://old.percentilers.in" + path + window.location.search);
-  }, []);
+    navigate("/", { replace: true });
+  }, [navigate]);
 
   return null;
 }
