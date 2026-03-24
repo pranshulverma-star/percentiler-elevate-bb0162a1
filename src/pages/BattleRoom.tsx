@@ -1001,7 +1001,7 @@ export default function BattleRoomPage() {
 
   return (
     <>
-      <SEO title={`Battle Quiz — ${room.code} | Percentilers`} description="Multiplayer battle quiz" canonical={`https://percentiler-elevate.lovable.app/practice-lab/battle/${room.code}`} />
+      <SEO title={`Battle Quiz — ${room.code} | Percentilers`} description="Multiplayer battle quiz" canonical={`https://percentilers.in/practice-lab/battle/${room.code}`} noindex />
       <Navbar />
       <main className="min-h-screen bg-background pt-4 pb-12 px-3 md:pt-6 md:pb-16 md:px-6 game-grid-bg">
         <div className="max-w-5xl mx-auto py-6 md:py-16">

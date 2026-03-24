@@ -872,7 +872,7 @@ export default function PracticeLab() {
       <SEO
         title="Practice Lab — Free CAT Mock Quizzes | Percentilers"
         description="Sharpen your CAT preparation with timed practice quizzes across QA, LRDI and VARC. Free, no signup required."
-        canonical="https://percentiler-elevate.lovable.app/practice-lab"
+        canonical="https://percentilers.in/practice-lab"
       />
       <Navbar />
       <main className="min-h-screen bg-background pt-4 pb-12 px-3 md:pt-6 md:pb-16 md:px-6 game-grid-bg">

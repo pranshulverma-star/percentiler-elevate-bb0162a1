@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://percentilers.in/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://percentilers.in/masterclass</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://percentilers.in/masterclass/watch</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://percentilers.in/mentorship</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://percentilers.in/courses/cat-omet</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://percentilers.in/free-courses</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://percentilers.in/test-series</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://percentilers.in/free-cat-readiness-assessment</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://percentilers.in/cat-daily-study-planner</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://percentilers.in/cat-coaching-comparison</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://percentilers.in/blog</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://percentilers.in/contact</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
-  <url><loc>https://percentilers.in/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://percentilers.in/privacy-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://percentilers.in/refund-policy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://percentilers.in/</loc><lastmod>2026-03-24</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://percentilers.in/masterclass</loc><lastmod>2026-03-24</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://percentilers.in/masterclass/watch</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/mentorship</loc><lastmod>2026-03-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://percentilers.in/courses/cat-omet</loc><lastmod>2026-03-24</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://percentilers.in/free-courses</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/test-series</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/workshops</loc><lastmod>2026-03-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/flashcards</loc><lastmod>2026-03-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/practice-lab</loc><lastmod>2026-03-24</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/study-buddy</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/daily-sprint</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://percentilers.in/free-cat-readiness-assessment</loc><lastmod>2026-03-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/cat-daily-study-planner</loc><lastmod>2026-03-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://percentilers.in/cat-coaching-comparison</loc><lastmod>2026-03-01</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://percentilers.in/blog</loc><lastmod>2026-03-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://percentilers.in/contact</loc><lastmod>2026-02-17</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://percentilers.in/terms</loc><lastmod>2026-02-17</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://percentilers.in/privacy-policy</loc><lastmod>2026-02-17</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://percentilers.in/refund-policy</loc><lastmod>2026-02-17</lastmod><changefreq>yearly</changefreq><priority>0.3</priority></url>
 
   <!-- Blog Posts -->
   <url><loc>https://percentilers.in/slaying-cat-quants-your-no-bs-guide-to-cracking-the-code</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>

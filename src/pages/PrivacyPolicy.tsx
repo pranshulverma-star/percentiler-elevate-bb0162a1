@@ -1,9 +1,11 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { Link } from "react-router-dom";
 
 const PrivacyPolicy = () => (
   <>
+    <SEO title="Privacy Policy | Percentilers" description="Learn how Percentilers collects, uses, and protects your personal data. Our privacy policy covers cookies, data sharing, and your rights under Indian law." canonical="https://percentilers.in/privacy-policy" />
     <Navbar />
     <main className="container mx-auto px-4 md:px-6 pt-6 pb-16 max-w-3xl">
       <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Privacy Policy</h1>

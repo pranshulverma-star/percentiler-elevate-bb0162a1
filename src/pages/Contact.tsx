@@ -1,9 +1,11 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
 
 const Contact = () => (
   <>
+    <SEO title="Contact Percentilers – CAT Coaching Support" description="Get in touch with Percentilers for queries about CAT coaching, mentorship programs, test series, or any other support. Email, phone, and office details." canonical="https://percentilers.in/contact" />
     <Navbar />
     <main className="container mx-auto px-4 md:px-6 pt-6 pb-16 max-w-3xl">
       <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-2">Contact Us</h1>
