@@ -5,12 +5,13 @@ interface SEOProps {
   description: string;
   canonical: string;
   ogImage?: string;
+  ogType?: string;
   noindex?: boolean;
 }
 
-const DEFAULT_OG_IMAGE = "https://percentilers.in/og-image.jpg";
+const DEFAULT_OG_IMAGE = "https://percentilers.in/og-default.png";
 
-const SEO = ({ title, description, canonical, ogImage = DEFAULT_OG_IMAGE, noindex }: SEOProps) => (
+const SEO = ({ title, description, canonical, ogImage = DEFAULT_OG_IMAGE, ogType = "website", noindex }: SEOProps) => (
   <Helmet>
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -20,7 +21,8 @@ const SEO = ({ title, description, canonical, ogImage = DEFAULT_OG_IMAGE, noinde
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="Percentilers" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
