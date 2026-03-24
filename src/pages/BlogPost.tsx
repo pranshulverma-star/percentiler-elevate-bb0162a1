@@ -5,6 +5,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
 import BlogJsonLd from "@/components/blog/BlogJsonLd";
 import RelatedPosts from "@/components/blog/RelatedPosts";
