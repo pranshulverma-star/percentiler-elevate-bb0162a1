@@ -5,6 +5,7 @@ import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
 import BlogJsonLd from "@/components/blog/BlogJsonLd";
 import RelatedPosts from "@/components/blog/RelatedPosts";
@@ -180,9 +181,9 @@ const BlogPost = () => {
           ">
             {contentParts?.type === "markdown" ? (
               <>
-                <ReactMarkdown>{contentParts.first}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentParts.first}</ReactMarkdown>
                 <MidArticleCTA />
-                <ReactMarkdown>{contentParts.second}</ReactMarkdown>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{contentParts.second}</ReactMarkdown>
               </>
             ) : contentParts?.type === "html" ? (
               <>

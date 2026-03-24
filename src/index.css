@@ -302,3 +302,23 @@
 .flashcard-practice .katex .minner {
   color: #FFFFFF !important;
 }
+
+/* Blog prose table styles */
+.prose table {
+  @apply w-full border-collapse text-sm;
+}
+.prose thead {
+  @apply bg-muted/50;
+}
+.prose th {
+  @apply border border-border px-3 py-2 text-left font-semibold text-foreground;
+}
+.prose td {
+  @apply border border-border px-3 py-2 text-foreground/85;
+}
+.prose tbody tr:nth-child(even) {
+  @apply bg-muted/25;
+}
+.prose table {
+  @apply overflow-x-auto block md:table;
+}
