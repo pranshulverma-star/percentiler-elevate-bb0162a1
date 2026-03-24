@@ -1,49 +1,39 @@
 
 
-## Plan: Speakable Schema + Quick Answer Box for Blog Posts
+## Plan: Replace "2025" → "2026" in Blog Posts
 
-### Overview
-Two additions to every blog post page: (1) a Speakable JSON-LD schema marking the most quotable content for voice assistants, and (2) a visible "Quick Answer" box at the top of the article body that gives AI engines a concise, citation-worthy summary.
+### What
+Update all blog posts that mention "2025" in their title or content, replacing it with "2026". This is a data-only change — no code modifications needed.
 
-### Changes
+### How
+Use the database insert tool to run a single `UPDATE` statement replacing "2025" with "2026" across four columns: `title`, `content_html`, `content_markdown`, and `meta_description`.
 
-**1. BlogJsonLd.tsx — Add Speakable schema**
-- Add a `speakable` property to the existing `BlogPosting` JSON-LD schema
-- Use CSS selectors targeting the Quick Answer box and the article's H1: `cssSelector: [".quick-answer", "h1"]`
-- This tells Google Assistant and AI crawlers which sections are most quotable
-
-**2. BlogPost.tsx — Add Quick Answer box UI**
-- Render a styled box between the featured image and the article body
-- Content: the post's `meta_description` (already a 1-2 sentence summary of each post — perfect for this purpose)
-- Only render if `meta_description` exists
-- Box gets the class `quick-answer` so the Speakable schema can reference it
-- Styling: light background, left orange border, subtle icon (Lightbulb or Zap), "Quick Answer" label, concise text
-
-**3. index.css — Quick Answer box styling**
-- `.quick-answer` styles: background `#fff8f5`, border-left `4px solid #FF6B35`, border-radius `0 8px 8px 0`, padding, margin-bottom
-- Label: uppercase, small, bold, orange
-- Text: `font-size: 1.05rem`, `line-height: 1.7`, dark color
-
-### File Changes
-
-| File | What |
-|------|------|
-| `src/components/blog/BlogJsonLd.tsx` | Add `speakable` property with cssSelector to BlogPosting schema |
-| `src/pages/BlogPost.tsx` | Add Quick Answer box between featured image and article body |
-| `src/index.css` | Add `.quick-answer` styles |
-
-### Quick Answer Box Design
-
-```text
-┌─────────────────────────────────────┐
-│ ⚡ QUICK ANSWER                     │
-│                                     │
-│ [meta_description text here — the   │
-│  2-3 sentence summary of the post]  │
-└─────────────────────────────────────┘
+```sql
+UPDATE blog_posts
+SET
+  title = REPLACE(title, '2025', '2026'),
+  content_html = REPLACE(content_html, '2025', '2026'),
+  content_markdown = REPLACE(content_markdown, '2025', '2026'),
+  meta_description = REPLACE(meta_description, '2025', '2026')
+WHERE
+  title ILIKE '%2025%'
+  OR content_html ILIKE '%2025%'
+  OR content_markdown ILIKE '%2025%'
+  OR meta_description ILIKE '%2025%';
 ```
 
-- Orange left border, light warm background
-- Appears right before the main content
-- Semantically marked up with the `quick-answer` class for Speakable targeting
+### Affected Posts (titles containing "2025")
+- CAT Syllabus 2025
+- CAT Cutoff 2025
+- CAT Registrations 2025 (×2)
+- Eligibility For CAT Exam 2025
+- CAT Application Form 2025
+- Cast Reservation In CAT exam 2025
+- 7 Common Mistakes to Avoid on CAT Exam Day 2025
+- OMET Exams 2025
+
+Plus ~42 posts with "2025" in their body content.
+
+### File Changes
+None — this is a database data update only.
 
