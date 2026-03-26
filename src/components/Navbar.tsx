@@ -4,9 +4,10 @@ import { Menu, X, Phone, LayoutDashboard } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 import ThemeToggle from "@/components/ThemeToggle";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logoImg from "@/assets/logo-percentilers.webp";
 
 const navLinks = [
