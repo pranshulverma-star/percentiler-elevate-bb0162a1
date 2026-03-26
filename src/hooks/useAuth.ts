@@ -16,6 +16,26 @@ interface AuthState {
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
 
+// Module-level Set — tracks which user IDs have already had the welcome flow
+// attempted in this browser tab session.
+//
+// WHY THIS IS NEEDED:
+//   supabase.auth.onAuthStateChange fires SIGNED_IN on EVERY page load because
+//   Supabase restores the session from localStorage and emits SIGNED_IN even
+//   when there is no actual sign-in (just a refresh or navigation). It can also
+//   fire twice in rapid succession during an OAuth callback (once when the hash
+//   tokens are consumed, once when getSession resolves).
+//
+//   A DB query guard alone has a TOCTOU race: both rapid fires read count=0
+//   before either has written the notification row → duplicate emails.
+//
+//   The Set eliminates the race: we add userId BEFORE any async work, so the
+//   second fire sees it immediately and returns without touching the DB.
+//   AuthProvider is mounted once for the app lifetime, so the Set persists for
+//   the full browser tab session and is cleared only on hard reload (at which
+//   point the DB guard in profiles.welcome_sent takes over).
+const welcomeSentForUsers = new Set<string>();
+
 /** Check if the current URL looks like an OAuth callback */
 function detectOAuthCallback() {
   const hash = window.location.hash;
@@ -99,41 +119,66 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             );
           }, 2000);
 
-          // Send welcome email/notification once — DB-gated so it works across
-          // devices and browsers. Fire-and-forget — must NOT block auth flow.
-          (async () => {
-            try {
-              const { count } = await supabase.from("notifications")
-                .select("*", { count: "exact", head: true })
-                .eq("user_id", userId)
-                .eq("type", "welcome");
-              if ((count ?? 0) > 0) return; // already welcomed on a previous login
+          // ── Welcome email + notification (fires exactly once per user, ever) ──
+          //
+          // Layer 1: module-level Set (same-tab, same-session rapid-fire guard).
+          //   Add userId BEFORE any await so a second SIGNED_IN in the same
+          //   millisecond window sees it immediately and skips.
+          //
+          // Layer 2: profiles.welcome_sent atomic UPDATE.
+          //   UPDATE ... WHERE welcome_sent = false RETURNING id is atomic in
+          //   PostgreSQL. Only ONE caller gets a row back — that caller sends.
+          //   Handles cross-device / cross-tab / cross-session safety.
+          //
+          // Layer 3: partial unique index on notifications(user_id) WHERE
+          //   type = 'welcome' prevents a duplicate row even if layers 1+2 fail.
+          //
+          // Fire-and-forget — must NOT block the auth flow.
+          if (!welcomeSentForUsers.has(userId)) {
+            welcomeSentForUsers.add(userId); // claim before any async work
 
-              const displayName = name || "there";
-              const dashboardUrl = `${window.location.origin}/dashboard`;
+            (async () => {
+              try {
+                // Atomic claim: returns the row only if WE flipped false → true.
+                // Any concurrent caller (another tab, device, or rapid fire) gets
+                // null back and exits without sending.
+                const { data: claimed } = await supabase
+                  .from("profiles")
+                  .update({ welcome_sent: true })
+                  .eq("id", userId)
+                  .eq("welcome_sent", false)
+                  .select("id")
+                  .maybeSingle();
 
-              // Send transactional welcome email
-              await supabase.functions.invoke("send-email", {
-                body: {
-                  to: email,
-                  template: "welcome",
-                  data: { name: displayName, dashboard_url: dashboardUrl },
+                if (!claimed) return; // already sent on a previous session/device
+
+                const displayName = name || "there";
+                const dashboardUrl = `${window.location.origin}/dashboard`;
+
+                // Send transactional welcome email
+                await supabase.functions.invoke("send-email", {
+                  body: {
+                    to: email,
+                    template: "welcome",
+                    data: { name: displayName, dashboard_url: dashboardUrl },
+                    user_id: userId,
+                  },
+                });
+
+                // Insert in-app welcome notification
+                // (partial unique index on notifications enforces one per user)
+                await supabase.from("notifications").insert({
                   user_id: userId,
-                },
-              });
-
-              // Insert in-app welcome notification
-              await supabase.from("notifications").insert({
-                user_id: userId,
-                title: "Welcome to Percentilers! 🎯",
-                body: "Your CAT prep journey starts here. Set your first sprint goal today.",
-                type: "welcome",
-                action_url: "/dashboard",
-              });
-            } catch (err) {
-              console.warn("[Auth] Welcome notification failed:", err);
-            }
-          })();
+                  title: "Welcome to Percentilers! 🎯",
+                  body: "Your CAT prep journey starts here. Set your first sprint goal today.",
+                  type: "welcome",
+                  action_url: "/dashboard",
+                });
+              } catch (err) {
+                if (import.meta.env.DEV) console.warn("[Auth] Welcome notification failed:", err);
+              }
+            })();
+          }
         }
       }
     );
