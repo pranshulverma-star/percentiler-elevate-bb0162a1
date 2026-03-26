@@ -21,15 +21,33 @@ serve(async (req: Request) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
-  // Auth guard — allow service role key OR shared internal secret
+  // Auth guard — accept: service role key, INTERNAL_FUNCTIONS_SECRET, or valid user JWT
   const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const internalSecret = Deno.env.get("INTERNAL_FUNCTIONS_SECRET");
-  const isAuthorized =
-    (serviceRoleKey && authHeader === `Bearer ${serviceRoleKey}`) ||
-    (internalSecret && authHeader === `Bearer ${internalSecret}`) ||
-    (internalSecret && req.headers.get("x-internal-secret") === internalSecret);
-  if (!isAuthorized) {
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const token = authHeader.replace("Bearer ", "");
+
+  const isServiceRole = !!serviceRoleKey && token === serviceRoleKey;
+  const isInternalSecret = !!internalSecret && token === internalSecret;
+
+  let isValidUser = false;
+  if (!isServiceRole && !isInternalSecret) {
+    const adminClient = createClient(supabaseUrl, serviceRoleKey!, {
+      auth: { persistSession: false },
+    });
+    const { data: { user }, error } = await adminClient.auth.getUser(token);
+    isValidUser = !!user && !error;
+  }
+
+  if (!isServiceRole && !isInternalSecret && !isValidUser) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
@@ -37,9 +55,7 @@ serve(async (req: Request) => {
   }
 
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
-    const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const supabase = createClient(supabaseUrl, serviceRoleKey);
+    const supabase = createClient(supabaseUrl, serviceRoleKey!);
 
     const body: SendEmailBody = await req.json();
     const { to, template, data, user_id } = body;
