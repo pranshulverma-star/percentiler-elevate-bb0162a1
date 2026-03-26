@@ -758,18 +758,21 @@ export type Database = {
           created_at: string
           id: string
           name: string | null
+          welcome_sent: boolean
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
           id: string
           name?: string | null
+          welcome_sent?: boolean
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
           id?: string
           name?: string | null
+          welcome_sent?: boolean
         }
         Relationships: []
       }
