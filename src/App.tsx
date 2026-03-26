@@ -124,6 +124,7 @@ const App = () => (
                   <Route path="/study-buddy" element={<StudyBuddy />} />
                   <Route path="/daily-sprint" element={<DailySprint />} />
                   <Route path="/flashcards" element={<Flashcards />} />
+                  <Route path="/notifications" element={<ProtectedRoute source="notifications"><Notifications /></ProtectedRoute>} />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/refund-policy" element={<RefundPolicy />} />

@@ -147,7 +147,7 @@ export default function NotificationBell({ userId }: Props) {
             <button
               className="text-xs font-semibold w-full text-center transition-colors hover:opacity-80"
               style={{ color: "#FF6600" }}
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/notifications")}
             >
               View all notifications
             </button>
