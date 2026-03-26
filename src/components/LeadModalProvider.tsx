@@ -34,7 +34,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
         supabase.from("leads").upsert(
           { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: src },
           { onConflict: "user_id" }
-        ).then(() => {}).catch(() => {});
+        ).then(() => {}, () => {});
       }
       onSuccess?.();
       return;
@@ -54,7 +54,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
         supabase.from("leads").upsert(
           { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: pendingSource },
           { onConflict: "user_id" }
-        );
+        ).then(() => {}, () => {});
       }
     }
   }, [isAuthenticated, user]);
@@ -67,7 +67,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
         supabase.from("leads").upsert(
           { user_id: user.id, email: user.email, phone_number: storedPhone, source: src },
           { onConflict: "user_id" }
-        ).then(() => {}).catch(() => {});
+        ).then(() => {}, () => {});
       }
       onSuccess?.();
       return;

@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           supabase.from("leads").upsert(
             { user_id: currentUser.id, email, name, source: "google_signin" },
             { onConflict: "user_id" }
-          ).then(() => {}).catch((err: any) => console.warn("Lead upsert failed:", err));
+          ).then(() => {}, (err: any) => console.warn("Lead upsert failed:", err));
 
           // Request push permission after a short delay to let auth settle.
           // Wrapped in try/catch — must never break the auth flow.

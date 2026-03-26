@@ -772,7 +772,7 @@ export default function BattleRoomPage() {
         setLoading(false);
         return;
       }
-      setRoom(roomData);
+      setRoom({ ...roomData, questions_json: roomData.questions_json as unknown as PracticeQuestion[] });
 
       // Fetch existing players
       const { data: playersData } = await supabase.from("battle_players")
@@ -780,7 +780,7 @@ export default function BattleRoomPage() {
         .eq("room_id", roomData.id)
         .order("joined_at", { ascending: true });
 
-      setPlayers(playersData || []);
+      setPlayers((playersData || []) as unknown as BattlePlayer[]);
 
       // Auto-join if not already in
       const alreadyJoined = (playersData || []).some((p: BattlePlayer) => p.user_id === user.id);
@@ -822,7 +822,7 @@ export default function BattleRoomPage() {
           console.log("[Battle] Players change:", payload.eventType);
           const { data } = await supabase.from("battle_players")
             .select("*").eq("room_id", roomId).order("joined_at", { ascending: true });
-          if (data && isActive) setPlayers(data);
+          if (data && isActive) setPlayers(data as unknown as BattlePlayer[]);
         })
       .on("broadcast", { event: "countdown" }, (payload: any) => {
         if (payload.payload?.value !== undefined) {
@@ -841,8 +841,8 @@ export default function BattleRoomPage() {
           supabase.from("battle_rooms").select("*").eq("id", roomId).single(),
           supabase.from("battle_players").select("*").eq("room_id", roomId).order("joined_at", { ascending: true }),
         ]);
-        if (roomRes.data && isActive) setRoom(prev => prev ? { ...prev, ...roomRes.data } as BattleRoom : prev);
-        if (playersRes.data && isActive) setPlayers(playersRes.data);
+        if (roomRes.data && isActive) setRoom(prev => prev ? { ...prev, ...roomRes.data, questions_json: (roomRes.data as any).questions_json as PracticeQuestion[] } as BattleRoom : prev);
+        if (playersRes.data && isActive) setPlayers(playersRes.data as unknown as BattlePlayer[]);
       } catch (e) {
         console.warn("[Battle] Poll error:", e);
       }
@@ -947,13 +947,13 @@ export default function BattleRoomPage() {
     const newCode = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 
-    const { data: newRoom, error: err } = await supabase.from("battle_rooms").insert({
+    const { data: newRoom, error: err } = await supabase.from("battle_rooms").insert([{
       code: newCode,
       host_user_id: user.id,
       section_id: room.section_id,
       chapter_slug: room.chapter_slug,
-      questions_json: questions,
-    }).select("id").single();
+      questions_json: questions as unknown as import("@/integrations/supabase/types").Json,
+    }]).select("id").single();
 
     if (err || !newRoom) return;
 
