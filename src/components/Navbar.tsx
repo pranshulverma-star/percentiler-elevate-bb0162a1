@@ -4,9 +4,10 @@ import { Menu, X, Phone, LayoutDashboard } from "lucide-react";
 import { useLeadModal } from "@/components/LeadModalProvider";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 import ThemeToggle from "@/components/ThemeToggle";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logoImg from "@/assets/logo-percentilers.webp";
 
 const navLinks = [
@@ -23,6 +24,9 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showCallDialog, setShowCallDialog] = useState(false);
   const { openPhoneModal } = useLeadModal();
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+  const isOnDashboard = location.pathname === "/dashboard";
   
   const [scrollProgress, setScrollProgress] = useState(0);
   const onScroll = useCallback(() => {
@@ -104,9 +108,17 @@ const Navbar = () => {
             <ThemeToggle />
           </nav>
           <div className="flex md:hidden items-center gap-2">
-            <Button size="sm" onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20 text-xs px-3 h-8">
-              Book Strategy Call
-            </Button>
+            {isAuthenticated && isOnDashboard ? (
+              <Button size="sm" onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20 text-xs px-3 h-8">
+                Book Strategy Call
+              </Button>
+            ) : (
+              <Button size="sm" asChild className="bg-primary shadow-lg shadow-primary/20 text-xs px-3 h-8">
+                <Link to="/dashboard">
+                  <LayoutDashboard className="mr-1 h-3.5 w-3.5" /> Dashboard
+                </Link>
+              </Button>
+            )}
             <button onClick={() => setOpen(!open)} aria-label="Toggle menu">
               {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
