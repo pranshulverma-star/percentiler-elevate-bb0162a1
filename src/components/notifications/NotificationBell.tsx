@@ -4,11 +4,12 @@ import { formatDistanceToNow } from "date-fns";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { useNotifications, type Notification } from "@/hooks/useNotifications";
 
-const TYPE_COLORS: Record<Notification["type"], string> = {
+const TYPE_COLORS: Record<string, string> = {
   info: "#3B82F6",
   success: "#22C55E",
   warning: "#F59E0B",
   alert: "#EF4444",
+  welcome: "#FF6600",
 };
 
 interface Props {
@@ -21,7 +22,7 @@ export default function NotificationBell({ userId }: Props) {
 
   const handleClickNotification = (n: Notification) => {
     markAsRead(n.id);
-    if (n.action_url) navigate(n.action_url);
+    navigate(n.action_url ?? "/dashboard");
   };
 
   const preview = notifications.slice(0, 5);
@@ -58,7 +59,7 @@ export default function NotificationBell({ userId }: Props) {
         sideOffset={8}
         className="p-0 rounded-xl shadow-xl border"
         style={{
-          width: "320px",
+          width: "380px",
           background: "#FFFFFF",
           borderColor: "#F0EBE6",
           fontFamily: "'DM Sans', sans-serif",
@@ -97,7 +98,7 @@ export default function NotificationBell({ userId }: Props) {
               <button
                 key={n.id}
                 onClick={() => handleClickNotification(n)}
-                className="w-full text-left flex items-start gap-3 px-4 py-3 transition-colors hover:bg-black/[0.03] border-b last:border-b-0"
+                className="w-full text-left flex items-start gap-3 px-4 py-3 transition-colors hover:bg-secondary cursor-pointer border-b last:border-b-0"
                 style={{
                   borderColor: "#F0EBE6",
                   background: n.is_read ? "transparent" : "rgba(255,102,0,0.04)",
@@ -109,19 +110,19 @@ export default function NotificationBell({ userId }: Props) {
                   style={{
                     width: "8px",
                     height: "8px",
-                    background: TYPE_COLORS[n.type],
-                    boxShadow: n.is_read ? "none" : `0 0 0 3px ${TYPE_COLORS[n.type]}22`,
+                    background: TYPE_COLORS[n.type] ?? "#6B7280",
+                    boxShadow: n.is_read ? "none" : `0 0 0 3px ${TYPE_COLORS[n.type] ?? "#6B7280"}22`,
                   }}
                 />
                 <div className="flex-1 min-w-0">
                   <p
-                    className="text-sm font-semibold truncate"
+                    className="text-sm font-semibold"
                     style={{ color: "#141414" }}
                   >
                     {n.title}
                   </p>
                   <p
-                    className="text-xs mt-0.5 line-clamp-2"
+                    className="text-xs mt-0.5"
                     style={{ color: "#6B7280" }}
                   >
                     {n.body}

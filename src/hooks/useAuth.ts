@@ -108,25 +108,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             );
           }, 2000);
 
-          // Send welcome email once per browser profile (idempotent via localStorage key).
-          // Fire-and-forget — must NOT block the auth flow.
-          if (!localStorage.getItem("welcome_email_sent")) {
-            localStorage.setItem("welcome_email_sent", "1");
-            const displayName = name || "there";
-            const dashboardUrl = `${window.location.origin}/dashboard`;
-            supabase.functions
-              .invoke("send-email", {
+          // Send welcome email/notification once — DB-gated so it works across
+          // devices and browsers. Fire-and-forget — must NOT block auth flow.
+          (async () => {
+            try {
+              const { count } = await (supabase.from("notifications") as any)
+                .select("*", { count: "exact", head: true })
+                .eq("user_id", userId)
+                .eq("type", "welcome");
+              if ((count ?? 0) > 0) return; // already welcomed on a previous login
+
+              const displayName = name || "there";
+              const dashboardUrl = `${window.location.origin}/dashboard`;
+
+              // Send transactional welcome email
+              await supabase.functions.invoke("send-email", {
                 body: {
                   to: email,
                   template: "welcome",
                   data: { name: displayName, dashboard_url: dashboardUrl },
-                  user_id: currentUser.id,
+                  user_id: userId,
                 },
-              })
-              .catch((err: unknown) =>
-                console.warn("[Auth] Welcome email failed:", err)
-              );
-          }
+              });
+
+              // Insert in-app welcome notification
+              await (supabase.from("notifications") as any).insert({
+                user_id: userId,
+                title: "Welcome to Percentilers! 🎯",
+                body: "Your CAT prep journey starts here. Set your first sprint goal today.",
+                type: "welcome",
+                action_url: "/dashboard",
+              });
+            } catch (err) {
+              console.warn("[Auth] Welcome notification failed:", err);
+            }
+          })();
         }
       }
     );
