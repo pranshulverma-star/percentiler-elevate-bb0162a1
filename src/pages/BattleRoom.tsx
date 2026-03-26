@@ -920,6 +920,38 @@ export default function BattleRoomPage() {
       .eq("user_id", user.id);
 
     setMyFinished(true);
+
+    // Expand battle answers into per-question rows for revision tracking
+    const myPlayer = players.find(p => p.user_id === user.id);
+    if (myPlayer) {
+      const battleAttemptRows = questions.map((q) => {
+        const rawAnswer = answers[q.id];
+        const userAnswerText = rawAnswer === null || rawAnswer === undefined
+          ? null
+          : String(rawAnswer);
+        const isCorrect = rawAnswer !== null && rawAnswer !== undefined
+          ? String(rawAnswer) === String(q.correctAnswer)
+          : false;
+        return {
+          user_id: user.id,
+          battle_player_id: myPlayer.id,
+          question_id: q.id,
+          chapter_slug: room.chapter_slug,
+          section_id: room.section_id,
+          user_answer: userAnswerText,
+          is_correct: isCorrect,
+          difficulty: q.difficulty ?? null,
+          attempted_at: new Date().toISOString(),
+        };
+      });
+      const { error: battleAttemptsError } = await supabase
+        .from("question_attempts")
+        .insert(battleAttemptRows);
+      if (battleAttemptsError) {
+        console.error("Failed to save battle question attempts:", battleAttemptsError);
+      }
+    }
+
     // Record unified streak
     recordActivity("quiz").catch(() => {});
 

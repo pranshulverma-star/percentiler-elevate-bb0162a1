@@ -175,7 +175,7 @@ export default function ResultsView({
     const saveAndFetch = async () => {
       if (!savedRef.current) {
         savedRef.current = true;
-        await supabase.from("practice_lab_attempts").insert({
+        const { data: insertedAttempt } = await supabase.from("practice_lab_attempts").insert({
           user_id: user.id,
           section_id: sectionId,
           chapter_slug: chapterSlug,
@@ -186,7 +186,40 @@ export default function ResultsView({
           score_pct: pct,
           time_used_seconds: timeUsed,
           answers_json: answers,
-        });
+        }).select("id").single();
+
+        // Expand answers into per-question rows for revision tracking
+        if (insertedAttempt) {
+          const attemptRows = questions.map((q) => {
+            const rawAnswer = answers[q.id];
+            const userAnswerText = rawAnswer === null || rawAnswer === undefined
+              ? null
+              : String(rawAnswer);
+            const isCorrect = rawAnswer !== null && rawAnswer !== undefined
+              ? (q.type === "tita_text"
+                  ? String(rawAnswer).trim().toUpperCase() === String(q.correctAnswer).trim().toUpperCase()
+                  : rawAnswer === q.correctAnswer)
+              : false;
+            return {
+              user_id: user.id,
+              practice_attempt_id: insertedAttempt.id,
+              question_id: q.id,
+              chapter_slug: chapterSlug,
+              section_id: sectionId,
+              user_answer: userAnswerText,
+              is_correct: isCorrect,
+              difficulty: q.difficulty ?? null,
+              attempted_at: new Date().toISOString(),
+            };
+          });
+          const { error: attemptsError } = await supabase
+            .from("question_attempts")
+            .insert(attemptRows);
+          if (attemptsError) {
+            console.error("Failed to save question attempts:", attemptsError);
+          }
+        }
+
         // Record unified streak
         recordActivity("practice_lab").catch(() => {});
       }
