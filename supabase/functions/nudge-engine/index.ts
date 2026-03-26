@@ -5,22 +5,26 @@
  * Triggered by pg_cron at 14:30 UTC (8:00 PM IST).
  *
  * Priority order (highest first — each user receives at most ONE nudge per run):
- *   1. NOT_LOGGED_IN_7_DAYS  → email + push + in_app
- *   2. NOT_LOGGED_IN_3_DAYS  → email + push + in_app
- *   3. STREAK_ABOUT_TO_BREAK → email + push + in_app
- *   4. NO_SPRINT_GOAL_WEEK   → push + in_app
- *   5. NO_FLASHCARDS_TODAY   → push + in_app  (lowest priority)
+ *   1. NOT_LOGGED_IN_7_DAYS      → email + push + in_app
+ *   2. NOT_LOGGED_IN_3_DAYS      → email + push + in_app
+ *   3. STREAK_ABOUT_TO_BREAK     → email + push + in_app
+ *   4. NO_SPRINT_GOAL_THIS_WEEK  → push + in_app
+ *   5. NO_FLASHCARDS_TODAY       → push + in_app  (lowest priority)
  *
- * Deduplication: after each priority level is processed, those user_ids are
- * added to `alreadyNudged`. Lower-priority checks skip users in that set.
+ * Variant selection (no-repeat-back-to-back):
+ *   pickVariant() reads the last variant_index from the notifications table for
+ *   (user_id, nudge_type) and excludes it from the random pool, so a user never
+ *   sees the same variant two runs in a row.
  *
- * Note on in_app notifications:
- *   `send-push` already inserts a row into the `notifications` table for every
- *   user_id it processes, so we rely on that behaviour and do NOT double-insert.
+ * Notification inserts:
+ *   In-app notifications are inserted DIRECTLY from this function (not via
+ *   send-push) so that inAppTitle / inAppBody / nudge_type / variant_index are
+ *   all stored correctly. FCM push is sent inline using google-auth.ts, which
+ *   also means we fetch ONE OAuth2 token per nudge batch instead of one per user.
  */
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { createClient, type SupabaseClient } from "https://esm.sh/@supabase/supabase-js@2";
 import {
   getUsersWithNoFlashcardsToday,
   getUsersWithNoSprintGoalThisWeek,
@@ -29,15 +33,19 @@ import {
   type User,
   type UserWithStreak,
 } from "./queries.ts";
+import {
+  getVariant,
+  type AnyVariant,
+  type EmailVariant,
+  type NudgeMessageKey,
+} from "./messages.ts";
+import { getGoogleAccessToken } from "../send-push/google-auth.ts";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
-type NudgeType =
-  | "NOT_LOGGED_IN_7_DAYS"
-  | "NOT_LOGGED_IN_3_DAYS"
-  | "STREAK_ABOUT_TO_BREAK"
-  | "NO_SPRINT_GOAL_WEEK"
-  | "NO_FLASHCARDS_TODAY";
+// Aligned with NudgeMessageKey (keyof typeof MESSAGES) so nudge_type strings
+// are identical in the DB and in the messages lookup.
+type NudgeType = NudgeMessageKey;
 
 interface NudgeSummaryEntry {
   users_targeted: number;
@@ -79,46 +87,13 @@ function fnUrl(name: string) {
 }
 
 /**
- * Call the send-push Edge Function for ONE user with a personalised message.
- * send-push also inserts the notification into the `notifications` table,
- * so no separate in_app insert is required.
- * Returns { sent, failed }.
- */
-async function dispatchPush(
-  userId: string,
-  title: string,
-  body: string,
-  actionUrl = DASHBOARD_URL
-): Promise<{ sent: number; failed: number }> {
-  try {
-    const res = await fetch(fnUrl("send-push"), {
-      method: "POST",
-      headers: makeServiceHeaders(),
-      body: JSON.stringify({
-        user_ids: [userId],
-        title,
-        body,
-        action_url: actionUrl,
-      }),
-    });
-    if (!res.ok) {
-      console.warn(`[nudge] send-push HTTP ${res.status} for ${userId}`);
-      return { sent: 0, failed: 1 };
-    }
-    const json = await res.json();
-    return { sent: json.sent ?? 0, failed: json.failed ?? 0 };
-  } catch (err) {
-    console.warn(`[nudge] send-push threw for ${userId}:`, err);
-    return { sent: 0, failed: 1 };
-  }
-}
-
-/**
  * Call the send-email Edge Function for ONE user.
+ * For nudge emails, passes the pre-rendered subject + body through the
+ * `announcement` template (which supports {{ subject }}, {{ message }},
+ * {{ cta_text }}, {{ cta_url }}).
  */
 async function dispatchEmail(
   user: User,
-  template: string,
   data: Record<string, string>
 ): Promise<{ sent: number; failed: number }> {
   try {
@@ -127,7 +102,7 @@ async function dispatchEmail(
       headers: makeServiceHeaders(),
       body: JSON.stringify({
         to: user.email,
-        template,
+        template: "announcement",
         data,
         user_id: user.user_id,
       }),
@@ -144,21 +119,76 @@ async function dispatchEmail(
   }
 }
 
-// ─── Per-nudge dispatch helpers ───────────────────────────────────────────────
+// ─── Variant helpers ──────────────────────────────────────────────────────────
 
 /**
- * Fire push + (optionally) email for every user in the list.
- * All calls are parallelised with Promise.allSettled so one failure
- * does not block the others.
+ * Replace {token} placeholders in a string.
+ * Only {name} and {streak} are valid tokens; unknown tokens are left as-is.
  */
-async function fireNudge(
+function interpolate(str: string, vars: Record<string, string>): string {
+  return str.replace(/\{(\w+)\}/g, (match, key) => vars[key] ?? match);
+}
+
+/**
+ * Pick a variant for (user, nudgeType) that is different from the last one
+ * sent to that user for that nudge type.
+ *
+ * Algorithm:
+ *   1. Query notifications for the most recent variant_index for this
+ *      (user_id, nudge_type) pair.
+ *   2. Build a pool of all 4 indices, excluding the last-used index.
+ *   3. Pick uniformly at random from the remaining 3.
+ *
+ * On first send (no history) lastIndex = -1, so all 4 variants are in pool.
+ */
+async function pickVariant(
+  supabase: SupabaseClient,
+  userId: string,
+  nudgeType: string
+): Promise<{ variant: AnyVariant; variantIndex: number }> {
+  const { data } = await supabase
+    .from("notifications")
+    .select("variant_index")
+    .eq("user_id", userId)
+    .eq("nudge_type", nudgeType)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .single();
+
+  const lastIndex: number = data?.variant_index ?? -1;
+  const totalVariants = 4;
+
+  // Build pool excluding last used index
+  const pool = Array.from({ length: totalVariants }, (_, i) => i).filter(
+    (i) => i !== lastIndex
+  );
+
+  // Pick randomly from remaining 3
+  const variantIndex = pool[Math.floor(Math.random() * pool.length)];
+  const variant = getVariant(nudgeType as NudgeMessageKey, variantIndex);
+
+  return { variant, variantIndex };
+}
+
+// ─── Core nudge processor ─────────────────────────────────────────────────────
+
+/**
+ * Process a single nudge type for a list of qualifying users.
+ *
+ * For each user (all in parallel via Promise.allSettled):
+ *   1. Call pickVariant once — no-repeat rotation
+ *   2. Interpolate {name} / {streak} into all copy fields
+ *   3. Send FCM push using the shared OAuth2 token fetched once per batch
+ *   4. Insert in-app notification directly with nudge_type + variant_index
+ *   5. Send email (for nudge types with email channel) via send-email function
+ *
+ * Returns a NudgeSummaryEntry with per-channel sent/failed counts.
+ */
+async function processNudge(
+  supabase: SupabaseClient,
   users: (User | UserWithStreak)[],
-  opts: {
-    pushTitle: string;
-    pushBodyFn: (u: User | UserWithStreak) => string;
-    emailTemplate?: string;
-    emailDataFn?: (u: User | UserWithStreak) => Record<string, string>;
-  }
+  nudgeType: NudgeType,
+  hasEmail: boolean
 ): Promise<NudgeSummaryEntry> {
   const summary: NudgeSummaryEntry = {
     users_targeted: users.length,
@@ -168,35 +198,142 @@ async function fireNudge(
     email_failed: 0,
   };
 
-  // Push: one call per user for name personalisation, all in parallel
-  const pushResults = await Promise.allSettled(
-    users.map((u) =>
-      dispatchPush(u.user_id, opts.pushTitle, opts.pushBodyFn(u))
-    )
-  );
-  for (const r of pushResults) {
-    if (r.status === "fulfilled") {
-      summary.push_sent += r.value.sent;
-      summary.push_failed += r.value.failed;
-    } else {
-      summary.push_failed++;
+  if (!users.length) return summary;
+
+  // ── Get ONE FCM OAuth2 token for the entire batch ─────────────────────────
+  const serviceAccountJson = Deno.env.get("FIREBASE_SERVICE_ACCOUNT_JSON") ?? "";
+  let fcmAccessToken: string | null = null;
+  let fcmUrl: string | null = null;
+
+  if (serviceAccountJson) {
+    try {
+      fcmAccessToken = await getGoogleAccessToken(serviceAccountJson);
+      const { project_id } = JSON.parse(serviceAccountJson);
+      fcmUrl = `https://fcm.googleapis.com/v1/projects/${project_id}/messages:send`;
+    } catch (err) {
+      console.warn(`[nudge][${nudgeType}] FCM token fetch failed:`, err);
     }
   }
 
-  // Email: only for nudges that specify an email template
-  if (opts.emailTemplate && opts.emailDataFn) {
-    const emailResults = await Promise.allSettled(
-      users.map((u) =>
-        dispatchEmail(u, opts.emailTemplate!, opts.emailDataFn!(u))
-      )
-    );
-    for (const r of emailResults) {
-      if (r.status === "fulfilled") {
-        summary.email_sent += r.value.sent;
-        summary.email_failed += r.value.failed;
+  // ── Batch-fetch push tokens for all users in this nudge group ─────────────
+  const { data: tokenRows } = await supabase
+    .from("push_tokens")
+    .select("user_id, token")
+    .in("user_id", users.map((u) => u.user_id));
+
+  const tokensByUser = new Map<string, string[]>();
+  for (const row of tokenRows ?? []) {
+    if (!tokensByUser.has(row.user_id)) tokensByUser.set(row.user_id, []);
+    tokensByUser.get(row.user_id)!.push(row.token);
+  }
+
+  // ── Per-user: pick variant → interpolate → push → in_app → email ─────────
+  const perUserResults = await Promise.allSettled(
+    users.map(async (user) => {
+      // 1. Pick variant (called ONCE per user per nudge) ────────────────────
+      const { variant, variantIndex } = await pickVariant(
+        supabase,
+        user.user_id,
+        nudgeType
+      );
+
+      // 2. Build substitution vars ─────────────────────────────────────────
+      const vars: Record<string, string> = {
+        name: user.name || "there",
+        streak:
+          "streak_count" in user
+            ? String((user as UserWithStreak).streak_count)
+            : "0",
+      };
+
+      // 3. Interpolate all copy fields ──────────────────────────────────────
+      const pushTitle   = interpolate(variant.pushTitle,   vars);
+      const pushBody    = interpolate(variant.pushBody,    vars);
+      const inAppTitle  = interpolate(variant.inAppTitle,  vars);
+      const inAppBody   = interpolate(variant.inAppBody,   vars);
+
+      // 4. FCM push (inline, using shared token) ────────────────────────────
+      let pushSent = 0;
+      let pushFailed = 0;
+
+      if (fcmAccessToken && fcmUrl) {
+        const tokens = tokensByUser.get(user.user_id) ?? [];
+        if (tokens.length === 0) {
+          // User has no registered push token — not a failure, just skip
+        } else {
+          const fcmResults = await Promise.allSettled(
+            tokens.map((token) =>
+              fetch(fcmUrl!, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${fcmAccessToken}`,
+                },
+                body: JSON.stringify({
+                  message: {
+                    token,
+                    notification: { title: pushTitle, body: pushBody },
+                    webpush: { fcm_options: { link: DASHBOARD_URL } },
+                    data: { action_url: DASHBOARD_URL },
+                  },
+                }),
+              }).then((r) => {
+                if (!r.ok) throw new Error(`FCM HTTP ${r.status}`);
+                return r;
+              })
+            )
+          );
+          for (const r of fcmResults) {
+            r.status === "fulfilled" ? pushSent++ : pushFailed++;
+          }
+        }
       } else {
-        summary.email_failed++;
+        // FCM not configured — mark as failed only if user had tokens
+        if ((tokensByUser.get(user.user_id) ?? []).length > 0) pushFailed++;
       }
+
+      // 5. In-app notification — direct insert with full metadata ──────────
+      await supabase.from("notifications").insert({
+        user_id: user.user_id,
+        title: inAppTitle,
+        body: inAppBody,
+        type: "info",
+        action_url: DASHBOARD_URL,
+        nudge_type: nudgeType,
+        variant_index: variantIndex,
+      });
+
+      // 6. Email (only for nudge types with email channel) ─────────────────
+      let emailSent = 0;
+      let emailFailed = 0;
+
+      if (hasEmail && "emailSubject" in variant) {
+        const ev = variant as EmailVariant;
+        const result = await dispatchEmail(user, {
+          name: user.name || "there",
+          subject: interpolate(ev.emailSubject, vars),
+          message: interpolate(ev.emailBody, vars),
+          cta_text: "Open Dashboard",
+          cta_url: DASHBOARD_URL,
+        });
+        emailSent  = result.sent;
+        emailFailed = result.failed;
+      }
+
+      return { pushSent, pushFailed, emailSent, emailFailed };
+    })
+  );
+
+  // ── Aggregate results ─────────────────────────────────────────────────────
+  for (const r of perUserResults) {
+    if (r.status === "fulfilled") {
+      summary.push_sent   += r.value.pushSent;
+      summary.push_failed += r.value.pushFailed;
+      summary.email_sent  += r.value.emailSent;
+      summary.email_failed += r.value.emailFailed;
+    } else {
+      summary.push_failed++;
+      console.warn(`[nudge][${nudgeType}] Per-user error:`, r.reason);
     }
   }
 
@@ -218,10 +355,10 @@ serve(async (req: Request) => {
   };
 
   try {
-    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseUrl    = Deno.env.get("SUPABASE_URL")!;
     const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-    // Service-role client — needed for auth.admin.listUsers()
+    // Service-role client — needed for auth.admin.listUsers() and direct inserts
     const supabase = createClient(supabaseUrl, serviceRoleKey, {
       auth: { persistSession: false },
     });
@@ -229,7 +366,6 @@ serve(async (req: Request) => {
     // Deduplication set — each user receives at most one nudge per run
     const alreadyNudged = new Set<string>();
 
-    // Helper: filter out already-nudged users and record them after firing
     const withDedup = <T extends User>(users: T[]): T[] =>
       users.filter((u) => !alreadyNudged.has(u.user_id));
 
@@ -238,26 +374,10 @@ serve(async (req: Request) => {
 
     // ── PRIORITY 1: Not logged in 7+ days ─────────────────────────────────
     try {
-      const raw = await getUsersNotLoggedInDays(supabase, 7, null);
+      const raw   = await getUsersNotLoggedInDays(supabase, 7, null);
       const users = withDedup(raw);
-
       if (users.length > 0) {
-        const entry = await fireNudge(users, {
-          pushTitle: "CAT 2026 prep is waiting ⏰",
-          pushBodyFn: (u) =>
-            `Hey ${u.name || "there"}, it's been over a week. Come back and pick up where you left off.`,
-          emailTemplate: "announcement",
-          emailDataFn: (u) => ({
-            name: u.name || "there",
-            subject: "CAT 2026 — don't fall behind 📚",
-            message:
-              `It's been over a week since your last session.\n\n` +
-              `Every day counts for CAT prep. Your dashboard, planner and ` +
-              `practice sets are all ready for you.`,
-            cta_text: "Resume Prep Now",
-            cta_url: DASHBOARD_URL,
-          }),
-        });
+        const entry = await processNudge(supabase, users, "NOT_LOGGED_IN_7_DAYS", true);
         runSummary.nudges.NOT_LOGGED_IN_7_DAYS = entry;
         markNudged(users);
       }
@@ -269,22 +389,10 @@ serve(async (req: Request) => {
 
     // ── PRIORITY 2: Not logged in 3–6 days ────────────────────────────────
     try {
-      const raw = await getUsersNotLoggedInDays(supabase, 3, 6);
+      const raw   = await getUsersNotLoggedInDays(supabase, 3, 6);
       const users = withDedup(raw);
-
       if (users.length > 0) {
-        const entry = await fireNudge(users, {
-          pushTitle: "We miss you 👋",
-          pushBodyFn: (u) =>
-            `Hey ${u.name || "there"}, it's been a few days. Your study plan is ready when you are.`,
-          emailTemplate: "reminder",
-          emailDataFn: (u) => ({
-            name: u.name || "there",
-            streak: "0",
-            task: "Jump back in — your CAT prep is waiting",
-            dashboard_url: DASHBOARD_URL,
-          }),
-        });
+        const entry = await processNudge(supabase, users, "NOT_LOGGED_IN_3_DAYS", true);
         runSummary.nudges.NOT_LOGGED_IN_3_DAYS = entry;
         markNudged(users);
       }
@@ -296,24 +404,10 @@ serve(async (req: Request) => {
 
     // ── PRIORITY 3: Streak about to break ─────────────────────────────────
     try {
-      const raw = await getUsersWithStreakAboutToBreak(supabase);
+      const raw   = await getUsersWithStreakAboutToBreak(supabase);
       const users = withDedup(raw) as UserWithStreak[];
-
       if (users.length > 0) {
-        const entry = await fireNudge(users, {
-          pushTitle: "🔥 Your streak is at risk!",
-          pushBodyFn: (u) => {
-            const s = (u as UserWithStreak).streak_count;
-            return `Hey ${u.name || "there"}, you're on a ${s}-day streak. Study anything today to keep it going.`;
-          },
-          emailTemplate: "reminder",
-          emailDataFn: (u) => ({
-            name: u.name || "there",
-            streak: String((u as UserWithStreak).streak_count),
-            task: "Study today to keep your streak alive",
-            dashboard_url: DASHBOARD_URL,
-          }),
-        });
+        const entry = await processNudge(supabase, users, "STREAK_ABOUT_TO_BREAK", true);
         runSummary.nudges.STREAK_ABOUT_TO_BREAK = entry;
         markNudged(users);
       }
@@ -325,35 +419,25 @@ serve(async (req: Request) => {
 
     // ── PRIORITY 4: No sprint goal this week ──────────────────────────────
     try {
-      const raw = await getUsersWithNoSprintGoalThisWeek(supabase);
+      const raw   = await getUsersWithNoSprintGoalThisWeek(supabase);
       const users = withDedup(raw);
-
       if (users.length > 0) {
-        const entry = await fireNudge(users, {
-          pushTitle: "No goals set this week 🎯",
-          pushBodyFn: (u) =>
-            `Hey ${u.name || "there"}, setting a daily sprint goal takes 30 seconds and keeps you on track for CAT.`,
-        });
-        runSummary.nudges.NO_SPRINT_GOAL_WEEK = entry;
+        const entry = await processNudge(supabase, users, "NO_SPRINT_GOAL_THIS_WEEK", false);
+        runSummary.nudges.NO_SPRINT_GOAL_THIS_WEEK = entry;
         markNudged(users);
       }
     } catch (err) {
-      const msg = `NO_SPRINT_GOAL_WEEK query failed: ${err}`;
+      const msg = `NO_SPRINT_GOAL_THIS_WEEK query failed: ${err}`;
       runSummary.errors.push(msg);
       console.error("[nudge]", msg);
     }
 
     // ── PRIORITY 5: No flashcards today ───────────────────────────────────
     try {
-      const raw = await getUsersWithNoFlashcardsToday(supabase);
+      const raw   = await getUsersWithNoFlashcardsToday(supabase);
       const users = withDedup(raw);
-
       if (users.length > 0) {
-        const entry = await fireNudge(users, {
-          pushTitle: "Your flashcards are waiting 🃏",
-          pushBodyFn: (u) =>
-            `Hey ${u.name || "there"}, you haven't reviewed any flashcards today. 10 minutes now = better retention tomorrow.`,
-        });
+        const entry = await processNudge(supabase, users, "NO_FLASHCARDS_TODAY", false);
         runSummary.nudges.NO_FLASHCARDS_TODAY = entry;
         markNudged(users);
       }
