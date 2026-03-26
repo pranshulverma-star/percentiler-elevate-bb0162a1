@@ -228,13 +228,19 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
     setRoadmapLoading(true);
     setRoadmapText("");
     try {
+      // Use the live session JWT so the auth guard on generate-roadmap accepts it.
+      // Fall back to the anon key only if no session exists (should not happen in
+      // practice since the modal requires phone capture = auth first).
+      const { data: { session } } = await supabase.auth.getSession();
+      const bearerToken = session?.access_token ?? import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+
       const resp = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-roadmap`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+            Authorization: `Bearer ${bearerToken}`,
           },
           body: JSON.stringify({
             profile_score: scores.profile_score,
