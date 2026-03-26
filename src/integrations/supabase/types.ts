@@ -797,6 +797,63 @@ export type Database = {
         }
         Relationships: []
       }
+      question_attempts: {
+        Row: {
+          attempted_at: string
+          battle_player_id: string | null
+          chapter_slug: string
+          difficulty: string | null
+          id: string
+          is_correct: boolean
+          practice_attempt_id: string | null
+          question_id: number
+          section_id: string
+          user_answer: string | null
+          user_id: string
+        }
+        Insert: {
+          attempted_at?: string
+          battle_player_id?: string | null
+          chapter_slug: string
+          difficulty?: string | null
+          id?: string
+          is_correct: boolean
+          practice_attempt_id?: string | null
+          question_id: number
+          section_id: string
+          user_answer?: string | null
+          user_id: string
+        }
+        Update: {
+          attempted_at?: string
+          battle_player_id?: string | null
+          chapter_slug?: string
+          difficulty?: string | null
+          id?: string
+          is_correct?: boolean
+          practice_attempt_id?: string | null
+          question_id?: number
+          section_id?: string
+          user_answer?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "question_attempts_battle_player_id_fkey"
+            columns: ["battle_player_id"]
+            isOneToOne: false
+            referencedRelation: "battle_players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "question_attempts_practice_attempt_id_fkey"
+            columns: ["practice_attempt_id"]
+            isOneToOne: false
+            referencedRelation: "practice_lab_attempts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       question_bookmarks: {
         Row: {
           chapter_slug: string
