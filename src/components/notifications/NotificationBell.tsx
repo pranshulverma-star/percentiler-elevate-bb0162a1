@@ -22,7 +22,12 @@ export default function NotificationBell({ userId }: Props) {
 
   const handleClickNotification = (n: Notification) => {
     markAsRead(n.id);
-    navigate(n.action_url ?? "/dashboard");
+    if (n.action_url && n.action_url.startsWith("/")) {
+      navigate(n.action_url);
+    } else if (n.action_url && n.action_url.startsWith("http")) {
+      window.open(n.action_url, "_blank");
+    }
+    // If null/empty — just mark as read, no navigation
   };
 
   const preview = notifications.slice(0, 5);
@@ -142,7 +147,7 @@ export default function NotificationBell({ userId }: Props) {
             <button
               className="text-xs font-semibold w-full text-center transition-colors hover:opacity-80"
               style={{ color: "#FF6600" }}
-              onClick={() => navigate("/dashboard")}
+              onClick={() => navigate("/notifications")}
             >
               View all notifications
             </button>
