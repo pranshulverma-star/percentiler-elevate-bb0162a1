@@ -24,6 +24,9 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const [showCallDialog, setShowCallDialog] = useState(false);
   const { openPhoneModal } = useLeadModal();
+  const { isAuthenticated } = useAuth();
+  const location = useLocation();
+  const isOnDashboard = location.pathname === "/dashboard";
   
   const [scrollProgress, setScrollProgress] = useState(0);
   const onScroll = useCallback(() => {
