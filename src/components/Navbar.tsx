@@ -108,9 +108,17 @@ const Navbar = () => {
             <ThemeToggle />
           </nav>
           <div className="flex md:hidden items-center gap-2">
-            <Button size="sm" onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20 text-xs px-3 h-8">
-              Book Strategy Call
-            </Button>
+            {isAuthenticated && isOnDashboard ? (
+              <Button size="sm" onClick={handleStrategyCall} className="bg-gradient-to-r from-primary to-[hsl(35,100%,50%)] animate-shimmer bg-[length:200%_100%] shadow-lg shadow-primary/20 text-xs px-3 h-8">
+                Book Strategy Call
+              </Button>
+            ) : (
+              <Button size="sm" asChild className="bg-primary shadow-lg shadow-primary/20 text-xs px-3 h-8">
+                <Link to="/dashboard">
+                  <LayoutDashboard className="mr-1 h-3.5 w-3.5" /> Dashboard
+                </Link>
+              </Button>
+            )}
             <button onClick={() => setOpen(!open)} aria-label="Toggle menu">
               {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
