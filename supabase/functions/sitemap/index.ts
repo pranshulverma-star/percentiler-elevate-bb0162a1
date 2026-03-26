@@ -2,22 +2,21 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const BASE = "https://percentilers.in";
 
+// Only include publicly accessible, SEO-valuable pages.
+// Auth-gated pages (/dashboard, /masterclass/watch, /daily-sprint, /study-buddy,
+// /practice-lab, /flashcards, /admin, /battle-room, /planner) are intentionally
+// excluded — Google would hit a sign-in wall and waste crawl budget.
 const STATIC_URLS: { loc: string; changefreq: string; priority: string }[] = [
   { loc: "/", changefreq: "weekly", priority: "1.0" },
   { loc: "/masterclass", changefreq: "weekly", priority: "0.9" },
-  { loc: "/masterclass/watch", changefreq: "monthly", priority: "0.7" },
   { loc: "/mentorship", changefreq: "monthly", priority: "0.8" },
   { loc: "/courses/cat-omet", changefreq: "monthly", priority: "0.8" },
+  { loc: "/cat-coaching-comparison", changefreq: "weekly", priority: "0.8" },
   { loc: "/free-courses", changefreq: "monthly", priority: "0.7" },
   { loc: "/test-series", changefreq: "monthly", priority: "0.7" },
   { loc: "/workshops", changefreq: "monthly", priority: "0.7" },
-  { loc: "/flashcards", changefreq: "monthly", priority: "0.7" },
-  { loc: "/practice-lab", changefreq: "weekly", priority: "0.7" },
-  { loc: "/study-buddy", changefreq: "monthly", priority: "0.6" },
-  { loc: "/daily-sprint", changefreq: "monthly", priority: "0.6" },
   { loc: "/free-cat-readiness-assessment", changefreq: "monthly", priority: "0.7" },
   { loc: "/cat-daily-study-planner", changefreq: "monthly", priority: "0.7" },
-  { loc: "/cat-coaching-comparison", changefreq: "weekly", priority: "0.8" },
   { loc: "/blog", changefreq: "weekly", priority: "0.8" },
   { loc: "/contact", changefreq: "yearly", priority: "0.4" },
   { loc: "/terms", changefreq: "yearly", priority: "0.3" },

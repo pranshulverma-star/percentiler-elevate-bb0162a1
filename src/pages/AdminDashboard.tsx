@@ -20,7 +20,12 @@ import AdminBattleAnalytics from "@/components/admin/AdminBattleAnalytics";
 import AdminPlannerStats from "@/components/admin/AdminPlannerStats";
 import AdminCampaignPipeline from "@/components/admin/AdminCampaignPipeline";
 
-const ADMIN_EMAILS = ["pranshul.verma1992@gmail.com"];
+// Admin emails come from the env var VITE_ADMIN_EMAILS (comma-separated).
+// Never hardcode emails in source — rotate via .env without a code deploy.
+const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS ?? "")
+  .split(",")
+  .map((e: string) => e.trim().toLowerCase())
+  .filter(Boolean);
 const RANGES = [
   { value: "today", label: "Today" },
   { value: "7d", label: "7 Days" },

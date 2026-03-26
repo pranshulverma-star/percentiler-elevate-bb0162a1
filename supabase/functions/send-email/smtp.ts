@@ -32,10 +32,6 @@ function createTransporter() {
     // Port 465 uses implicit TLS. Port 587 uses STARTTLS (secure: false).
     secure: port === 465,
     auth: { user, pass },
-    tls: {
-      // Allow self-signed certs in dev — remove in production if not needed
-      rejectUnauthorized: false,
-    },
   } as any);
 }
 

@@ -4,6 +4,7 @@ import { trackLead } from "@/lib/tracking";
 import { lovable } from "@/integrations/lovable/index";
 import type { User } from "@supabase/supabase-js";
 import { requestPushPermission } from "@/lib/firebase";
+import { isStandaloneApp } from "@/lib/platform";
 
 interface AuthState {
   user: User | null;
@@ -14,16 +15,6 @@ interface AuthState {
 }
 
 const AuthContext = createContext<AuthState | undefined>(undefined);
-
-/** Detect if we're inside a standalone/installed app (PWA) on iOS or Android */
-function isStandaloneApp() {
-  if (typeof window === "undefined") return false;
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    (navigator as any).standalone === true ||
-    document.referrer.includes("android-app://")
-  );
-}
 
 /** Check if the current URL looks like an OAuth callback */
 function detectOAuthCallback() {
@@ -153,7 +144,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         // If this is an OAuth callback and session is null, don't resolve yet —
         // onAuthStateChange will process the tokens in the hash
         if (isOAuthCallback && !session?.user) {
-          console.log("[Auth] OAuth callback detected, waiting for onAuthStateChange");
+          if (import.meta.env.DEV) console.log("[Auth] OAuth callback detected, waiting for onAuthStateChange");
           return;
         }
         resolveAuth(session?.user ?? null);
@@ -169,7 +160,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const timeoutMs = isOAuthCallback ? 8000 : 4000;
     const fallbackTimer = window.setTimeout(() => {
       if (resolved || !isMounted) return;
-      console.warn("[Auth] Timed out, unblocking UI");
+      if (import.meta.env.DEV) console.warn("[Auth] Timed out, unblocking UI");
       signInInProgressRef.current = false;
       setLoading(false);
     }, timeoutMs);
@@ -185,12 +176,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Staleness check: if the ref has been true for >30s, auto-clear it
     const startedAt = sessionStorage.getItem("auth_flow_started_at");
     if (signInInProgressRef.current && startedAt && (Date.now() - Number(startedAt)) > 30_000) {
-      console.warn("[Auth] Clearing stale signInInProgress guard");
+      if (import.meta.env.DEV) console.warn("[Auth] Clearing stale signInInProgress guard");
       signInInProgressRef.current = false;
     }
 
     if (signInInProgressRef.current) {
-      console.log("[Auth] Sign-in already in progress, ignoring duplicate call");
+      if (import.meta.env.DEV) console.log("[Auth] Sign-in already in progress, ignoring duplicate call");
       return;
     }
 
@@ -246,12 +237,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (standalone && !result?.redirected) {
-        console.warn("[Auth] Standalone fallback to direct redirect flow");
+        if (import.meta.env.DEV) console.warn("[Auth] Standalone fallback to direct redirect flow");
         await startDirectRedirect();
       }
     } catch (err) {
       if (standalone) {
-        console.warn("[Auth] Standalone managed flow failed, retrying direct redirect", err);
+        if (import.meta.env.DEV) console.warn("[Auth] Standalone managed flow failed, retrying direct redirect", err);
         try {
           await startDirectRedirect();
         } catch (innerErr) {

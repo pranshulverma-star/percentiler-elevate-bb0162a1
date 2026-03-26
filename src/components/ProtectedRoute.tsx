@@ -2,6 +2,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { Loader2, LogIn, Lock } from "lucide-react";
 import { useAuth, isAuthFlowActive } from "@/hooks/useAuth";
+import { isStandaloneApp } from "@/lib/platform";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -12,16 +13,6 @@ interface ProtectedRouteProps {
   children: ReactNode;
   requirePhone?: boolean;
   source?: string;
-}
-
-/** Detect if we're inside a standalone/installed app (PWA) on iOS or Android */
-function isStandaloneApp() {
-  if (typeof window === "undefined") return false;
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    (navigator as any).standalone === true ||
-    document.referrer.includes("android-app://")
-  );
 }
 
 /** Check if the current URL looks like an OAuth callback settling */
@@ -65,7 +56,9 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
     return () => window.clearTimeout(timer);
   }, [authLoading]);
 
-  console.log("[ProtectedRoute]", { authLoading, isAuthenticated, standalone, authBootstrapTimedOut, oauthCallbackActive, authFlowActive, userId: user?.id, path: location.pathname });
+  if (import.meta.env.DEV) {
+    console.log("[ProtectedRoute]", { authLoading, isAuthenticated, standalone, authBootstrapTimedOut, oauthCallbackActive, authFlowActive, userId: user?.id, path: location.pathname });
+  }
 
   const handleSignIn = async (provider: "google" | "apple") => {
     setSigningIn(true);

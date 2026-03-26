@@ -65,7 +65,14 @@ const BlogPost = lazy(() => import("./pages/BlogPost"));
 const BlogListing = lazy(() => import("./pages/BlogListing"));
 
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60_000, // cache results for 60s — reduces redundant refetches
+      retry: 1,          // one retry on failure (Supabase flakiness), not three
+    },
+  },
+});
 
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center bg-background">
@@ -121,7 +128,14 @@ const App = () => (
                   <Route path="/refund-policy" element={<RefundPolicy />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/cat-coaching-comparison" element={<CATCoachingComparison />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute source="admin">
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="/auth/error" element={<AuthError />} />
                   <Route path="/blog" element={<BlogListing />} />
                   <Route path="/blogs" element={<BlogListing />} />

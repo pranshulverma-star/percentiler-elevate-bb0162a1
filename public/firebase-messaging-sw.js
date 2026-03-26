@@ -1,4 +1,10 @@
 // Firebase Cloud Messaging Service Worker
+//
+// ⚠️  INTENTIONAL LITERAL VALUES — DO NOT REPLACE WITH import.meta.env
+// Service workers execute outside Vite's build pipeline and have no access to
+// import.meta.env. The config here MUST stay as literal strings.
+// When rotating Firebase credentials, update BOTH .env AND this file manually.
+//
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js');
 

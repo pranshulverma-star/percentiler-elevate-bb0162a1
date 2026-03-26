@@ -1,10 +1,12 @@
 import { useEffect, useState, useMemo, lazy, Suspense } from "react";
 import { useParams, Link } from "react-router-dom";
+import DOMPurify from "dompurify";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import BlogBreadcrumb from "@/components/blog/BlogBreadcrumb";
 import BlogJsonLd from "@/components/blog/BlogJsonLd";
+import NotFoundRedirect from "@/components/NotFoundRedirect";
 import { ArrowUp, Zap } from "lucide-react";
 
 const Footer = lazy(() => import("@/components/Footer"));
@@ -192,13 +194,7 @@ const BlogPost = () => {
   }
 
   if (notFound || !post) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
-        <h1 className="text-2xl font-bold text-foreground">Page Not Found</h1>
-        <p className="text-muted-foreground">The page you're looking for doesn't exist.</p>
-        <Link to="/" className="text-primary underline">Go to Homepage</Link>
-      </div>
-    );
+    return <NotFoundRedirect />;
   }
 
   return (
@@ -281,7 +277,7 @@ const BlogPost = () => {
           {contentData?.type === "html" ? (
             <div
               className="blog-content"
-              dangerouslySetInnerHTML={{ __html: contentData.main }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(contentData.main) }}
             />
           ) : contentData?.type === "markdown" ? (
             <MarkdownRenderer content={contentData.main} />

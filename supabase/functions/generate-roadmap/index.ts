@@ -10,6 +10,21 @@ serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response(null, { headers: corsHeaders });
 
+  // Auth guard — allow service role key OR shared internal secret
+  const authHeader = req.headers.get("Authorization");
+  const serviceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const internalSecret = Deno.env.get("INTERNAL_FUNCTIONS_SECRET");
+  const isAuthorized =
+    (serviceRoleKey && authHeader === `Bearer ${serviceRoleKey}`) ||
+    (internalSecret && authHeader === `Bearer ${internalSecret}`) ||
+    (internalSecret && req.headers.get("x-internal-secret") === internalSecret);
+  if (!isAuthorized) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   try {
     const {
       profile_score,

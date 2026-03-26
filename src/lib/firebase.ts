@@ -4,12 +4,12 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBwmfso3fkfO_LRr-pnxjsm1FkgSDW5E_M",
-  authDomain: "percentilers-loveable.firebaseapp.com",
-  projectId: "percentilers-loveable",
-  storageBucket: "percentilers-loveable.firebasestorage.app",
-  messagingSenderId: "846285637903",
-  appId: "1:846285637903:web:8e1fbb77fc1fc2c06b167a",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
@@ -38,7 +38,7 @@ export async function requestPushPermission(userId: string): Promise<string | nu
   }
 
   const token = await getToken(messaging, {
-    vapidKey: "BINsP_zVSvohFkIgZxBgVehAd9A42gx8Cued7b7Vhz37KB4IQAju4h0xFwJedJ7mTeMF_ztpLT5eiJmaQfte40U",
+    vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
     serviceWorkerRegistration: swReg,
   });
 

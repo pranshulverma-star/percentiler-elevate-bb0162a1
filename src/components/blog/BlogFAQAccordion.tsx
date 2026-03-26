@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import DOMPurify from "dompurify";
 import {
   Accordion,
   AccordionContent,
@@ -51,7 +52,7 @@ const BlogFAQAccordion = ({ faqHtml }: BlogFAQAccordionProps) => {
             <AccordionContent className="px-4 pb-4">
               <div
                 className="text-sm text-muted-foreground leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: item.answer }}
+                dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.answer) }}
               />
             </AccordionContent>
           </AccordionItem>
