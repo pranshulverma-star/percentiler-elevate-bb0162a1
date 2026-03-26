@@ -39,7 +39,7 @@ import {
   type EmailVariant,
   type NudgeMessageKey,
 } from "./messages.ts";
-import { getGoogleAccessToken } from "../send-push/google-auth.ts";
+import { getGoogleAccessToken } from "./google-auth.ts";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

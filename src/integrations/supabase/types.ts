@@ -467,6 +467,45 @@ export type Database = {
         }
         Relationships: []
       }
+      notifications: {
+        Row: {
+          action_url: string | null
+          body: string
+          created_at: string | null
+          id: string
+          is_read: boolean | null
+          nudge_type: string | null
+          title: string
+          type: string
+          user_id: string | null
+          variant_index: number | null
+        }
+        Insert: {
+          action_url?: string | null
+          body: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          nudge_type?: string | null
+          title: string
+          type?: string
+          user_id?: string | null
+          variant_index?: number | null
+        }
+        Update: {
+          action_url?: string | null
+          body?: string
+          created_at?: string | null
+          id?: string
+          is_read?: boolean | null
+          nudge_type?: string | null
+          title?: string
+          type?: string
+          user_id?: string | null
+          variant_index?: number | null
+        }
+        Relationships: []
+      }
       planner_activity: {
         Row: {
           completed: boolean
@@ -731,6 +770,27 @@ export type Database = {
           created_at?: string
           id?: string
           name?: string | null
+        }
+        Relationships: []
+      }
+      push_tokens: {
+        Row: {
+          created_at: string | null
+          id: string
+          token: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          token: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          token?: string
+          user_id?: string | null
         }
         Relationships: []
       }
