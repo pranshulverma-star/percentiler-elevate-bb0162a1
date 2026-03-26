@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { trackLead } from "@/lib/tracking";
 import { lovable } from "@/integrations/lovable/index";
 import type { User } from "@supabase/supabase-js";
+import { requestPushPermission } from "@/lib/firebase";
 
 interface AuthState {
   user: User | null;
@@ -97,6 +98,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             { user_id: currentUser.id, email, name, source: "google_signin" },
             { onConflict: "user_id" }
           ).then(() => {}).catch((err: any) => console.warn("Lead upsert failed:", err));
+
+          // Request push permission after a short delay to let auth settle.
+          // Wrapped in try/catch — must never break the auth flow.
+          const userId = currentUser.id;
+          setTimeout(() => {
+            requestPushPermission(userId).catch((err) =>
+              console.warn("[Auth] Push permission request failed:", err)
+            );
+          }, 2000);
+
+          // Send welcome email once per browser profile (idempotent via localStorage key).
+          // Fire-and-forget — must NOT block the auth flow.
+          if (!localStorage.getItem("welcome_email_sent")) {
+            localStorage.setItem("welcome_email_sent", "1");
+            const displayName = name || "there";
+            const dashboardUrl = `${window.location.origin}/dashboard`;
+            supabase.functions
+              .invoke("send-email", {
+                body: {
+                  to: email,
+                  template: "welcome",
+                  data: { name: displayName, dashboard_url: dashboardUrl },
+                  user_id: currentUser.id,
+                },
+              })
+              .catch((err: unknown) =>
+                console.warn("[Auth] Welcome email failed:", err)
+              );
+          }
         }
       }
     );

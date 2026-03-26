@@ -38,6 +38,8 @@ export default defineConfig(({ mode }) => ({
       workbox: {
         navigateFallbackDenylist: [/^\/~oauth/],
         globPatterns: ["**/*.{js,css,html,ico,png,svg,webp,woff2}"],
+        // Exclude the FCM service worker from VitePWA's precache — it must be served fresh
+        globIgnores: ["firebase-messaging-sw.js"],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,

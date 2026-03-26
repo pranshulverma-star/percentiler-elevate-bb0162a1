@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -23,7 +23,6 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
   const [targetYear, setTargetYear] = useState("");
   const [nameInput, setNameInput] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const { toast } = useToast();
   const { user } = useAuth();
 
   const userName = user?.user_metadata?.full_name || localStorage.getItem("percentilers_name") || "";
@@ -31,7 +30,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^[6-9]\d{9}$/.test(phone)) {
-      toast({ title: "Invalid phone number", description: "Please enter a valid 10-digit Indian mobile number.", variant: "destructive" });
+      toast.error("Invalid phone number", { description: "Please enter a valid 10-digit Indian mobile number." });
       return;
     }
     setSubmitting(true);
@@ -93,7 +92,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       if (upsertError) {
         console.error("Lead upsert failed:", JSON.stringify(upsertError));
-        toast({ title: "Something went wrong", description: "Could not save phone number. Please try again.", variant: "destructive" });
+        toast.error("Something went wrong", { description: "Could not save phone number. Please try again." });
         setSubmitting(false);
         return;
       }
@@ -108,14 +107,14 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
 
       trackLead(source);
       trackFormSubmitConversion();
-      toast({ title: "Phone number saved!", description: "You're all set." });
+      toast.success("Phone number saved!", { description: "You're all set." });
       onOpenChange(false);
       setPhone("");
       setTargetYear("");
       setNameInput("");
       onSuccess?.();
     } catch {
-      toast({ title: "Something went wrong", description: "Please try again later.", variant: "destructive" });
+      toast.error("Something went wrong", { description: "Please try again later." });
     } finally {
       setSubmitting(false);
     }

@@ -4,7 +4,7 @@ import { Loader2, LogIn, Lock } from "lucide-react";
 import { useAuth, isAuthFlowActive } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import AuthButtons from "@/components/AuthButtons";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 
@@ -41,7 +41,6 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
   const location = useLocation();
   const { isAuthenticated, user, loading: authLoading, signIn } = useAuth();
   const { hasPhone, loading: phoneLoading, refetch: refetchPhone } = useLeadPhone();
-  const { toast } = useToast();
   const [authBootstrapTimedOut, setAuthBootstrapTimedOut] = useState(false);
   const [signingIn, setSigningIn] = useState(false);
   const [signingInProvider, setSigningInProvider] = useState<"google" | "apple" | null>(null);
@@ -78,11 +77,7 @@ export default function ProtectedRoute({ children, requirePhone = false, source 
       // If signIn initiated a redirect, keep loading state — page will navigate away
     } catch (err) {
       console.error("[ProtectedRoute] Sign-in failed:", err);
-      toast({
-        title: "Sign-in failed",
-        description: "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
+      toast.error("Sign-in failed", { description: "Something went wrong. Please try again." });
       setSigningIn(false);
       setSigningInProvider(null);
     }

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
 import { Target, TrendingUp, Award, Lock, Sparkles, ArrowRight, Loader2 } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { useAuth } from "@/hooks/useAuth";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
@@ -144,7 +144,6 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
   const [showPhoneModal, setShowPhoneModal] = useState(false);
   const [roadmapText, setRoadmapText] = useState("");
   const [roadmapLoading, setRoadmapLoading] = useState(false);
-  const { toast } = useToast();
   const navigate = useNavigate();
   const { isAuthenticated, user, signIn } = useAuth();
   const { hasPhone, refetch: refetchPhone } = useLeadPhone();
@@ -294,7 +293,7 @@ export default function PercentilePlannerModal({ open, onOpenChange }: Props) {
       }
     } catch (err) {
       console.error("Roadmap generation error:", err);
-      toast({ title: "Could not generate roadmap", description: "Please try again.", variant: "destructive" });
+      toast.error("Could not generate roadmap", { description: "Please try again." });
     } finally {
       setRoadmapLoading(false);
     }

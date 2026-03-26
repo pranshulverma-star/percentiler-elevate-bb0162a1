@@ -127,7 +127,7 @@ export default function Dashboard() {
     <>
       <SEO title="Dashboard | Percentilers" description="Your personalized CAT preparation dashboard" canonical="https://percentilers.in/dashboard" noindex />
 
-      <DashboardTopBar firstName={firstName} streakCount={streakData.currentStreak} onSignOut={handleSignOut} />
+      <DashboardTopBar firstName={firstName} streakCount={streakData.currentStreak} onSignOut={handleSignOut} userId={userId} />
 
       <main className="h-screen overflow-hidden flex flex-col pt-14 pb-[56px]" style={{ background: "#FAFAF7" }}>
         <div className="flex-1 mx-auto px-4 max-w-[420px] w-full py-3 overflow-hidden">

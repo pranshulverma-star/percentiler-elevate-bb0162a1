@@ -15,7 +15,7 @@ import { useStreaks } from "@/hooks/useStreaks";
 import { useLeadPhone } from "@/hooks/useLeadPhone";
 import PhoneCaptureModal from "@/components/PhoneCaptureModal";
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -95,7 +95,7 @@ function BattleLobby({
 
   const handleCopy = () => {
     navigator.clipboard.writeText(shareUrl);
-    toast({ title: "Link copied!", description: "Share it with your friends." });
+    toast.success("Link copied!", { description: "Share it with your friends." });
   };
 
   const handleShare = async () => {

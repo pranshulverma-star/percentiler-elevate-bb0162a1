@@ -4,7 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import SEO from "@/components/SEO";
 import Navbar from "@/components/Navbar";
@@ -88,16 +88,14 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
   const [targetYear, setTargetYear] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const { toast } = useToast();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^[6-9]\d{9}$/.test(phone)) {
-      toast({ title: "Invalid phone number", description: "Enter a valid 10-digit Indian mobile number.", variant: "destructive" });
+      toast.error("Invalid phone number", { description: "Enter a valid 10-digit Indian mobile number." });
       return;
     }
     if (!name.trim()) {
-      toast({ title: "Name required", description: "Please enter your name.", variant: "destructive" });
+      toast.error("Name required", { description: "Please enter your name." });
       return;
     }
     setSubmitting(true);
@@ -113,10 +111,10 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
       supabase.functions.invoke("sync-lead-to-sheet", { body: { phone_number: phone, source, name: name.trim() } }).catch(() => {});
       trackComparisonFormSubmit();
       setSubmitted(true);
-      toast({ title: "You're in! 🎉", description: ctaType === "masterclass" ? "Redirecting to masterclass..." : "Our team will call you shortly." });
+      toast.success("You're in! 🎉", { description: ctaType === "masterclass" ? "Redirecting to masterclass..." : "Our team will call you shortly." });
       if (ctaType === "masterclass") setTimeout(() => { window.location.href = "/masterclass"; }, 1500);
     } catch {
-      toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
+      toast.error("Something went wrong", { description: "Please try again." });
     } finally {
       setSubmitting(false);
     }

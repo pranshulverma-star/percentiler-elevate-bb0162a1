@@ -1,13 +1,15 @@
 import { LogOut } from "lucide-react";
 import { Link } from "react-router-dom";
+import NotificationBell from "@/components/notifications/NotificationBell";
 
 interface Props {
   firstName: string;
   streakCount: number;
   onSignOut: () => void;
+  userId?: string;
 }
 
-export default function DashboardTopBar({ firstName, streakCount, onSignOut }: Props) {
+export default function DashboardTopBar({ firstName, streakCount, onSignOut, userId }: Props) {
   const initials = firstName.charAt(0).toUpperCase();
 
   return (
@@ -22,6 +24,8 @@ export default function DashboardTopBar({ firstName, streakCount, onSignOut }: P
             <span>🔥</span>
             <span>{streakCount}</span>
           </div>
+
+          <NotificationBell userId={userId} />
 
           <div
             className="flex items-center justify-center w-8 h-8 rounded-full text-white text-[12px] font-bold"

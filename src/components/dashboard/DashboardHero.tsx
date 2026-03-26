@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LogOut, Flame, TrendingUp, Pencil, Check, Phone } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
 interface Props {
@@ -19,7 +19,6 @@ interface Props {
 
 export default function DashboardHero({ firstName, lead, loadingLead, streakData, onSignOut, onPhoneUpdated }: Props) {
   const { user } = useAuth();
-  const { toast } = useToast();
   const [editingPhone, setEditingPhone] = useState(false);
   const [phone, setPhone] = useState("");
   const [saving, setSaving] = useState(false);
@@ -31,7 +30,7 @@ export default function DashboardHero({ firstName, lead, loadingLead, streakData
   const handleSavePhone = async () => {
     const cleaned = phone.replace(/\D/g, "").slice(-10);
     if (cleaned.length !== 10) {
-      toast({ title: "Enter a valid 10-digit phone number", variant: "destructive" });
+      toast.error("Enter a valid 10-digit phone number");
       return;
     }
     setSaving(true);
@@ -42,7 +41,7 @@ export default function DashboardHero({ firstName, lead, loadingLead, streakData
         .neq("user_id", user!.id)
         .maybeSingle();
       if (existing) {
-        toast({ title: "This phone number is already registered", variant: "destructive" });
+        toast.error("This phone number is already registered");
         setSaving(false);
         return;
       }
@@ -50,11 +49,11 @@ export default function DashboardHero({ firstName, lead, loadingLead, streakData
         .update({ phone_number: cleaned })
         .eq("user_id", user!.id);
       localStorage.setItem("percentilers_phone", cleaned);
-      toast({ title: "Phone number updated!" });
+      toast.success("Phone number updated!");
       setEditingPhone(false);
       onPhoneUpdated();
     } catch {
-      toast({ title: "Failed to update phone", variant: "destructive" });
+      toast.error("Failed to update phone");
     } finally {
       setSaving(false);
     }

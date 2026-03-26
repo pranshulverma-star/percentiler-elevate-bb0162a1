@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { User, Mail, Phone, Pencil, Check } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 interface Props {
   lead: { name: string | null; email: string | null; phone_number: string | null } | null;
@@ -16,7 +16,6 @@ interface Props {
 
 export default function DashboardProfile({ lead, loading, onPhoneUpdated }: Props) {
   const { user } = useAuth();
-  const { toast } = useToast();
   const [editing, setEditing] = useState(false);
   const [phone, setPhone] = useState("");
   const [saving, setSaving] = useState(false);
@@ -28,7 +27,7 @@ export default function DashboardProfile({ lead, loading, onPhoneUpdated }: Prop
   const handleSavePhone = async () => {
     const cleaned = phone.replace(/\D/g, "").slice(-10);
     if (cleaned.length !== 10) {
-      toast({ title: "Enter a valid 10-digit phone number", variant: "destructive" });
+      toast.error("Enter a valid 10-digit phone number");
       return;
     }
     setSaving(true);
@@ -41,7 +40,7 @@ export default function DashboardProfile({ lead, loading, onPhoneUpdated }: Prop
         .maybeSingle();
 
       if (existing) {
-        toast({ title: "This phone number is already registered", description: "Please use a different number or log in with the linked Gmail.", variant: "destructive" });
+        toast.error("This phone number is already registered", { description: "Please use a different number or log in with the linked Gmail." });
         setSaving(false);
         return;
       }
@@ -51,11 +50,11 @@ export default function DashboardProfile({ lead, loading, onPhoneUpdated }: Prop
         .eq("user_id", user!.id);
 
       localStorage.setItem("percentilers_phone", cleaned);
-      toast({ title: "Phone number updated!" });
+      toast.success("Phone number updated!");
       setEditing(false);
       onPhoneUpdated();
     } catch {
-      toast({ title: "Failed to update phone", variant: "destructive" });
+      toast.error("Failed to update phone");
     } finally {
       setSaving(false);
     }

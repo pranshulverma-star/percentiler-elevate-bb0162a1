@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Share2, Download, Zap, Swords, Flame } from "lucide-react";
 import { toPng } from "html-to-image";
 import { Button } from "@/components/ui/button";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 function estimatePercentile(correct: number, total: number): number {
   if (total === 0) return 34;
@@ -66,7 +66,7 @@ export default function ShareableResultCard({
         await navigator.share({ text: shareText });
       } else {
         await navigator.clipboard.writeText(shareText);
-        toast({ title: "Copied to clipboard!", description: "Share it with your friends 🚀" });
+        toast.success("Copied to clipboard!", { description: "Share it with your friends 🚀" });
       }
     } catch { /* cancelled */ }
     setSharing(false);
@@ -81,9 +81,9 @@ export default function ShareableResultCard({
       link.download = `cat-result-${pct}pct.png`;
       link.href = dataUrl;
       link.click();
-      toast({ title: "Image saved!", description: "Share it on Instagram or WhatsApp 🚀" });
+      toast.success("Image saved!", { description: "Share it on Instagram or WhatsApp 🚀" });
     } catch {
-      toast({ title: "Couldn't generate image", variant: "destructive" });
+      toast.error("Couldn't generate image");
     }
   };
 
