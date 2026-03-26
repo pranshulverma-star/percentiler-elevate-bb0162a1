@@ -23,7 +23,7 @@ export function useBookmarks() {
   const fetchBookmarks = useCallback(async () => {
     if (!user) { setLoading(false); return; }
     try {
-      const { data } = await (supabase.from("question_bookmarks") as any)
+      const { data } = await supabase.from("question_bookmarks")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
@@ -54,7 +54,7 @@ export function useBookmarks() {
     if (isBookmarked) {
       setBookmarkedIds((prev) => { const n = new Set(prev); n.delete(qId); return n; });
       setBookmarks((prev) => prev.filter((b) => b.question_id !== qId));
-      await (supabase.from("question_bookmarks") as any)
+      await supabase.from("question_bookmarks")
         .delete()
         .eq("user_id", user.id)
         .eq("question_id", qId);
@@ -70,7 +70,7 @@ export function useBookmarks() {
         question_type: question.type || "mcq",
       };
       setBookmarkedIds((prev) => new Set(prev).add(qId));
-      await (supabase.from("question_bookmarks") as any).insert(newBookmark);
+      await supabase.from("question_bookmarks").insert(newBookmark);
       fetchBookmarks(); // refresh to get the full record with id
     }
   }, [user, bookmarkedIds, fetchBookmarks]);
@@ -79,7 +79,7 @@ export function useBookmarks() {
     if (!user) return;
     setBookmarkedIds((prev) => { const n = new Set(prev); n.delete(questionId); return n; });
     setBookmarks((prev) => prev.filter((b) => b.question_id !== questionId));
-    await (supabase.from("question_bookmarks") as any)
+    await supabase.from("question_bookmarks")
       .delete()
       .eq("user_id", user.id)
       .eq("question_id", questionId);

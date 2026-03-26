@@ -18,7 +18,7 @@ export function useFlashcardProgress() {
 
   const fetchProgress = useCallback(async () => {
     if (!user) { setLoading(false); return; }
-    const { data } = await (supabase.from("flashcard_progress") as any)
+    const { data } = await supabase.from("flashcard_progress")
       .select("card_id, category, knew, practiced_at")
       .eq("user_id", user.id)
       .order("practiced_at", { ascending: false });
@@ -62,7 +62,7 @@ export function useFlashcardProgress() {
     );
     if (hasFiveInAny) {
       streakRecorded.current = true;
-      await (supabase.from("daily_streaks") as any).upsert(
+      await supabase.from("daily_streaks").upsert(
         { user_id: user.id, activity_date: todayStr, activity_type: "flashcards" },
         { onConflict: "user_id,activity_date,activity_type" }
       ).catch(() => {});
@@ -72,7 +72,7 @@ export function useFlashcardProgress() {
   const recordAnswer = useCallback(
     async (cardId: string, category: FlashcardCategory, knew: boolean) => {
       if (!user) return;
-      await (supabase.from("flashcard_progress") as any).insert({
+      await supabase.from("flashcard_progress").insert({
         user_id: user.id,
         card_id: cardId,
         category,

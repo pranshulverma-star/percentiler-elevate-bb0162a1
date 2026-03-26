@@ -149,7 +149,7 @@ function LeadCapture({ onComplete }: { onComplete: (data: LeadData) => void }) {
 
       // Upsert lead with email
       if (email) {
-        await (supabase.from("leads") as any).upsert(
+        await supabase.from("leads").upsert(
           { email, name, phone_number: phone || null, source: "planner", target_year: targetYear, prep_level: prepLevel, current_status: currentStatus, target_percentile: 99 },
           { onConflict: "email" }
         );

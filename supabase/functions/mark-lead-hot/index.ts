@@ -6,20 +6,38 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// Simple in-memory rate limiter: max 5 requests per phone per 60s
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+// DB-backed rate limiter: max 5 requests per key per 60s
+// Uses the rate_limits table so limits survive cold starts across all instances
 const RATE_LIMIT = 5;
-const WINDOW_MS = 60_000;
+const WINDOW_SECS = 60;
 
-function isRateLimited(key: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(key);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(key, { count: 1, resetAt: now + WINDOW_MS });
+async function isRateLimited(supabase: ReturnType<typeof createClient>, key: string): Promise<boolean> {
+  const now = new Date();
+  const resetAt = new Date(now.getTime() + WINDOW_SECS * 1000).toISOString();
+
+  // Fetch existing entry
+  const { data: existing } = await supabase
+    .from("rate_limits")
+    .select("count, reset_at")
+    .eq("key", key)
+    .maybeSingle();
+
+  // No entry or window expired — start a fresh window
+  if (!existing || new Date(existing.reset_at) <= now) {
+    await supabase
+      .from("rate_limits")
+      .upsert({ key, count: 1, reset_at: resetAt }, { onConflict: "key" });
     return false;
   }
-  entry.count++;
-  return entry.count > RATE_LIMIT;
+
+  // Within window: check limit
+  if (existing.count >= RATE_LIMIT) return true;
+
+  await supabase
+    .from("rate_limits")
+    .update({ count: existing.count + 1 })
+    .eq("key", key);
+  return false;
 }
 
 Deno.serve(async (req) => {
@@ -45,18 +63,18 @@ Deno.serve(async (req) => {
       });
     }
 
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
     const rateLimitKey = phone_number || email;
-    if (isRateLimited(rateLimitKey)) {
+    if (await isRateLimited(supabase, rateLimitKey)) {
       return new Response(JSON.stringify({ error: "Too many requests" }), {
         status: 429,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-
-    const supabase = createClient(
-      Deno.env.get("SUPABASE_URL")!,
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
-    );
 
     // Try to find existing lead by email first, then phone
     let existing = null;

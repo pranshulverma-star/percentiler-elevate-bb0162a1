@@ -35,7 +35,7 @@ export const ACTIVITY_TYPES: { value: ActivityType; label: string }[] = [
 
 /** Get today's goals for a user */
 export async function getTodayGoals(userId: string): Promise<SprintGoal[]> {
-  const { data, error } = await (supabase.from("daily_sprint_goals") as any)
+  const { data, error } = await supabase.from("daily_sprint_goals")
     .select("*")
     .eq("user_id", userId)
     .eq("sprint_date", todayDate())
@@ -46,7 +46,7 @@ export async function getTodayGoals(userId: string): Promise<SprintGoal[]> {
 
 /** Get today's goals for a buddy */
 export async function getBuddyGoals(buddyId: string): Promise<SprintGoal[]> {
-  const { data, error } = await (supabase.from("daily_sprint_goals") as any)
+  const { data, error } = await supabase.from("daily_sprint_goals")
     .select("*")
     .eq("user_id", buddyId)
     .eq("sprint_date", todayDate())
@@ -63,7 +63,7 @@ export async function addGoal(
   description: string,
   position: number
 ): Promise<SprintGoal> {
-  const { data, error } = await (supabase.from("daily_sprint_goals") as any)
+  const { data, error } = await supabase.from("daily_sprint_goals")
     .insert({
       user_id: userId,
       sprint_date: todayDate(),
@@ -84,7 +84,7 @@ export async function toggleGoal(goalId: string, completed: boolean): Promise<vo
     completed,
     completed_at: completed ? new Date().toISOString() : null,
   };
-  const { error } = await (supabase.from("daily_sprint_goals") as any)
+  const { error } = await supabase.from("daily_sprint_goals")
     .update(update)
     .eq("id", goalId);
   if (error) throw error;
@@ -92,7 +92,7 @@ export async function toggleGoal(goalId: string, completed: boolean): Promise<vo
 
 /** Delete a goal */
 export async function deleteGoal(goalId: string): Promise<void> {
-  const { error } = await (supabase.from("daily_sprint_goals") as any)
+  const { error } = await supabase.from("daily_sprint_goals")
     .delete()
     .eq("id", goalId);
   if (error) throw error;
@@ -100,7 +100,7 @@ export async function deleteGoal(goalId: string): Promise<void> {
 
 /** Calculate streak: consecutive days (going back from today) where user had goals and all were completed */
 export async function calculateSprintStreak(userId: string): Promise<number> {
-  const { data } = await (supabase.from("daily_sprint_goals") as any)
+  const { data } = await supabase.from("daily_sprint_goals")
     .select("sprint_date, completed")
     .eq("user_id", userId)
     .order("sprint_date", { ascending: false })
@@ -155,7 +155,7 @@ export async function getWeeklyGoals(userId: string): Promise<SprintGoal[]> {
   sunday.setDate(monday.getDate() + 6);
   const sundayStr = `${sunday.getFullYear()}-${String(sunday.getMonth() + 1).padStart(2, "0")}-${String(sunday.getDate()).padStart(2, "0")}`;
 
-  const { data, error } = await (supabase.from("daily_sprint_goals") as any)
+  const { data, error } = await supabase.from("daily_sprint_goals")
     .select("*")
     .eq("user_id", userId)
     .gte("sprint_date", mondayStr)
@@ -172,7 +172,7 @@ export async function getSprintHistory(userId: string, days: number = 7): Promis
   past.setDate(past.getDate() - days);
   const pastStr = `${past.getFullYear()}-${String(past.getMonth() + 1).padStart(2, "0")}-${String(past.getDate()).padStart(2, "0")}`;
 
-  const { data, error } = await (supabase.from("daily_sprint_goals") as any)
+  const { data, error } = await supabase.from("daily_sprint_goals")
     .select("*")
     .eq("user_id", userId)
     .gte("sprint_date", pastStr)

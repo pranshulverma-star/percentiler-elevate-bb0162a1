@@ -101,7 +101,7 @@ function LeadForm({ ctaType, competitor, label }: { ctaType: "masterclass" | "ca
     setSubmitting(true);
     try {
       const source = `competitor_ads${competitor ? `_${competitor}` : ""}`;
-      const { error } = await (supabase.from("leads") as any).upsert(
+      const { error } = await supabase.from("leads").upsert(
         { phone_number: phone, name: name.trim(), source, current_status: ctaType, ...(targetYear ? { target_year: targetYear } : {}) },
         { onConflict: "phone_number" }
       );

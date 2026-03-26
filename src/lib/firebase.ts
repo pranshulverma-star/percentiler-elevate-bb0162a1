@@ -43,7 +43,7 @@ export async function requestPushPermission(userId: string): Promise<string | nu
   });
 
   if (token) {
-    await (supabase.from("push_tokens") as any).upsert(
+    await supabase.from("push_tokens").upsert(
       { user_id: userId, token },
       { onConflict: "user_id,token" }
     );

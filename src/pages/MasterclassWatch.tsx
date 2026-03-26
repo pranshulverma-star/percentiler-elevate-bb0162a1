@@ -7,6 +7,7 @@ import { trackInitiateCheckout } from "@/lib/tracking";
 import { motion } from "framer-motion";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
+import SEO from "@/components/SEO";
 
 
 const resources = [
@@ -31,7 +32,7 @@ const MasterclassWatch = () => {
 
     (async () => {
       try {
-        const { data } = await (supabase.from("leads") as any)
+        const { data } = await supabase.from("leads")
           .select("phone_number")
           .eq("user_id", user.id)
           .maybeSingle();
@@ -198,6 +199,11 @@ const MasterclassWatch = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="CAT Masterclass | Percentilers"
+        description="Watch the CAT preparation masterclass and unlock free resources."
+        noindex
+      />
       <header className="border-b border-border bg-background/95 backdrop-blur">
         <div className="container mx-auto flex items-center justify-between h-16 px-4 md:px-6">
           <a href="/" className="text-xl font-bold tracking-tight text-foreground">Percentilers</a>

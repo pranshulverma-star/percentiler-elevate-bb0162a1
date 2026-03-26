@@ -132,7 +132,7 @@ const Masterclass = () => {
   // Upsert lead on auth (fire-and-forget, no blocking)
   useEffect(() => {
     if (!isAuthenticated || !user?.email) return;
-    (supabase.from("leads") as any).upsert(
+    supabase.from("leads").upsert(
       { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: "masterclass" },
       { onConflict: "user_id" }
     ).then(() => {});

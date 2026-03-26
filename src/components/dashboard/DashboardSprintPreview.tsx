@@ -12,7 +12,7 @@ export default function DashboardSprintPreview() {
     if (!user?.id) return;
     const today = new Date().toISOString().slice(0, 10);
     (async () => {
-      const { data } = await (supabase.from("daily_sprint_goals") as any)
+      const { data } = await supabase.from("daily_sprint_goals")
         .select("completed")
         .eq("user_id", user.id)
         .eq("sprint_date", today);

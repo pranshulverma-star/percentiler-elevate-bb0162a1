@@ -77,7 +77,7 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
         const { data: { user } } = await supabase.auth.getUser();
         const myId = user?.id;
 
-        const { data: attempts } = await (supabase.from("practice_lab_attempts") as any)
+        const { data: attempts } = await supabase.from("practice_lab_attempts")
           .select("user_id, correct, score_pct");
 
         if (!attempts || attempts.length === 0) {
@@ -98,7 +98,7 @@ export default function HomeTab({ firstName, streakData, loadingStreaks: _, spri
         const topIds = sorted.slice(0, 5).map(s => s.uid);
         if (myId && !topIds.includes(myId)) topIds.push(myId);
 
-        const { data: profiles } = await (supabase.from("profiles") as any)
+        const { data: profiles } = await supabase.from("profiles")
           .select("id, name")
           .in("id", topIds);
 

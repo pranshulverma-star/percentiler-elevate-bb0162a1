@@ -52,7 +52,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           source,
           ...(targetYear ? { target_year: targetYear } : {}),
         };
-        const { data: updated, error: updateErr } = await (supabase.from("leads") as any)
+        const { data: updated, error: updateErr } = await supabase.from("leads")
           .update(updatePayload)
           .eq("user_id", userId)
           .select("id");
@@ -61,7 +61,7 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
           upsertError = updateErr;
         } else if (!updated || updated.length === 0) {
           // No existing row yet — insert
-          const res = await (supabase.from("leads") as any).insert({
+          const res = await supabase.from("leads").insert({
             user_id: userId,
             ...updatePayload,
           });
@@ -69,18 +69,18 @@ export default function PhoneCaptureModal({ open, onOpenChange, source, onSucces
         }
       } else {
         // Anonymous: try update first, then insert
-        const { data: existing } = await (supabase.from("leads") as any)
+        const { data: existing } = await supabase.from("leads")
           .select("id")
           .eq("phone_number", phone)
           .maybeSingle();
 
         if (existing) {
-          const res = await (supabase.from("leads") as any)
+          const res = await supabase.from("leads")
             .update({ name, source, ...(targetYear ? { target_year: targetYear } : {}) })
             .eq("id", existing.id);
           upsertError = res.error;
         } else {
-          const res = await (supabase.from("leads") as any).insert({
+          const res = await supabase.from("leads").insert({
             phone_number: phone,
             name,
             source,

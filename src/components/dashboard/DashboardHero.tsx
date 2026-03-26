@@ -35,7 +35,7 @@ export default function DashboardHero({ firstName, lead, loadingLead, streakData
     }
     setSaving(true);
     try {
-      const { data: existing } = await (supabase.from("leads") as any)
+      const { data: existing } = await supabase.from("leads")
         .select("user_id")
         .eq("phone_number", cleaned)
         .neq("user_id", user!.id)
@@ -45,7 +45,7 @@ export default function DashboardHero({ firstName, lead, loadingLead, streakData
         setSaving(false);
         return;
       }
-      await (supabase.from("leads") as any)
+      await supabase.from("leads")
         .update({ phone_number: cleaned })
         .eq("user_id", user!.id);
       localStorage.setItem("percentilers_phone", cleaned);

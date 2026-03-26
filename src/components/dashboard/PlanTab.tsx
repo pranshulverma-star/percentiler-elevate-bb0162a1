@@ -53,7 +53,7 @@ export default function PlanTab({ plannerData, loadingPlanner, userId }: Props) 
       setLoadingGoals(true);
       const today = new Date().toISOString().slice(0, 10);
       try {
-        const { data } = await (supabase.from("daily_sprint_goals") as any)
+        const { data } = await supabase.from("daily_sprint_goals")
           .select("id, description, subject, activity_type, completed, position")
           .eq("user_id", userId)
           .eq("sprint_date", today)

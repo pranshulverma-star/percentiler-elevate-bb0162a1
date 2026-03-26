@@ -35,72 +35,64 @@ export default function Dashboard() {
   useEffect(() => {
     if (!userId) return;
 
-    // Fetch lead
-    (async () => {
-      setLoadingLead(true);
-      try {
-        const { data } = await (supabase.from("leads") as any).select("name, email, phone_number").eq("user_id", userId).maybeSingle();
-        setLead(data);
-      } catch (e) { console.error("[Dashboard] fetchLead ERROR", e); }
+    setLoadingLead(true);
+    setLoadingPlanner(true);
+    setLoadingPractice(true);
+
+    const phone = localStorage.getItem("percentilers_phone");
+    const today = new Date().toISOString().slice(0, 10);
+
+    const fetchLead = async () => {
+      const { data } = await supabase.from("leads").select("name, email, phone_number").eq("user_id", userId).maybeSingle();
+      setLead(data);
+    };
+
+    const fetchPlanner = async () => {
+      if (!phone) return;
+      const [statsRes, heatRes, activityRes] = await Promise.all([
+        supabase.from("planner_stats").select("current_phase, start_date, target_year, crash_mode").eq("phone_number", phone).maybeSingle(),
+        supabase.from("planner_heat_score").select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", phone).maybeSingle(),
+        supabase.from("planner_activity").select("date").eq("phone_number", phone).gte("date", getWeekStart()),
+      ]);
+      setPlannerData({ stats: statsRes.data, heat: heatRes.data, activeDaysThisWeek: new Set((activityRes.data || []).map((r: any) => r.date)).size });
+    };
+
+    const fetchPractice = async () => {
+      const { data } = await supabase.from("practice_lab_attempts")
+        .select("section_id, chapter_slug, score_pct, total_questions, correct, time_used_seconds, created_at")
+        .eq("user_id", userId).order("created_at", { ascending: false }).limit(50);
+      setPracticeAttempts((data || []).slice(0, 20));
+    };
+
+    const fetchSprint = async () => {
+      const { data } = await supabase.from("daily_sprint_goals").select("completed").eq("user_id", userId).eq("sprint_date", today);
+      if (data && data.length > 0) setSprintGoals({ total: data.length, done: data.filter((g: any) => g.completed).length });
+    };
+
+    const fetchCampaign = async () => {
+      if (!phone) return;
+      const { data } = await supabase.from("campaign_state").select("call_booked_at, converted_at, workflow_status, mentorship_active").eq("phone_number", phone).maybeSingle();
+      setCampaign(data);
+    };
+
+    const fetchMasterclass = async () => {
+      if (!phone) return;
+      const { data } = await supabase.from("webinar_engagement").select("watch_percentage, completed").eq("phone_number", phone).maybeSingle();
+      setEngagement(data);
+    };
+
+    Promise.allSettled([
+      fetchLead().catch((e) => { if (import.meta.env.DEV) console.error("[Dashboard] fetchLead ERROR", e); }),
+      fetchPlanner().catch((e) => { if (import.meta.env.DEV) console.error("[Dashboard] fetchPlanner ERROR", e); }),
+      fetchPractice().catch((e) => { if (import.meta.env.DEV) console.error("[Dashboard] fetchPractice ERROR", e); }),
+      fetchSprint().catch((e) => { if (import.meta.env.DEV) console.error("[Dashboard] fetchSprint ERROR", e); }),
+      fetchCampaign().catch((e) => { if (import.meta.env.DEV) console.error("[Dashboard] fetchCampaign ERROR", e); }),
+      fetchMasterclass().catch((e) => { if (import.meta.env.DEV) console.error("[Dashboard] fetchMasterclass ERROR", e); }),
+    ]).then(() => {
       setLoadingLead(false);
-    })();
-
-    // Fetch planner
-    (async () => {
-      const phone = localStorage.getItem("percentilers_phone");
-      if (!phone) { setLoadingPlanner(false); return; }
-      setLoadingPlanner(true);
-      try {
-        const [statsRes, heatRes, activityRes] = await Promise.all([
-          (supabase.from("planner_stats") as any).select("current_phase, start_date, target_year, crash_mode").eq("phone_number", phone).maybeSingle(),
-          (supabase.from("planner_heat_score") as any).select("heat_score, lead_category, total_active_days, consistency_score").eq("phone_number", phone).maybeSingle(),
-          (supabase.from("planner_activity") as any).select("date").eq("phone_number", phone).gte("date", getWeekStart()),
-        ]);
-        setPlannerData({ stats: statsRes.data, heat: heatRes.data, activeDaysThisWeek: new Set((activityRes.data || []).map((r: any) => r.date)).size });
-      } catch (e) { console.error("[Dashboard] fetchPlanner ERROR", e); }
       setLoadingPlanner(false);
-    })();
-
-    // Fetch practice
-    (async () => {
-      setLoadingPractice(true);
-      try {
-        const { data } = await (supabase.from("practice_lab_attempts") as any)
-          .select("section_id, chapter_slug, score_pct, total_questions, correct, time_used_seconds, created_at")
-          .eq("user_id", userId).order("created_at", { ascending: false }).limit(50);
-        setPracticeAttempts((data || []).slice(0, 20));
-      } catch (e) { console.error("[Dashboard] fetchPractice ERROR", e); }
       setLoadingPractice(false);
-    })();
-
-    // Fetch sprint goals
-    (async () => {
-      const today = new Date().toISOString().slice(0, 10);
-      try {
-        const { data } = await (supabase.from("daily_sprint_goals") as any).select("completed").eq("user_id", userId).eq("sprint_date", today);
-        if (data && data.length > 0) setSprintGoals({ total: data.length, done: data.filter((g: any) => g.completed).length });
-      } catch (e) { console.error("[Dashboard] fetchSprint ERROR", e); }
-    })();
-
-    // Fetch campaign
-    (async () => {
-      const phone = localStorage.getItem("percentilers_phone");
-      if (!phone) { setCampaign(null); return; }
-      try {
-        const { data } = await (supabase.from("campaign_state") as any).select("call_booked_at, converted_at, workflow_status, mentorship_active").eq("phone_number", phone).maybeSingle();
-        setCampaign(data);
-      } catch (e) { console.error("[Dashboard] fetchCampaign ERROR", e); }
-    })();
-
-    // Fetch masterclass
-    (async () => {
-      const phone = localStorage.getItem("percentilers_phone");
-      if (!phone) { setEngagement(null); return; }
-      try {
-        const { data } = await (supabase.from("webinar_engagement") as any).select("watch_percentage, completed").eq("phone_number", phone).maybeSingle();
-        setEngagement(data);
-      } catch (e) { console.error("[Dashboard] fetchMasterclass ERROR", e); }
-    })();
+    });
   }, [userId]);
 
   const practiceStats = useMemo(() => {

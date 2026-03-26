@@ -880,7 +880,7 @@ export default function PracticeLab() {
     const code = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 
-    const { data: room, error } = await (supabase.from("battle_rooms") as any).insert({
+    const { data: room, error } = await supabase.from("battle_rooms").insert({
       code,
       host_user_id: user.id,
       section_id: selectedSection?.id || "qa",
@@ -894,7 +894,7 @@ export default function PracticeLab() {
     }
 
     // Auto-join as host
-    await (supabase.from("battle_players") as any).insert({
+    await supabase.from("battle_players").insert({
       room_id: room.id,
       user_id: user.id,
       display_name: displayName,

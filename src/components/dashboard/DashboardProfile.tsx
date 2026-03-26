@@ -33,7 +33,7 @@ export default function DashboardProfile({ lead, loading, onPhoneUpdated }: Prop
     setSaving(true);
     try {
       // Check if phone belongs to another user
-      const { data: existing } = await (supabase.from("leads") as any)
+      const { data: existing } = await supabase.from("leads")
         .select("user_id")
         .eq("phone_number", cleaned)
         .neq("user_id", user!.id)
@@ -45,7 +45,7 @@ export default function DashboardProfile({ lead, loading, onPhoneUpdated }: Prop
         return;
       }
 
-      await (supabase.from("leads") as any)
+      await supabase.from("leads")
         .update({ phone_number: cleaned })
         .eq("user_id", user!.id);
 

@@ -121,7 +121,7 @@ function BattleLobby({
         <h1 className="text-2xl md:text-4xl font-black text-foreground">
           Waiting for <span className="text-primary">Warriors</span>
         </h1>
-        <p className="text-sm text-muted-foreground">{room.chapter_slug.replace(/-/g, " ")} · {(room.questions_json as any[]).length} questions</p>
+        <p className="text-sm text-muted-foreground">{room.chapter_slug.replace(/-/g, " ")} · {Array.isArray(room.questions_json) ? room.questions_json.length : 0} questions</p>
       </div>
 
       {/* Room Code */}
@@ -762,7 +762,7 @@ export default function BattleRoomPage() {
 
     const fetchAndJoin = async () => {
       // Fetch room
-      const { data: roomData, error: roomErr } = await (supabase.from("battle_rooms") as any)
+      const { data: roomData, error: roomErr } = await supabase.from("battle_rooms")
         .select("*")
         .eq("code", code.toUpperCase())
         .single();
@@ -775,7 +775,7 @@ export default function BattleRoomPage() {
       setRoom(roomData);
 
       // Fetch existing players
-      const { data: playersData } = await (supabase.from("battle_players") as any)
+      const { data: playersData } = await supabase.from("battle_players")
         .select("*")
         .eq("room_id", roomData.id)
         .order("joined_at", { ascending: true });
@@ -787,7 +787,7 @@ export default function BattleRoomPage() {
       if (!alreadyJoined && roomData.status === "waiting" && (playersData || []).length < roomData.max_players && !joinedRef.current) {
         joinedRef.current = true;
         const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Player";
-        await (supabase.from("battle_players") as any).insert({
+        await supabase.from("battle_players").insert({
           room_id: roomData.id,
           user_id: user.id,
           display_name: displayName,
@@ -820,7 +820,7 @@ export default function BattleRoomPage() {
       .on("postgres_changes", { event: "*", schema: "public", table: "battle_players", filter: `room_id=eq.${roomId}` },
         async (payload: any) => {
           console.log("[Battle] Players change:", payload.eventType);
-          const { data } = await (supabase.from("battle_players") as any)
+          const { data } = await supabase.from("battle_players")
             .select("*").eq("room_id", roomId).order("joined_at", { ascending: true });
           if (data && isActive) setPlayers(data);
         })
@@ -838,8 +838,8 @@ export default function BattleRoomPage() {
       if (!isActive) return;
       try {
         const [roomRes, playersRes] = await Promise.all([
-          (supabase.from("battle_rooms") as any).select("*").eq("id", roomId).single(),
-          (supabase.from("battle_players") as any).select("*").eq("room_id", roomId).order("joined_at", { ascending: true }),
+          supabase.from("battle_rooms").select("*").eq("id", roomId).single(),
+          supabase.from("battle_players").select("*").eq("room_id", roomId).order("joined_at", { ascending: true }),
         ]);
         if (roomRes.data && isActive) setRoom(prev => prev ? { ...prev, ...roomRes.data } as BattleRoom : prev);
         if (playersRes.data && isActive) setPlayers(playersRes.data);
@@ -874,7 +874,7 @@ export default function BattleRoomPage() {
         setRoom(prev => prev ? { ...prev, status: "active", started_at: new Date().toISOString() } : prev);
         // Then persist to DB (triggers realtime for other players)
         (async () => {
-          const { error } = await (supabase.from("battle_rooms") as any)
+          const { error } = await supabase.from("battle_rooms")
             .update({ status: "active", started_at: new Date().toISOString() })
             .eq("id", room.id);
           if (error) console.error("[Battle] Failed to start:", error);
@@ -908,7 +908,7 @@ export default function BattleRoomPage() {
 
     const pct = Math.round((correct / questions.length) * 100);
 
-    await (supabase.from("battle_players") as any)
+    await supabase.from("battle_players")
       .update({
         answers_json: answers,
         score_pct: pct,
@@ -924,12 +924,12 @@ export default function BattleRoomPage() {
     recordActivity("quiz").catch(() => {});
 
     // Check if all players finished
-    const { data: allPlayers } = await (supabase.from("battle_players") as any)
+    const { data: allPlayers } = await supabase.from("battle_players")
       .select("finished_at").eq("room_id", room.id);
     
     if (allPlayers && allPlayers.every((p: any) => p.finished_at)) {
       // I'm the last one — mark room finished (only host can update, so try)
-      await (supabase.from("battle_rooms") as any)
+      await supabase.from("battle_rooms")
         .update({ status: "finished" })
         .eq("id", room.id);
     }
@@ -947,7 +947,7 @@ export default function BattleRoomPage() {
     const newCode = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 
-    const { data: newRoom, error: err } = await (supabase.from("battle_rooms") as any).insert({
+    const { data: newRoom, error: err } = await supabase.from("battle_rooms").insert({
       code: newCode,
       host_user_id: user.id,
       section_id: room.section_id,
@@ -957,7 +957,7 @@ export default function BattleRoomPage() {
 
     if (err || !newRoom) return;
 
-    await (supabase.from("battle_players") as any).insert({
+    await supabase.from("battle_players").insert({
       room_id: newRoom.id,
       user_id: user.id,
       display_name: displayName,

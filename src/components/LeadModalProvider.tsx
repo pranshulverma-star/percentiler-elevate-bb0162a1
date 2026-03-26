@@ -31,7 +31,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
   const openContentGate = (src: string, onSuccess?: () => void) => {
     if (isAuthenticated) {
       if (user?.id) {
-        (supabase.from("leads") as any).upsert(
+        supabase.from("leads").upsert(
           { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: src },
           { onConflict: "user_id" }
         ).then(() => {}).catch(() => {});
@@ -51,7 +51,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     if (pendingSource) {
       sessionStorage.removeItem("pending_gate_source");
       if (user?.id) {
-        (supabase.from("leads") as any).upsert(
+        supabase.from("leads").upsert(
           { user_id: user.id, email: user.email, name: user.user_metadata?.full_name || null, source: pendingSource },
           { onConflict: "user_id" }
         );
@@ -64,7 +64,7 @@ export const LeadModalProvider = ({ children }: { children: React.ReactNode }) =
     const storedPhone = localStorage.getItem("percentilers_phone") || "";
     if (/^\d{10}$/.test(storedPhone)) {
       if (user?.id) {
-        (supabase.from("leads") as any).upsert(
+        supabase.from("leads").upsert(
           { user_id: user.id, email: user.email, phone_number: storedPhone, source: src },
           { onConflict: "user_id" }
         ).then(() => {}).catch(() => {});

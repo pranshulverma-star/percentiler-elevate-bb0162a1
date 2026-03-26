@@ -45,7 +45,7 @@ export interface BuddyInvite {
 
 /** Get the user's active buddy pair, if any */
 export async function getActiveBuddy(userId: string): Promise<BuddyPair | null> {
-  const { data } = await (supabase.from("buddy_pairs") as any)
+  const { data } = await supabase.from("buddy_pairs")
     .select("*")
     .eq("status", "active")
     .or(`student_a_id.eq.${userId},student_b_id.eq.${userId}`)
@@ -55,7 +55,7 @@ export async function getActiveBuddy(userId: string): Promise<BuddyPair | null> 
 
 /** Get the user's pending invite (if any) */
 export async function getPendingInvite(userId: string): Promise<BuddyInvite | null> {
-  const { data } = await (supabase.from("buddy_invites") as any)
+  const { data } = await supabase.from("buddy_invites")
     .select("*")
     .eq("inviter_id", userId)
     .eq("status", "pending")
@@ -68,7 +68,7 @@ export async function getPendingInvite(userId: string): Promise<BuddyInvite | nu
 /** Create a new invite */
 export async function createInvite(userId: string, name: string | null): Promise<string> {
   const code = generateInviteCode();
-  const { error } = await (supabase.from("buddy_invites") as any).insert({
+  const { error } = await supabase.from("buddy_invites").insert({
     invite_code: code,
     inviter_id: userId,
     inviter_name: name,
@@ -79,7 +79,7 @@ export async function createInvite(userId: string, name: string | null): Promise
 
 /** Look up an invite by code */
 export async function getInviteByCode(code: string): Promise<BuddyInvite | null> {
-  const { data } = await (supabase.from("buddy_invites") as any)
+  const { data } = await supabase.from("buddy_invites")
     .select("*")
     .eq("invite_code", code.toUpperCase())
     .maybeSingle();
@@ -110,7 +110,7 @@ export async function acceptInvite(
   }
 
   // Mark invite as accepted
-  await (supabase.from("buddy_invites") as any)
+  await supabase.from("buddy_invites")
     .update({ status: "accepted" })
     .eq("id", invite.id);
 
@@ -125,7 +125,7 @@ export async function acceptInvite(
   }
 
   // Create pair
-  const { data, error } = await (supabase.from("buddy_pairs") as any)
+  const { data, error } = await supabase.from("buddy_pairs")
     .insert({
       student_a_id: invite.inviter_id,
       student_a_name: invite.inviter_name,
@@ -142,7 +142,7 @@ export async function acceptInvite(
 
 /** Dissolve a buddy pair */
 export async function dissolvePair(pairId: string): Promise<void> {
-  const { error } = await (supabase.from("buddy_pairs") as any)
+  const { error } = await supabase.from("buddy_pairs")
     .update({ status: "dissolved", dissolved_at: new Date().toISOString() })
     .eq("id", pairId);
   if (error) throw error;
@@ -151,7 +151,7 @@ export async function dissolvePair(pairId: string): Promise<void> {
 /** Get today's activity for both users in a pair */
 export async function getBuddyProgress(pairId: string): Promise<BuddyActivity[]> {
   const today = todayDate();
-  const { data } = await (supabase.from("buddy_activity_log") as any)
+  const { data } = await supabase.from("buddy_activity_log")
     .select("user_id, planner_completed, quiz_attempted, streak_count, bonus_earned, nudge_sent")
     .eq("pair_id", pairId)
     .eq("activity_date", today);
@@ -191,7 +191,7 @@ export async function syncDailyActivity(
   const quizAttempted = (quizData?.length ?? 0) > 0;
 
   // Upsert into buddy_activity_log
-  await (supabase.from("buddy_activity_log") as any).upsert(
+  await supabase.from("buddy_activity_log").upsert(
     {
       pair_id: pairId,
       user_id: userId,
@@ -205,7 +205,7 @@ export async function syncDailyActivity(
 
 /** Calculate consecutive days where BOTH buddies were active */
 export async function calculateBuddyStreak(pairId: string): Promise<number> {
-  const { data } = await (supabase.from("buddy_activity_log") as any)
+  const { data } = await supabase.from("buddy_activity_log")
     .select("activity_date, user_id, planner_completed, quiz_attempted")
     .eq("pair_id", pairId)
     .order("activity_date", { ascending: false })
@@ -243,7 +243,7 @@ export async function calculateBuddyStreak(pairId: string): Promise<number> {
 /** Send a nudge (MVP: just mark in activity log) */
 export async function sendNudge(pairId: string, userId: string): Promise<void> {
   const today = todayDate();
-  await (supabase.from("buddy_activity_log") as any).upsert(
+  await supabase.from("buddy_activity_log").upsert(
     {
       pair_id: pairId,
       user_id: userId,
@@ -257,7 +257,7 @@ export async function sendNudge(pairId: string, userId: string): Promise<void> {
 /** Check if buddy sent a nudge today */
 export async function hasReceivedNudge(pairId: string, buddyId: string): Promise<boolean> {
   const today = todayDate();
-  const { data } = await (supabase.from("buddy_activity_log") as any)
+  const { data } = await supabase.from("buddy_activity_log")
     .select("nudge_sent")
     .eq("pair_id", pairId)
     .eq("user_id", buddyId)

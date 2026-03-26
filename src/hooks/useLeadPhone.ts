@@ -51,7 +51,7 @@ export function useLeadPhone() {
 
       if (!request || force) {
         request = (async () => {
-          const { data } = await (supabase.from("leads") as any)
+          const { data } = await supabase.from("leads")
             .select("phone_number")
             .eq("user_id", userId)
             .maybeSingle();
@@ -64,7 +64,7 @@ export function useLeadPhone() {
 
           // Sync localStorage phone to DB if DB record is missing it
           if (!dbPhone && storedPhone && userId) {
-            (supabase.from("leads") as any).upsert(
+            supabase.from("leads").upsert(
               { user_id: userId, phone_number: storedPhone },
               { onConflict: "user_id" }
             ).catch(() => {});

@@ -85,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           }
 
           // Fire-and-forget: don't block auth state with DB call
-          (supabase.from("leads") as any).upsert(
+          supabase.from("leads").upsert(
             { user_id: currentUser.id, email, name, source: "google_signin" },
             { onConflict: "user_id" }
           ).then(() => {}).catch((err: any) => console.warn("Lead upsert failed:", err));
@@ -103,7 +103,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           // devices and browsers. Fire-and-forget — must NOT block auth flow.
           (async () => {
             try {
-              const { count } = await (supabase.from("notifications") as any)
+              const { count } = await supabase.from("notifications")
                 .select("*", { count: "exact", head: true })
                 .eq("user_id", userId)
                 .eq("type", "welcome");
@@ -123,7 +123,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               });
 
               // Insert in-app welcome notification
-              await (supabase.from("notifications") as any).insert({
+              await supabase.from("notifications").insert({
                 user_id: userId,
                 title: "Welcome to Percentilers! 🎯",
                 body: "Your CAT prep journey starts here. Set your first sprint goal today.",

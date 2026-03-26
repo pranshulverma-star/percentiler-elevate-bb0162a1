@@ -175,7 +175,7 @@ export default function ResultsView({
     const saveAndFetch = async () => {
       if (!savedRef.current) {
         savedRef.current = true;
-        await (supabase.from("practice_lab_attempts") as any).insert({
+        await supabase.from("practice_lab_attempts").insert({
           user_id: user.id,
           section_id: sectionId,
           chapter_slug: chapterSlug,
@@ -191,7 +191,7 @@ export default function ResultsView({
         recordActivity("practice_lab").catch(() => {});
       }
       // Fetch personal history
-      const { data } = await (supabase.from("practice_lab_attempts") as any)
+      const { data } = await supabase.from("practice_lab_attempts")
         .select("score_pct, correct, total_questions, time_used_seconds, created_at")
         .eq("user_id", user.id)
         .eq("section_id", sectionId)
@@ -201,7 +201,7 @@ export default function ResultsView({
       setPastAttempts(data || []);
 
       // Fetch leaderboard — top 10 scores for this chapter across all users
-      const { data: lbData } = await (supabase.from("practice_lab_attempts") as any)
+      const { data: lbData } = await supabase.from("practice_lab_attempts")
         .select("user_id, score_pct")
         .eq("section_id", sectionId)
         .eq("chapter_slug", chapterSlug)
@@ -219,7 +219,7 @@ export default function ResultsView({
 
         // Fetch profile names for all user IDs
         const userIds = Object.keys(bestByUser);
-        const { data: profilesData } = await (supabase.from("profiles") as any)
+        const { data: profilesData } = await supabase.from("profiles")
           .select("id, name")
           .in("id", userIds);
         const nameMap: Record<string, string> = {};

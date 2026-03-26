@@ -29,7 +29,7 @@ export function useStreaks(): StreakData {
   const fetchStreaks = useCallback(async () => {
     if (!user) { setLoading(false); return; }
 
-    const { data } = await (supabase.from("daily_streaks") as any)
+    const { data } = await supabase.from("daily_streaks")
       .select("activity_date, activity_type")
       .eq("user_id", user.id)
       .order("activity_date", { ascending: false });
@@ -111,7 +111,7 @@ export function useStreaks(): StreakData {
     // Skip if already recorded today
     if (todayActivities.includes(type)) return;
 
-    await (supabase.from("daily_streaks") as any).upsert(
+    await supabase.from("daily_streaks").upsert(
       { user_id: user.id, activity_date: todayStr, activity_type: type },
       { onConflict: "user_id,activity_date,activity_type" }
     );
