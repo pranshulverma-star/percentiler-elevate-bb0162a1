@@ -2,8 +2,8 @@ import { Helmet } from "react-helmet-async";
 
 interface SEOProps {
   title: string;
-  description: string;
-  canonical: string;
+  description?: string;
+  canonical?: string;
   ogImage?: string;
   ogType?: string;
   noindex?: boolean;

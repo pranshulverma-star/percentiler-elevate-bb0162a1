@@ -67,7 +67,7 @@ export function useLeadPhone() {
             supabase.from("leads").upsert(
               { user_id: userId, phone_number: storedPhone },
               { onConflict: "user_id" }
-            ).catch(() => {});
+            ).then(() => {}, () => {});
           }
 
           phoneCacheByUser.set(userId, resolved);

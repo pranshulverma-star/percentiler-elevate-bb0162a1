@@ -65,7 +65,7 @@ export function useFlashcardProgress() {
       await supabase.from("daily_streaks").upsert(
         { user_id: user.id, activity_date: todayStr, activity_type: "flashcards" },
         { onConflict: "user_id,activity_date,activity_type" }
-      ).catch(() => {});
+      ).then(() => {}, () => {});
     }
   }, [user, todayStr]);
 

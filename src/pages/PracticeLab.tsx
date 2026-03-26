@@ -880,13 +880,13 @@ export default function PracticeLab() {
     const code = generateCode();
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "Host";
 
-    const { data: room, error } = await supabase.from("battle_rooms").insert({
+    const { data: room, error } = await supabase.from("battle_rooms").insert([{
       code,
       host_user_id: user.id,
       section_id: selectedSection?.id || "qa",
       chapter_slug: ch.slug,
-      questions_json: questions,
-    }).select("id").single();
+      questions_json: questions as unknown as import("@/integrations/supabase/types").Json,
+    }]).select("id").single();
 
     if (error || !room) {
       console.error("Failed to create battle room:", error);
