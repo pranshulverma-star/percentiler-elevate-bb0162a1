@@ -833,6 +833,24 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          count: number
+          key: string
+          reset_at: string
+        }
+        Insert: {
+          count?: number
+          key: string
+          reset_at: string
+        }
+        Update: {
+          count?: number
+          key?: string
+          reset_at?: string
+        }
+        Relationships: []
+      }
       readiness_quiz: {
         Row: {
           attempted_before: string
@@ -931,6 +949,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      cleanup_rate_limits: { Args: never; Returns: undefined }
       extract_date_from_timestamptz: { Args: { ts: string }; Returns: string }
       is_buddy_pair_member: {
         Args: { _pair_id: string; _user_id: string }
