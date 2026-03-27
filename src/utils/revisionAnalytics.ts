@@ -103,7 +103,7 @@ export function getAccuracyByWeek(attempts: QuestionAttempt[]): AccuracyByWeek[]
   const map = new Map<string, { total: number; correct: number; date: Date }>();
 
   for (const a of attempts) {
-    const d = new Date(a.created_at);
+    const d = new Date(a.attempted_at);
     const weekStart = startOfWeek(d, { weekStartsOn: 1 }); // Monday
     const key = weekStart.toISOString().slice(0, 10);
     const existing = map.get(key) ?? { total: 0, correct: 0, date: weekStart };
@@ -151,11 +151,11 @@ export function getRevisionPriority(attempts: QuestionAttempt[]): RevisionPriori
     existing.total++;
     if (!a.is_correct) {
       existing.wrong++;
-      if (new Date(a.created_at) >= cutoff) existing.recentWrong++;
+      if (new Date(a.attempted_at) >= cutoff) existing.recentWrong++;
     }
 
-    if (!existing.lastAttempted || a.created_at > existing.lastAttempted) {
-      existing.lastAttempted = a.created_at;
+    if (!existing.lastAttempted || a.attempted_at > existing.lastAttempted) {
+      existing.lastAttempted = a.attempted_at;
     }
 
     chapterData.set(key, existing);
@@ -231,10 +231,11 @@ export function getSubtopicWeakness(attempts: QuestionAttempt[]): SubtopicWeakne
   }>();
 
   for (const a of attempts) {
-    if (!a.subtopic) continue;
-    const key = a.subtopic;
+    const subtopic = (a as any).subtopic ?? null;
+    if (!subtopic) continue;
+    const key = subtopic;
     const existing = map.get(key) ?? {
-      subtopic: a.subtopic,
+      subtopic,
       topic: a.chapter_slug.replace(/-/g, " "),
       total: 0,
       wrong: 0,
@@ -242,7 +243,7 @@ export function getSubtopicWeakness(attempts: QuestionAttempt[]): SubtopicWeakne
     };
     existing.total++;
     if (!a.is_correct) existing.wrong++;
-    if (a.was_skipped) existing.was_skipped++;
+    if ((a as any).was_skipped) existing.was_skipped++;
     map.set(key, existing);
   }
 
@@ -332,7 +333,7 @@ export function getSectionWeaknessEnriched(attempts: QuestionAttempt[]): Section
     const sa = attempts.filter((a) => a.section_id === section);
     const total = sa.length;
     const correct = sa.filter((a) => a.is_correct).length;
-    const skipped = sa.filter((a) => a.was_skipped).length;
+    const skipped = sa.filter((a) => (a as any).was_skipped).length;
     const attempted = total - skipped;
 
     return {

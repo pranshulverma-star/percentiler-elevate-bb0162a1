@@ -7,15 +7,16 @@ export interface QuestionAttempt {
   question_id: number;
   section_id: string;
   chapter_slug: string;
+  user_answer: string | null;
   is_correct: boolean;
-  was_skipped: boolean;
-  subtopic: string | null;
-  time_taken_seconds: number | null;
-  attempt_source: string;
-  question_text: string;
   difficulty: string | null;
+  attempted_at: string;
   concept_tags: string[] | null;
-  created_at: string;
+  practice_attempt_id: string | null;
+  battle_player_id: string | null;
+  // Optional — only present if migration added them
+  was_skipped?: boolean;
+  subtopic?: string | null;
 }
 
 interface UseRevisionDataOptions {
@@ -36,9 +37,21 @@ export function useRevisionData(opts: UseRevisionDataOptions = {}) {
     try {
       let query = supabase
         .from("question_attempts")
-        .select("id, question_id, section_id, chapter_slug, is_correct, was_skipped, subtopic, time_taken_seconds, attempt_source, question_text, difficulty, concept_tags, created_at")
+        .select(`
+          id,
+          question_id,
+          section_id,
+          chapter_slug,
+          user_answer,
+          is_correct,
+          difficulty,
+          attempted_at,
+          concept_tags,
+          practice_attempt_id,
+          battle_player_id
+        `)
         .eq("user_id", user.id)
-        .order("created_at", { ascending: false })
+        .order("attempted_at", { ascending: false })
         .limit(opts.limit ?? 600);
 
       if (opts.chapter_slug) {
@@ -46,7 +59,10 @@ export function useRevisionData(opts: UseRevisionDataOptions = {}) {
       }
 
       const { data, error: err } = await query;
-      if (err) throw err;
+      if (err) {
+        console.error("useRevisionData error:", err.code, err.message, err.details);
+        throw err;
+      }
       setAttempts((data as QuestionAttempt[]) || []);
     } catch (e: any) {
       setError(e.message ?? "Failed to load revision data");

@@ -63,7 +63,7 @@ export default function Revision() {
     : 0;
 
   const analyticsData = useMemo(() => {
-    const nonSkipped = attempts.filter(a => !a.was_skipped);
+    const nonSkipped = attempts.filter(a => !(a as any).was_skipped);
     return {
       subtopicWeakness: getSubtopicWeakness(attempts),
       chapterWeakness: getChapterWeakness(attempts).map(c => ({
@@ -237,7 +237,7 @@ function WrongQuestionsTab({
           <div className="flex items-start gap-2">
             <XCircle className="w-4 h-4 text-destructive mt-0.5 shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-foreground line-clamp-2">{a.question_text || "(Question text not available)"}</p>
+              <p className="text-xs font-medium text-foreground line-clamp-2">{(a as any).question_text || `Q${a.question_id} · ${slugToName(a.chapter_slug)}`}</p>
               <div className="flex items-center gap-2 mt-1.5">
                 <Badge variant="secondary" className="text-[9px] px-1.5 py-0 font-medium">
                   {sectionName(a.section_id)}
