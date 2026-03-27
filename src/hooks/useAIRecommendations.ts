@@ -106,59 +106,119 @@ export function useAIRecommendations(analyticsData: AIAnalyticsInput) {
       setLoading(true);
       setError(null);
       try {
-        // Determine weakest section to focus the advice
-        const weakestSection = [...analyticsData.sectionWeakness]
-          .sort((a, b) => a.accuracy_rate - b.accuracy_rate)[0];
+        const weakSubtopics = analyticsData.subtopicWeakness
+          .slice(0, 8)
+          .map((s) => `"${s.subtopic}" (${s.topic}): ${s.error_rate}% error, ${s.total} attempts`)
+          .join("\n");
+
+        const weakChapters = analyticsData.chapterWeakness
+          .slice(0, 6)
+          .map((c) => `${c.label} [${c.section_id.toUpperCase()}]: ${c.error_rate}% error, ${c.total} attempts`)
+          .join("\n");
+
+        const sectionSummary = analyticsData.sectionWeakness
+          .map((s) => `${s.label}: ${s.accuracy_rate}% accuracy, ${s.total} attempted, ${s.skip_rate}% skip rate`)
+          .join("\n");
+
+        const diffSummary = analyticsData.difficultyBreakdown
+          .map((d) => `${d.difficulty}: ${d.accuracy}% accuracy, ${d.total} questions`)
+          .join("\n");
+
+        const weeklyTrend = analyticsData.accuracyByWeek
+          .slice(-6)
+          .map((w) => `${w.weekLabel}: ${w.accuracy}% (${w.total} Qs)`)
+          .join(" → ");
+
+        const topTags = analyticsData.topConceptTags
+          .slice(0, 6)
+          .map((t) => `"${t.tag}": ${t.error_rate}% error, ${t.total} questions`)
+          .join("\n");
+
+        const prompt = `You are an expert CAT exam coach. A student is using Percentilers to prepare for CAT.
+
+PERFORMANCE DATA:
+Overall: ${analyticsData.totalAttempts} questions attempted, ${analyticsData.overallAccuracy}% accuracy (excluding skipped)
+
+Section performance:
+${sectionSummary}
+
+Difficulty breakdown:
+${diffSummary}
+
+Weakest subtopics (most granular signal):
+${weakSubtopics || "Not enough data yet"}
+
+Weakest chapters:
+${weakChapters || "Not enough data yet"}
+
+Top failing concept tags:
+${topTags || "Not enough data yet"}
+
+Accuracy trend (recent weeks):
+${weeklyTrend || "Not enough weekly data"}
+
+CAT EXAM CONTEXT (use this for all advice):
+- CAT sections: VARC (24 Qs, 40 min), LRDI (20 Qs, 40 min), QA (22 Qs, 40 min)
+- Wrong MCQ = -1 mark. Skipped = 0. Skip rate matters enormously.
+- 99 percentile needs ~95%+ accuracy on attempted questions
+- LRDI is set-based — one bad set choice can kill the section score
+- VARC RC accuracy below 70% = passage selection strategy is broken
+- QA: if Hard accuracy < 40%, focus on Medium mastery first
+- High skip rate in QA = selection strategy issue, not concept gap
+- High skip rate in LRDI = set difficulty assessment issue
+- Improving from 75th to 90th percentile requires fixing 2-3 specific weak areas
+
+Respond ONLY with this exact JSON, no markdown, no explanation outside the JSON:
+{
+  "overallAssessment": {
+    "level": "Beginner|Developing|Competitive|Strong|Elite",
+    "estimatedPercentile": "e.g. 75-80",
+    "summary": "2-3 sentences honest assessment referencing their actual numbers and patterns"
+  },
+  "criticalWeaknesses": [
+    {
+      "subtopic": "exact subtopic from their data",
+      "chapter": "chapter name",
+      "section": "QA|VARC|LRDI",
+      "errorRate": 67,
+      "diagnosis": "WHY they are failing — concept gap vs carelessness vs time pressure vs selection issue",
+      "catImpact": "how this weakness affects their CAT score specifically",
+      "fix": "specific actionable fix with concrete steps"
+    }
+  ],
+  "sectionStrategy": {
+    "QA": "specific QA strategy based on their difficulty breakdown and skip rate",
+    "VARC": "specific VARC strategy based on their accuracy and skip patterns",
+    "LRDI": "specific LRDI set-selection strategy if skip rate is high"
+  },
+  "weeklyPlan": {
+    "primaryFocus": "one chapter or subtopic to drill this week",
+    "targetQuestions": 40,
+    "targetAccuracy": 75,
+    "rationale": "why this specific goal for this specific student"
+  },
+  "encouragement": "one personalised line referencing a specific positive from their actual data",
+  "redFlag": "one critical warning if there is a serious pattern — null if none"
+}
+Return 2-3 criticalWeaknesses. Be specific, honest, data-driven. Reference actual subtopics and numbers.`;
 
         const { data, error: fnError } = await supabase.functions.invoke(
           "ai-revision-coach",
-          {
-            body: {
-              section_id: weakestSection?.section_id || undefined,
-              chapter_slug: analyticsData.chapterWeakness[0]?.chapter_slug || undefined,
-            },
-          }
+          { body: { prompt } }
         );
 
-        console.log("ai-revision-coach raw response:", JSON.stringify(data, null, 2));
-
         if (fnError) throw new Error(fnError.message);
-        if (!data?.advice) throw new Error("Empty response from AI");
+        if (!data?.text) throw new Error("Empty response from AI");
 
-        // Map Edge Function response to AIRecommendation shape
-        const stats = data.stats || {};
-        const mapped: AIRecommendation = {
-          overallAssessment: {
-            level: stats.level || "Developing",
-            estimatedPercentile: stats.estimatedPercentile || "—",
-            summary: data.advice,
-          },
-          criticalWeaknesses: (stats.weakChapters || []).slice(0, 3).map((w: any) => ({
-            subtopic: w.subtopic || w.chapter || "—",
-            chapter: w.chapter || "—",
-            section: w.section || "QA",
-            errorRate: w.error_rate || 0,
-            diagnosis: w.diagnosis || "Review this area",
-            catImpact: w.cat_impact || "",
-            fix: w.fix || "Practice more questions in this chapter",
-          })),
-          sectionStrategy: {
-            QA: stats.sectionStrategy?.QA || stats.qa_strategy || "Focus on accuracy over speed",
-            VARC: stats.sectionStrategy?.VARC || stats.varc_strategy || "Practice RC passages daily",
-            LRDI: stats.sectionStrategy?.LRDI || stats.lrdi_strategy || "Focus on set selection",
-          },
-          weeklyPlan: {
-            primaryFocus: stats.weeklyPlan?.primaryFocus ||
-                          analyticsData.chapterWeakness[0]?.label || "Your weakest chapter",
-            targetQuestions: stats.weeklyPlan?.targetQuestions || 40,
-            targetAccuracy: stats.weeklyPlan?.targetAccuracy || 70,
-            rationale: stats.weeklyPlan?.rationale || "Consistent practice builds accuracy",
-          },
-          encouragement: stats.encouragement || "Keep going — every question makes you better.",
-          redFlag: stats.redFlag || null,
-        };
-        sessionStorage.setItem(key, JSON.stringify(mapped));
-        setRecommendation(mapped);
+        const cleaned = data.text
+          .replace(/^```json\s*/i, "")
+          .replace(/^```\s*/i, "")
+          .replace(/```\s*$/i, "")
+          .trim();
+
+        const parsed: AIRecommendation = JSON.parse(cleaned);
+        sessionStorage.setItem(key, JSON.stringify(parsed));
+        setRecommendation(parsed);
       } catch (err: unknown) {
         const msg = err instanceof Error ? err.message : "Could not load AI recommendations";
         console.error("[useAIRecommendations]", msg);
