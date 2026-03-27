@@ -257,9 +257,9 @@ function WrongQuestionsTab({
                 )}
               </div>
 
-              {expanded === a.id && a.concept_tags && a.concept_tags.length > 0 && (
+              {expanded === a.id && (a as any).concept_tags?.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
-                  {a.concept_tags.map((tag) => (
+                  {((a as any).concept_tags as string[]).map((tag: string) => (
                     <Badge key={tag} variant="outline" className="text-[9px] px-1.5 py-0">{tag}</Badge>
                   ))}
                 </div>

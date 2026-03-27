@@ -11,7 +11,6 @@ export interface QuestionAttempt {
   is_correct: boolean;
   difficulty: string | null;
   attempted_at: string;
-  concept_tags: string[] | null;
   practice_attempt_id: string | null;
   battle_player_id: string | null;
   // Optional — only present if migration added them
@@ -46,7 +45,6 @@ export function useRevisionData(opts: UseRevisionDataOptions = {}) {
           is_correct,
           difficulty,
           attempted_at,
-          concept_tags,
           practice_attempt_id,
           battle_player_id
         `)
@@ -107,11 +105,9 @@ export async function saveQuestionAttempts(
       question_id: q.id,
       section_id: sectionId,
       chapter_slug: chapterSlug,
+      user_answer: userAnswer != null ? String(userAnswer) : null,
       is_correct: isCorrect,
-      attempt_source: source,
-      question_text: q.question.slice(0, 500),
       difficulty: q.difficulty ?? null,
-      concept_tags: q.concept_tags ?? null,
     };
   });
 
