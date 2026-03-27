@@ -148,6 +148,7 @@ export default function PracticeTab({ streakData, practiceAttempts, dailyStreaks
       <motion.div {...fade(1)} className="flex flex-col gap-2">
         {[
           { emoji: "🎯", title: "Section Practice", desc: "Pick QA, LRDI or VARC to drill", to: "/practice-lab", color: "#FF6600" },
+          { emoji: "📊", title: "Revision & Analytics", desc: "Wrong Qs · Weak areas · AI coaching", to: "/revision", color: "#10B981" },
           { emoji: "🧠", title: "Flashcard Revision", desc: "12 cards due · Quick formula & concept review", to: "/flashcards?view=practice&tab=revise", color: "#8B5CF6" },
         ].map((card) => (
           <Link key={card.title} to={card.to}>

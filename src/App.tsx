@@ -57,6 +57,7 @@ const StudyBuddy = lazy(() => import("./pages/StudyBuddy"));
 const DailySprint = lazy(() => import("./pages/DailySprint"));
 const Flashcards = lazy(() => import("./pages/Flashcards"));
 const Notifications = lazy(() => import("./pages/Notifications"));
+const Revision = lazy(() => import("./pages/Revision"));
 const Terms = lazy(() => import("./pages/Terms"));
 const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const RefundPolicy = lazy(() => import("./pages/RefundPolicy"));
@@ -125,6 +126,14 @@ const App = () => (
                   <Route path="/daily-sprint" element={<DailySprint />} />
                   <Route path="/flashcards" element={<Flashcards />} />
                   <Route path="/notifications" element={<ProtectedRoute source="notifications"><Notifications /></ProtectedRoute>} />
+                  <Route
+                    path="/revision"
+                    element={
+                      <ProtectedRoute source="revision">
+                        <Revision />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/privacy-policy" element={<PrivacyPolicy />} />
                   <Route path="/refund-policy" element={<RefundPolicy />} />

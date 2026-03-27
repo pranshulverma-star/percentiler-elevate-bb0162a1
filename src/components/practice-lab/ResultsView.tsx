@@ -13,6 +13,7 @@ import { useStreaks } from "@/hooks/useStreaks";
 import { supabase } from "@/integrations/supabase/client";
 import WorkshopRecommendation, { getWorkshopRecommendations } from "@/components/WorkshopRecommendation";
 import { practiceLabSections, type PracticeQuestion } from "@/data/practiceLabQuestions";
+import { saveQuestionAttempts } from "@/hooks/useRevisionData";
 
 // Lazy load the shareable card (pulls in html-to-image)
 const ShareableResultCard = lazy(() => import("@/components/ShareableResultCard"));
@@ -219,7 +220,6 @@ export default function ResultsView({
             console.error("Failed to save question attempts:", attemptsError);
           }
         }
-
         // Record unified streak
         recordActivity("practice_lab").catch(() => {});
       }
@@ -600,6 +600,39 @@ export default function ResultsView({
           <ChevronRight className="h-4 w-4 text-primary group-hover:translate-x-1 transition-transform" />
         </div>
       </Card>
+
+      {/* ─── 8. Based on this session ─── */}
+      {incorrect > 0 && (
+        <Card className="p-3 border border-destructive/20 bg-destructive/[0.02] space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-1.5">
+              <XCircle className="w-3.5 h-3.5 text-destructive" />
+              <span className="text-xs font-bold text-foreground">Review Wrong Answers</span>
+            </div>
+            <button
+              onClick={() => navigate("/revision")}
+              className="text-[10px] text-primary font-semibold hover:underline"
+            >
+              Full revision log →
+            </button>
+          </div>
+          {questions
+            .filter((q) => {
+              const a = answers[q.id];
+              if (a === undefined || a === null || a === "") return false;
+              return q.type === "tita_text"
+                ? String(a).trim().toUpperCase() !== String(q.correctAnswer).trim().toUpperCase()
+                : a !== q.correctAnswer;
+            })
+            .slice(0, 3)
+            .map((q) => (
+              <div key={q.id} className="text-[10px] text-muted-foreground border-t border-border/40 pt-1.5">
+                <span className="font-semibold text-foreground">Q{questions.indexOf(q) + 1}.</span>{" "}
+                {q.question.slice(0, 120)}{q.question.length > 120 ? "…" : ""}
+              </div>
+            ))}
+        </Card>
+      )}
     </motion.div>
   );
 }
