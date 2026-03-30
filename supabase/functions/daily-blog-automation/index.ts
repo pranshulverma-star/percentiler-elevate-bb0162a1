@@ -329,7 +329,9 @@ async function callGemini(prompt: string, apiKey: string): Promise<BlogArticle> 
   return JSON.parse(raw.slice(first, last + 1)) as BlogArticle;
 }
 
-// ─── Imagen 3 — hero image ────────────────────────────────────────────────────
+// ─── Gemini image generation — hero image ────────────────────────────────────
+// Uses gemini-2.0-flash-preview-image-generation (works on standard API key)
+// Imagen 3 requires Vertex AI and is not available on standard Gemini keys
 
 async function generateImage(
   keyword: string,
@@ -339,46 +341,46 @@ async function generateImage(
 ): Promise<string | null> {
   try {
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-001:predict?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          instances: [{
-            prompt: `Professional educational illustration for a blog post about '${keyword}' for Indian MBA/CAT exam aspirants. Modern, clean, inspiring. Study books, IIM campus, students studying. Warm colors. No text in image.`,
+          contents: [{
+            parts: [{
+              text: `Create a professional educational illustration for a blog post about '${keyword}' for Indian MBA/CAT exam aspirants. Modern, clean, inspiring style. Show study books, IIM campus buildings, or students studying. Use warm orange and blue tones. No text or words in the image.`,
+            }],
           }],
-          parameters: {
-            sampleCount: 1,
-            aspectRatio: "16:9",
-            safetyFilterLevel: "block_some",
-            personGeneration: "allow_adult",
+          generationConfig: {
+            responseModalities: ["IMAGE"],
           },
         }),
       }
     );
 
-    if (!res.ok) { console.warn(`[imagen] HTTP ${res.status}`); return null; }
+    if (!res.ok) { console.warn(`[image-gen] HTTP ${res.status}: ${await res.text()}`); return null; }
 
     const json = await res.json();
-    const b64: string | undefined = json?.predictions?.[0]?.bytesBase64Encoded;
-    if (!b64) { console.warn("[imagen] No base64 payload"); return null; }
+    const b64: string | undefined =
+      json?.candidates?.[0]?.content?.parts?.find((p: { inlineData?: { data: string } }) => p.inlineData)?.inlineData?.data;
+    if (!b64) { console.warn("[image-gen] No image data in response"); return null; }
 
     // Decode → Uint8Array
     const binary = atob(b64);
     const bytes  = new Uint8Array(binary.length);
     for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
 
-    const path = `blog/${slug}/${slug}-hero.jpg`;
+    const path = `blog/${slug}/${slug}-hero.png`;
     const { error: uploadErr } = await supabase.storage
       .from("blog-images")
-      .upload(path, bytes, { contentType: "image/jpeg", upsert: true });
+      .upload(path, bytes, { contentType: "image/png", upsert: true });
 
-    if (uploadErr) { console.warn("[imagen] Upload failed:", uploadErr.message); return null; }
+    if (uploadErr) { console.warn("[image-gen] Upload failed:", uploadErr.message); return null; }
 
     const { data: pub } = supabase.storage.from("blog-images").getPublicUrl(path);
     return pub?.publicUrl ?? null;
   } catch (err) {
-    console.warn("[imagen] Error:", err);
+    console.warn("[image-gen] Error:", err);
     return null;
   }
 }
