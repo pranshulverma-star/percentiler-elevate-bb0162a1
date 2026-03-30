@@ -301,32 +301,73 @@ Return exactly this JSON structure (faq array can be empty):
 
 // ─── Gemini call ──────────────────────────────────────────────────────────────
 
+const GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite"];
+
 async function callGemini(prompt: string, apiKey: string): Promise<BlogArticle> {
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-    {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.75, maxOutputTokens: 8192 },
-      }),
+  let lastError = "";
+
+  for (const model of GEMINI_MODELS) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1/models/${model}:generateContent?key=${apiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { temperature: 0.75, maxOutputTokens: 8192 },
+          }),
+        }
+      );
+
+      if (res.status === 429) {
+        console.warn(`[gemini] ${model} rate limited, trying next...`);
+        continue;
+      }
+
+      if (!res.ok) {
+        const errText = await res.text();
+        console.warn(`[gemini] ${model} HTTP ${res.status}: ${errText}`);
+        lastError = `HTTP ${res.status}: ${errText}`;
+        continue;
+      }
+
+      const json = await res.json();
+
+      // Log finish reason so we can diagnose safety blocks
+      const finishReason = json?.candidates?.[0]?.finishReason;
+      if (finishReason && finishReason !== "STOP") {
+        console.warn(`[gemini] ${model} finishReason=${finishReason} — may be a safety block`);
+      }
+
+      let raw: string = json?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+
+      if (!raw) {
+        console.warn(`[gemini] ${model} returned empty text. Full response: ${JSON.stringify(json).slice(0, 500)}`);
+        lastError = `Empty text from ${model} (finishReason=${finishReason})`;
+        continue;
+      }
+
+      // Strip markdown fences if Gemini wraps the output
+      raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
+
+      const first = raw.indexOf("{");
+      const last  = raw.lastIndexOf("}");
+
+      if (first === -1 || last === -1) {
+        console.warn(`[gemini] ${model} no JSON found. Raw start: ${raw.slice(0, 300)}`);
+        lastError = `No JSON object in response from ${model}`;
+        continue;
+      }
+
+      return JSON.parse(raw.slice(first, last + 1)) as BlogArticle;
+    } catch (err) {
+      lastError = String(err);
+      console.warn(`[gemini] ${model} threw: ${lastError}`);
     }
-  );
+  }
 
-  if (!res.ok) throw new Error(`Gemini HTTP ${res.status}: ${await res.text()}`);
-
-  const json = await res.json();
-  let raw: string = json?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-
-  // Strip markdown fences if Gemini wraps the output
-  raw = raw.replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/\s*```$/i, "").trim();
-
-  const first = raw.indexOf("{");
-  const last  = raw.lastIndexOf("}");
-  if (first === -1 || last === -1) throw new Error("No JSON object in Gemini response");
-
-  return JSON.parse(raw.slice(first, last + 1)) as BlogArticle;
+  throw new Error(`All Gemini models failed. Last error: ${lastError}`);
 }
 
 // ─── Gemini image generation — hero image ────────────────────────────────────
