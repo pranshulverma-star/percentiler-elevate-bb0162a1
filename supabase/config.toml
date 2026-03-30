@@ -29,3 +29,6 @@ verify_jwt = false
 
 [functions.ai-revision-coach]
 verify_jwt = false
+
+[functions.daily-blog-automation]
+verify_jwt = false
