@@ -440,13 +440,15 @@ function buildSchemaMarkup(
 // ─── Unique slug ──────────────────────────────────────────────────────────────
 
 async function generateSlug(title: string, supabase: SupabaseClient): Promise<string> {
-  const base = title
+  let base = title
     .toLowerCase()
     .replace(/\s+/g, "-")
     .replace(/[^a-z0-9-]/g, "")
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 60);
+  // Trim trailing hyphen that results from mid-word truncation
+  base = base.replace(/-+$/, "");
 
   let slug = base;
   let suffix = 2;
